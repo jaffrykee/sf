@@ -51,4 +51,31 @@ public:
 	int m_id;
 	PCWSTR m_name;
 	D2D_POINT_2U m_headImgWH;
+	SFPEventStatus m_eStatus;
+
+	SFPlayer()
+	{
+
+	}
+	
+	void setUpEventListTimeout()
+	{
+		m_eStatus.setTimeout();
+	}
+
+	void enableDownStatus(SF_EKD val)
+	{
+		m_eStatus.m_aStatus[val] = 1;
+	}
+
+	void disableDownStatus(SF_EKD val)
+	{
+		m_eStatus.m_aStatus[val] = 0;
+	}
+
+	void addEvent(SF_EKU val)
+	{
+		m_eStatus.addEvent(val);
+		disableDownStatus((SF_EKD)(val-1));
+	}
 };
