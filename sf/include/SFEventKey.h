@@ -36,8 +36,8 @@ enum SF_EKU
 	r:run
 	ddg:dodge
 	以上均为物理依赖态，需要遵照物理守则，即落在地面，且不能到地下。
+	作为skill数组的下标使用，所以从0开始。
 */
-
 enum SF_EKF
 {
 	EKF_A, EKF_B, EKF_C, EKF_D,

@@ -52,6 +52,8 @@ public:
 	PCWSTR m_name;
 	D2D_POINT_2U m_headImgWH;
 	SFPEventStatus m_eStatus;
+	bool m_enableSkill[EKF_MAX];
+	SFSkill m_aSkill[EKF_MAX];
 
 	SFPlayer()
 	{
