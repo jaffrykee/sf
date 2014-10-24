@@ -34,14 +34,9 @@
 #pragma region 计时器define(TMR)
 enum TMR_ID
 {
-	TMR_PAINT = 1, TMR_ACTION, TMR_CHAIN,
+	TMR_NULL, TMR_PAINT, TMR_ACTION, TMR_CHAIN,
 	TMR_MAX
 };
 
-//显示刷新计时器
-#define TMR_PAINT_MS 15
-//动作变化计时器
-#define TMR_ACTION_MS 5
-//按键连锁检测计时器
-#define TMR_CHAIN_MS 100
+const unsigned int gc_arrTmr[TMR_MAX] = { 0, 15, 5, 100 };
 #pragma endregion

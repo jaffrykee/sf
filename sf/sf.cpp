@@ -280,7 +280,7 @@ HRESULT WinApp::CreateDeviceResources()
 		}
 		if (SUCCEEDED(hr))
 		{
-			SetTimer(m_hwnd, TIMER_PAINT_ID, TIMER_PAINT_MS, NULL);
+			SetTimer(m_hwnd, TMR_PAINT, TIMER_PAINT_MS, NULL);
 			SetTimer(m_hwnd, TIMER_ACTION_ID, TIMER_ACTION_MS, NULL);
 			SetTimer(m_hwnd, TIMER_CHAIN_ID, TIMER_CHAIN_MS, NULL);
 		}
