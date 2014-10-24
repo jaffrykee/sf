@@ -84,13 +84,16 @@ enum SF_EKF
 //技能判定超时时间(ms)
 #define EKL_TIMEOUT TMR_CHAIN_MS
 
-class SFPlayerStatus
+/*
+	内有按键up事件列表（序列）和当前按键down状态数组。
+*/
+class SFPEventStatus
 {
 public:
-	list<SF_EKU> m_lChain;
+	list<SF_EKU> m_lUp;
 	unsigned char m_aStatus[EKD_MAX];
 
-	SFPlayerStatus()
+	SFPEventStatus()
 	{
 		for (int i = 0; i<EKD_MAX; i++)
 		{
@@ -100,15 +103,15 @@ public:
 
 	void setTimeout()
 	{
-		m_lChain.empty();
+		m_lUp.empty();
 	}
 
 	void addEvent(SF_EKU val)
 	{
-		if (m_lChain.size() >= EKL_MAX)
+		if (m_lUp.size() >= EKL_MAX)
 		{
-			m_lChain.pop_front();
+			m_lUp.pop_front();
 		}
-		m_lChain.push_back(val);
+		m_lUp.push_back(val);
 	}
 };

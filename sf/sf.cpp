@@ -79,6 +79,9 @@
 #pragma region 全局变量
 PActPlayer g_Player1 = PActPlayer(D2D1::RectF(INIT_LX1, INIT_LY1, INIT_LX2, INIT_LY2));
 PActPlayer g_Player2 = PActPlayer(D2D1::RectF(INIT_RX1, INIT_RY1, INIT_RX2, INIT_RY2));
+
+SFPlayer g_p1 = SFPlayer();
+SFPlayer g_p2 = SFPlayer();
 #pragma endregion
 
 #pragma region 入口
@@ -504,53 +507,53 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				case WM_KEYDOWN:
 					switch(wParam)
 					{
-						case ACT_K1UP:
+						case KD_P1UP:
+							g_p1.enableDownStatus(EK_8D);
 							break;
-						case ACT_K1LF:
-							if (g_Player1.isLeft(g_Player2))
-							{
-								g_Player1.m_vx = -SPEED_BCK;
-							}
-							else
-							{
-								g_Player1.m_vx = -SPEED_FWD;
-							}
+						case KD_P1LF:
+							g_p1.enableDownStatus(EK_4D);
 							break;
-						case ACT_K1DW:
+						case KD_P1DW:
+							g_p1.enableDownStatus(EK_2D);
 							break;
-						case ACT_K1RG:
-							if (g_Player1.isLeft(g_Player2))
-							{
-								g_Player1.m_vx = SPEED_FWD;
-							}
-							else
-							{
-								g_Player1.m_vx = SPEED_BCK;
-							}
+						case KD_P1RG:
+							g_p1.enableDownStatus(EK_6D);
 							break;
-						case ACT_K2UP:
+						case KD_P1AA:
+							g_p1.enableDownStatus(EK_AD);
 							break;
-						case ACT_K2LF:
-							if (g_Player2.isLeft(g_Player1))
-							{
-								g_Player2.m_vx = -SPEED_BCK;
-							}
-							else
-							{
-								g_Player2.m_vx = -SPEED_FWD;
-							}
+						case KD_P1BB:
+							g_p1.enableDownStatus(EK_BD);
 							break;
-						case ACT_K2DW:
+						case KD_P1CC:
+							g_p1.enableDownStatus(EK_CD);
 							break;
-						case ACT_K2RG:
-							if (g_Player2.isLeft(g_Player1))
-							{
-								g_Player2.m_vx = SPEED_FWD;
-							}
-							else
-							{
-								g_Player2.m_vx = SPEED_BCK;
-							}
+						case KD_P1DD:
+							g_p1.enableDownStatus(EK_DD);
+							break;
+						case KD_P2UP:
+							g_p2.enableDownStatus(EK_8D);
+							break;
+						case KD_P2LF:
+							g_p2.enableDownStatus(EK_4D);
+							break;
+						case KD_P2DW:
+							g_p2.enableDownStatus(EK_2D);
+							break;
+						case KD_P2RG:
+							g_p2.enableDownStatus(EK_6D);
+							break;
+						case KD_P2AA:
+							g_p2.enableDownStatus(EK_AD);
+							break;
+						case KD_P2BB:
+							g_p2.enableDownStatus(EK_BD);
+							break;
+						case KD_P2CC:
+							g_p2.enableDownStatus(EK_CD);
+							break;
+						case KD_P2DD:
+							g_p2.enableDownStatus(EK_DD);
 							break;
 					}
 					result = 0;
@@ -559,25 +562,53 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				case WM_KEYUP:
 					switch (wParam)
 					{
-						case ACT_K1UP:
+						case KD_P1UP:
+							g_p1.addEvent(EK_8U);
 							break;
-						case ACT_K1LF:
-							g_Player1.m_vx = 0;
+						case KD_P1LF:
+							g_p1.addEvent(EK_4U);
 							break;
-						case ACT_K1DW:
+						case KD_P1DW:
+							g_p1.addEvent(EK_2U);
 							break;
-						case ACT_K1RG:
-							g_Player1.m_vx = 0;
+						case KD_P1RG:
+							g_p1.addEvent(EK_6U);
 							break;
-						case ACT_K2UP:
+						case KD_P1AA:
+							g_p1.addEvent(EK_AU);
 							break;
-						case ACT_K2LF:
-							g_Player2.m_vx = 0;
+						case KD_P1BB:
+							g_p1.addEvent(EK_BU);
 							break;
-						case ACT_K2DW:
+						case KD_P1CC:
+							g_p1.addEvent(EK_CU);
 							break;
-						case ACT_K2RG:
-							g_Player2.m_vx = 0;
+						case KD_P1DD:
+							g_p1.addEvent(EK_DU);
+							break;
+						case KD_P2UP:
+							g_p2.addEvent(EK_8U);
+							break;
+						case KD_P2LF:
+							g_p2.addEvent(EK_4U);
+							break;
+						case KD_P2DW:
+							g_p2.addEvent(EK_2U);
+							break;
+						case KD_P2RG:
+							g_p2.addEvent(EK_6U);
+							break;
+						case KD_P2AA:
+							g_p2.addEvent(EK_AU);
+							break;
+						case KD_P2BB:
+							g_p2.addEvent(EK_BU);
+							break;
+						case KD_P2CC:
+							g_p2.addEvent(EK_CU);
+							break;
+						case KD_P2DD:
+							g_p2.addEvent(EK_DU);
 							break;
 					}
 					result = 0;
