@@ -57,16 +57,6 @@
 #pragma endregion
 
 #pragma region 计时器define
-#define TIMER_PAINT_ID 1
-#define TIMER_ACTION_ID 2
-#define TIMER_CHAIN_ID 3
-
-//显示刷新计时器
-#define TIMER_PAINT_MS 15
-//动作变化计时器
-#define TIMER_ACTION_MS 5
-//按键连锁检测计时器
-#define TIMER_CHAIN_MS 100
 #pragma endregion
 
 #pragma region 运动相关参数
@@ -82,6 +72,10 @@ PActPlayer g_Player2 = PActPlayer(D2D1::RectF(INIT_RX1, INIT_RY1, INIT_RX2, INIT
 
 SFPlayer g_p1 = SFPlayer();
 SFPlayer g_p2 = SFPlayer();
+
+string g_strEkf1 = "";
+string g_strEkf2 = "";
+SFConfig g_sfConfig;
 #pragma endregion
 
 #pragma region 入口
@@ -280,9 +274,9 @@ HRESULT WinApp::CreateDeviceResources()
 		}
 		if (SUCCEEDED(hr))
 		{
-			SetTimer(m_hwnd, TMR_PAINT, TIMER_PAINT_MS, NULL);
-			SetTimer(m_hwnd, TIMER_ACTION_ID, TIMER_ACTION_MS, NULL);
-			SetTimer(m_hwnd, TIMER_CHAIN_ID, TIMER_CHAIN_MS, NULL);
+			SetTimer(m_hwnd, TMR_PAINT, gc_arrTmr[TMR_PAINT], NULL);
+			SetTimer(m_hwnd, TMR_ACTION, gc_arrTmr[TMR_ACTION], NULL);
+			SetTimer(m_hwnd, TMR_SKILL, gc_arrTmr[TMR_SKILL], NULL);
 		}
 	}
 
@@ -453,6 +447,8 @@ void WinApp::OnResize(UINT width, UINT height)
 LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = 0;
+	string strTmp = "";
+	int st = 0;
 
 	if (message == WM_CREATE)
 	{
@@ -483,15 +479,13 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				case WM_TIMER:
 					switch (wParam)
 					{
-						case TIMER_PAINT_ID:
+						case TMR_PAINT:
 							pWinApp->OnRender();
 							ValidateRect(hwnd, NULL);
 							break;
-						case TIMER_ACTION_ID:
-							g_Player1.moveToNextFrame();
-							g_Player2.moveToNextFrame();
+						case TMR_ACTION:
 							break;
-						case TIMER_CHAIN_ID:
+						case TMR_SKILL:
 							break;
 					}
 					result = 0;
@@ -509,52 +503,83 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					{
 						case KD_P1UP:
 							g_p1.enableDownStatus(EK_8D);
+							strTmp = g_p1.getEkfString("8");
 							break;
 						case KD_P1LF:
 							g_p1.enableDownStatus(EK_4D);
+							strTmp = g_p1.getEkfString("4");
 							break;
 						case KD_P1DW:
 							g_p1.enableDownStatus(EK_2D);
+							strTmp = g_p1.getEkfString("2");
 							break;
 						case KD_P1RG:
 							g_p1.enableDownStatus(EK_6D);
+							strTmp = g_p1.getEkfString("6");
 							break;
 						case KD_P1AA:
 							g_p1.enableDownStatus(EK_AD);
+							strTmp = g_p1.getEkfString("A");
 							break;
 						case KD_P1BB:
 							g_p1.enableDownStatus(EK_BD);
+							strTmp = g_p1.getEkfString("B");
 							break;
 						case KD_P1CC:
 							g_p1.enableDownStatus(EK_CD);
+							strTmp = g_p1.getEkfString("C");
 							break;
 						case KD_P1DD:
 							g_p1.enableDownStatus(EK_DD);
+							strTmp = g_p1.getEkfString("D");
 							break;
 						case KD_P2UP:
 							g_p2.enableDownStatus(EK_8D);
+							strTmp = g_p2.getEkfString("8");
 							break;
 						case KD_P2LF:
 							g_p2.enableDownStatus(EK_4D);
+							strTmp = g_p2.getEkfString("4");
 							break;
 						case KD_P2DW:
 							g_p2.enableDownStatus(EK_2D);
+							strTmp = g_p2.getEkfString("2");
 							break;
 						case KD_P2RG:
 							g_p2.enableDownStatus(EK_6D);
+							strTmp = g_p2.getEkfString("6");
 							break;
 						case KD_P2AA:
 							g_p2.enableDownStatus(EK_AD);
+							strTmp = g_p2.getEkfString("A");
 							break;
 						case KD_P2BB:
 							g_p2.enableDownStatus(EK_BD);
+							strTmp = g_p2.getEkfString("B");
 							break;
 						case KD_P2CC:
 							g_p2.enableDownStatus(EK_CD);
+							strTmp = g_p2.getEkfString("C");
 							break;
 						case KD_P2DD:
 							g_p2.enableDownStatus(EK_DD);
+							strTmp = g_p2.getEkfString("D");
 							break;
+						default:
+							st = 1;
+							break;
+					}
+					if (st == 0)
+					{
+						map<string, int>::iterator it = g_sfConfig.m_mEkf.find(strTmp);
+						if (it == g_sfConfig.m_mEkf.end())
+						{
+
+						}
+						else
+						{
+
+						}
 					}
 					result = 0;
 					wasHandled = true;

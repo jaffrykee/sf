@@ -57,7 +57,18 @@ public:
 
 	SFPlayer()
 	{
+		getSkillEnableFromFile("");
+	}
 
+	void getSkillEnableFromFile(string path)
+	{
+		if (path == "")
+		{
+			for (int i; i < EKF_MAX; i++)
+			{
+				m_enableSkill[i] = false;
+			}
+		}
 	}
 	
 	void setUpEventListTimeout()
@@ -79,5 +90,15 @@ public:
 	{
 		m_eStatus.addEvent(val);
 		disableDownStatus((SF_EKD)(val-1));
+	}
+
+	string getEkfString(string tail)
+	{
+		return "EKF_" + m_eStatus.m_sUp + tail;
+	}
+
+	void moveToNextFrame()
+	{
+
 	}
 };
