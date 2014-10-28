@@ -52,21 +52,28 @@ public:
 	PCWSTR m_name;
 	D2D_POINT_2U m_headImgWH;
 	SFPEventStatus m_eStatus;
-	bool m_enableSkill[EKF_MAX];
-	SFSkill m_aSkill[EKF_MAX];
+	SF_AS m_actionStatus;
+	bool m_enableSkill[SF_AS::AS_MAX][SF_EKA::EKA_MAX];
+	SFSkill m_aSkill[SF_EKA::EKA_MAX];
+	SFConfig* m_pSfconfig;
 
 	SFPlayer()
 	{
 		getSkillEnableFromFile("");
+		m_pSfconfig = SFConfig::GetInstance();
+		m_actionStatus = AS_STAND;
 	}
 
 	void getSkillEnableFromFile(string path)
 	{
 		if (path == "")
 		{
-			for (int i; i < EKF_MAX; i++)
+			for (int i = 0; i < AS_MAX; i++)
 			{
-				m_enableSkill[i] = false;
+				for (int j = 0; j < EKF_MAX; j++)
+				{
+					m_enableSkill[i][j] = false;
+				}
 			}
 		}
 	}
@@ -92,13 +99,27 @@ public:
 		disableDownStatus((SF_EKD)(val-1));
 	}
 
-	string getEkfString(string tail)
+	string getEkaString(string tail)
 	{
-		return "EKF_" + m_eStatus.m_sUp + tail;
+		return m_eStatus.m_sUp + tail;
+	}
+
+	string getActionSkill(string ekaStr)
+	{
+		for (int i = 0; i < ekaStr.size(); i++)
+		{
+			string tmp = ekaStr.substr(i, ekaStr.size()-i);
+			map<string, int>::iterator it = m_pSfconfig->s_mEka.find(tmp);
+
+			if (it != m_pSfconfig->s_mEka.end())
+			{
+				m_enableSkill[m_actionStatus][(m_pSfconfig->s_mEka["tmp"])];
+			}
+		}
 	}
 
 	void moveToNextFrame()
 	{
-
+		
 	}
 };
