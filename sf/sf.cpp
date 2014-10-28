@@ -75,7 +75,7 @@ SFPlayer g_p2 = SFPlayer();
 
 string g_strEkf1 = "";
 string g_strEkf2 = "";
-SFConfig g_sfConfig;
+SFConfig* g_pSfconfig = SFConfig::GetInstance();
 #pragma endregion
 
 #pragma region Èë¿Ú
@@ -574,7 +574,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 						map<string, int>::iterator it = g_sfConfig.m_mEkf.find(strTmp);
 						if (it == g_sfConfig.m_mEkf.end())
 						{
-
+							//<inc>
 						}
 						else
 						{
