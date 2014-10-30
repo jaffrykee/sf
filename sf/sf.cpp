@@ -503,67 +503,67 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					{
 						case KD_P1UP:
 							g_p1.enableDownStatus(EK_8D);
-							strTmp = g_p1.getEkfString("8");
+							strTmp = g_p1.getActionSkill(g_p1.m_eStatus.m_sUp + "8");
 							break;
 						case KD_P1LF:
 							g_p1.enableDownStatus(EK_4D);
-							strTmp = g_p1.getEkfString("4");
+							strTmp = g_p1.getActionSkill(g_p1.m_eStatus.m_sUp + "4");
 							break;
 						case KD_P1DW:
 							g_p1.enableDownStatus(EK_2D);
-							strTmp = g_p1.getEkfString("2");
+							strTmp = g_p1.getActionSkill(g_p1.m_eStatus.m_sUp + "2");
 							break;
 						case KD_P1RG:
 							g_p1.enableDownStatus(EK_6D);
-							strTmp = g_p1.getEkfString("6");
+							strTmp = g_p1.getActionSkill(g_p1.m_eStatus.m_sUp + "6");
 							break;
 						case KD_P1AA:
 							g_p1.enableDownStatus(EK_AD);
-							strTmp = g_p1.getEkfString("A");
+							strTmp = g_p1.getActionSkill(g_p1.m_eStatus.m_sUp + "A");
 							break;
 						case KD_P1BB:
 							g_p1.enableDownStatus(EK_BD);
-							strTmp = g_p1.getEkfString("B");
+							strTmp = g_p1.getActionSkill(g_p1.m_eStatus.m_sUp + "B");
 							break;
 						case KD_P1CC:
 							g_p1.enableDownStatus(EK_CD);
-							strTmp = g_p1.getEkfString("C");
+							strTmp = g_p1.getActionSkill(g_p1.m_eStatus.m_sUp + "C");
 							break;
 						case KD_P1DD:
 							g_p1.enableDownStatus(EK_DD);
-							strTmp = g_p1.getEkfString("D");
+							strTmp = g_p1.getActionSkill(g_p1.m_eStatus.m_sUp + "D");
 							break;
 						case KD_P2UP:
 							g_p2.enableDownStatus(EK_8D);
-							strTmp = g_p2.getEkfString("8");
+							strTmp = g_p2.getActionSkill(g_p1.m_eStatus.m_sUp + "8");
 							break;
 						case KD_P2LF:
 							g_p2.enableDownStatus(EK_4D);
-							strTmp = g_p2.getEkfString("4");
+							strTmp = g_p2.getActionSkill(g_p1.m_eStatus.m_sUp + "4");
 							break;
 						case KD_P2DW:
 							g_p2.enableDownStatus(EK_2D);
-							strTmp = g_p2.getEkfString("2");
+							strTmp = g_p2.getActionSkill(g_p1.m_eStatus.m_sUp + "2");
 							break;
 						case KD_P2RG:
 							g_p2.enableDownStatus(EK_6D);
-							strTmp = g_p2.getEkfString("6");
+							strTmp = g_p2.getActionSkill(g_p1.m_eStatus.m_sUp + "6");
 							break;
 						case KD_P2AA:
 							g_p2.enableDownStatus(EK_AD);
-							strTmp = g_p2.getEkfString("A");
+							strTmp = g_p2.getActionSkill(g_p1.m_eStatus.m_sUp + "A");
 							break;
 						case KD_P2BB:
 							g_p2.enableDownStatus(EK_BD);
-							strTmp = g_p2.getEkfString("B");
+							strTmp = g_p2.getActionSkill(g_p1.m_eStatus.m_sUp + "B");
 							break;
 						case KD_P2CC:
 							g_p2.enableDownStatus(EK_CD);
-							strTmp = g_p2.getEkfString("C");
+							strTmp = g_p2.getActionSkill(g_p1.m_eStatus.m_sUp + "C");
 							break;
 						case KD_P2DD:
 							g_p2.enableDownStatus(EK_DD);
-							strTmp = g_p2.getEkfString("D");
+							strTmp = g_p2.getActionSkill(g_p1.m_eStatus.m_sUp + "D");
 							break;
 						default:
 							st = 1;

@@ -6,14 +6,14 @@
 
 using namespace std;
 
-//�����ж��б����������Ŀ
+//技能判定列表缓存最大数目
 #define EKL_MAX 6
 
-//�����ж���ʱʱ��(ms)
+//技能判定超时时间(ms)
 #define EKL_TIMEOUT TMR_CHAIN_MS
 
 /*
-	���а���up�¼��б������У��͵�ǰ����down״̬���顣
+	内有按键up事件列表（序列）和当前按键down状态数组。
 */
 class SFPEventStatus
 {
