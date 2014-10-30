@@ -4,7 +4,7 @@
 #include <init.h>
 #include <map>
 
-#pragma region °´¼üÉèÖÃdefine
+#pragma region æŒ‰é”®è®¾ç½®define
 #define KD_P1UP VK_W
 #define KD_P1LF VK_A
 #define KD_P1DW VK_S
@@ -32,7 +32,7 @@
 #define KD_P2MN VK_4
 #pragma endregion
 
-#pragma region ĞéÄâ°´¼üÊÂ¼şdefine(SF_EK)
+#pragma region è™šæ‹ŸæŒ‰é”®äº‹ä»¶define(SF_EK)
 enum SF_EKD
 {
 	EK_8D, EK_4D, EK_2D, EK_6D, EK_S1D, EK_S2D,
@@ -48,8 +48,8 @@ enum SF_EKU
 };
 #pragma endregion
 
-#pragma region ¼ÆÊ±Æ÷define(TMR)
-enum TMR_ID
+#pragma region è®¡æ—¶å™¨define(SF_TMR)
+enum SF_TMR
 {
 	TMR_NULL, TMR_PAINT, TMR_ACTION, TMR_SKILL,
 	TMR_MAX
@@ -58,7 +58,7 @@ enum TMR_ID
 const unsigned int gc_arrTmr[TMR_MAX] = { 0, 15, 10, 100 };
 #pragma endregion
 
-#pragma region ½ÇÉ«µ±Ç°¶¯×÷×´Ì¬
+#pragma region è§’è‰²å½“å‰åŠ¨ä½œçŠ¶æ€define(SF_AS)
 enum SF_AS
 {
 	AS_STAND, AS_J, AS_B, AS_S, AS_F, AS_DF, AS_SDF, AS_JEX, AS_R, AS_DDG,
@@ -66,7 +66,7 @@ enum SF_AS
 };
 #pragma endregion
 
-#pragma region ĞéÄâ°´¼üÊÂ¼şÁ¬Ëødefine(SF_EKF)
+#pragma region è™šæ‹ŸæŒ‰é”®äº‹ä»¶è¿é”define(SF_EKF)
 /*
 j:jump
 b:back
@@ -76,9 +76,9 @@ def:defend
 defs:squat defend
 jex:big jump
 r:run
-ddg:dodge(ÉÁ¶ã)
-ÒÔÉÏ¾ùÎªÎïÀíÒÀÀµÌ¬£¬ĞèÒª×ñÕÕÎïÀíÊØÔò£¬¼´ÂäÔÚµØÃæ£¬ÇÒ²»ÄÜµ½µØÏÂ¡£
-×÷ÎªskillÊı×éµÄÏÂ±êÊ¹ÓÃ£¬ËùÒÔ´Ó0¿ªÊ¼¡£
+ddg:dodge(é—ªèº²)
+ä»¥ä¸Šå‡ä¸ºç‰©ç†ä¾èµ–æ€ï¼Œéœ€è¦éµç…§ç‰©ç†å®ˆåˆ™ï¼Œå³è½åœ¨åœ°é¢ï¼Œä¸”ä¸èƒ½åˆ°åœ°ä¸‹ã€‚
+ä½œä¸ºskillæ•°ç»„çš„ä¸‹æ ‡ä½¿ç”¨ï¼Œæ‰€ä»¥ä»0å¼€å§‹ã€‚
 */
 enum SF_EKF
 {
@@ -86,7 +86,7 @@ enum SF_EKF
 	EKF_fj, EKF_fjex, EKF_bj, EKF_bjex,
 #if 0
 	EKF_jA, EKF_jB, EKF_jC, EKF_jD,
-	//¿ÉÄÜ»áÓÚÒÔºó°æ±¾ÓÃµ½£¬¼´¼¼ÄÜµÄÔË¶¯¹ì¼£ÓëÍ¼ÏñÄÚÈİÂß¼­·Ö¿ª¡£
+	//å¯èƒ½ä¼šäºä»¥åç‰ˆæœ¬ç”¨åˆ°ï¼Œå³æŠ€èƒ½çš„è¿åŠ¨è½¨è¿¹ä¸å›¾åƒå†…å®¹é€»è¾‘åˆ†å¼€ã€‚
 #else
 	EKF_jA, EKF_jexA, EKF_rjA, EKF_rjexA,
 	EKF_fjA, EKF_fjexA, EKF_bjA, EKF_bjexA,
@@ -121,7 +121,7 @@ enum SF_EKF
 };
 
 /*
-	¶¯×÷¾ö²ßÅĞ¶Ï¡£
+	åŠ¨ä½œå†³ç­–åˆ¤æ–­ã€‚
 */
 enum SF_EKA
 {
@@ -143,7 +143,7 @@ enum SF_EKA
 };
 #pragma endregion
 
-/* È«¾ÖÅäÖÃµ¥ÀıÀà */
+/* å…¨å±€é…ç½®å•ä¾‹ç±» */
 class SFConfig
 {
 public:
@@ -331,7 +331,7 @@ private:
 		s_mEka.insert(pair<string, int>("MAX", EKA_MAX));
 	}
 	static SFConfig *m_pInstance;
-	class SFCGarbo   //ËüµÄÎ¨Ò»¹¤×÷¾ÍÊÇÔÚÎö¹¹º¯ÊıÖĞÉ¾³ıCSingletonµÄÊµÀı  
+	class SFCGarbo   //å®ƒçš„å”¯ä¸€å·¥ä½œå°±æ˜¯åœ¨ææ„å‡½æ•°ä¸­åˆ é™¤CSingletonçš„å®ä¾‹  
 	{
 	public:
 		~SFCGarbo()
@@ -340,11 +340,11 @@ private:
 				delete SFConfig::m_pInstance;
 		}
 	};
-	static SFCGarbo s_garbo;  //¶¨ÒåÒ»¸ö¾²Ì¬³ÉÔ±±äÁ¿£¬³ÌĞò½áÊøÊ±£¬ÏµÍ³»á×Ô¶¯µ÷ÓÃËüµÄÎö¹¹º¯Êı  
+	static SFCGarbo s_garbo;  //å®šä¹‰ä¸€ä¸ªé™æ€æˆå‘˜å˜é‡ï¼Œç¨‹åºç»“æŸæ—¶ï¼Œç³»ç»Ÿä¼šè‡ªåŠ¨è°ƒç”¨å®ƒçš„ææ„å‡½æ•°  
 public:
 	static SFConfig * GetInstance()
 	{
-		if (m_pInstance == NULL)  //ÅĞ¶ÏÊÇ·ñµÚÒ»´Îµ÷ÓÃ  
+		if (m_pInstance == NULL)  //åˆ¤æ–­æ˜¯å¦ç¬¬ä¸€æ¬¡è°ƒç”¨  
 			m_pInstance = new SFConfig();
 		return m_pInstance;
 	}

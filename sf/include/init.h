@@ -68,7 +68,7 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #endif
 
 #pragma region VK
-//定义数据字符0~9  
+//瀹氫箟鏁版嵁瀛楃0~9  
 #define   VK_0         0x30   
 #define   VK_1         0x31   
 #define   VK_2         0x32   
@@ -80,7 +80,7 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define   VK_8         0x38   
 #define   VK_9         0x39  
 
-//定义数据字符A~Z  
+//瀹氫箟鏁版嵁瀛楃A~Z  
 #define   VK_A  0x41   
 #define   VK_B  0x42   
 #define   VK_C  0x43   
@@ -108,7 +108,7 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define   VK_Y  0x59   
 #define   VK_Z  0x5A   
 
-//定义数据字符a~z  
+//瀹氫箟鏁版嵁瀛楃a~z  
 #define   VK_a  0x61   
 #define   VK_b  0x62   
 #define   VK_c  0x63   

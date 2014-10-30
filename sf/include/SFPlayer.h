@@ -113,9 +113,19 @@ public:
 
 			if (it != m_pSfconfig->s_mEka.end())
 			{
-				m_enableSkill[m_actionStatus][(m_pSfconfig->s_mEka["tmp"])];
+				//found
+				if (m_enableSkill[m_actionStatus][(m_pSfconfig->s_mEka[tmp])])
+				{
+					//enable，返回结果	<inc>
+					return tmp;
+				}
+				else
+				{
+					//disable，继续循环，直到((found && enable) || 遍历结束)
+				}
 			}
 		}
+		return "";
 	}
 
 	void moveToNextFrame()
