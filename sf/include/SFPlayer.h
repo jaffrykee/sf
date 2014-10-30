@@ -27,22 +27,14 @@ public:
 	D2D_RECT_F m_rAtt;
 	bool m_enBreak;
 	bool m_enChain;
-
-};
-
-#define SF_SKILL_EK_MAX 16
-
-struct SFSkillKeys
-{
-	int m_body[SF_SKILL_EK_MAX];
 };
 
 class SFSkill
 {
 public:
 	int m_id;
-	int m_name;
-	PCWSTR m_key;
+	string m_name;
+	string m_key;
 };
 
 class SFPlayer
@@ -104,20 +96,21 @@ public:
 		return m_eStatus.m_sUp + tail;
 	}
 
-	string getActionSkill(string ekaStr)
+	SF_EKA getActionSkill(string ekaStr)
 	{
 		for (int i = 0; i < ekaStr.size(); i++)
 		{
 			string tmp = ekaStr.substr(i, ekaStr.size()-i);
-			map<string, int>::iterator it = m_pSfconfig->s_mEka.find(tmp);
+			map<string, SF_EKA>::iterator it = m_pSfconfig->s_mEka.find(tmp);
 
 			if (it != m_pSfconfig->s_mEka.end())
 			{
 				//found
-				if (m_enableSkill[m_actionStatus][(m_pSfconfig->s_mEka[tmp])])
+				SF_EKA ret = (SF_EKA)(m_pSfconfig->s_mEka[tmp]);
+				if (m_enableSkill[m_actionStatus][ret])
 				{
 					//enable，返回结果	<inc>
-					return tmp;
+					return ret;
 				}
 				else
 				{
@@ -125,7 +118,20 @@ public:
 				}
 			}
 		}
-		return "";
+
+		return EKA_MAX;
+	}
+
+	bool doSkill(SF_EKD key)
+	{
+		SF_EKA tmp = EKA_8;
+
+		enableDownStatus(key);
+		tmp = getActionSkill(m_eStatus.m_sUp + m_eStatus.getEkdChar(key));
+		if (tmp == EKA_MAX)
+		{
+			return false;
+		}
 	}
 
 	void moveToNextFrame()

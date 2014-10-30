@@ -66,6 +66,43 @@ public:
 		}
 	}
 
+	char getEkdChar(SF_EKD val)
+	{
+		switch (val)
+		{
+		case EK_8D:
+			return '8';
+		case EK_4D:
+			return '4';
+		case EK_2D:
+			return '2';
+		case EK_6D:
+			return '6';
+#if 0
+		case EK_S1D:
+			return 'S';
+		case EK_S2D:
+			return 'T';
+#endif
+		case EK_AD:
+			return 'A';
+		case EK_BD:
+			return 'B';
+		case EK_CD:
+			return 'C';
+		case EK_DD:
+			return 'D';
+#if 0
+		case EK_ED:
+			return 'E';
+		case EK_FD:
+			return 'F';
+#endif
+		default:
+			return 0;
+		}
+	}
+
 	void setTimeout()
 	{
 		m_sUp = "";
