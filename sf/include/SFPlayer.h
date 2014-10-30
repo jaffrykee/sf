@@ -43,17 +43,26 @@ public:
 	int m_id;
 	PCWSTR m_name;
 	D2D_POINT_2U m_headImgWH;
-	SFPEventStatus m_eStatus;
-	SF_AS m_actionStatus;
-	bool m_enableSkill[SF_AS::AS_MAX][SF_EKA::EKA_MAX];
-	SFSkill m_aSkill[SF_EKA::EKA_MAX];
+	//全局配置的引用
 	SFConfig* m_pSfconfig;
+	//技能资源
+	SFSkill m_aSkill[SF_EKA::EKA_MAX];
+
+	//按键状态
+	SFPEventStatus m_eStatus;
+	//当前状态(SF_AS:正常、跳跃、防御、连锁、技能、被击、倒地)
+	SF_AS m_actionStatus;
+	//当前等待打印的技能
+	SF_EKA m_nowSkill;
+	//各个状态下被允许的技能
+	bool m_enableSkill[SF_AS::AS_MAX][SF_EKA::EKA_MAX];
 
 	SFPlayer()
 	{
 		getSkillEnableFromFile("");
 		m_pSfconfig = SFConfig::GetInstance();
 		m_actionStatus = AS_STAND;
+		m_nowSkill = EKA_MAX;
 	}
 
 	void getSkillEnableFromFile(string path)
@@ -124,14 +133,19 @@ public:
 
 	bool doSkill(SF_EKD key)
 	{
-		SF_EKA tmp = EKA_8;
+		SF_EKA ret;
 
 		enableDownStatus(key);
-		tmp = getActionSkill(m_eStatus.m_sUp + m_eStatus.getEkdChar(key));
-		if (tmp == EKA_MAX)
+		ret = getActionSkill(m_eStatus.m_sUp + m_eStatus.getEkdChar(key));
+		if (ret == EKA_MAX)
 		{
 			return false;
 		}
+		else
+		{
+			m_nowSkill = ret;
+		}
+		return true;
 	}
 
 	void moveToNextFrame()

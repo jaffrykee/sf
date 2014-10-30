@@ -59,11 +59,20 @@ const unsigned int gc_arrTmr[TMR_MAX] = { 0, 15, 10, 100 };
 #pragma endregion
 
 #pragma region 角色当前动作状态define(SF_AS)
+#ifdef SF_AS_OLD
 enum SF_AS
 {
 	AS_STAND, AS_J, AS_B, AS_S, AS_F, AS_DF, AS_SDF, AS_JEX, AS_R, AS_DDG,
 	AS_MAX
 };
+#else
+//在chain阶段放的才是之后段的，否则就只是一段的技能。
+enum SF_AS
+{
+	AS_STAND, AS_JUMP, AS_DEF, AS_CHAIN, AS_SKILL, AS_HITED, AS_FLOOR,
+	AS_MAX
+};
+#endif
 #pragma endregion
 
 #pragma region 虚拟按键事件连锁define(SF_EKF)

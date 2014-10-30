@@ -1,7 +1,7 @@
 #pragma execution_character_set("utf-8")
 #include <sf.h>
 
-#pragma region ÏÔÊ¾×ø±êdefine
+#pragma region æ˜¾ç¤ºåæ ‡define
 #define ACT_WID 640
 #define ACT_HIG 480
 
@@ -10,13 +10,13 @@
 
 #define BODY_W ((ACT_REALWID) * 0.095f)
 #define BODY_H ((ACT_REALHIG) * 0.32f)
-//´°¿Ú±ß¿ò²¹²î
+//çª—å£è¾¹æ¡†è¡¥å·®
 #define FRA_X (18.f)
 #define FRA_Y (40.f)
 
-//¶¥²¿²Ëµ¥¸ß¶È
+//é¡¶éƒ¨èœå•é«˜åº¦
 #define TOP_Y (40.f)
-//µØÃæ
+//åœ°é¢
 #define BTN_Y ((ACT_REALHIG) * 0.83f)
 #define INIT_LX1 ((ACT_REALWID) * 0.2f)
 #define INIT_LY1 ((INIT_LY2) - (BODY_H))
@@ -28,7 +28,7 @@
 #define INIT_RY2 (BTN_Y)
 #pragma endregion 
 
-#pragma region °´¼üÉèÖÃdefine
+#pragma region æŒ‰é”®è®¾ç½®define
 #define ACT_K1UP	VK_W
 #define ACT_K1LF	VK_A
 #define ACT_K1DW	VK_S
@@ -56,17 +56,17 @@
 #define ACT_K2MN	VK_4
 #pragma endregion
 
-#pragma region ¼ÆÊ±Æ÷define
+#pragma region è®¡æ—¶å™¨define
 #pragma endregion
 
-#pragma region ÔË¶¯Ïà¹Ø²ÎÊı
+#pragma region è¿åŠ¨ç›¸å…³å‚æ•°
 #define SPEED_FWD 2
 #define SPEED_BCK 1
 #define SPEED_JMP 3
 #define SPEED_DWN 3
 #pragma endregion
 
-#pragma region È«¾Ö±äÁ¿
+#pragma region å…¨å±€å˜é‡
 PActPlayer g_Player1 = PActPlayer(D2D1::RectF(INIT_LX1, INIT_LY1, INIT_LX2, INIT_LY2));
 PActPlayer g_Player2 = PActPlayer(D2D1::RectF(INIT_RX1, INIT_RY1, INIT_RX2, INIT_RY2));
 
@@ -78,7 +78,7 @@ string g_strEkf2 = "";
 SFConfig* g_pSfconfig = SFConfig::GetInstance();
 #pragma endregion
 
-#pragma region Èë¿Ú
+#pragma region å…¥å£
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
@@ -136,7 +136,7 @@ WinApp::~WinApp()
 }
 #pragma endregion
 
-#pragma region ³õÊ¼»¯Éè±¸£¬Èç·Ö±æÂÊµÈ
+#pragma region åˆå§‹åŒ–è®¾å¤‡ï¼Œå¦‚åˆ†è¾¨ç‡ç­‰
 HRESULT WinApp::Initialize()
 {
 	HRESULT hr = CreateDeviceIndependentResources();
@@ -170,17 +170,17 @@ HRESULT WinApp::Initialize()
 }
 #pragma endregion
 
-#pragma region ´´½¨Éè±¸ÎŞ¹Ø×ÊÔ´
+#pragma region åˆ›å»ºè®¾å¤‡æ— å…³èµ„æº
 HRESULT WinApp::CreateDeviceIndependentResources()
 {
 	static const WCHAR msc_fontName[] = L"Verdana";
 	static const FLOAT msc_fontSize = 50;
 
 	ID2D1GeometrySink *pSink = NULL;
-	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pD2DFactory);	//´´½¨D2D¹¤³§
+	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pD2DFactory);	//åˆ›å»ºD2Då·¥å‚
 	if (SUCCEEDED(hr))
 	{
-		hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pWICFactory));	//´´½¨WIC¹¤³§
+		hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pWICFactory));	//åˆ›å»ºWICå·¥å‚
 	}
 	if (SUCCEEDED(hr))
 	{
@@ -224,7 +224,7 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 }
 #pragma endregion
 
-#pragma region ´´½¨Éè±¸Ïà¹Ø×ÊÔ´£¬ÈçÍ¼Ïñ¡¢ÊÓÆµµÈ
+#pragma region åˆ›å»ºè®¾å¤‡ç›¸å…³èµ„æºï¼Œå¦‚å›¾åƒã€è§†é¢‘ç­‰
 HRESULT WinApp::CreateDeviceResources()
 {
 	HRESULT hr = S_OK;
@@ -256,15 +256,15 @@ HRESULT WinApp::CreateDeviceResources()
 			}
 		}
 
-		//Í¨¹ıÎÄ¼ş´´½¨Î»Í¼
+		//é€šè¿‡æ–‡ä»¶åˆ›å»ºä½å›¾
 		hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\img\\blue.png", 100, 0, &m_pBitmap);
 		hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\img\\black.png", 100, 0, &m_pAnotherBitmap);
 #if 0
-		//Í¨¹ı×ÊÔ´´´½¨Ò»¸öÎ»Í¼
+		//é€šè¿‡èµ„æºåˆ›å»ºä¸€ä¸ªä½å›¾
 		hr = LoadResourceBitmap(m_pRenderTarget, m_pWICFactory, L"blue", L"Image", 100, 0, &m_pBitmap);
 		if (SUCCEEDED(hr))
 		{
-			//Í¨¹ıÎÄ¼ş´´½¨Ò»¸öÎ»Í¼
+			//é€šè¿‡æ–‡ä»¶åˆ›å»ºä¸€ä¸ªä½å›¾
 			hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\sampleImage.jpg", 100, 0, &m_pAnotherBitmap);
 		}
 #endif
@@ -318,7 +318,7 @@ HRESULT WinApp::CreateGridPatternBrush(ID2D1RenderTarget *pRenderTarget, ID2D1Bi
 }
 #pragma endregion
 
-#pragma region ÊÍ·Å×ÊÔ´£¿
+#pragma region é‡Šæ”¾èµ„æºï¼Ÿ
 void WinApp::DiscardDeviceResources()
 {
 	SafeRelease(&m_pRenderTarget);
@@ -343,7 +343,7 @@ void WinApp::RunMessageLoop()
 }
 #pragma endregion
 
-#pragma region Ö÷»­Í¼Âß¼­¹Ø¼üÖ¡
+#pragma region ä¸»ç”»å›¾é€»è¾‘å…³é”®å¸§
 HRESULT WinApp::OnHardRender()
 {
 	HRESULT hr = CreateDeviceResources();
@@ -356,17 +356,17 @@ HRESULT WinApp::OnHardRender()
 		m_pRenderTarget->BeginDraw();
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, renderTargetSize.width, renderTargetSize.height), m_pGridPatternBitmapBrush);	// »­¸ñ×Ó±³¾°
-		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//Ìí¼ÓAÎ»Í¼
-		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//Ìí¼ÓBÎ»Í¼
+		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, renderTargetSize.width, renderTargetSize.height), m_pGridPatternBitmapBrush);	// ç”»æ ¼å­èƒŒæ™¯
+		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//æ·»åŠ Aä½å›¾
+		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//æ·»åŠ Bä½å›¾
 
 #if 0
 		D2D1_SIZE_F size = m_pBitmap->GetSize();
 
 		size.width = BLU_W;
 		size.height = BLU_H;
-		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(45, D2D1::Point2F(renderTargetSize.width / 2, renderTargetSize.height / 2)));	//Ğı×ª45¶È
-		m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_pBlackBrush);	//ÏÔÊ¾ÎÄ×Ö
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(45, D2D1::Point2F(renderTargetSize.width / 2, renderTargetSize.height / 2)));	//æ—‹è½¬45åº¦
+		m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_pBlackBrush);	//æ˜¾ç¤ºæ–‡å­—
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0, renderTargetSize.height - 200));
 		m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(renderTargetSize.width - 200, 0));
@@ -384,7 +384,7 @@ HRESULT WinApp::OnHardRender()
 }
 #pragma endregion
 
-#pragma region Ö÷»­Í¼Âß¼­
+#pragma region ä¸»ç”»å›¾é€»è¾‘
 HRESULT WinApp::OnRender()
 {
 	HRESULT hr = CreateDeviceResources();
@@ -398,17 +398,17 @@ HRESULT WinApp::OnRender()
 		m_pRenderTarget->BeginDraw();
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, renderTargetSize.width, renderTargetSize.height), m_pGridPatternBitmapBrush);	// »­¸ñ×Ó±³¾°
-		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//Ìí¼ÓAÎ»Í¼
-		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//Ìí¼ÓBÎ»Í¼
+		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, renderTargetSize.width, renderTargetSize.height), m_pGridPatternBitmapBrush);	// ç”»æ ¼å­èƒŒæ™¯
+		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//æ·»åŠ Aä½å›¾
+		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//æ·»åŠ Bä½å›¾
 
 #if 0
 		D2D1_SIZE_F size = m_pBitmap->GetSize();
 
 		size.width = BLU_W;
 		size.height = BLU_H;
-		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(45, D2D1::Point2F(renderTargetSize.width / 2, renderTargetSize.height / 2)));	//Ğı×ª45¶È
-		m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_pBlackBrush);	//ÏÔÊ¾ÎÄ×Ö
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(45, D2D1::Point2F(renderTargetSize.width / 2, renderTargetSize.height / 2)));	//æ—‹è½¬45åº¦
+		m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_pBlackBrush);	//æ˜¾ç¤ºæ–‡å­—
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0, renderTargetSize.height - 200));
 		m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(renderTargetSize.width - 200, 0));
@@ -443,7 +443,7 @@ void WinApp::OnResize(UINT width, UINT height)
 }
 #pragma endregion
 
-#pragma region ÏûÏ¢´¦Àí
+#pragma region æ¶ˆæ¯å¤„ç†
 LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = 0;
@@ -499,70 +499,65 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					wasHandled = true;
 					break;
 				case WM_KEYDOWN:
-					switch(wParam)
+					//åªæœ‰éçº¯ç¡¬ç›´çŠ¶æ€æ‰å¯ä»¥è¿›å…¥doSkillé˜¶æ®µ
+					if (g_p1.m_actionStatus <= AS_CHAIN)
 					{
-						case KD_P1UP:
-							g_p1.doSkill(EK_8D);
-							break;
-						case KD_P1LF:
-							g_p1.doSkill(EK_4D);
-							break;
-						case KD_P1DW:
-							g_p1.doSkill(EK_2D);
-							break;
-						case KD_P1RG:
-							g_p1.doSkill(EK_6D);
-							break;
-						case KD_P1AA:
-							g_p1.doSkill(EK_AD);
-							break;
-						case KD_P1BB:
-							g_p1.doSkill(EK_BD);
-							break;
-						case KD_P1CC:
-							g_p1.doSkill(EK_CD);
-							break;
-						case KD_P1DD:
-							g_p1.doSkill(EK_DD);
-							break;
-						case KD_P2UP:
-							g_p2.doSkill(EK_8D);
-							break;
-						case KD_P2LF:
-							g_p2.doSkill(EK_4D);
-							break;
-						case KD_P2DW:
-							g_p2.doSkill(EK_2D);
-							break;
-						case KD_P2RG:
-							g_p2.doSkill(EK_6D);
-							break;
-						case KD_P2AA:
-							g_p2.doSkill(EK_AD);
-							break;
-						case KD_P2BB:
-							g_p2.doSkill(EK_BD);
-							break;
-						case KD_P2CC:
-							g_p2.doSkill(EK_CD);
-							break;
-						case KD_P2DD:
-							g_p2.doSkill(EK_DD);
-							break;
-						default:
-							st = 1;
-							break;
-					}
-					if (st == 0)
-					{
-						map<string, int>::iterator it = g_sfConfig.m_mEkf.find(strTmp);
-						if (it == g_sfConfig.m_mEkf.end())
+						switch (wParam)
 						{
-							//<inc>
+							case KD_P1UP:
+								g_p1.doSkill(EK_8D);
+								break;
+							case KD_P1LF:
+								g_p1.doSkill(EK_4D);
+								break;
+							case KD_P1DW:
+								g_p1.doSkill(EK_2D);
+								break;
+							case KD_P1RG:
+								g_p1.doSkill(EK_6D);
+								break;
+							case KD_P1AA:
+								g_p1.doSkill(EK_AD);
+								break;
+							case KD_P1BB:
+								g_p1.doSkill(EK_BD);
+								break;
+							case KD_P1CC:
+								g_p1.doSkill(EK_CD);
+								break;
+							case KD_P1DD:
+								g_p1.doSkill(EK_DD);
+								break;
 						}
-						else
+					}
+					if (g_p2.m_actionStatus <= AS_CHAIN)
+					{
+						switch (wParam)
 						{
-
+							case KD_P2UP:
+								g_p2.doSkill(EK_8D);
+								break;
+							case KD_P2LF:
+								g_p2.doSkill(EK_4D);
+								break;
+							case KD_P2DW:
+								g_p2.doSkill(EK_2D);
+								break;
+							case KD_P2RG:
+								g_p2.doSkill(EK_6D);
+								break;
+							case KD_P2AA:
+								g_p2.doSkill(EK_AD);
+								break;
+							case KD_P2BB:
+								g_p2.doSkill(EK_BD);
+								break;
+							case KD_P2CC:
+								g_p2.doSkill(EK_CD);
+								break;
+							case KD_P2DD:
+								g_p2.doSkill(EK_DD);
+								break;
 						}
 					}
 					result = 0;
