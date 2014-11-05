@@ -67,8 +67,10 @@
 #pragma endregion
 
 #pragma region 全局变量
+/*
 PActPlayer g_Player1 = PActPlayer(D2D1::RectF(INIT_LX1, INIT_LY1, INIT_LX2, INIT_LY2));
 PActPlayer g_Player2 = PActPlayer(D2D1::RectF(INIT_RX1, INIT_RY1, INIT_RX2, INIT_RY2));
+*/
 
 SFPlayer g_p1 = SFPlayer();
 SFPlayer g_p2 = SFPlayer();
@@ -499,34 +501,34 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					wasHandled = true;
 					break;
 				case WM_KEYDOWN:
-					//只有非纯硬直状态才可以进入doSkill阶段
+					//只有非纯硬直状态才可以进入selectSkill阶段
 					if (g_p1.m_actionStatus <= AS_CHAIN)
 					{
 						switch (wParam)
 						{
 							case KD_P1UP:
-								g_p1.doSkill(EK_8D);
+								g_p1.selectSkill(EK_8D);
 								break;
 							case KD_P1LF:
-								g_p1.doSkill(EK_4D);
+								g_p1.selectSkill(EK_4D);
 								break;
 							case KD_P1DW:
-								g_p1.doSkill(EK_2D);
+								g_p1.selectSkill(EK_2D);
 								break;
 							case KD_P1RG:
-								g_p1.doSkill(EK_6D);
+								g_p1.selectSkill(EK_6D);
 								break;
 							case KD_P1AA:
-								g_p1.doSkill(EK_AD);
+								g_p1.selectSkill(EK_AD);
 								break;
 							case KD_P1BB:
-								g_p1.doSkill(EK_BD);
+								g_p1.selectSkill(EK_BD);
 								break;
 							case KD_P1CC:
-								g_p1.doSkill(EK_CD);
+								g_p1.selectSkill(EK_CD);
 								break;
 							case KD_P1DD:
-								g_p1.doSkill(EK_DD);
+								g_p1.selectSkill(EK_DD);
 								break;
 						}
 					}
@@ -535,28 +537,28 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 						switch (wParam)
 						{
 							case KD_P2UP:
-								g_p2.doSkill(EK_8D);
+								g_p2.selectSkill(EK_8D);
 								break;
 							case KD_P2LF:
-								g_p2.doSkill(EK_4D);
+								g_p2.selectSkill(EK_4D);
 								break;
 							case KD_P2DW:
-								g_p2.doSkill(EK_2D);
+								g_p2.selectSkill(EK_2D);
 								break;
 							case KD_P2RG:
-								g_p2.doSkill(EK_6D);
+								g_p2.selectSkill(EK_6D);
 								break;
 							case KD_P2AA:
-								g_p2.doSkill(EK_AD);
+								g_p2.selectSkill(EK_AD);
 								break;
 							case KD_P2BB:
-								g_p2.doSkill(EK_BD);
+								g_p2.selectSkill(EK_BD);
 								break;
 							case KD_P2CC:
-								g_p2.doSkill(EK_CD);
+								g_p2.selectSkill(EK_CD);
 								break;
 							case KD_P2DD:
-								g_p2.doSkill(EK_DD);
+								g_p2.selectSkill(EK_DD);
 								break;
 						}
 					}

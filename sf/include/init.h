@@ -137,7 +137,8 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define   VK_z  0x7A   
 #pragma endregion
 
-#include <SFInitDefine.h>
+#include <SFConfig.h>
+#include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>
 #include <sf.h>
