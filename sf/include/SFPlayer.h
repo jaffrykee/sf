@@ -21,11 +21,10 @@ public:
 	int m_id;
 	D2D_VECTOR_2F m_move;
 	ID2D1Bitmap* m_imgFrame;
-	bool m_enAtted;
-	D2D_RECT_F m_rAtted;
-	bool m_enAtt;
-	D2D_RECT_F m_rAtt;
-	bool m_enBreak;
+	bool m_enBody;
+	D2D_RECT_F m_boxBody;
+	bool m_enAttack;
+	D2D_RECT_F m_boxAttack;
 	bool m_enChain;
 };
 
@@ -34,28 +33,40 @@ class SFSkill
 public:
 	int m_id;
 	string m_name;
-	string m_key;
+	SF_EKA m_eka;
+	int m_maxFrame;
+	list<SFSkillFrame> m_skillFrames;
 };
 
 class SFPlayer
 {
 public:
+	//人物id，初始化调用资源用
 	int m_id;
-	PCWSTR m_name;
+	//皮肤id，初始化调用资源用
+	int m_cid;
+	string m_name;
+	//代表P1还是P2，即在左边还是右边
+	int m_pid;
 	D2D_POINT_2U m_headImgWH;
 	//全局配置的引用
 	SFConfig* m_pSfconfig;
+	//全局资源的引用
+
 	//技能资源
-	SFSkill m_aSkill[SF_EKA::EKA_MAX];
+	SFSkill* m_aSkill[SF_EKA::EKA_MAX];
 
 	//按键状态
 	SFPEventStatus m_eStatus;
 	//当前状态(SF_AS:正常、跳跃、防御、连锁、技能、被击、倒地)
 	SF_AS m_actionStatus;
-	//当前等待打印的技能
-	SF_EKA m_nowSkill;
 	//各个状态下被允许的技能
 	bool m_enableSkill[SF_AS::AS_MAX][SF_EKA::EKA_MAX];
+
+	//当前等待打印的技能
+	SF_EKA m_nowSkill;
+	//当前等待打印的技能的帧计数器
+	int m_countSkillFrame;
 
 	SFPlayer()
 	{
@@ -63,17 +74,28 @@ public:
 		m_pSfconfig = SFConfig::GetInstance();
 		m_actionStatus = AS_STAND;
 		m_nowSkill = EKA_MAX;
+		m_countSkillFrame = 0;
+	}
+
+	SFPlayer(int id, int cid, int pid) :m_id(id), m_cid(cid), m_pid(pid)
+	{
+		getSkillEnableFromFile("");
+		m_pSfconfig = SFConfig::GetInstance();
+		m_actionStatus = AS_STAND;
+		m_nowSkill = EKA_MAX;
+		m_countSkillFrame = 0;
 	}
 
 	void getSkillEnableFromFile(string path)
 	{
 		if (path == "")
 		{
-			for (int i = 0; i < AS_MAX; i++)
+			for (int i = 0; i < EKA_MAX; i++)
 			{
-				for (int j = 0; j < EKF_MAX; j++)
+				m_aSkill[i] = NULL;
+				for (int j = 0; j < AS_MAX; j++)
 				{
-					m_enableSkill[i][j] = false;
+					m_enableSkill[j][i] = false;
 				}
 			}
 		}
@@ -131,7 +153,7 @@ public:
 		return EKA_MAX;
 	}
 
-	bool doSkill(SF_EKD key)
+	bool selectSkill(SF_EKD key)
 	{
 		SF_EKA ret;
 
@@ -146,6 +168,16 @@ public:
 			m_nowSkill = ret;
 		}
 		return true;
+	}
+
+	bool doSkill()
+	{
+
+	}
+
+	int getMaxSkillFrame()
+	{
+		return m_aSkill[m_nowSkill]->m_maxFrame;
 	}
 
 	void moveToNextFrame()
