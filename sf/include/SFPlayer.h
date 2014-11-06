@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #pragma execution_character_set("utf-8")
 
 #include <init.h>
@@ -100,7 +100,7 @@ public:
 			}
 		}
 	}
-	
+
 	void setUpEventListTimeout()
 	{
 		m_eStatus.setTimeout();
@@ -119,7 +119,7 @@ public:
 	void addEvent(SF_EKU val)
 	{
 		m_eStatus.addEvent(val);
-		disableDownStatus((SF_EKD)(val-1));
+		disableDownStatus((SF_EKD)(val - 1));
 	}
 
 	string getEkaString(string tail)
@@ -129,9 +129,9 @@ public:
 
 	SF_EKA getActionSkill(string ekaStr)
 	{
-		for (int i = 0; i < ekaStr.size(); i++)
+		for (unsigned int i = 0; i < ekaStr.size(); i++)
 		{
-			string tmp = ekaStr.substr(i, ekaStr.size()-i);
+			string tmp = ekaStr.substr(i, ekaStr.size() - i);
 			map<string, SF_EKA>::iterator it = m_pSfconfig->s_mEka.find(tmp);
 
 			if (it != m_pSfconfig->s_mEka.end())
@@ -182,6 +182,6 @@ public:
 
 	void moveToNextFrame()
 	{
-		
+
 	}
 };

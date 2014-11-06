@@ -1,5 +1,6 @@
-#pragma execution_character_set("utf-8")
+﻿#pragma execution_character_set("utf-8")
 #include <sf.h>
+using namespace std;
 
 #pragma region 显示坐标define
 #define ACT_WID 640
@@ -77,7 +78,9 @@ SFPlayer g_p2 = SFPlayer();
 
 string g_strEkf1 = "";
 string g_strEkf2 = "";
+SFConfig* SFConfig::m_pInstance = NULL;
 SFConfig* g_pSfconfig = SFConfig::GetInstance();
+SFResPlayerMap* SFResPlayerMap::m_pInstance = NULL;
 #pragma endregion
 
 #pragma region 入口
@@ -359,8 +362,8 @@ HRESULT WinApp::OnHardRender()
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, renderTargetSize.width, renderTargetSize.height), m_pGridPatternBitmapBrush);	// 画格子背景
-		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//添加A位图
-		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//添加B位图
+//		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//添加A位图
+//		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//添加B位图
 
 #if 0
 		D2D1_SIZE_F size = m_pBitmap->GetSize();
@@ -401,8 +404,8 @@ HRESULT WinApp::OnRender()
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, renderTargetSize.width, renderTargetSize.height), m_pGridPatternBitmapBrush);	// 画格子背景
-		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//添加A位图
-		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//添加B位图
+//		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//添加A位图
+//		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//添加B位图
 
 #if 0
 		D2D1_SIZE_F size = m_pBitmap->GetSize();
@@ -469,172 +472,172 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 		{
 			switch (message)
 			{
-				case WM_SIZE:
-					{
-						UINT width = LOWORD(lParam);
-						UINT height = HIWORD(lParam);
-						pWinApp->OnResize(width, height);
-					}
-					result = 0;
-					wasHandled = true;
+			case WM_SIZE:
+			{
+				UINT width = LOWORD(lParam);
+				UINT height = HIWORD(lParam);
+				pWinApp->OnResize(width, height);
+			}
+				result = 0;
+				wasHandled = true;
+				break;
+			case WM_TIMER:
+				switch (wParam)
+				{
+				case TMR_PAINT:
+					pWinApp->OnRender();
+					ValidateRect(hwnd, NULL);
 					break;
-				case WM_TIMER:
+				case TMR_ACTION:
+					break;
+				case TMR_SKILL:
+					break;
+				}
+				result = 0;
+				wasHandled = true;
+				break;
+			case WM_DISPLAYCHANGE:
+			{
+				InvalidateRect(hwnd, NULL, FALSE);
+			}
+				result = 0;
+				wasHandled = true;
+				break;
+			case WM_KEYDOWN:
+				//只有非纯硬直状态才可以进入selectSkill阶段
+				if (g_p1.m_actionStatus <= AS_CHAIN)
+				{
 					switch (wParam)
 					{
-						case TMR_PAINT:
-							pWinApp->OnRender();
-							ValidateRect(hwnd, NULL);
-							break;
-						case TMR_ACTION:
-							break;
-						case TMR_SKILL:
-							break;
+					case KD_P1UP:
+						g_p1.selectSkill(EK_8D);
+						break;
+					case KD_P1LF:
+						g_p1.selectSkill(EK_4D);
+						break;
+					case KD_P1DW:
+						g_p1.selectSkill(EK_2D);
+						break;
+					case KD_P1RG:
+						g_p1.selectSkill(EK_6D);
+						break;
+					case KD_P1AA:
+						g_p1.selectSkill(EK_AD);
+						break;
+					case KD_P1BB:
+						g_p1.selectSkill(EK_BD);
+						break;
+					case KD_P1CC:
+						g_p1.selectSkill(EK_CD);
+						break;
+					case KD_P1DD:
+						g_p1.selectSkill(EK_DD);
+						break;
 					}
-					result = 0;
-					wasHandled = true;
-					break;
-				case WM_DISPLAYCHANGE:
-					{
-						 InvalidateRect(hwnd, NULL, FALSE);
-					}
-					result = 0;
-					wasHandled = true;
-					break;
-				case WM_KEYDOWN:
-					//只有非纯硬直状态才可以进入selectSkill阶段
-					if (g_p1.m_actionStatus <= AS_CHAIN)
-					{
-						switch (wParam)
-						{
-							case KD_P1UP:
-								g_p1.selectSkill(EK_8D);
-								break;
-							case KD_P1LF:
-								g_p1.selectSkill(EK_4D);
-								break;
-							case KD_P1DW:
-								g_p1.selectSkill(EK_2D);
-								break;
-							case KD_P1RG:
-								g_p1.selectSkill(EK_6D);
-								break;
-							case KD_P1AA:
-								g_p1.selectSkill(EK_AD);
-								break;
-							case KD_P1BB:
-								g_p1.selectSkill(EK_BD);
-								break;
-							case KD_P1CC:
-								g_p1.selectSkill(EK_CD);
-								break;
-							case KD_P1DD:
-								g_p1.selectSkill(EK_DD);
-								break;
-						}
-					}
-					if (g_p2.m_actionStatus <= AS_CHAIN)
-					{
-						switch (wParam)
-						{
-							case KD_P2UP:
-								g_p2.selectSkill(EK_8D);
-								break;
-							case KD_P2LF:
-								g_p2.selectSkill(EK_4D);
-								break;
-							case KD_P2DW:
-								g_p2.selectSkill(EK_2D);
-								break;
-							case KD_P2RG:
-								g_p2.selectSkill(EK_6D);
-								break;
-							case KD_P2AA:
-								g_p2.selectSkill(EK_AD);
-								break;
-							case KD_P2BB:
-								g_p2.selectSkill(EK_BD);
-								break;
-							case KD_P2CC:
-								g_p2.selectSkill(EK_CD);
-								break;
-							case KD_P2DD:
-								g_p2.selectSkill(EK_DD);
-								break;
-						}
-					}
-					result = 0;
-					wasHandled = true;
-					break;
-				case WM_KEYUP:
+				}
+				if (g_p2.m_actionStatus <= AS_CHAIN)
+				{
 					switch (wParam)
 					{
-						case KD_P1UP:
-							g_p1.addEvent(EK_8U);
-							break;
-						case KD_P1LF:
-							g_p1.addEvent(EK_4U);
-							break;
-						case KD_P1DW:
-							g_p1.addEvent(EK_2U);
-							break;
-						case KD_P1RG:
-							g_p1.addEvent(EK_6U);
-							break;
-						case KD_P1AA:
-							g_p1.addEvent(EK_AU);
-							break;
-						case KD_P1BB:
-							g_p1.addEvent(EK_BU);
-							break;
-						case KD_P1CC:
-							g_p1.addEvent(EK_CU);
-							break;
-						case KD_P1DD:
-							g_p1.addEvent(EK_DU);
-							break;
-						case KD_P2UP:
-							g_p2.addEvent(EK_8U);
-							break;
-						case KD_P2LF:
-							g_p2.addEvent(EK_4U);
-							break;
-						case KD_P2DW:
-							g_p2.addEvent(EK_2U);
-							break;
-						case KD_P2RG:
-							g_p2.addEvent(EK_6U);
-							break;
-						case KD_P2AA:
-							g_p2.addEvent(EK_AU);
-							break;
-						case KD_P2BB:
-							g_p2.addEvent(EK_BU);
-							break;
-						case KD_P2CC:
-							g_p2.addEvent(EK_CU);
-							break;
-						case KD_P2DD:
-							g_p2.addEvent(EK_DU);
-							break;
+					case KD_P2UP:
+						g_p2.selectSkill(EK_8D);
+						break;
+					case KD_P2LF:
+						g_p2.selectSkill(EK_4D);
+						break;
+					case KD_P2DW:
+						g_p2.selectSkill(EK_2D);
+						break;
+					case KD_P2RG:
+						g_p2.selectSkill(EK_6D);
+						break;
+					case KD_P2AA:
+						g_p2.selectSkill(EK_AD);
+						break;
+					case KD_P2BB:
+						g_p2.selectSkill(EK_BD);
+						break;
+					case KD_P2CC:
+						g_p2.selectSkill(EK_CD);
+						break;
+					case KD_P2DD:
+						g_p2.selectSkill(EK_DD);
+						break;
 					}
-					result = 0;
-					wasHandled = true;
+				}
+				result = 0;
+				wasHandled = true;
+				break;
+			case WM_KEYUP:
+				switch (wParam)
+				{
+				case KD_P1UP:
+					g_p1.addEvent(EK_8U);
 					break;
-				case WM_PAINT:
-					{
-						pWinApp->OnRender();
-						ValidateRect(hwnd, NULL);
-					}
-					result = 0;
-					wasHandled = true;
+				case KD_P1LF:
+					g_p1.addEvent(EK_4U);
 					break;
-				case WM_DESTROY:
-					{
-						PostQuitMessage(0);
-					}
-					result = 1;
-					wasHandled = true;
+				case KD_P1DW:
+					g_p1.addEvent(EK_2U);
 					break;
+				case KD_P1RG:
+					g_p1.addEvent(EK_6U);
+					break;
+				case KD_P1AA:
+					g_p1.addEvent(EK_AU);
+					break;
+				case KD_P1BB:
+					g_p1.addEvent(EK_BU);
+					break;
+				case KD_P1CC:
+					g_p1.addEvent(EK_CU);
+					break;
+				case KD_P1DD:
+					g_p1.addEvent(EK_DU);
+					break;
+				case KD_P2UP:
+					g_p2.addEvent(EK_8U);
+					break;
+				case KD_P2LF:
+					g_p2.addEvent(EK_4U);
+					break;
+				case KD_P2DW:
+					g_p2.addEvent(EK_2U);
+					break;
+				case KD_P2RG:
+					g_p2.addEvent(EK_6U);
+					break;
+				case KD_P2AA:
+					g_p2.addEvent(EK_AU);
+					break;
+				case KD_P2BB:
+					g_p2.addEvent(EK_BU);
+					break;
+				case KD_P2CC:
+					g_p2.addEvent(EK_CU);
+					break;
+				case KD_P2DD:
+					g_p2.addEvent(EK_DU);
+					break;
+				}
+				result = 0;
+				wasHandled = true;
+				break;
+			case WM_PAINT:
+			{
+				pWinApp->OnRender();
+				ValidateRect(hwnd, NULL);
+			}
+				result = 0;
+				wasHandled = true;
+				break;
+			case WM_DESTROY:
+			{
+				PostQuitMessage(0);
+			}
+				result = 1;
+				wasHandled = true;
+				break;
 			}
 		}
 		if (!wasHandled)

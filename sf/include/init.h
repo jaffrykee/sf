@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #pragma execution_character_set("utf-8")
 
 #ifndef WINVER              // Allow use of features specific to Windows 7 or later.
@@ -38,6 +38,8 @@
 *  Macros                                                         *
 *                                                                 *
 ******************************************************************/
+
+using namespace std;
 
 template<class Interface>
 inline void
@@ -141,4 +143,3 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>
-#include <sf.h>

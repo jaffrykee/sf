@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #pragma execution_character_set("utf-8")
 //强制无签名utf-8
 //用于读取资源
@@ -6,6 +6,7 @@
 #include <init.h>
 #include <map>
 
+//技能帧位图
 class SFResSkillFrame
 {
 public:
@@ -85,7 +86,7 @@ public:
 /*
 	全局资源单例类
 	<inc>可能会有两种方式。一种是将全部资源都读完，一种是在选人结束后确定要读入的资源，再从硬盘读入，虽然后者占用内存少，但是前者逻辑简单，
-虽然刚刚进入游戏的时候载入时间长，但是之后会比较流畅。
+	虽然刚刚进入游戏的时候载入时间长，但是之后会比较流畅。
 */
 class SFResPlayerMap
 {
@@ -118,6 +119,6 @@ public:
 
 	static void getResSkill(SF_EKA sid, SF_AS status, int count)
 	{
-		
+
 	}
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #pragma execution_character_set("utf-8")
 
 #include <init.h>
@@ -14,7 +14,7 @@ using namespace std;
 
 /*
 	内有按键up事件列表（序列）和当前按键down状态数组。
-*/
+	*/
 class SFPEventStatus
 {
 public:
@@ -23,7 +23,7 @@ public:
 
 	SFPEventStatus()
 	{
-		for (int i = 0; i<EKD_MAX; i++)
+		for (int i = 0; i < EKD_MAX; i++)
 		{
 			m_aStatus[i] = 0;
 		}
@@ -33,36 +33,36 @@ public:
 	{
 		switch (val)
 		{
-			case EK_8U:
-				return '8';
-			case EK_4U:
-				return '4';
-			case EK_2U:
-				return '2';
-			case EK_6U:
-				return '6';
+		case EK_8U:
+			return '8';
+		case EK_4U:
+			return '4';
+		case EK_2U:
+			return '2';
+		case EK_6U:
+			return '6';
 #if 0
-			case EK_S1U:
-				return 'S';
-			case EK_S2U:
-				return 'T';
+		case EK_S1U:
+			return 'S';
+		case EK_S2U:
+			return 'T';
 #endif
-			case EK_AU:
-				return 'A';
-			case EK_BU:
-				return 'B';
-			case EK_CU:
-				return 'C';
-			case EK_DU:
-				return 'D';
+		case EK_AU:
+			return 'A';
+		case EK_BU:
+			return 'B';
+		case EK_CU:
+			return 'C';
+		case EK_DU:
+			return 'D';
 #if 0
-			case EK_EU:
-				return 'E';
-			case EK_FU:
-				return 'F';
+		case EK_EU:
+			return 'E';
+		case EK_FU:
+			return 'F';
 #endif
-			default:
-				return 0;
+		default:
+			return 0;
 		}
 	}
 
