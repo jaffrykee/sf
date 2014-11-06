@@ -37,9 +37,6 @@
     <ClInclude Include="include\SFPlayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="dataFrame.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\SFEventKey.h">
       <Filter>头文件</Filter>
     </ClInclude>

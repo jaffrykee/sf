@@ -135,7 +135,6 @@
     <Image Include="img\blue.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dataFrame.h" />
     <ClInclude Include="include\init.h" />
     <ClInclude Include="include\sf.h" />
     <ClInclude Include="include\SFEventKey.h" />
