@@ -139,8 +139,9 @@
     <ClInclude Include="include\init.h" />
     <ClInclude Include="include\sf.h" />
     <ClInclude Include="include\SFEventKey.h" />
-    <ClInclude Include="include\SFInitDefine.h" />
+    <ClInclude Include="include\SFConfig.h" />
     <ClInclude Include="include\SFPlayer.h" />
+    <ClInclude Include="include\SFResource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sf.cpp" />
