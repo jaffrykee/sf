@@ -1,8 +1,9 @@
-#pragma once
+﻿#pragma once
 #pragma execution_character_set("utf-8")
 
 #include <init.h>
 #include <map>
+#include <string>
 
 #pragma region 按键设置define
 #define KD_P1UP VK_W
@@ -85,6 +86,7 @@ enum SF_AS
 };
 #else
 //在chain阶段放的才是之后段的，否则就只是一段的技能。
+
 enum SF_AS
 {
 	AS_STAND, AS_JUMP, AS_DEF, AS_CHAIN, AS_SKILL, AS_HITED, AS_FLOOR,
@@ -176,8 +178,8 @@ enum SF_EKA
 class SFConfig
 {
 public:
-	static map<string, SF_EKF> s_mEkf;
-	static map<string, SF_EKA> s_mEka;
+	map<string, SF_EKF> s_mEkf;
+	map<string, SF_EKA> s_mEka;
 
 private:
 	SFConfig()
