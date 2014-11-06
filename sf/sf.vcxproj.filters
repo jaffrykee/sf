@@ -43,7 +43,10 @@
     <ClInclude Include="include\SFEventKey.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\SFInitDefine.h">
+    <ClInclude Include="include\SFConfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SFResource.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
