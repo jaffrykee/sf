@@ -156,6 +156,7 @@ enum SF_EKF
 */
 enum SF_EKA
 {
+	EKA_DEF,
 	EKA_8, EKA_4, EKA_2, EKA_6, EKA_44, EKA_66,
 	EKA_A, EKA_B, EKA_C, EKA_D,
 	EKA_26A, EKA_26B, EKA_26C, EKA_26D,
@@ -172,6 +173,7 @@ enum SF_EKA
 	EKA_426426A, EKA_426426B, EKA_426426C, EKA_426426D,
 	EKA_MAX
 };
+#define EKA_ZERO EKA_DEF
 #pragma endregion
 
 /* 全局配置单例类 */

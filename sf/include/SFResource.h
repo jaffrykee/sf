@@ -5,40 +5,70 @@
 
 #include <init.h>
 #include <map>
+#include <list>
 
-//技能帧位图
-class SFResSkillFrame
+/*
+	技能帧，如果不动，那么，渲染矩形的左下左边为(0,0)（即left和bottom都为0），渲染位移参照也是靠左下角为凭据的，位移
+参照上一帧的。
+*/
+class SFResFrame
 {
 public:
-	ID2D1Bitmap* m_pBmp;
+	int m_count;
+	//渲染矩形
+	D2D1_RECT_F m_drawBox;
+	//位图资源
+	ID2D1Bitmap* m_mBmp[SKN_MAX];
 
-	SFResSkillFrame()
+	list<D2D1_RECT_F> m_boxBody;
+	list<D2D1_RECT_F> m_boxAttack;
+
+	SFResFrame()
 	{
 		int i = 0;
 	}
 };
 
+//技能对象
+class SFResObject
+{
+	string m_name;
+	//int代表是第几帧
+	map<int, SFResFrame> m_mFrame;
+
+	SFResObject()
+	{
+		int i = 0;
+	}
+
+	SFResFrame& operator[](int count)
+	{
+		return m_mFrame[count];
+	}
+};
+
+//技能状态分支
 class SFResSkillSwitch
 {
 public:
-	//int代表是第几帧
-	static map<int, SFResSkillFrame> s_mSkillFrameBmp;
+	map<string, SFResObject> m_mObject;
 
 	SFResSkillSwitch()
 	{
 		int i = 0;
 	}
 
-	SFResSkillFrame& operator[](int count)
+	SFResObject& operator[](string name)
 	{
-		return s_mSkillFrameBmp[count];
+		return m_mObject[name];
 	}
 };
 
+//技能资源
 class SFResSkill
 {
 public:
-	static map<SF_AS, SFResSkillSwitch> s_mSkillSwitchBmp;
+	map<SF_AS, SFResSkillSwitch> m_mSkillSwitchBmp;
 
 	SFResSkill()
 	{
@@ -47,39 +77,36 @@ public:
 
 	SFResSkillSwitch& operator[](SF_AS status)
 	{
-		return s_mSkillSwitchBmp[status];
+		return m_mSkillSwitchBmp[status];
+	}
+
+	void initSkin(SF_SKN skin)
+	{
 	}
 };
 
-class SFResSkin
-{
-public:
-	static map<SF_EKA, SFResSkill> s_mSkillBmp;
-
-	SFResSkin()
-	{
-		int i = 0;
-	}
-
-	SFResSkill& operator[](SF_EKA skillId)
-	{
-		return s_mSkillBmp[skillId];
-	}
-};
-
+//玩家资源
 class SFResPlayer
 {
 public:
-	static map<SF_SKN, SFResSkin> s_mSkinBmp;
+	SFResSkill* m_mSkill[EKA_MAX];
 
-	SFResPlayer()
+	SFResPlayer(SF_SKN skin)
 	{
-		int i = 0;
+		memset(m_mSkill, 0, sizeof(SFResSkill*)*EKA_MAX);
+		//<inc>读文件
 	}
 
-	SFResSkin& operator[](SF_SKN skinId)
+	void initSkin(SF_SKN skin)
 	{
-		return s_mSkinBmp[skinId];
+		for (unsigned int i = EKA_ZERO; i < EKA_MAX; i++)
+		{
+			//<inc>读文件
+			if (m_mSkill[i] != NULL)
+			{
+				m_mSkill[i]->initSkin(skin);
+			}
+		}
 	}
 };
 
@@ -91,13 +118,29 @@ public:
 class SFResPlayerMap
 {
 public:
-	static map<SF_PLR, SFResPlayer> s_mSkillBmp;
+	static SFResPlayer* s_mSkillBmp[SF_PLR::PLR_MAX];
+
+	void initPlayer(SF_PLR player, SF_SKN skin)
+	{
+		if (s_mSkillBmp[player] == NULL)
+		{
+			s_mSkillBmp[player] = new SFResPlayer(skin);
+		}
+		else
+		{
+			s_mSkillBmp[player]->initSkin(skin);
+		}
+	}
 
 private:
 	SFResPlayerMap()
 	{
-		int i = 0;
+		for (unsigned int i = 0; i < PLR_MAX; i++)
+		{
+			s_mSkillBmp[i] = NULL;
+		}
 	}
+
 	static SFResPlayerMap *m_pInstance;
 	class SFCGarbo
 	{
