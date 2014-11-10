@@ -143,6 +143,8 @@
     <ClInclude Include="include\SFConfig.h" />
     <ClInclude Include="include\SFPlayer.h" />
     <ClInclude Include="include\SFResource.h" />
+    <ClInclude Include="include\TArray.h" />
+    <ClInclude Include="include\TMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sf.cpp" />

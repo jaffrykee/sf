@@ -46,6 +46,12 @@
     <ClInclude Include="include\SFResource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\TArray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sf.cpp">

@@ -17,7 +17,7 @@ version:
 #ifndef TMAP_H
 #define TMAP_H
 #pragma execution_character_set("utf-8")
-#include <TInit.h>
+#include <init.h>
 #include <TArray.h>
 
 #define TBM_WD_MAX 65535
