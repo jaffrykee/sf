@@ -18,6 +18,9 @@
     <Xsd Include="data\dataFrame.xsd">
       <Filter>头文件</Filter>
     </Xsd>
+    <Xsd Include="data\skillFrame.xsd">
+      <Filter>头文件</Filter>
+    </Xsd>
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\black.png">
@@ -54,7 +57,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sf.cpp">
+    <ClCompile Include="test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

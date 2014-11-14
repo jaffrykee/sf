@@ -131,6 +131,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Xsd Include="data\dataFrame.xsd" />
+    <Xsd Include="data\skillFrame.xsd">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Xsd>
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\black.png" />
@@ -147,7 +153,7 @@
     <ClInclude Include="include\TMap.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sf.cpp" />
+    <ClCompile Include="test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
