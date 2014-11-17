@@ -151,8 +151,10 @@
     <ClInclude Include="include\SFResource.h" />
     <ClInclude Include="include\TArray.h" />
     <ClInclude Include="include\TMap.h" />
+    <ClInclude Include="include\xml.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="P\xml.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
