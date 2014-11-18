@@ -1,9 +1,9 @@
 ﻿#pragma execution_character_set("utf-8")
 #include <stdio.h>
-#include <msxml6.h>  
+#include <msxml6.h>
 #include <comutil.h>
 #include <atlcomcli.h>
-#pragma comment(lib, "comsuppwd.lib")  
+#pragma comment(lib, "comsuppwd.lib")
 
 void main()
 {

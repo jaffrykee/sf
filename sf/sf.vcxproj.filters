@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Xsd Include="data\dataFrame.xsd">
-      <Filter>头文件</Filter>
-    </Xsd>
     <Xsd Include="data\skillFrame.xsd">
       <Filter>头文件</Filter>
     </Xsd>

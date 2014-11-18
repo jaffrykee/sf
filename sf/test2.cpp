@@ -4,7 +4,6 @@
 #include <shlwapi.h>
 #include <comutil.h>
 #include <atlcomcli.h>
-#include <string>
 #include <iostream>
 #pragma comment(lib, "comsuppwd.lib")
 #pragma comment(lib, "XmlLite.lib")
@@ -17,11 +16,12 @@ int main()
 	CComPtr<IStream> pFileStream;
 	CComPtr<IXmlReader> pReader;
 	XmlNodeType nodeType = XmlNodeType_None;
-	LPCWSTR value;
 	LPCWSTR name;
+	WCHAR trueName[64] = {0};
+	LPWSTR A;
+	LPCWSTR value;
 	UINT u;
 	
-
 	//Open read-only input stream
 	hr = SHCreateStreamOnFile("D:/s360/game/sf/sf/data/p001/sk001/status.xml", STGM_READ, &pFileStream);
 	if (SUCCEEDED(hr))
@@ -34,12 +34,30 @@ int main()
 		pReader->GetLocalName(&name, &u);
 		if (name[0] > L' ')
 		{
-			wprintf(L"<<<<<<<<<<%s: %d>>>>>>>>>>>>>>\n", name, u);
-		}
-		pReader->GetValue(&value, NULL);
-		if (value[0] > L' ')
-		{
-			wprintf(L"%s\n", value);
+			if (0 == wcscmp(name, L"skill"))
+			{
+				wprintf(L"<%s>\n", name);
+				while (S_OK == (hr = pReader->Read(&nodeType)))
+				{
+					pReader->GetLocalName(&name, &u);
+					if (name[0] > L' ')
+					{
+						if (0 == wcscmp(name, L"name"))
+						{
+							wcscpy_s(trueName, name);
+						}
+						pReader->GetValue(&value, NULL);
+						if (value[0] > L' ')
+						{
+							wprintf(L"%s: %s\n", trueName, value);
+						}
+						if (0 == wcscmp(name, L"status_switch"))
+						{
+							wcscpy_s(trueName, name);
+						}
+					}
+				}
+			}
 		}
 	}
 

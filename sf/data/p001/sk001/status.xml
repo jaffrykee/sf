@@ -14,7 +14,7 @@
 								<path>stand.png</path>
 								<x>0</x>
 								<y>0</y>
-								<status>stand</status>
+								<status_next>stand</status_next>
 							</frame>
 						</frame_list>
 					</object>
@@ -31,7 +31,7 @@
 								<path>stand.png</path>
 								<x>0</x>
 								<y>0</y>
-								<status>stand</status>
+								<status_next>stand</status_next>
 							</frame>
 						</frame_list>
 					</object>
