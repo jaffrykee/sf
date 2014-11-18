@@ -25,21 +25,44 @@ void main()
 			CComPtr<IXMLDOMElement> spRoot = NULL;
 			CComPtr<IXMLDOMElement> spTheBook = NULL;
 			CComPtr<IXMLDOMNode> spTheNode = NULL;
+			CComPtr<IXMLDOMNode> spTheNode2 = NULL;
+			CComPtr<IXMLDOMNodeList> spList = NULL;
+			CComPtr<IXMLDOMNode> spNode = NULL;
+			
 
 			printf("Load:ok\n");
 
 			hr = spXmldoc->get_documentElement(&spRoot);
 			//spRoot->get_xml(&bstrXml);
 
-			hr = spRoot->selectSingleNode(L"/skill_list/skill[name='default']/", &spTheNode);
+			//hr = spRoot->selectSingleNode(L"/skill_list/skill[name='default']", &spTheNode);
+			hr = spRoot->get_firstChild(&spTheNode);
+//			spRoot = NULL;
+			hr = spTheNode->get_firstChild(&spTheNode2);
+//			spTheNode = NULL;
+			hr = spTheNode2->get_firstChild(&spTheNode);
+//			spTheNode2 = NULL;
 			if (SUCCEEDED(hr))
 			{
 				printf("Find:ok\n");
+#if 1
 				hr = spTheNode.QueryInterface(&spTheBook);
-				spTheNode.Release();
+//				spTheNode = NULL;
 				spTheBook->get_xml(&bstrXml);
 				printf("name:\"default\"\n");
 				printf(_com_util::ConvertBSTRToString(bstrXml));
+#else
+				hr = spTheNode2->get_childNodes(&spList);
+				for (int i = 0; hr = SUCCEEDED(spList->get_item(i, &spNode)); i++)
+				{
+					spNode.QueryInterface(&spTheBook);
+					spNode.Release();
+					spTheBook->get_xml(&bstrXml);
+					printf("\n---------------------------\n");
+					printf(_com_util::ConvertBSTRToString(bstrXml));
+					spTheBook.Release();
+				}
+#endif
 			}
 			printf("Find:failed\n");
 			SysFreeString(bstrXml);
