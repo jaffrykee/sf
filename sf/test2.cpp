@@ -23,7 +23,7 @@ int main()
 	UINT u;
 	
 	//Open read-only input stream
-	hr = SHCreateStreamOnFile("D:/s360/game/sf/sf/data/p001/sk001/status.xml", STGM_READ, &pFileStream);
+	hr = SHCreateStreamOnFile("D:/s360/game/sf/sf/data/p001/sk_26A_def.xml", STGM_READ, &pFileStream);
 	if (SUCCEEDED(hr))
 	{
 		hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);
@@ -45,15 +45,14 @@ int main()
 						if (0 == wcscmp(name, L"name"))
 						{
 							wcscpy_s(trueName, name);
-						}
-						pReader->GetValue(&value, NULL);
-						if (value[0] > L' ')
-						{
-							wprintf(L"%s: %s\n", trueName, value);
-						}
-						if (0 == wcscmp(name, L"status_switch"))
-						{
-							wcscpy_s(trueName, name);
+							if ((S_OK == (hr = pReader->Read(&nodeType))))
+							{
+								pReader->GetValue(&value, NULL);
+								if (value[0] > L' ')
+								{
+									wprintf(L"%s: %s\n", trueName, value);
+								}
+							}
 						}
 					}
 				}

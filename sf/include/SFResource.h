@@ -150,12 +150,12 @@ public:
 		{
 			if (skin == SKN_SK1)
 			{
-				if (this->GetInstance()->s_mPlayer[playerId] == NULL)
+				if (GetInstance()->s_mPlayer[playerId] == NULL)
 				{
 				}
 				else
 				{
-					if (this->GetInstance()->s_mPlayer[playerId]->m_mSkill[skin] == NULL)
+					if (GetInstance()->s_mPlayer[playerId]->m_mSkill[skin] == NULL)
 					{
 					}
 				}
