@@ -1,232 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <skill_table xmlns="http://tkmgame.com/shark/skillFrame.xsd">
-	<skill>
-		<name>26A_def</name>
-		<statusEnable>1</statusEnable>
+	<skill name="26A_def">
 		<skin_table>
-			<skin>
-				<subfix>1</subfix>
-			</skin>
+			<skin name="1"></skin>
+			<skin name="2"></skin>
 		</skin_table>
 		<object_table>
-			<object>
-				<id>1</id>
+			<object id="1">
 				<frame_table>
-					<frame>
-						<id>1</id>
-						<t>150</t>
-						<l>-50</l>
-						<b>0</b>
-						<r>50</r>
+					<frame id="1" m="0">
+						<rect t="150" l="-50" b="0" r="50"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-50</l>
-								<b>0</b>
-								<r>50</r>
+							<box type="1">
+								<rect t="150" l="-50" b="0" r="50"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>2</id>
-						<t>150</t>
-						<l>-50</l>
-						<b>0</b>
-						<r>52</r>
+					<frame id="2" m="1">
+						<rect t="150" l="-50" b="0" r="52"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-50</l>
-								<b>0</b>
-								<r>52</r>
+							<box type="1">
+								<rect t="150" l="-50" b="0" r="52"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>3</id>
-						<t>150</t>
-						<l>-50</l>
-						<b>0</b>
-						<r>54</r>
+					<frame id="3" m="2">
+						<rect t="150" l="-50" b="0" r="54"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-50</l>
-								<b>0</b>
-								<r>54</r>
+							<box type="1">
+								<rect t="150" l="-50" b="0" r="54"></rect>
 							</box>
-							<box>
-								<type>2</type>
-								<t>100</t>
-								<l>50</l>
-								<b>50</b>
-								<r>100</r>
+							<box type="2">
+								<rect t="100" l="50" b="50" r="100"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>4</id>
-						<t>150</t>
-						<l>-50</l>
-						<b>0</b>
-						<r>56</r>
+					<frame id="4" m="3">
+						<rect t="150" l="-50" b="0" r="56"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-50</l>
-								<b>0</b>
-								<r>56</r>
+							<box type="1">
+								<rect t="150" l="-50" b="0" r="56"></rect>
 							</box>
-							<box>
-								<type>2</type>
-								<t>100</t>
-								<l>52</l>
-								<b>50</b>
-								<r>102</r>
+							<box type="2">
+								<rect t="100" l="52" b="50" r="102"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>5</id>
-						<t>150</t>
-						<l>-50</l>
-						<b>0</b>
-						<r>58</r>
+					<frame id="5" m="4">
+						<rect t="150" l="-50" b="0" r="58"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-50</l>
-								<b>0</b>
-								<r>58</r>
+							<box type="1">
+								<rect t="150" l="-50" b="0" r="58"></rect>
 							</box>
-							<box>
-								<type>2</type>
-								<t>100</t>
-								<l>55</l>
-								<b>50</b>
-								<r>105</r>
+							<box type="2">
+								<rect t="100" l="55" b="50" r="105"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>6</id>
-						<t>150</t>
-						<l>-50</l>
-						<b>0</b>
-						<r>60</r>
+					<frame id="6" m="5">
+						<rect t="150" l="-50" b="0" r="60"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-50</l>
-								<b>0</b>
-								<r>60</r>
+							<box type="1">
+								<rect t="150" l="-50" b="0" r="60"></rect>
 							</box>
-							<box>
-								<type>2</type>
-								<t>100</t>
-								<l>60</l>
-								<b>50</b>
-								<r>110</r>
+							<box type="2">
+								<rect t="100" l="60" b="50" r="110"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>7</id>
-						<t>150</t>
-						<l>-48</l>
-						<b>0</b>
-						<r>60</r>
+					<frame id="7" m="6">
+						<rect t="150" l="-48" b="0" r="60"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-48</l>
-								<b>0</b>
-								<r>60</r>
+							<box type="1">
+								<rect t="150" l="-48" b="0" r="60"></rect>
 							</box>
-							<box>
-								<type>2</type>
-								<t>100</t>
-								<l>60</l>
-								<b>50</b>
-								<r>110</r>
+							<box type="2">
+								<rect t="100" l="60" b="50" r="110"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>8</id>
-						<t>150</t>
-						<l>-46</l>
-						<b>0</b>
-						<r>60</r>
+					<frame id="8" m="7">
+						<rect t="150" l="-46" b="0" r="60"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-46</l>
-								<b>0</b>
-								<r>60</r>
+							<box type="1">
+								<rect t="150" l="-46" b="0" r="60"></rect>
 							</box>
-							<box>
-								<type>2</type>
-								<t>100</t>
-								<l>60</l>
-								<b>50</b>
-								<r>110</r>
+							<box type="2">
+								<rect t="100" l="60" b="50" r="110"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>9</id>
-						<t>150</t>
-						<l>-44</l>
-						<b>0</b>
-						<r>60</r>
+					<frame id="9" m="8">
+						<rect t="150" l="-44" b="0" r="60"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-44</l>
-								<b>0</b>
-								<r>60</r>
+							<box type="1">
+								<rect t="150" l="-44" b="0" r="60"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>10</id>
-						<t>150</t>
-						<l>-42</l>
-						<b>0</b>
-						<r>60</r>
+					<frame id="10" m="9">
+						<rect t="150" l="-42" b="0" r="60"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-42</l>
-								<b>0</b>
-								<r>60</r>
+							<box type="1">
+								<rect t="150" l="-42" b="0" r="60"></rect>
 							</box>
 						</box_table>
 					</frame>
-					<frame>
-						<id>11</id>
-						<t>150</t>
-						<l>-40</l>
-						<b>0</b>
-						<r>60</r>
+					<frame id="11" m="10">
+						<rect t="150" l="-40" b="0" r="60"></rect>
 						<box_table>
-							<box>
-								<type>1</type>
-								<t>150</t>
-								<l>-40</l>
-								<b>0</b>
-								<r>60</r>
+							<box type="1">
+								<rect t="150" l="-40" b="0" r="60"></rect>
 							</box>
 						</box_table>
 					</frame>
