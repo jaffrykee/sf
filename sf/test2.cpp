@@ -10,6 +10,7 @@
 
 using namespace std;
 
+#pragma region POLL_XML函数宏及其相关define
 #define POLL_RET (hr)
 #define POLL_PREADER (pReader)
 #define POLL_NAME (name)
@@ -66,6 +67,7 @@ using namespace std;
 	}
 
 #define NODE_NAME_MAX 64
+#pragma endregion
 
 #pragma region playerInfo.xml中的所有节点相关define以及路径define
 enum SF_ND
