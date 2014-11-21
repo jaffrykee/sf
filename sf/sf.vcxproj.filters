@@ -65,6 +65,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="data\p001\sk.xml" />
+    <Xml Include="data\p001\playerInfo.xml" />
   </ItemGroup>
 </Project>

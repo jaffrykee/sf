@@ -157,7 +157,7 @@
     <ClCompile Include="test2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="data\p001\sk.xml" />
+    <Xml Include="data\p001\playerInfo.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

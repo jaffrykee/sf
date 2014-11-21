@@ -55,7 +55,7 @@ using namespace std;
 						(POLL_SW[sf_nd]) = true;	\
 						(POLL_NODEHAD[sf_nd]) = true;	\
 						wprintf(L"\n");	\
-						for(int i = 0; i < POLL_TABSCOUNT; i++)	\
+						for(int i = 0; i < POLL_TABSCOUNT - 1; i++)	\
 							wprintf(L"    ");	\
 						wprintf(L"<%s>", nodeName[sf_nd]);	\
 						showAllAttribute(POLL_PREADER);	\
@@ -67,12 +67,26 @@ using namespace std;
 
 #define NODE_NAME_MAX 64
 
+#pragma region playerInfo.xml中的所有节点相关define以及路径define
 enum SF_ND
 {
-	ND_SKL_TBL, ND_SKL, ND_SKN_TBL, ND_SKN, ND_OBJ_TBL,ND_OBJ,
+	ND_PLY_INF, ND_SKN_TBL, ND_SKN, ND_SKL_TBL, ND_SKL, ND_OBJ_TBL, ND_OBJ,
 	ND_FRM_TBL, ND_FRM, ND_FRM_RCT, ND_BOX_TBL, ND_BOX, ND_BOX_RCT,
 	ND_MAX
 };
+
+const bool nodeIsOnly[SF_ND::ND_MAX] = {
+	true, true, false, true, false, true, false,
+	true, false, true, true, false, true
+};
+
+const WCHAR nodeName[ND_MAX][NODE_NAME_MAX] = {
+	L"player_info", L"skin_table", L"skin", L"skill_table", L"skill", L"object_table", L"object",
+	L"frame_table", L"frame", L"rect", L"box_table", L"box", L"rect"
+};
+
+const char xmlPath[] = "D:/s360/game/sf/sf/data/p001/playerInfo.xml";
+#pragma endregion
 
 bool showAllAttribute(CComPtr<IXmlReader> pReader)
 {
@@ -102,18 +116,11 @@ void main()
 	LPCWSTR name;
 	int tabs = 0;
 	bool nodeSw[ND_MAX] = {false};
-	bool nodeIsOnly[ND_MAX] = {
-		true, false, true, false, true, false,
-		true, false, true, true, false, true
-	};
+	bool nodeIsOnly[ND_MAX] = {false};
 	bool nodeHad[ND_MAX] = {false};
-	WCHAR nodeName[ND_MAX][NODE_NAME_MAX] = {
-		L"skill_table", L"skill", L"skin_table", L"skin", L"object_table", L"object",
-		L"frame_table", L"frame", L"rect", L"box_table", L"box", L"rect"
-	};
 	
 	//Open read-only input stream
-	hr = SHCreateStreamOnFile("D:/s360/game/sf/sf/data/p001/sk.xml", STGM_READ, &pFileStream);
+	hr = SHCreateStreamOnFile(xmlPath, STGM_READ, &pFileStream);
 	if (SUCCEEDED(hr))
 	{
 		hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);
@@ -121,30 +128,32 @@ void main()
 	pReader->SetInput(pFileStream);
 	hr = pReader->Read(NULL);
 
-	POLL_XML_NODE_BEGIN(ND_SKL_TBL)
-		POLL_XML_NODE_BEGIN(ND_SKL)
-			POLL_XML_NODE_BEGIN(ND_SKN_TBL)
-				POLL_XML_NODE_BEGIN(ND_SKN)
-				POLL_XML_NODE_END(ND_SKN)
-			POLL_XML_NODE_END(ND_SKN_TBL)
-			POLL_XML_NODE_BEGIN(ND_OBJ_TBL)
-				POLL_XML_NODE_BEGIN(ND_OBJ)
-					POLL_XML_NODE_BEGIN(ND_FRM_TBL)
-						POLL_XML_NODE_BEGIN(ND_FRM)
-							POLL_XML_NODE_BEGIN(ND_FRM_RCT)
-							POLL_XML_NODE_END(ND_FRM_RCT)
-							POLL_XML_NODE_BEGIN(ND_BOX_TBL)
-								POLL_XML_NODE_BEGIN(ND_BOX)
-									POLL_XML_NODE_BEGIN(ND_BOX_RCT)
-									POLL_XML_NODE_END(ND_BOX_RCT)
-								POLL_XML_NODE_END(ND_BOX)
-							POLL_XML_NODE_END(ND_BOX_TBL)
-						POLL_XML_NODE_END(ND_FRM)
-					POLL_XML_NODE_END(ND_FRM_TBL)
-				POLL_XML_NODE_END(ND_OBJ)
-			POLL_XML_NODE_END(ND_OBJ_TBL)
-		POLL_XML_NODE_END(ND_SKL)
-	POLL_XML_NODE_END(ND_SKL_TBL)
+	POLL_XML_NODE_BEGIN(ND_PLY_INF)
+		POLL_XML_NODE_BEGIN(ND_SKN_TBL)
+			POLL_XML_NODE_BEGIN(ND_SKN)
+			POLL_XML_NODE_END(ND_SKN)
+		POLL_XML_NODE_END(ND_SKN_TBL)
+		POLL_XML_NODE_BEGIN(ND_SKL_TBL)
+			POLL_XML_NODE_BEGIN(ND_SKL)
+				POLL_XML_NODE_BEGIN(ND_OBJ_TBL)
+					POLL_XML_NODE_BEGIN(ND_OBJ)
+						POLL_XML_NODE_BEGIN(ND_FRM_TBL)
+							POLL_XML_NODE_BEGIN(ND_FRM)
+								POLL_XML_NODE_BEGIN(ND_FRM_RCT)
+								POLL_XML_NODE_END(ND_FRM_RCT)
+								POLL_XML_NODE_BEGIN(ND_BOX_TBL)
+									POLL_XML_NODE_BEGIN(ND_BOX)
+										POLL_XML_NODE_BEGIN(ND_BOX_RCT)
+										POLL_XML_NODE_END(ND_BOX_RCT)
+									POLL_XML_NODE_END(ND_BOX)
+								POLL_XML_NODE_END(ND_BOX_TBL)
+							POLL_XML_NODE_END(ND_FRM)
+						POLL_XML_NODE_END(ND_FRM_TBL)
+					POLL_XML_NODE_END(ND_OBJ)
+				POLL_XML_NODE_END(ND_OBJ_TBL)
+			POLL_XML_NODE_END(ND_SKL)
+		POLL_XML_NODE_END(ND_SKL_TBL)
+	POLL_XML_NODE_END(ND_PLY_INF)
 
 	getchar();
 

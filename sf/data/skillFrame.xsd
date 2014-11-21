@@ -85,7 +85,6 @@
 				<xs:element name="skill" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element ref="skin_table" minOccurs="0"></xs:element>
 							<xs:element ref="object_table" minOccurs="0"></xs:element>
 						</xs:sequence>
 						<xs:attribute name="name" type="xs:string"/>
@@ -96,4 +95,14 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+
+	<xs:element name="player_info">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="skin_table" minOccurs="0"></xs:element>
+				<xs:element ref="skill_table" minOccurs="0"></xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
 </xs:schema>
