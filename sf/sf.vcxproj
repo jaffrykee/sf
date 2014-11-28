@@ -147,6 +147,7 @@
     <ClInclude Include="include\SFEventKey.h" />
     <ClInclude Include="include\SFConfig.h" />
     <ClInclude Include="include\SFPlayer.h" />
+    <ClInclude Include="include\SFResConfigReader.h" />
     <ClInclude Include="include\SFResource.h" />
     <ClInclude Include="include\TArray.h" />
     <ClInclude Include="include\TMap.h" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P\xml.cpp" />
+    <ClCompile Include="SF\SFResConfigReader.cpp" />
     <ClCompile Include="test2.cpp" />
   </ItemGroup>
   <ItemGroup>

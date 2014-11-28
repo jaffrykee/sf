@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <player_info xmlns="http://tkmgame.com/shark/skillFrame.xsd">
 	<skin_table>
-		<skin name="1"></skin>
-		<skin name="2"></skin>
+		<skin name="默认"></skin>
+		<skin name="附属"></skin>
 	</skin_table>
 	<skill_table>
 		<skill name="26A_def">

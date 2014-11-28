@@ -10,6 +10,13 @@
 
 #define BASIC_RES_PATH ./data
 
+class SFResPlayerMap;
+class SFResPlayer;
+class SFResSkill;
+class SFResSkillSwitch;
+class SFResObject;
+class SFResFrame;
+
 /*
 	技能帧，如果不动，那么，渲染矩形的左下为(0,0)（即left和bottom都为0），渲染位移参照也是靠左下角为凭据的，位移
 参照上一帧的。
@@ -93,6 +100,7 @@ public:
 	}
 };
 
+#if 0
 /*
 	全局资源单例类
 	<inc>可能会有两种方式。一种是将全部资源都读完，一种是在选人结束后确定要读入的资源，再从硬盘读入，虽然后者占用内存少，但是前者逻辑简单，
@@ -163,3 +171,4 @@ public:
 		}
 	}
 };
+#endif
