@@ -66,10 +66,10 @@ tips:linuxC风格太浓厚了，不过很灵活。
 						wprintf(L"\n");	\
 						for(int i = 0; i < POLL_TABSCOUNT - 1; i++)	\
 							wprintf(L"    ");	\
+						POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]++; \
 						wprintf(L"#%d:%d", POLL_TABSCOUNT - 1, POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]); \
 						wprintf(L"<%s>", nodeName[sf_nd]);	\
 						showAllAttribute(POLL_PREADER);	\
-						POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]++; \
 					}	\
 				}	\
 			}	\
@@ -88,8 +88,19 @@ enum SF_XML_ND
 };
 #define SF_XML_TABS_MAX ND_MAX
 #pragma endregion
+
 namespace SFResConfigReader
 {
+	const bool nodeIsOnly[SF_XML_ND::ND_MAX] = {
+		true, true, false, true, false, true, false,
+		true, false, true, true, false, true
+	};
+
+	const WCHAR nodeName[SF_XML_ND::ND_MAX][NODE_NAME_MAX] = {
+		L"player_info", L"skin_table", L"skin", L"skill_table", L"skill", L"object_table", L"object",
+		L"frame_table", L"frame", L"rect", L"box_table", L"box", L"rect"
+	};
+
 	bool showAllAttribute(CComPtr<IXmlReader> pReader);
 	bool readFromXML(char* xmlPath, SFResPlayer* pPlayer);
 }

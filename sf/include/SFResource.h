@@ -51,6 +51,10 @@ public:
 	{
 	}
 
+	~SFResObject()
+	{
+	}
+
 	SFResFrame& operator[](unsigned int count)
 	{
 		return m_mFrame[count];
@@ -65,6 +69,10 @@ public:
 	vector<SFResObject> m_mObject;
 
 	SFResSkillSwitch()
+	{
+	}
+
+	~SFResSkillSwitch()
 	{
 	}
 
@@ -85,18 +93,41 @@ public:
 	{
 		int i = 0;
 	}
+
+	~SFResSkill()
+	{
+		for (UINT i = 0; i<AS_MAX; i++)
+		{
+			if (m_mSkillSwitchBmp[i] != NULL)
+			{
+				delete m_mSkillSwitchBmp[i];
+				m_mSkillSwitchBmp[i] = NULL;
+			}
+		}
+	}
 };
 
 //玩家资源
 class SFResPlayer
 {
 public:
-	SFResSkill* m_mSkill[SKN_MAX][EKA_MAX];
+	SFResSkill* m_mSkill[EKA_MAX];
 
 	SFResPlayer(SF_SKN skin)
 	{
-		memset(m_mSkill, 0, sizeof(SFResSkill*)*SKN_MAX*EKA_MAX);
-		//<inc>读文件
+		memset(m_mSkill, 0, sizeof(SFResSkill*)*EKA_MAX);
+	}
+
+	~SFResPlayer()
+	{
+		for (UINT i = 0; i<EKA_MAX; i++)
+		{
+			if (m_mSkill[i] != NULL)
+			{
+				delete m_mSkill[i];
+				m_mSkill[i] = NULL;
+			}
+		}
 	}
 };
 

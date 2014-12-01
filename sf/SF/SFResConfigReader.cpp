@@ -3,15 +3,26 @@
 
 namespace SFResConfigReader
 {
-	const bool nodeIsOnly[SF_XML_ND::ND_MAX] = {
-		true, true, false, true, false, true, false,
-		true, false, true, true, false, true
-	};
+	UINT tabCount[SF_XML_TABS_MAX] = { 0 };
+	UINT tabs = 0;
 
-	const WCHAR nodeName[SF_XML_ND::ND_MAX][NODE_NAME_MAX] = {
-		L"player_info", L"skin_table", L"skin", L"skill_table", L"skill", L"object_table", L"object",
-		L"frame_table", L"frame", L"rect", L"box_table", L"box", L"rect"
-	};
+	bool getFirstSplit(char* dst, int max, char* src, char split)
+	{
+		if (NULL==src || NULL==dst || split<' ')
+		{
+			return false;
+		}
+		for (int i = 0; i < strlen(src); i++)
+		{
+			if (src[i] == split)
+			{
+				strncpy_s(dst, max, src, i);
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	bool showAllAttribute(CComPtr<IXmlReader> pReader)
 	{
@@ -27,6 +38,22 @@ namespace SFResConfigReader
 			wprintf(L"%s:%s  ", name, value);
 			ret = true;
 		}
+		wprintf(L"\n");
+		for (int i = 1; i < SF_XML_TABS_MAX; i++)
+		{
+			if (tabCount[i] != 0)
+			{
+				wprintf(L"    ");
+			}
+			else
+			{
+				break;
+			}
+		}
+		for (int i = 0; i < SF_XML_TABS_MAX; i++)
+		{
+			wprintf(L"%d ", tabCount[i]);
+		}
 
 		return ret;
 	}
@@ -39,12 +66,13 @@ namespace SFResConfigReader
 		XmlNodeType nodeType = XmlNodeType_None;
 		WCHAR trueName[NODE_NAME_MAX] = {0};
 		LPCWSTR name;
-		int tabs = 0;
 		bool nodeSw[ND_MAX] = {false};
 		bool nodeIsOnly[ND_MAX] = {false};
 		bool nodeHad[ND_MAX] = {false};
 		UINT nodeCount[ND_MAX] = {0};
-		UINT tabCount[SF_XML_TABS_MAX] = {0};
+
+		memset(tabCount, 0, SF_XML_TABS_MAX*sizeof(UINT));
+		tabs = 0;
 
 		//Open read-only input stream
 		hr = SHCreateStreamOnFile(xmlPath, STGM_READ, &pFileStream);
