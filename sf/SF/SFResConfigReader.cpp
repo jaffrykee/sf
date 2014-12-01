@@ -37,12 +37,14 @@ namespace SFResConfigReader
 		CComPtr<IStream> pFileStream;
 		CComPtr<IXmlReader> pReader;
 		XmlNodeType nodeType = XmlNodeType_None;
-		WCHAR trueName[NODE_NAME_MAX] = { 0 };
+		WCHAR trueName[NODE_NAME_MAX] = {0};
 		LPCWSTR name;
 		int tabs = 0;
-		bool nodeSw[ND_MAX] = { false };
-		bool nodeIsOnly[ND_MAX] = { false };
-		bool nodeHad[ND_MAX] = { false };
+		bool nodeSw[ND_MAX] = {false};
+		bool nodeIsOnly[ND_MAX] = {false};
+		bool nodeHad[ND_MAX] = {false};
+		UINT nodeCount[ND_MAX] = {0};
+		UINT tabCount[SF_XML_TABS_MAX] = {0};
 
 		//Open read-only input stream
 		hr = SHCreateStreamOnFile(xmlPath, STGM_READ, &pFileStream);
