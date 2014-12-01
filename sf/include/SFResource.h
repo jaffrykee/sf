@@ -3,12 +3,8 @@
 //用于读取资源
 
 #include <init.h>
-#include <map>
-#include <list>
-#include <vector>
-#include <TArray.h>
 
-#define BASIC_RES_PATH ./data
+#define PLR_XML_PATH "./data/p001/playerInfo.xml"
 
 class SFResPlayerMap;
 class SFResPlayer;
@@ -91,12 +87,17 @@ public:
 class SFResPlayer
 {
 public:
-	SFResSkill* m_mSkill[SKN_MAX][EKA_MAX];
+	SFResSkill* m_skill[EKA_MAX];
+	SF_SKN m_skin;
 
-	SFResPlayer(SF_SKN skin)
+	SFResPlayer(SF_SKN skin) :m_skin(skin)
 	{
-		memset(m_mSkill, 0, sizeof(SFResSkill*)*SKN_MAX*EKA_MAX);
-		//<inc>读文件
+		SFResConfigReader* pReader = new SFResConfigReader;
+
+		memset(m_skill, 0, sizeof(SFResSkill*)*EKA_MAX);
+		pReader->readFromXML(PLR_XML_PATH, this);
+
+		delete(pReader);
 	}
 };
 
