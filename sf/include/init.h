@@ -32,18 +32,6 @@
 
 #include <string>
 #include <map>
-#include <list>
-#include <vector>
-#include <TArray.h>
-
-#include <stdio.h>
-#include <XmlLite.h>
-#include <shlwapi.h>
-#include <comutil.h>
-#include <atlcomcli.h>
-#include <iostream>
-#pragma comment(lib, "comsuppwd.lib")
-#pragma comment(lib, "XmlLite.lib")
 
 /******************************************************************
 *                                                                 *
@@ -155,4 +143,3 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>
-#include <SFResConfigReader.h>

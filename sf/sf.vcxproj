@@ -155,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P\xml.cpp" />
+    <ClCompile Include="SF\SFResConfigReader.cpp" />
     <ClCompile Include="test2.cpp" />
   </ItemGroup>
   <ItemGroup>

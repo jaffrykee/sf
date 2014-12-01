@@ -1,7 +1,14 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
-
-#include <init.h>
+#include <stdio.h>
+#include <XmlLite.h>
+#include <shlwapi.h>
+#include <comutil.h>
+#include <atlcomcli.h>
+#include <iostream>
+#include <SFResource.h>
+#pragma comment(lib, "comsuppwd.lib")
+#pragma comment(lib, "XmlLite.lib")
 
 using namespace std;
 
@@ -14,16 +21,11 @@ using namespace std;
 #define POLL_NODEHAD nodeHad
 #define POLL_NODENAME nodeName
 #define POLL_TABSCOUNT (tabs)
-#define POLL_NODECOUNT nodeCount
-#define POLL_TABSCOUNT_ARR tabCount
 
-/*
-遍历该级xml的每一个枚举为"sf_nd"的节点。
-tips:linuxC风格太浓厚了，不过很灵活。
-*/
+//遍历该级xml的每一个枚举为"sf_nd"的节点。
 #define POLL_XML_NODE_BEGIN(sf_nd)	\
 	if(!(POLL_NODEISONLY[sf_nd] && POLL_NODEHAD[sf_nd]))	\
-	{	\
+		{	\
 		POLL_TABSCOUNT++;	\
 		for ( \
 			POLL_PREADER->GetLocalName(&POLL_NAME, NULL); \
@@ -33,41 +35,38 @@ tips:linuxC风格太浓厚了，不过很灵活。
 		)	\
 		{	\
 			if (POLL_NAME[0] > L' ')	\
-			{	\
+						{	\
 				if ((POLL_SW[sf_nd]))	\
-				{	\
+								{	\
 					if (0 == wcscmp(POLL_NAME, POLL_NODENAME[sf_nd]))	\
-					{	\
+										{	\
 						POLL_SW[sf_nd] = false;	\
 						for(int i = sf_nd + 1; i < ND_MAX; i++)	\
-						{	\
+												{	\
 							POLL_NODEHAD[i] = false;	\
-						}	\
-						POLL_TABSCOUNT_ARR[POLL_TABSCOUNT] = 0;	\
+												}	\
 						POLL_TABSCOUNT--;	\
 						break;	\
-					}
+										}
 
 #define POLL_XML_NODE_END(sf_nd)	\
-				}	\
-				else	\
+								}	\
+								else	\
 				{	\
 					if (0 == wcscmp(POLL_NAME, POLL_NODENAME[sf_nd]))	\
-					{	\
+										{	\
 						(POLL_SW[sf_nd]) = true;	\
 						(POLL_NODEHAD[sf_nd]) = true;	\
 						wprintf(L"\n");	\
 						for(int i = 0; i < POLL_TABSCOUNT - 1; i++)	\
 							wprintf(L"    ");	\
-						wprintf(L"#%d:%d", POLL_TABSCOUNT - 1, POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]); \
 						wprintf(L"<%s>", nodeName[sf_nd]);	\
 						showAllAttribute(POLL_PREADER);	\
-						POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]++; \
-					}	\
+										}	\
 				}	\
-			}	\
+						}	\
 		}	\
-	}
+		}
 
 #define NODE_NAME_MAX 64
 #pragma endregion
@@ -79,105 +78,9 @@ enum SF_XML_ND
 	ND_FRM_TBL, ND_FRM, ND_FRM_RCT, ND_BOX_TBL, ND_BOX, ND_BOX_RCT,
 	ND_MAX
 };
-
-#define SF_XML_TABS_MAX ND_MAX
-
 #pragma endregion
-
-const bool nodeIsOnly[SF_XML_ND::ND_MAX] = {
-	true, true, false, true, false, true, false,
-	true, false, true, true, false, true
-};
-
-const WCHAR nodeName[SF_XML_ND::ND_MAX][NODE_NAME_MAX] = {
-	L"player_info", L"skin_table", L"skin", L"skill_table", L"skill", L"object_table", L"object",
-	L"frame_table", L"frame", L"rect", L"box_table", L"box", L"rect"
-};
-
-class SFResConfigReader
+namespace SFResConfigReader
 {
-public:
-	SFResConfigReader();
-	~SFResConfigReader();
-
-	bool showAllAttribute(CComPtr<IXmlReader> pReader)
-	{
-		HRESULT hr = S_OK;
-		LPCWSTR name;
-		LPCWSTR value;
-		bool ret = false;
-
-		for (hr = pReader->MoveToFirstAttribute(); S_OK == hr; hr = pReader->MoveToNextAttribute())
-		{
-			pReader->GetLocalName(&name, NULL);
-			pReader->GetValue(&value, NULL);
-			wprintf(L"%s:%s  ", name, value);
-			ret = true;
-		}
-
-		return ret;
-	}
-
-	bool readFromXML(char* xmlPath, SFResPlayer* pPlayer)
-	{
-		HRESULT hr = S_OK;
-		CComPtr<IStream> pFileStream;
-		CComPtr<IXmlReader> pReader;
-		XmlNodeType nodeType = XmlNodeType_None;
-		WCHAR trueName[NODE_NAME_MAX] = {0};
-		LPCWSTR name;
-		int tabs = 0;
-		bool nodeSw[ND_MAX] = {false};
-		bool nodeIsOnly[ND_MAX] = {false};
-		bool nodeHad[ND_MAX] = {false};
-		UINT nodeCount[ND_MAX] = {0};
-		UINT tabCount[SF_XML_TABS_MAX] = {0};
-
-		//Open read-only input stream
-		hr = SHCreateStreamOnFile(xmlPath, STGM_READ, &pFileStream);
-		if (SUCCEEDED(hr))
-		{
-			hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);
-		}
-		else
-		{
-			cout << "Error: Can't find the XML file. (\"" << xmlPath << "\")" << endl;
-			getchar();
-
-			return false;
-		}
-		pReader->SetInput(pFileStream);
-		hr = pReader->Read(NULL);
-
-		POLL_XML_NODE_BEGIN(ND_PLY_INF)
-			POLL_XML_NODE_BEGIN(ND_SKN_TBL)
-				POLL_XML_NODE_BEGIN(ND_SKN)
-				POLL_XML_NODE_END(ND_SKN)
-			POLL_XML_NODE_END(ND_SKN_TBL)
-			POLL_XML_NODE_BEGIN(ND_SKL_TBL)
-				POLL_XML_NODE_BEGIN(ND_SKL)
-					POLL_XML_NODE_BEGIN(ND_OBJ_TBL)
-						POLL_XML_NODE_BEGIN(ND_OBJ)
-							POLL_XML_NODE_BEGIN(ND_FRM_TBL)
-								POLL_XML_NODE_BEGIN(ND_FRM)
-									POLL_XML_NODE_BEGIN(ND_FRM_RCT)
-									POLL_XML_NODE_END(ND_FRM_RCT)
-									POLL_XML_NODE_BEGIN(ND_BOX_TBL)
-										POLL_XML_NODE_BEGIN(ND_BOX)
-											POLL_XML_NODE_BEGIN(ND_BOX_RCT)
-											POLL_XML_NODE_END(ND_BOX_RCT)
-										POLL_XML_NODE_END(ND_BOX)
-									POLL_XML_NODE_END(ND_BOX_TBL)
-								POLL_XML_NODE_END(ND_FRM)
-							POLL_XML_NODE_END(ND_FRM_TBL)
-						POLL_XML_NODE_END(ND_OBJ)
-					POLL_XML_NODE_END(ND_OBJ_TBL)
-				POLL_XML_NODE_END(ND_SKL)
-			POLL_XML_NODE_END(ND_SKL_TBL)
-		POLL_XML_NODE_END(ND_PLY_INF)
-
-		getchar();
-
-		return true;
-	}
-};
+	bool showAllAttribute(CComPtr<IXmlReader> pReader);
+	bool readFromXML(char* xmlPath, SFResPlayer* pPlayer);
+}
