@@ -151,7 +151,8 @@ enum SF_EKF
 	EKF_MAX
 };
 
-const char g_EkfStr[][10] = {
+#define EKF_STR_MAX 10
+const char g_EkfStr[][EKF_STR_MAX] = {
 	"j", "jex", "rj", "rjex",
 	"fj", "fjex", "bj", "bjex",
 #if 0
@@ -214,7 +215,8 @@ enum SF_EKA
 };
 #define EKA_ZERO EKA_DEF
 
-const char g_EkaStr[][10] = {
+#define EKA_STR_MAX 10
+const char g_EkaStr[][EKA_STR_MAX] = {
 	"DEF",
 	"8", "4", "2", "6", "44", "66",
 	"A", "B", "C", "D",

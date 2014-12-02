@@ -58,6 +58,9 @@
     <ClInclude Include="include\SFResConfigReader.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\TStrTrans.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P\xml.cpp">
@@ -67,6 +70,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SF\SFResConfigReader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="T\TStrTrans.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

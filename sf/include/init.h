@@ -143,3 +143,5 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>
+#include <TStrTrans.h>
+#include <SFResConfigReader.h>

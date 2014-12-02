@@ -3,12 +3,11 @@
 
 namespace SFResConfigReader
 {
-	UINT tabCount[SF_XML_TABS_MAX] = { 0 };
-	UINT tabs = 0;
+#define RES_DEBUG
 
-	bool getFirstSplit(char* dst, int max, char* src, char split)
+	bool getFirstSplit(char* dst, int max, const char* src, char split)
 	{
-		if (NULL==src || NULL==dst || split<' ')
+		if (NULL==src || NULL==dst)
 		{
 			return false;
 		}
@@ -24,7 +23,7 @@ namespace SFResConfigReader
 		return false;
 	}
 
-	bool showAllAttribute(CComPtr<IXmlReader> pReader)
+	bool showAllAttribute(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer)
 	{
 		HRESULT hr = S_OK;
 		LPCWSTR name;
@@ -37,7 +36,30 @@ namespace SFResConfigReader
 			pReader->GetValue(&value, NULL);
 			wprintf(L"%s:%s  ", name, value);
 			ret = true;
+
+			if (tabCount[1] == 2)
+			{
+				if (tabCount[2] == 1)
+				{
+					if (tabCount[3] == 0)
+					{
+						char tmpSkill[EKA_STR_MAX];
+						StringA tmpValue = TStrTrans::UnicodeToUtf8(value);
+
+						if (wcscmp(name,L"name") == 0)
+						{
+							if (getFirstSplit(tmpSkill, EKA_STR_MAX, tmpValue.c_str(), '_'))
+							{
+								SF_EKA tmpEka = SFConfig::GetInstance()->s_mEka[tmpSkill];
+
+								resPlayer.m_mSkill[tmpEka] = new SFResSkill;
+							}
+						}
+					}
+				}
+			}
 		}
+#ifdef RES_DEBUG
 		wprintf(L"\n");
 		for (int i = 1; i < SF_XML_TABS_MAX; i++)
 		{
@@ -54,11 +76,12 @@ namespace SFResConfigReader
 		{
 			wprintf(L"%d ", tabCount[i]);
 		}
+#endif
 
 		return ret;
 	}
 
-	bool readFromXML(char* xmlPath, SFResPlayer* pPlayer)
+	bool readFromXML(char* xmlPath, SFResPlayer& resPlayer)
 	{
 		HRESULT hr = S_OK;
 		CComPtr<IStream> pFileStream;
@@ -69,7 +92,10 @@ namespace SFResConfigReader
 		bool nodeSw[ND_MAX] = {false};
 		bool nodeIsOnly[ND_MAX] = {false};
 		bool nodeHad[ND_MAX] = {false};
-		UINT nodeCount[ND_MAX] = {0};
+		UINT nodeCount[ND_MAX] = { 0 };
+
+		UINT tabCount[SF_XML_TABS_MAX] = { 0 };
+		UINT tabs = 0;
 
 		memset(tabCount, 0, SF_XML_TABS_MAX*sizeof(UINT));
 		tabs = 0;

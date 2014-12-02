@@ -6,9 +6,10 @@
 #include <comutil.h>
 #include <atlcomcli.h>
 #include <iostream>
-#include <SFResource.h>
 #pragma comment(lib, "comsuppwd.lib")
 #pragma comment(lib, "XmlLite.lib")
+
+#include <init.h>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ using namespace std;
 #define POLL_TABSCOUNT (tabs)
 #define POLL_NODECOUNT nodeCount
 #define POLL_TABSCOUNT_ARR tabCount
+#define POLL_RESPLAYER resPlayer
 
 /*
 遍历该级xml的每一个枚举为"sf_nd"的节点。
@@ -69,7 +71,7 @@ tips:linuxC风格太浓厚了，不过很灵活。
 						POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]++; \
 						wprintf(L"#%d:%d", POLL_TABSCOUNT - 1, POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]); \
 						wprintf(L"<%s>", nodeName[sf_nd]);	\
-						showAllAttribute(POLL_PREADER);	\
+						showAllAttribute(POLL_PREADER, POLL_TABSCOUNT_ARR, POLL_RESPLAYER);	\
 					}	\
 				}	\
 			}	\
@@ -101,6 +103,6 @@ namespace SFResConfigReader
 		L"frame_table", L"frame", L"rect", L"box_table", L"box", L"rect"
 	};
 
-	bool showAllAttribute(CComPtr<IXmlReader> pReader);
-	bool readFromXML(char* xmlPath, SFResPlayer* pPlayer);
+	bool showAllAttribute(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer);
+	bool readFromXML(char* xmlPath, SFResPlayer& resPlayer);
 }

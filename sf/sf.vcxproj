@@ -151,12 +151,14 @@
     <ClInclude Include="include\SFResource.h" />
     <ClInclude Include="include\TArray.h" />
     <ClInclude Include="include\TMap.h" />
+    <ClInclude Include="include\TStrTrans.h" />
     <ClInclude Include="include\xml.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P\xml.cpp" />
     <ClCompile Include="SF\SFResConfigReader.cpp" />
     <ClCompile Include="test2.cpp" />
+    <ClCompile Include="T\TStrTrans.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data\p001\playerInfo.xml" />
