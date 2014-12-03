@@ -216,24 +216,25 @@ enum SF_TMR
 const unsigned int gc_arrTmr[TMR_MAX] = { 0, 15, 10, 100 };
 #pragma endregion
 
-#pragma region 角色当前动作状态define(SF_AS)
-#ifdef SF_AS_OLD
-enum SF_AS
+#pragma region 角色当前状态define(SF_ASH, SF_AS)
+//动作状态
+enum SF_ASH
 {
-	AS_STAND, AS_J, AS_B, AS_S, AS_F, AS_DF, AS_SDF, AS_JEX, AS_R, AS_DDG,
-	AS_MAX
+	ASH_DEF, ASH_ATC, ASH_HITED, ASH_FLOOR, ASH_DAD,
+	ASH_MAX
 };
-#else
-//在chain阶段放的才是之后段的，否则就只是一段的技能。
 
+//位置状态
 enum SF_AS
 {
-	AS_STAND, AS_JUMP, AS_DEF, AS_CHAIN, AS_SKILL, AS_HITED, AS_FLOOR,
+	AS_STAND, AS_JUMP,
 	AS_MAX
 };
-//AS_SKILL特指不能强制取消的技能阶段，可以取消的全是NORMAL阶段或者JUMP阶段
-#define AS_NORMAL AS_STAND
-#endif
+#define AS_DEF AS_STAND
+#define AS_STR_MAX 10
+const char g_AsStr[][AS_STR_MAX] = {
+	"def", "jump"
+};
 #pragma endregion
 
 #pragma region 带状态的虚拟按键事件连锁define(SF_EKF)
@@ -377,6 +378,12 @@ const char g_EkaStr[][EKA_STR_MAX] = {
 };
 
 #pragma endregion
+
+enum SF_PRS
+{
+	PRS_SKL, PRS_SKLSW, PRS_OBJ, PRS_FRM,
+	PRS_MAX
+};
 
 #define RES_DEBUG
 

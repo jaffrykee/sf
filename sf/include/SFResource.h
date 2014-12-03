@@ -53,9 +53,10 @@ class SFResSkillSwitch
 {
 public:
 	SFResSkill* m_parent;
+	SF_AS m_id;
 	vector<SFResObject> m_mObject;
 
-	SFResSkillSwitch()
+	SFResSkillSwitch(SF_AS as):m_id(as)
 	{
 	}
 
@@ -74,11 +75,11 @@ class SFResSkill
 {
 public:
 	SFResPlayer* m_parent;
+	SF_EKA m_id;
 	SFResSkillSwitch* m_mSkillSwitchBmp[AS_MAX];
 
-	SFResSkill()
+	SFResSkill(SF_EKA eka) :m_id(eka)
 	{
-		int i = 0;
 	}
 
 	~SFResSkill()
