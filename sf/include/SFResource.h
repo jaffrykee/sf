@@ -3,19 +3,6 @@
 //用于读取资源
 
 #include <init.h>
-#include <map>
-#include <list>
-#include <vector>
-#include <TArray.h>
-
-#define BASIC_RES_PATH ./data
-
-class SFResPlayerMap;
-class SFResPlayer;
-class SFResSkill;
-class SFResSkillSwitch;
-class SFResObject;
-class SFResFrame;
 
 /*
 	技能帧，如果不动，那么，渲染矩形的左下为(0,0)（即left和bottom都为0），渲染位移参照也是靠左下角为凭据的，位移

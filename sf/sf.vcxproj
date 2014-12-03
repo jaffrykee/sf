@@ -156,6 +156,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P\xml.cpp" />
+    <ClCompile Include="SF\SFConfig.cpp" />
+    <ClCompile Include="SF\SFPlayer.cpp" />
     <ClCompile Include="SF\SFResConfigReader.cpp" />
     <ClCompile Include="test2.cpp" />
     <ClCompile Include="T\TStrTrans.cpp" />

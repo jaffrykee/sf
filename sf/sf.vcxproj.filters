@@ -75,6 +75,12 @@
     <ClCompile Include="T\TStrTrans.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="SF\SFConfig.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SF\SFPlayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data\p001\playerInfo.xml" />

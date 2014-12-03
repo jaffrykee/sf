@@ -1,13 +1,5 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
-#include <stdio.h>
-#include <XmlLite.h>
-#include <shlwapi.h>
-#include <comutil.h>
-#include <atlcomcli.h>
-#include <iostream>
-#pragma comment(lib, "comsuppwd.lib")
-#pragma comment(lib, "XmlLite.lib")
 
 #include <init.h>
 
@@ -66,7 +58,7 @@ tips:linuxC风格太浓厚了，不过很灵活。
 						(POLL_SW[sf_nd]) = true;	\
 						(POLL_NODEHAD[sf_nd]) = true;	\
 						wprintf(L"\n");	\
-						for(int i = 0; i < POLL_TABSCOUNT - 1; i++)	\
+						for(UINT i = 0; i < POLL_TABSCOUNT - 1; i++)	\
 							wprintf(L"    ");	\
 						POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]++; \
 						wprintf(L"#%d:%d", POLL_TABSCOUNT - 1, POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]); \

@@ -3,15 +3,13 @@
 
 namespace SFResConfigReader
 {
-#define RES_DEBUG
-
 	bool getFirstSplit(char* dst, int max, const char* src, char split)
 	{
 		if (NULL==src || NULL==dst)
 		{
 			return false;
 		}
-		for (int i = 0; i < strlen(src); i++)
+		for (UINT i = 0; i < strlen(src); i++)
 		{
 			if (src[i] == split)
 			{
@@ -101,7 +99,7 @@ namespace SFResConfigReader
 		tabs = 0;
 
 		//Open read-only input stream
-		hr = SHCreateStreamOnFile(xmlPath, STGM_READ, &pFileStream);
+		hr = SHCreateStreamOnFileA(xmlPath, STGM_READ, &pFileStream);
 		if (SUCCEEDED(hr))
 		{
 			hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);
@@ -142,8 +140,6 @@ namespace SFResConfigReader
 				POLL_XML_NODE_END(ND_SKL)
 			POLL_XML_NODE_END(ND_SKL_TBL)
 		POLL_XML_NODE_END(ND_PLY_INF)
-
-		getchar();
 
 		return true;
 	}

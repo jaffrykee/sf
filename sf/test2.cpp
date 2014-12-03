@@ -13,8 +13,10 @@ void main()
 	{
 		if (resPlayer.m_mSkill[i] != NULL)
 		{
-			cout << endl << "==============================" << endl;
-			cout << g_EkaStr[i] << endl;
+			cout << endl << i << " : ";
+			cout << g_EkaStr[i];
 		}
 	}
+
+	getchar();
 }
