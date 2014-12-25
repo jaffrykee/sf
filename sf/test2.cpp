@@ -8,6 +8,7 @@ void main()
 	SFResPlayer resPlayer(SKN_SK1);
 	SFConfig* pConfig = SFConfig::GetInstance();
 
+	system("chcp 65001");
 	SFResConfigReader::readFromXML(path, resPlayer);
 	for (int i = 0; i < EKA_MAX; i++)
 	{

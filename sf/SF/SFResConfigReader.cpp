@@ -38,7 +38,7 @@ namespace SFResConfigReader
 		{
 			pReader->GetLocalName(&name, NULL);
 			pReader->GetValue(&value, NULL);
-			wprintf(L"%s:%s  ", name, value);
+			cout << TStrTrans::UnicodeToUtf8(name) << ":" << TStrTrans::UnicodeToUtf8(value);
 			ret = true;
 
 			if (tabCount[1] == 2)//12
