@@ -70,6 +70,19 @@ tips:linuxC风格太浓厚了，不过很灵活。
 		}	\
 	}
 
+#define POLL_XML_ATTR_BEGIN		\
+for (hr = pReader->MoveToFirstAttribute(); S_OK == hr; hr = pReader->MoveToNextAttribute())		\
+{		\
+	pReader->GetLocalName(&name, NULL);		\
+	pReader->GetValue(&value, NULL);		\
+	StringA utfName = TStrTrans::UnicodeToUtf8(name);		\
+	StringA utfValue = TStrTrans::UnicodeToUtf8(value);		\
+	cout << utfName << ":" << utfValue << " ";		\
+	ret = true;
+
+#define POLL_XML_ATTR_END		\
+}
+
 #define NODE_NAME_MAX 64
 #pragma endregion
 

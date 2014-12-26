@@ -3,6 +3,7 @@
 
 namespace SFResConfigReader
 {
+	/*从src中得到第一个以split这个字符为分割的字符串，放到dst中*/
 	UINT getFirstSplit(char* dst, int max, const char* src, char split)
 	{
 		UINT lenSrc = strlen(src);
@@ -32,61 +33,53 @@ namespace SFResConfigReader
 		LPCWSTR name;
 		LPCWSTR value;
 		bool ret = false;
-		void* parseCount[PRS_MAX] = {NULL};
+		static void* parseCount[PRS_MAX] = {NULL};
 
-		for (hr = pReader->MoveToFirstAttribute(); S_OK == hr; hr = pReader->MoveToNextAttribute())
+		if (tabCount[1] == 1)//11
 		{
-			pReader->GetLocalName(&name, NULL);
-			pReader->GetValue(&value, NULL);
-			StringA utfName = TStrTrans::UnicodeToUtf8(name);
-			StringA utfValue = TStrTrans::UnicodeToUtf8(value);
-			cout << utfName << ":" << utfValue;
-			ret = true;
-
-			if (tabCount[1] == 1)//11
+			if (tabCount[2] == 0)//110
 			{
-				if (tabCount[2] == 0)//110
+				#pragma region skin_table
+				#pragma endregion
+			}
+			else if (tabCount[2] > 0)//11x
+			{
+				if (tabCount[3] == 0)//11x0
 				{
-					#pragma region skin_table
+					#pragma region skin
 					#pragma endregion
-				}
-				else if (tabCount[2] > 0)//11x
-				{
-					if (tabCount[3] == 0)//11x0
-					{
-						#pragma region skin
-						#pragma endregion
-					}
 				}
 			}
-			else if (tabCount[1] == 2)//12
+		}
+		else if (tabCount[1] == 2)//12
+		{
+			if (tabCount[2] == 0)//120
 			{
-				if (tabCount[2] == 0)//120
+				#pragma region skill_table
+				#pragma endregion
+			}
+			else if (tabCount[2] > 0)//12x
+			{
+				if (tabCount[3] == 0)//12x0
 				{
-					#pragma region skill_table
-					#pragma endregion
-				}
-				else if (tabCount[2] > 0)//12x
-				{
-					if (tabCount[3] == 0)//12x0
-					{
-						#pragma region skill
-						char tmpSkill[EKA_STR_MAX] = {0};
-
-						if (wcscmp(name, L"name") == 0)
+					#pragma region skill
+					POLL_XML_ATTR_BEGIN
+						if (utfName == "name")
 						{
+							char strSkill[EKA_STR_MAX] = { 0 };
 							UINT tmp = 0;
 
-							tmp = getFirstSplit(tmpSkill, EKA_STR_MAX, utfValue.c_str(), '_');
+							tmp = getFirstSplit(strSkill, EKA_STR_MAX, utfValue.c_str(), '_');
 							if (tmp > 0)
 							{
-								SF_EKA tmpEka = SFConfig::GetInstance()->s_mEka[tmpSkill];
-								const char* tmpSw = utfValue.c_str() + tmp + 1;
+								SF_EKA iSkill = SFConfig::GetInstance()->s_mEka[strSkill];
+								const char* tmpSw = utfValue.c_str() + tmp + 1;		//技能状态分支（站立还是跳跃，没有的话就是站立）
 								bool found = false;
 								UINT i = 0;
 
-								parseCount[PRS_SKL] = new SFResSkill(tmpEka);
-								resPlayer.m_mSkill[tmpEka] = (SFResSkill*)parseCount[PRS_SKL];
+								parseCount[PRS_SKL] = new SFResSkill(iSkill);
+								resPlayer.m_mSkill[iSkill] = (SFResSkill*)parseCount[PRS_SKL];
+								((SFResSkill*)parseCount[PRS_SKL])->m_parent = &resPlayer;
 								for (i = 0; i < AS_MAX; i++)
 								{
 									if (0 == strcmp(tmpSw, g_AsStr[i]))
@@ -101,68 +94,84 @@ namespace SFResConfigReader
 								}
 								parseCount[PRS_SKLSW] = new SFResSkillSwitch((SF_AS)i);
 								((SFResSkill*)parseCount[PRS_SKL])->m_mSkillSwitchBmp[i] = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
+								((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_parent = ((SFResSkill*)parseCount[PRS_SKL]);
 							}
 						}
+					POLL_XML_ATTR_END
+					#pragma endregion
+				}
+				else if (tabCount[3] == 1)//12x1
+				{
+					if (tabCount[4] == 0)//12x10
+					{
+						#pragma region object_table
 						#pragma endregion
 					}
-					else if (tabCount[3] == 1)//12x1
+					else if (tabCount[4] > 0)//12x1x
 					{
-						if (tabCount[4] == 0)//12x10
+						if (tabCount[5] == 0)//12x1x0
 						{
-							#pragma region object_table
+							#pragma region object
+							POLL_XML_ATTR_BEGIN
+								if (utfName == "id")
+								{
+									stringstream ss;
+									unsigned int iValue;
+
+									ss << utfValue;
+									ss >> iValue;
+									parseCount[PRS_OBJ] = new SFResObject(tabCount[4] - 1);
+									((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_mObject.insert(
+										((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_mObject.end(), 
+										(SFResObject*)parseCount[PRS_OBJ]
+										);
+									((SFResObject*)parseCount[PRS_OBJ])->m_parent = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
+								}
+							POLL_XML_ATTR_END
 							#pragma endregion
 						}
-						else if (tabCount[4] > 0)//12x1x
+						else if (tabCount[5] == 1)//12x1x1
 						{
-							if (tabCount[5] == 0)//12x1x0
+							if (tabCount[6] == 0)//12x1x10
 							{
-								#pragma region object
-								//resPlayer.m_mSkill[];
+								#pragma region frame_table
 								#pragma endregion
 							}
-							else if (tabCount[5] == 1)//12x1x1
+							else if (tabCount[6] > 0)//12x1x1x
 							{
-								if (tabCount[6] == 0)//12x1x10
+								if (tabCount[7] == 0)//12x1x1x0
 								{
-									#pragma region frame_table
+									#pragma region frame
 									#pragma endregion
 								}
-								else if (tabCount[6] > 0)//12x1x1x
+								else if (tabCount[7] == 1)//12x1x1x1x
 								{
-									if (tabCount[7] == 0)//12x1x1x0
+									if (tabCount[8] == 0)//12x1x1x10
 									{
-										#pragma region frame
+										#pragma region rect(frame)
 										#pragma endregion
 									}
-									else if (tabCount[7] == 1)//12x1x1x1x
+								}
+								else if (tabCount[7] == 2)//12x1x1x2x
+								{
+									if (tabCount[8] == 0)//12x1x1x20
 									{
-										if (tabCount[8] == 0)//12x1x1x10
-										{
-											#pragma region rect(frame)
-											#pragma endregion
-										}
+										#pragma region box_table
+										#pragma endregion
 									}
-									else if (tabCount[7] == 2)//12x1x1x2x
+									else if (tabCount[8] > 0)//12x1x1x2x
 									{
-										if (tabCount[8] == 0)//12x1x1x20
+										if (tabCount[9] == 0)//12x1x1x2x0
 										{
-											#pragma region box_table
+											#pragma region box
 											#pragma endregion
 										}
-										else if (tabCount[8] > 0)//12x1x1x2x
+										else if (tabCount[9] == 1)//12x1x1x2x1
 										{
-											if (tabCount[9] == 0)//12x1x1x2x0
+											if (tabCount[10] == 0)//12x1x1x2x10
 											{
-												#pragma region box
+												#pragma region rect(box)
 												#pragma endregion
-											}
-											else if (tabCount[9] == 1)//12x1x1x2x1
-											{
-												if (tabCount[10] == 0)//12x1x1x2x10
-												{
-													#pragma region rect(box)
-													#pragma endregion
-												}
 											}
 										}
 									}
@@ -173,6 +182,7 @@ namespace SFResConfigReader
 				}
 			}
 		}
+
 #ifdef RES_DEBUG
 		wprintf(L"\n");
 		for (int i = 1; i < SF_XML_TABS_MAX; i++)

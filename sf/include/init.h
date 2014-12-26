@@ -38,6 +38,7 @@
 #include <comutil.h>
 #include <atlcomcli.h>
 #include <iostream>
+#include <sstream>
 #pragma comment(lib, "comsuppwd.lib")
 #pragma comment(lib, "XmlLite.lib")
 #pragma endregion
@@ -379,6 +380,13 @@ const char g_EkaStr[][EKA_STR_MAX] = {
 
 #pragma endregion
 
+/*
+	记录目前xml解析到哪里，数组存放的是指针。PRS是parse的意思。
+	PRS_SKL:SFResSkill*
+	PRS_SKLSW:SFResSkillSwitch*
+	PRS_OBJ:SFResObject*
+	PRS_FRM:SFResFrame*
+*/
 enum SF_PRS
 {
 	PRS_SKL, PRS_SKLSW, PRS_OBJ, PRS_FRM,

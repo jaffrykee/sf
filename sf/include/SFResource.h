@@ -30,11 +30,12 @@ public:
 class SFResObject
 {
 public:
-	string m_name;
+	unsigned int m_index;
+	unsigned int m_id;
 	SFResSkillSwitch* m_parent;
 	vector<SFResFrame> m_mFrame;
 
-	SFResObject()
+	SFResObject(unsigned int index) :m_index(index)
 	{
 	}
 
@@ -42,9 +43,9 @@ public:
 	{
 	}
 
-	SFResFrame& operator[](unsigned int count)
+	SFResFrame& operator[](unsigned int index)
 	{
-		return m_mFrame[count];
+		return m_mFrame[index];
 	}
 };
 
@@ -54,7 +55,7 @@ class SFResSkillSwitch
 public:
 	SFResSkill* m_parent;
 	SF_AS m_id;
-	vector<SFResObject> m_mObject;
+	vector<SFResObject*> m_mObject;
 
 	SFResSkillSwitch(SF_AS as):m_id(as)
 	{
@@ -64,9 +65,9 @@ public:
 	{
 	}
 
-	SFResObject& operator[](unsigned int id)
+	SFResObject* operator[](unsigned int index)
 	{
-		return m_mObject[id];
+		return m_mObject[index];
 	}
 };
 
