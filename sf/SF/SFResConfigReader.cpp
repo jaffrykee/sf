@@ -38,28 +38,50 @@ namespace SFResConfigReader
 		{
 			pReader->GetLocalName(&name, NULL);
 			pReader->GetValue(&value, NULL);
-			cout << TStrTrans::UnicodeToUtf8(name) << ":" << TStrTrans::UnicodeToUtf8(value);
+			StringA utfName = TStrTrans::UnicodeToUtf8(name);
+			StringA utfValue = TStrTrans::UnicodeToUtf8(value);
+			cout << utfName << ":" << utfValue;
 			ret = true;
 
-			if (tabCount[1] == 2)//12
+			if (tabCount[1] == 1)//11
 			{
-				if (tabCount[2] > 0)//12x
+				if (tabCount[2] == 0)//110
+				{
+					#pragma region skin_table
+					#pragma endregion
+				}
+				else if (tabCount[2] > 0)//11x
+				{
+					if (tabCount[3] == 0)//11x0
+					{
+						#pragma region skin
+						#pragma endregion
+					}
+				}
+			}
+			else if (tabCount[1] == 2)//12
+			{
+				if (tabCount[2] == 0)//120
+				{
+					#pragma region skill_table
+					#pragma endregion
+				}
+				else if (tabCount[2] > 0)//12x
 				{
 					if (tabCount[3] == 0)//12x0
 					{
-#pragma region skill
+						#pragma region skill
 						char tmpSkill[EKA_STR_MAX] = {0};
-						StringA tmpValue = TStrTrans::UnicodeToUtf8(value);
 
 						if (wcscmp(name, L"name") == 0)
 						{
 							UINT tmp = 0;
 
-							tmp = getFirstSplit(tmpSkill, EKA_STR_MAX, tmpValue.c_str(), '_');
+							tmp = getFirstSplit(tmpSkill, EKA_STR_MAX, utfValue.c_str(), '_');
 							if (tmp > 0)
 							{
 								SF_EKA tmpEka = SFConfig::GetInstance()->s_mEka[tmpSkill];
-								const char* tmpSw = tmpValue.c_str() + tmp + 1;
+								const char* tmpSw = utfValue.c_str() + tmp + 1;
 								bool found = false;
 								UINT i = 0;
 
@@ -81,15 +103,71 @@ namespace SFResConfigReader
 								((SFResSkill*)parseCount[PRS_SKL])->m_mSkillSwitchBmp[i] = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
 							}
 						}
-#pragma endregion
+						#pragma endregion
 					}
 					else if (tabCount[3] == 1)//12x1
 					{
-						if (tabCount[4] > 0)//12x1x
+						if (tabCount[4] == 0)//12x10
 						{
-#pragma region object
-//							resPlayer.m_mSkill[];
-#pragma endregion
+							#pragma region object_table
+							#pragma endregion
+						}
+						else if (tabCount[4] > 0)//12x1x
+						{
+							if (tabCount[5] == 0)//12x1x0
+							{
+								#pragma region object
+								//resPlayer.m_mSkill[];
+								#pragma endregion
+							}
+							else if (tabCount[5] == 1)//12x1x1
+							{
+								if (tabCount[6] == 0)//12x1x10
+								{
+									#pragma region frame_table
+									#pragma endregion
+								}
+								else if (tabCount[6] > 0)//12x1x1x
+								{
+									if (tabCount[7] == 0)//12x1x1x0
+									{
+										#pragma region frame
+										#pragma endregion
+									}
+									else if (tabCount[7] == 1)//12x1x1x1x
+									{
+										if (tabCount[8] == 0)//12x1x1x10
+										{
+											#pragma region rect(frame)
+											#pragma endregion
+										}
+									}
+									else if (tabCount[7] == 2)//12x1x1x2x
+									{
+										if (tabCount[8] == 0)//12x1x1x20
+										{
+											#pragma region box_table
+											#pragma endregion
+										}
+										else if (tabCount[8] > 0)//12x1x1x2x
+										{
+											if (tabCount[9] == 0)//12x1x1x2x0
+											{
+												#pragma region box
+												#pragma endregion
+											}
+											else if (tabCount[9] == 1)//12x1x1x2x1
+											{
+												if (tabCount[10] == 0)//12x1x1x2x10
+												{
+													#pragma region rect(box)
+													#pragma endregion
+												}
+											}
+										}
+									}
+								}
+							}
 						}
 					}
 				}
