@@ -2,7 +2,6 @@
 #pragma execution_character_set("utf-8")
 
 #include <init.h>
-#include <list>
 
 using namespace std;
 
@@ -68,120 +67,17 @@ public:
 	//当前等待打印的技能的帧计数器
 	int m_countSkillFrame;
 
-	SFPlayer()
-	{
-		getSkillEnableFromFile("");
-		m_pSfconfig = SFConfig::GetInstance();
-		m_actionStatus = AS_STAND;
-		m_nowSkill = EKA_MAX;
-		m_countSkillFrame = 0;
-	}
-
-	SFPlayer(int id, int cid, int pid) :m_id(id), m_cid(cid), m_pid(pid)
-	{
-		getSkillEnableFromFile("");
-		m_pSfconfig = SFConfig::GetInstance();
-		m_actionStatus = AS_STAND;
-		m_nowSkill = EKA_MAX;
-		m_countSkillFrame = 0;
-	}
-
-	void getSkillEnableFromFile(string path)
-	{
-		if (path == "")
-		{
-			for (int i = 0; i < EKA_MAX; i++)
-			{
-				m_aSkill[i] = NULL;
-				for (int j = 0; j < AS_MAX; j++)
-				{
-					m_enableSkill[j][i] = false;
-				}
-			}
-		}
-	}
-
-	void setUpEventListTimeout()
-	{
-		m_eStatus.setTimeout();
-	}
-
-	void enableDownStatus(SF_EKD val)
-	{
-		m_eStatus.m_aStatus[val] = 1;
-	}
-
-	void disableDownStatus(SF_EKD val)
-	{
-		m_eStatus.m_aStatus[val] = 0;
-	}
-
-	void addEvent(SF_EKU val)
-	{
-		m_eStatus.addEvent(val);
-		disableDownStatus((SF_EKD)(val - 1));
-	}
-
-	string getEkaString(string tail)
-	{
-		return m_eStatus.m_sUp + tail;
-	}
-
-	SF_EKA getActionSkill(string ekaStr)
-	{
-		for (unsigned int i = 0; i < ekaStr.size(); i++)
-		{
-			string tmp = ekaStr.substr(i, ekaStr.size() - i);
-			map<string, SF_EKA>::iterator it = m_pSfconfig->s_mEka.find(tmp);
-
-			if (it != m_pSfconfig->s_mEka.end())
-			{
-				//found
-				SF_EKA ret = (SF_EKA)(m_pSfconfig->s_mEka[tmp]);
-				if (m_enableSkill[m_actionStatus][ret])
-				{
-					//enable，返回结果	<inc>
-					return ret;
-				}
-				else
-				{
-					//disable，继续循环，直到((found && enable) || 遍历结束)
-				}
-			}
-		}
-
-		return EKA_MAX;
-	}
-
-	bool selectSkill(SF_EKD key)
-	{
-		SF_EKA ret;
-
-		enableDownStatus(key);
-		ret = getActionSkill(m_eStatus.m_sUp + m_eStatus.getEkdChar(key));
-		if (ret == EKA_MAX)
-		{
-			return false;
-		}
-		else
-		{
-			m_nowSkill = ret;
-		}
-		return true;
-	}
-
-	bool doSkill()
-	{
-
-	}
-
-	int getMaxSkillFrame()
-	{
-		return m_aSkill[m_nowSkill]->m_maxFrame;
-	}
-
-	void moveToNextFrame()
-	{
-
-	}
+	SFPlayer();
+	SFPlayer(int id, int cid, int pid);
+	void getSkillEnableFromFile(string path);
+	void setUpEventListTimeout();
+	void enableDownStatus(SF_EKD val);
+	void disableDownStatus(SF_EKD val);
+	void addEvent(SF_EKU val);
+	string getEkaString(string tail);
+	SF_EKA getActionSkill(string ekaStr);
+	bool selectSkill(SF_EKD key);
+	bool doSkill();
+	int getMaxSkillFrame();
+	void moveToNextFrame();
 };

@@ -1,16 +1,13 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
 
+#pragma region win系统define和include
 #ifndef WINVER              // Allow use of features specific to Windows 7 or later.
 #define WINVER 0x0700       // Change this to the appropriate value to target other versions of Windows.
 #endif
 
 #ifndef _WIN32_WINNT        // Allow use of features specific to Windows 7 or later.
 #define _WIN32_WINNT 0x0700 // Change this to the appropriate value to target other versions of Windows.
-#endif
-
-#ifndef UNICODE
-#define UNICODE
 #endif
 
 #define WIN32_LEAN_AND_MEAN     // Exclude rarely-used stuff from Windows headers
@@ -32,15 +29,23 @@
 
 #include <string>
 #include <map>
+#include <list>
+#include <vector>
 
-/******************************************************************
-*                                                                 *
-*  Macros                                                         *
-*                                                                 *
-******************************************************************/
+#include <stdio.h>
+#include <XmlLite.h>
+#include <shlwapi.h>
+#include <comutil.h>
+#include <atlcomcli.h>
+#include <iostream>
+#include <sstream>
+#pragma comment(lib, "comsuppwd.lib")
+#pragma comment(lib, "XmlLite.lib")
+#pragma endregion
 
 using namespace std;
 
+#pragma region inline和宏等
 template<class Interface>
 inline void
 SafeRelease(
@@ -68,6 +73,7 @@ Interface **ppInterfaceToRelease
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define HINST_THISCOMPONENT ((HINSTANCE)&__ImageBase)
 #endif
+#pragma endregion
 
 #pragma region VK
 //定义数据字符0~9  
@@ -139,7 +145,268 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define   VK_z  0x7A   
 #pragma endregion
 
+#pragma region 按键设置define
+#define KD_P1UP VK_W
+#define KD_P1LF VK_A
+#define KD_P1DW VK_S
+#define KD_P1RG VK_D
+#define KD_P1AA VK_U
+#define KD_P1BB VK_I
+#define KD_P1CC VK_O
+#define KD_P1DD VK_J
+#define KD_P1EE VK_K
+#define KD_P1FF VK_L
+#define KD_P1ST VK_1
+#define KD_P1MN VK_2
+
+#define KD_P2UP VK_UP
+#define KD_P2LF VK_LEFT
+#define KD_P2DW VK_DOWN
+#define KD_P2RG VK_RIGHT
+#define KD_P2AA VK_NUMPAD1
+#define KD_P2BB VK_NUMPAD2
+#define KD_P2CC VK_NUMPAD3
+#define KD_P2DD VK_NUMPAD0
+#define KD_P2EE VK_NUMPAD5
+#define KD_P2FF VK_NUMPAD6
+#define KD_P2ST VK_3
+#define KD_P2MN VK_4
+#pragma endregion
+
+#pragma region 角色定义(SF_PLR)
+enum SF_PLR
+{
+	PLR_ZERO,
+	PLR_JET, PLR_BLK,
+	PLR_MAX
+};
+#pragma endregion
+
+#pragma region 角色皮肤定义(SF_SKN)
+enum SF_SKN
+{
+	SKN_SK1, SKN_SK2, SKN_SK3, SKN_SK4,
+	SKN_MAX
+};
+#define SKN_DEF SKN_SK1
+#pragma endregion
+
+#pragma region 虚拟按键事件define(SF_EK)
+enum SF_EKD
+{
+	EK_8D, EK_4D, EK_2D, EK_6D, EK_S1D, EK_S2D,
+	EK_AD, EK_BD, EK_CD, EK_DD, EK_ED, EK_FD,
+	EKD_MAX
+};
+
+enum SF_EKU
+{
+	EK_8U, EK_4U, EK_2U, EK_6U, EK_S1U, EK_S2U,
+	EK_AU, EK_BU, EK_CU, EK_DU, EK_EU, EK_FU,
+	EKU_MAX
+};
+#pragma endregion
+
+#pragma region 计时器define(SF_TMR)
+enum SF_TMR
+{
+	TMR_NULL, TMR_PAINT, TMR_ACTION, TMR_SKILL,
+	TMR_MAX
+};
+
+const unsigned int gc_arrTmr[TMR_MAX] = { 0, 15, 10, 100 };
+#pragma endregion
+
+#pragma region 角色当前状态define(SF_ASH, SF_AS)
+//动作状态
+enum SF_ASH
+{
+	ASH_DEF, ASH_ATC, ASH_HITED, ASH_FLOOR, ASH_DAD,
+	ASH_MAX
+};
+
+//位置状态
+enum SF_AS
+{
+	AS_STAND, AS_JUMP,
+	AS_MAX
+};
+#define AS_DEF AS_STAND
+#define AS_STR_MAX 10
+const char g_AsStr[][AS_STR_MAX] = {
+	"def", "jump"
+};
+#pragma endregion
+
+#pragma region 带状态的虚拟按键事件连锁define(SF_EKF)
+/*
+j:jump
+b:back
+s:squat
+f:front
+def:defend
+defs:squat defend
+jex:big jump
+r:run
+ddg:dodge(闪躲)
+以上均为物理依赖态，需要遵照物理守则，即落在地面，且不能到地下。
+作为skill数组的下标使用，所以从0开始。
+*/
+enum SF_EKF
+{
+	EKF_j, EKF_jex, EKF_rj, EKF_rjex,
+	EKF_fj, EKF_fjex, EKF_bj, EKF_bjex,
+#if 0
+	EKF_jA, EKF_jB, EKF_jC, EKF_jD,
+	//可能会于以后版本用到，即技能的运动轨迹与图像内容逻辑分开。
+#else
+	EKF_jA, EKF_jexA, EKF_rjA, EKF_rjexA,
+	EKF_fjA, EKF_fjexA, EKF_bjA, EKF_bjexA,
+	EKF_jB, EKF_jexB, EKF_rjB, EKF_rjexB,
+	EKF_fjB, EKF_fjexB, EKF_bjB, EKF_bjexB,
+	EKF_jC, EKF_jexC, EKF_rjC, EKF_rjexC,
+	EKF_fjC, EKF_fjexC, EKF_bjC, EKF_bjexC,
+	EKF_jD, EKF_jexD, EKF_rjD, EKF_rjexD,
+	EKF_fjD, EKF_fjexD, EKF_bjD, EKF_bjexD,
+#endif
+	EKF_b, EKF_def, EKF_defs,
+	EKF_s, EKF_sA, EKF_sB, EKF_sC, EKF_sD,
+	EKF_f, EKF_fA, EKF_fB, EKF_fC, EKF_fD,
+	EKF_r, EKF_ddg,
+
+	EKF_SKILL_MIN,
+	EKF_8, EKF_4, EKF_2, EKF_6, EKF_44, EKF_66,
+	EKF_A, EKF_B, EKF_C, EKF_D,
+	EKF_26A, EKF_26B, EKF_26C, EKF_26D,
+	EKF_24A, EKF_24B, EKF_24C, EKF_24D,
+	EKF_626A, EKF_626B, EKF_626C, EKF_626D,
+	EKF_424A, EKF_424B, EKF_424C, EKF_424D,
+	EKF_426A, EKF_426B, EKF_426C, EKF_426D,
+	EKF_624A, EKF_624B, EKF_624C, EKF_624D,
+	EKF_2624A, EKF_2624B, EKF_2624C, EKF_2624D,
+	EKF_2426A, EKF_2426B, EKF_2426C, EKF_2426D,
+	EKF_2626A, EKF_2626B, EKF_2626C, EKF_2626D,
+	EKF_2424A, EKF_2424B, EKF_2424C, EKF_2424D,
+	EKF_624624A, EKF_624624B, EKF_624624C, EKF_624624D,
+	EKF_426426A, EKF_426426B, EKF_426426C, EKF_426426D,
+	EKF_MAX
+};
+
+#define EKF_STR_MAX 10
+const char g_EkfStr[][EKF_STR_MAX] = {
+	"j", "jex", "rj", "rjex",
+	"fj", "fjex", "bj", "bjex",
+#if 0
+	"jA", "jB", "jC", "jD",
+	//可能会于以后版本用到，即技能的运动轨迹与图像内容逻辑分开。
+#else
+	"jA", "jexA", "rjA", "rjexA",
+	"fjA", "fjexA", "bjA", "bjexA",
+	"jB", "jexB", "rjB", "rjexB",
+	"fjB", "fjexB", "bjB", "bjexB",
+	"jC", "jexC", "rjC", "rjexC",
+	"fjC", "fjexC", "bjC", "bjexC",
+	"jD", "jexD", "rjD", "rjexD",
+	"fjD", "fjexD", "bjD", "bjexD",
+#endif
+	"b", "def", "defs",
+	"s", "sA", "sB", "sC", "sD",
+	"f", "fA", "fB", "fC", "fD",
+	"r", "ddg",
+
+	"SKILL_MIN",
+	"8", "4", "2", "6", "44", "66",
+	"A", "B", "C", "D",
+	"26A", "26B", "26C", "26D",
+	"24A", "24B", "24C", "24D",
+	"626A", "626B", "626C", "626D",
+	"424A", "424B", "424C", "424D",
+	"426A", "426B", "426C", "426D",
+	"624A", "624B", "624C", "624D",
+	"2624A", "2624B", "2624C", "2624D",
+	"2426A", "2426B", "2426C", "2426D",
+	"2626A", "2626B", "2626C", "2626D",
+	"2424A", "2424B", "2424C", "2424D",
+	"624624A", "624624B", "624624C", "624624D",
+	"426426A", "426426B", "426426C", "426426D",
+	"MAX"
+};
+#pragma endregion
+
+#pragma region 虚拟按键事件连锁define(SF_EKA)
+/*
+动作决策判断。
+*/
+enum SF_EKA
+{
+	EKA_DEF,
+	EKA_8, EKA_4, EKA_2, EKA_6, EKA_44, EKA_66,
+	EKA_A, EKA_B, EKA_C, EKA_D,
+	EKA_26A, EKA_26B, EKA_26C, EKA_26D,
+	EKA_24A, EKA_24B, EKA_24C, EKA_24D,
+	EKA_626A, EKA_626B, EKA_626C, EKA_626D,
+	EKA_424A, EKA_424B, EKA_424C, EKA_424D,
+	EKA_426A, EKA_426B, EKA_426C, EKA_426D,
+	EKA_624A, EKA_624B, EKA_624C, EKA_624D,
+	EKA_2624A, EKA_2624B, EKA_2624C, EKA_2624D,
+	EKA_2426A, EKA_2426B, EKA_2426C, EKA_2426D,
+	EKA_2626A, EKA_2626B, EKA_2626C, EKA_2626D,
+	EKA_2424A, EKA_2424B, EKA_2424C, EKA_2424D,
+	EKA_624624A, EKA_624624B, EKA_624624C, EKA_624624D,
+	EKA_426426A, EKA_426426B, EKA_426426C, EKA_426426D,
+	EKA_MAX
+};
+#define EKA_ZERO EKA_DEF
+
+#define EKA_STR_MAX 10
+const char g_EkaStr[][EKA_STR_MAX] = {
+	"DEF",
+	"8", "4", "2", "6", "44", "66",
+	"A", "B", "C", "D",
+	"26A", "26B", "26C", "26D",
+	"24A", "24B", "24C", "24D",
+	"626A", "626B", "626C", "626D",
+	"424A", "424B", "424C", "424D",
+	"426A", "426B", "426C", "426D",
+	"624A", "624B", "624C", "624D",
+	"2624A", "2624B", "2624C", "2624D",
+	"2426A", "2426B", "2426C", "2426D",
+	"2626A", "2626B", "2626C", "2626D",
+	"2424A", "2424B", "2424C", "2424D",
+	"624624A", "624624B", "624624C", "624624D",
+	"426426A", "426426B", "426426C", "426426D",
+	"MAX"
+};
+
+#pragma endregion
+
+/*
+	记录目前xml解析到哪里，数组存放的是指针。PRS是parse的意思。
+	PRS_SKL:SFResSkill*
+	PRS_SKLSW:SFResSkillSwitch*
+	PRS_OBJ:SFResObject*
+	PRS_FRM:SFResFrame*
+*/
+enum SF_PRS
+{
+	PRS_SKL, PRS_SKLSW, PRS_OBJ, PRS_FRM,
+	PRS_MAX
+};
+
+#define RES_DEBUG
+
+class SFConfig;
+
+class SFResPlayerMap;
+class SFResPlayer;
+class SFResSkill;
+class SFResSkillSwitch;
+class SFResObject;
+class SFResFrame;
+
 #include <SFConfig.h>
 #include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>
+#include <TStrTrans.h>
+#include <SFResConfigReader.h>

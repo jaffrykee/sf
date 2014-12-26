@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="skillFrame"
+	targetNamespace="http://tkmgame.com/shark/skillFrame.xsd"
+    elementFormDefault="qualified"
+	xmlns="http://tkmgame.com/shark/skillFrame.xsd"
+    xmlns:mstns="http://tkmgame.com/shark/skillFrame.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:element name="rect">
+		<xs:complexType>
+			<xs:attribute name="t" type="xs:float"/>
+			<xs:attribute name="l" type="xs:float"/>
+			<xs:attribute name="b" type="xs:float"/>
+			<xs:attribute name="r" type="xs:float"/>
+			<!-- 上为y轴正方向，右为x轴正方向（与屏幕坐标系不一样），地面为y=0。此仅为加载位图时的参考，一般来说，第一帧矩形的y轴方向中线
+				为x=0，并且在地面上（空中技能的话，这里的y=0就不是地面了，虽然垂直位移会受地面碰撞影响，但是水平不会）。 -->
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="box_table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="box" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<!-- 1为受创框，2为攻击框，3为受创且攻击框。 -->
+							<xs:element ref="rect"></xs:element>
+							<!-- 坐标系与本帧frame中的相同-->
+						</xs:sequence>
+						<xs:attribute name="type" type="xs:int"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="frame_table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="frame" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="rect"></xs:element>
+							<xs:element ref="box_table" minOccurs="0"></xs:element>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:int"/>
+						<xs:attribute name="m" type="xs:float"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="skin_table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="skin" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="name" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="object_table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="object" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="frame_table" minOccurs="0"></xs:element>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:int"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="skill_table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="skill" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="object_table" minOccurs="0"></xs:element>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string"/>
+						<!-- 名字示例：26A_def，prefix一般为触发器名字，suffix代表何种状态下的技能，def代表地上，air代表空中，
+							cxx什么的代表被连锁或其他什么的。-->
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="player_info">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="skin_table" minOccurs="0"></xs:element>
+				<xs:element ref="skill_table" minOccurs="0"></xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema>

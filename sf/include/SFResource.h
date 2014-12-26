@@ -1,88 +1,127 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
-//强制无签名utf-8
 //用于读取资源
 
 #include <init.h>
-#include <map>
 
-//技能帧位图
-class SFResSkillFrame
+/*
+	技能帧，如果不动，那么，渲染矩形的左下为(0,0)（即left和bottom都为0），渲染位移参照也是靠左下角为凭据的，位移
+参照上一帧的。
+*/
+class SFResFrame
 {
 public:
-	ID2D1Bitmap* m_pBmp;
+	unsigned int m_index;
+	float m_mid;
+	SFResObject* m_parent;
+	//渲染矩形
+	D2D1_RECT_F m_drawBox;
+	//位图资源
+	ID2D1Bitmap* m_mBmp;
 
-	SFResSkillFrame()
+	list<D2D1_RECT_F> m_lBodyBox;
+	list<D2D1_RECT_F> m_lAttackBox;
+
+	SFResFrame(unsigned int index) :m_index(index)
 	{
-		int i = 0;
 	}
 };
 
+//技能对象
+class SFResObject
+{
+public:
+	unsigned int m_index;
+	unsigned int m_id;
+	SFResSkillSwitch* m_parent;
+	vector<SFResFrame*> m_mFrame;
+
+	SFResObject(unsigned int index) :m_index(index)
+	{
+	}
+
+	~SFResObject()
+	{
+	}
+
+	SFResFrame* operator[](unsigned int index)
+	{
+		return m_mFrame[index];
+	}
+};
+
+//技能状态分支
 class SFResSkillSwitch
 {
 public:
-	//int代表是第几帧
-	static map<int, SFResSkillFrame> s_mSkillFrameBmp;
+	SFResSkill* m_parent;
+	SF_AS m_id;
+	vector<SFResObject*> m_mObject;
 
-	SFResSkillSwitch()
+	SFResSkillSwitch(SF_AS as):m_id(as)
 	{
-		int i = 0;
 	}
 
-	SFResSkillFrame& operator[](int count)
+	~SFResSkillSwitch()
 	{
-		return s_mSkillFrameBmp[count];
+	}
+
+	SFResObject* operator[](unsigned int index)
+	{
+		return m_mObject[index];
 	}
 };
 
+//技能资源
 class SFResSkill
 {
 public:
-	static map<SF_AS, SFResSkillSwitch> s_mSkillSwitchBmp;
+	SFResPlayer* m_parent;
+	SF_EKA m_id;
+	SFResSkillSwitch* m_mSkillSwitchBmp[AS_MAX];
 
-	SFResSkill()
+	SFResSkill(SF_EKA eka) :m_id(eka)
 	{
-		int i = 0;
 	}
 
-	SFResSkillSwitch& operator[](SF_AS status)
+	~SFResSkill()
 	{
-		return s_mSkillSwitchBmp[status];
-	}
-};
-
-class SFResSkin
-{
-public:
-	static map<SF_EKA, SFResSkill> s_mSkillBmp;
-
-	SFResSkin()
-	{
-		int i = 0;
-	}
-
-	SFResSkill& operator[](SF_EKA skillId)
-	{
-		return s_mSkillBmp[skillId];
+		for (UINT i = 0; i<AS_MAX; i++)
+		{
+			if (m_mSkillSwitchBmp[i] != NULL)
+			{
+				delete m_mSkillSwitchBmp[i];
+				m_mSkillSwitchBmp[i] = NULL;
+			}
+		}
 	}
 };
 
+//玩家资源
 class SFResPlayer
 {
 public:
-	static map<SF_SKN, SFResSkin> s_mSkinBmp;
+	SFResSkill* m_mSkill[EKA_MAX];
 
-	SFResPlayer()
+	SFResPlayer(SF_SKN skin)
 	{
-		int i = 0;
+		memset(m_mSkill, 0, sizeof(SFResSkill*)*EKA_MAX);
 	}
 
-	SFResSkin& operator[](SF_SKN skinId)
+	~SFResPlayer()
 	{
-		return s_mSkinBmp[skinId];
+		for (UINT i = 0; i<EKA_MAX; i++)
+		{
+			if (m_mSkill[i] != NULL)
+			{
+				delete m_mSkill[i];
+				m_mSkill[i] = NULL;
+			}
+		}
 	}
 };
 
+#if 0
 /*
 	全局资源单例类
 	<inc>可能会有两种方式。一种是将全部资源都读完，一种是在选人结束后确定要读入的资源，再从硬盘读入，虽然后者占用内存少，但是前者逻辑简单，
@@ -91,13 +130,25 @@ public:
 class SFResPlayerMap
 {
 public:
-	static map<SF_PLR, SFResPlayer> s_mSkillBmp;
+	static SFResPlayer* s_mPlayer[SF_PLR::PLR_MAX];
+
+	void initPlayer(SF_PLR player, SF_SKN skin)
+	{
+		if (s_mPlayer[player] == NULL)
+		{
+			s_mPlayer[player] = new SFResPlayer(skin);
+		}
+	}
 
 private:
 	SFResPlayerMap()
 	{
-		int i = 0;
+		for (unsigned int i = 0; i < PLR_MAX; i++)
+		{
+			s_mPlayer[i] = NULL;
+		}
 	}
+
 	static SFResPlayerMap *m_pInstance;
 	class SFCGarbo
 	{
@@ -121,4 +172,24 @@ public:
 	{
 
 	}
+
+	SFResPlayer* SFGetPlayerData(SF_PLR playerId, SF_SKN skin)
+	{
+		if (playerId == PLR_ZERO)
+		{
+			if (skin == SKN_SK1)
+			{
+				if (GetInstance()->s_mPlayer[playerId] == NULL)
+				{
+				}
+				else
+				{
+					if (GetInstance()->s_mPlayer[playerId]->m_mSkill[skin] == NULL)
+					{
+					}
+				}
+			}
+		}
+	}
 };
+#endif
