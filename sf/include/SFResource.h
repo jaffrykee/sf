@@ -11,17 +11,18 @@
 class SFResFrame
 {
 public:
-	unsigned int m_count;
+	unsigned int m_index;
+	float m_mid;
 	SFResObject* m_parent;
 	//渲染矩形
 	D2D1_RECT_F m_drawBox;
 	//位图资源
 	ID2D1Bitmap* m_mBmp;
 
-	list<D2D1_RECT_F> m_boxBody;
-	list<D2D1_RECT_F> m_boxAttack;
+	list<D2D1_RECT_F> m_lBodyBox;
+	list<D2D1_RECT_F> m_lAttackBox;
 
-	SFResFrame()
+	SFResFrame(unsigned int index) :m_index(index)
 	{
 	}
 };
@@ -33,7 +34,7 @@ public:
 	unsigned int m_index;
 	unsigned int m_id;
 	SFResSkillSwitch* m_parent;
-	vector<SFResFrame> m_mFrame;
+	vector<SFResFrame*> m_mFrame;
 
 	SFResObject(unsigned int index) :m_index(index)
 	{
@@ -43,7 +44,7 @@ public:
 	{
 	}
 
-	SFResFrame& operator[](unsigned int index)
+	SFResFrame* operator[](unsigned int index)
 	{
 		return m_mFrame[index];
 	}

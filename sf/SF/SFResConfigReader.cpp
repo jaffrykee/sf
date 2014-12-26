@@ -27,13 +27,15 @@ namespace SFResConfigReader
 		return 0;
 	}
 
-	bool showAllAttribute(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer)
+	/*XML单个节点解析主逻辑*/
+	bool readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer)
 	{
 		HRESULT hr = S_OK;
 		LPCWSTR name;
 		LPCWSTR value;
 		bool ret = false;
 		static void* parseCount[PRS_MAX] = {NULL};
+		static UINT boxType = 0;
 
 		if (tabCount[1] == 1)//11
 		{
@@ -112,6 +114,12 @@ namespace SFResConfigReader
 						if (tabCount[5] == 0)//12x1x0
 						{
 							#pragma region object
+							parseCount[PRS_OBJ] = new SFResObject(tabCount[4] - 1);
+							((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_mObject.insert(
+								((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_mObject.end(),
+								(SFResObject*)parseCount[PRS_OBJ]
+								);
+							((SFResObject*)parseCount[PRS_OBJ])->m_parent = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
 							POLL_XML_ATTR_BEGIN
 								if (utfName == "id")
 								{
@@ -120,12 +128,6 @@ namespace SFResConfigReader
 
 									ss << utfValue;
 									ss >> iValue;
-									parseCount[PRS_OBJ] = new SFResObject(tabCount[4] - 1);
-									((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_mObject.insert(
-										((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_mObject.end(), 
-										(SFResObject*)parseCount[PRS_OBJ]
-										);
-									((SFResObject*)parseCount[PRS_OBJ])->m_parent = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
 								}
 							POLL_XML_ATTR_END
 							#pragma endregion
@@ -142,6 +144,32 @@ namespace SFResConfigReader
 								if (tabCount[7] == 0)//12x1x1x0
 								{
 									#pragma region frame
+									parseCount[PRS_FRM] = new SFResFrame(tabCount[6] - 1);
+									((SFResObject*)parseCount[PRS_OBJ])->m_mFrame.insert(
+										((SFResObject*)parseCount[PRS_OBJ])->m_mFrame.end(),
+										(SFResFrame*)parseCount[PRS_FRM]
+										);
+									((SFResFrame*)parseCount[PRS_FRM])->m_parent = (SFResObject*)parseCount[PRS_OBJ];
+									POLL_XML_ATTR_BEGIN
+										if (utfName == "id")
+										{
+											stringstream ss;
+											unsigned int iValue;
+
+											ss << utfValue;
+											ss >> iValue;
+										}
+										else if (utfName == "m")
+										{
+											stringstream ss;
+											float fValue;
+
+											ss << utfValue;
+											ss >> fValue;
+
+											((SFResFrame*)parseCount[PRS_FRM])->m_mid = fValue;
+										}
+									POLL_XML_ATTR_END
 									#pragma endregion
 								}
 								else if (tabCount[7] == 1)//12x1x1x1x
@@ -149,6 +177,48 @@ namespace SFResConfigReader
 									if (tabCount[8] == 0)//12x1x1x10
 									{
 										#pragma region rect(frame)
+										D2D1_RECT_F box;
+
+										POLL_XML_ATTR_BEGIN
+											if (utfName == "t")
+											{
+												stringstream ss;
+												float fValue;
+
+												ss << utfValue;
+												ss >> fValue;
+												box.top = fValue;
+											}
+											else if (utfName == "l")
+											{
+												stringstream ss;
+												float fValue;
+
+												ss << utfValue;
+												ss >> fValue;
+												box.left = fValue;
+											}
+											else if (utfName == "b")
+											{
+												stringstream ss;
+												float fValue;
+
+												ss << utfValue;
+												ss >> fValue;
+												box.bottom = fValue;
+											}
+											else if (utfName == "r")
+											{
+												stringstream ss;
+												float fValue;
+
+												ss << utfValue;
+												ss >> fValue;
+												box.right = fValue;
+											}
+										POLL_XML_ATTR_END
+
+										((SFResFrame*)parseCount[PRS_FRM])->m_drawBox = box;
 										#pragma endregion
 									}
 								}
@@ -164,6 +234,17 @@ namespace SFResConfigReader
 										if (tabCount[9] == 0)//12x1x1x2x0
 										{
 											#pragma region box
+											POLL_XML_ATTR_BEGIN
+												if (utfName == "type")
+												{
+													stringstream ss;
+													unsigned int iValue;
+
+													ss << utfValue;
+													ss >> iValue;
+													boxType = iValue;
+												}
+											POLL_XML_ATTR_END
 											#pragma endregion
 										}
 										else if (tabCount[9] == 1)//12x1x1x2x1
@@ -171,6 +252,58 @@ namespace SFResConfigReader
 											if (tabCount[10] == 0)//12x1x1x2x10
 											{
 												#pragma region rect(box)
+												D2D1_RECT_F box;
+												POLL_XML_ATTR_BEGIN
+													if (utfName == "t")
+													{
+														stringstream ss;
+														float fValue;
+
+														ss << utfValue;
+														ss >> fValue;
+														box.top = fValue;
+													}
+													else if (utfName == "l")
+													{
+														stringstream ss;
+														float fValue;
+
+														ss << utfValue;
+														ss >> fValue;
+														box.left = fValue;
+													}
+													else if (utfName == "b")
+													{
+														stringstream ss;
+														float fValue;
+
+														ss << utfValue;
+														ss >> fValue;
+														box.bottom = fValue;
+													}
+													else if (utfName == "r")
+													{
+														stringstream ss;
+														float fValue;
+
+														ss << utfValue;
+														ss >> fValue;
+														box.right = fValue;
+													}
+												POLL_XML_ATTR_END
+
+												if (boxType & 0x1)
+												{
+													((SFResFrame*)parseCount[PRS_FRM])->m_lBodyBox.insert(
+														((SFResFrame*)parseCount[PRS_FRM])->m_lBodyBox.end(),
+														box);
+												}
+												if (boxType & 0x2)
+												{
+													((SFResFrame*)parseCount[PRS_FRM])->m_lAttackBox.insert(
+														((SFResFrame*)parseCount[PRS_FRM])->m_lAttackBox.end(),
+														box);
+												}
 												#pragma endregion
 											}
 										}
@@ -205,6 +338,7 @@ namespace SFResConfigReader
 		return ret;
 	}
 
+	/*XML解析主逻辑入口*/
 	bool readFromXML(char* xmlPath, SFResPlayer& resPlayer)
 	{
 		HRESULT hr = S_OK;

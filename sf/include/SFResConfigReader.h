@@ -63,7 +63,7 @@ tips:linuxC风格太浓厚了，不过很灵活。
 						POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]++; \
 						wprintf(L"#%d:%d", POLL_TABSCOUNT - 1, POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]); \
 						wprintf(L"<%s>", nodeName[sf_nd]);	\
-						showAllAttribute(POLL_PREADER, POLL_TABSCOUNT_ARR, POLL_RESPLAYER);	\
+						readXMLNode(POLL_PREADER, POLL_TABSCOUNT_ARR, POLL_RESPLAYER);	\
 					}	\
 				}	\
 			}	\
@@ -108,6 +108,6 @@ namespace SFResConfigReader
 		L"frame_table", L"frame", L"rect", L"box_table", L"box", L"rect"
 	};
 
-	bool showAllAttribute(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer);
+	bool readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer);
 	bool readFromXML(char* xmlPath, SFResPlayer& resPlayer);
 }

@@ -9,10 +9,10 @@
 
 	<xs:element name="rect">
 		<xs:complexType>
-			<xs:attribute name="t" type="xs:int"/>
-			<xs:attribute name="l" type="xs:int"/>
-			<xs:attribute name="b" type="xs:int"/>
-			<xs:attribute name="r" type="xs:int"/>
+			<xs:attribute name="t" type="xs:float"/>
+			<xs:attribute name="l" type="xs:float"/>
+			<xs:attribute name="b" type="xs:float"/>
+			<xs:attribute name="r" type="xs:float"/>
 			<!-- 上为y轴正方向，右为x轴正方向（与屏幕坐标系不一样），地面为y=0。此仅为加载位图时的参考，一般来说，第一帧矩形的y轴方向中线
 				为x=0，并且在地面上（空中技能的话，这里的y=0就不是地面了，虽然垂直位移会受地面碰撞影响，但是水平不会）。 -->
 		</xs:complexType>
@@ -45,7 +45,7 @@
 							<xs:element ref="box_table" minOccurs="0"></xs:element>
 						</xs:sequence>
 						<xs:attribute name="id" type="xs:int"/>
-						<xs:attribute name="m" type="xs:int"/>
+						<xs:attribute name="m" type="xs:float"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
