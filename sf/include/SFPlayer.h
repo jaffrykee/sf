@@ -43,22 +43,23 @@ public:
 	//人物id，初始化调用资源用
 	int m_id;
 	//皮肤id，初始化调用资源用
-	int m_cid;
+	int m_skinId;
 	string m_name;
 	//代表P1还是P2，即在左边还是右边
 	int m_pid;
 	D2D_POINT_2U m_headImgWH;
 	//全局配置的引用
 	SFConfig* m_pSfconfig;
-	//全局资源的引用
+	//玩家资源
+	SFResPlayer* m_resPlayer;
 
 	//技能资源
 	SFSkill* m_aSkill[SF_EKA::EKA_MAX];
 
 	//按键状态
 	SFPEventStatus m_eStatus;
-	//当前状态(SF_AS:正常、跳跃、防御、连锁、技能、被击、倒地)
-	SF_AS m_actionStatus;
+	SF_ASH m_hitStatus;
+	SF_AS m_standStatus;
 	//各个状态下被允许的技能
 	bool m_enableSkill[SF_AS::AS_MAX][SF_EKA::EKA_MAX];
 
@@ -67,9 +68,9 @@ public:
 	//当前等待打印的技能的帧计数器
 	int m_countSkillFrame;
 
-	SFPlayer();
-	SFPlayer(int id, int cid, int pid);
-	void getSkillEnableFromFile(string path);
+	SFPlayer(unsigned int id, SF_SKN skinId, int pid);
+	~SFPlayer();
+	void getSkillEnableFromFile();
 	void setUpEventListTimeout();
 	void enableDownStatus(SF_EKD val);
 	void disableDownStatus(SF_EKD val);

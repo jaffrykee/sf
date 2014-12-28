@@ -73,14 +73,17 @@ PActPlayer g_Player1 = PActPlayer(D2D1::RectF(INIT_LX1, INIT_LY1, INIT_LX2, INIT
 PActPlayer g_Player2 = PActPlayer(D2D1::RectF(INIT_RX1, INIT_RY1, INIT_RX2, INIT_RY2));
 */
 
-SFPlayer g_p1 = SFPlayer();
-SFPlayer g_p2 = SFPlayer();
+SFConfig* SFConfig::m_pInstance = NULL;
+string SFConfig::m_resPath = "./data/";
+string SFConfig::m_resPlayerInfoPrefix = "p";
+string SFConfig::m_resPlayerInfoFileName = "playerInfo.xml";
+SFConfig* g_pSfconfig = SFConfig::GetInstance();
+
+SFPlayer g_p1 = SFPlayer(1, SKN_DEF, 1);
+SFPlayer g_p2 = SFPlayer(1, SKN_DEF, 2);
 
 string g_strEkf1 = "";
 string g_strEkf2 = "";
-SFConfig* SFConfig::m_pInstance = NULL;
-SFConfig* g_pSfconfig = SFConfig::GetInstance();
-SFResPlayerMap* SFResPlayerMap::m_pInstance = NULL;
 #pragma endregion
 
 #pragma region 入口
@@ -153,13 +156,13 @@ HRESULT WinApp::Initialize()
 		wcex.cbWndExtra = sizeof(LONG_PTR);
 		wcex.hInstance = HINST_THISCOMPONENT;
 		wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-		wcex.lpszClassName = L"D2DWinApp";
+		wcex.lpszClassName = "D2DWinApp";
 
 		RegisterClassEx(&wcex);
 		FLOAT dpiX, dpiY;
 		m_pD2DFactory->GetDesktopDpi(&dpiX, &dpiY);
 		m_hwnd = CreateWindow(
-			L"D2DWinApp", L"Direct2D Demo Application", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+			"D2DWinApp", "Direct2D Demo Application", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 			static_cast<UINT>(ceil(ACT_WID.f*dpiX / 96.f)), static_cast<UINT>(ceil(ACT_HIG.f*dpiY / 96.f)),
 			NULL, NULL, HINST_THISCOMPONENT, this
 			);
@@ -505,7 +508,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				break;
 			case WM_KEYDOWN:
 				//只有非纯硬直状态才可以进入selectSkill阶段
-				if (g_p1.m_actionStatus <= AS_CHAIN)
+				if (g_p1.m_hitStatus == ASH_DEF)
 				{
 					switch (wParam)
 					{
@@ -535,7 +538,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 						break;
 					}
 				}
-				if (g_p2.m_actionStatus <= AS_CHAIN)
+				if (g_p2.m_hitStatus == ASH_DEF)
 				{
 					switch (wParam)
 					{

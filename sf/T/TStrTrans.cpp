@@ -1,46 +1,72 @@
 ﻿#pragma execution_character_set("utf-8")
 #include <TStrTrans.h>
 
-StringW TStrTrans::AnsiToUnicode(const char* buf)
+namespace TStrTrans
 {
-	int len = ::MultiByteToWideChar(CP_ACP, 0, buf, -1, NULL, 0);
-	if (len == 0) return L"";
+	StringW AnsiToUnicode(const char* buf)
+	{
+		int len = ::MultiByteToWideChar(CP_ACP, 0, buf, -1, NULL, 0);
+		if (len == 0) return L"";
 
-	std::vector<wchar_t> unicode(len);
-	::MultiByteToWideChar(CP_ACP, 0, buf, -1, &unicode[0], len);
+		std::vector<wchar_t> unicode(len);
+		::MultiByteToWideChar(CP_ACP, 0, buf, -1, &unicode[0], len);
 
-	return &unicode[0];
-}
+		return &unicode[0];
+	}
 
-StringA TStrTrans::UnicodeToAnsi(const wchar_t* buf)
-{
-	int len = ::WideCharToMultiByte(CP_ACP, 0, buf, -1, NULL, 0, NULL, NULL);
-	if (len == 0) return "";
+	StringA UnicodeToAnsi(const wchar_t* buf)
+	{
+		int len = ::WideCharToMultiByte(CP_ACP, 0, buf, -1, NULL, 0, NULL, NULL);
+		if (len == 0) return "";
 
-	std::vector<char> utf8(len);
-	::WideCharToMultiByte(CP_ACP, 0, buf, -1, &utf8[0], len, NULL, NULL);
+		std::vector<char> utf8(len);
+		::WideCharToMultiByte(CP_ACP, 0, buf, -1, &utf8[0], len, NULL, NULL);
 
-	return &utf8[0];
-}
+		return &utf8[0];
+	}
 
-StringW TStrTrans::Utf8ToUnicode(const char* buf)
-{
-	int len = ::MultiByteToWideChar(CP_UTF8, 0, buf, -1, NULL, 0);
-	if (len == 0) return L"";
+	StringW Utf8ToUnicode(const char* buf)
+	{
+		int len = ::MultiByteToWideChar(CP_UTF8, 0, buf, -1, NULL, 0);
+		if (len == 0) return L"";
 
-	std::vector<wchar_t> unicode(len);
-	::MultiByteToWideChar(CP_UTF8, 0, buf, -1, &unicode[0], len);
+		std::vector<wchar_t> unicode(len);
+		::MultiByteToWideChar(CP_UTF8, 0, buf, -1, &unicode[0], len);
 
-	return &unicode[0];
-}
+		return &unicode[0];
+	}
 
-StringA TStrTrans::UnicodeToUtf8(const wchar_t* buf)
-{
-	int len = ::WideCharToMultiByte(CP_UTF8, 0, buf, -1, NULL, 0, NULL, NULL);
-	if (len == 0) return "";
+	StringA UnicodeToUtf8(const wchar_t* buf)
+	{
+		int len = ::WideCharToMultiByte(CP_UTF8, 0, buf, -1, NULL, 0, NULL, NULL);
+		if (len == 0) return "";
 
-	std::vector<char> utf8(len);
-	::WideCharToMultiByte(CP_UTF8, 0, buf, -1, &utf8[0], len, NULL, NULL);
+		std::vector<char> utf8(len);
+		::WideCharToMultiByte(CP_UTF8, 0, buf, -1, &utf8[0], len, NULL, NULL);
 
-	return &utf8[0];
+		return &utf8[0];
+	}
+
+	StringA intIdToStrId(unsigned int id)
+	{
+		stringstream ss;
+		string tmp;
+
+		ss << id;
+		ss >> tmp;
+		if (id < 10)
+		{
+			return "00" + tmp;
+		}
+		if (id < 100)
+		{
+			return "0" + tmp;
+		}
+		if (id < 1000)
+		{
+			return "" + tmp;
+		}
+		
+		return "";
+	}
 }

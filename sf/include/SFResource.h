@@ -22,9 +22,8 @@ public:
 	list<D2D1_RECT_F> m_lBodyBox;
 	list<D2D1_RECT_F> m_lAttackBox;
 
-	SFResFrame(unsigned int index) :m_index(index)
-	{
-	}
+	SFResFrame(unsigned int index);
+	~SFResFrame();
 };
 
 //技能对象
@@ -36,18 +35,9 @@ public:
 	SFResSkillSwitch* m_parent;
 	vector<SFResFrame*> m_mFrame;
 
-	SFResObject(unsigned int index) :m_index(index)
-	{
-	}
-
-	~SFResObject()
-	{
-	}
-
-	SFResFrame* operator[](unsigned int index)
-	{
-		return m_mFrame[index];
-	}
+	SFResObject(unsigned int index);
+	~SFResObject();
+	SFResFrame* operator[](unsigned int frameIndex);
 };
 
 //技能状态分支
@@ -58,18 +48,9 @@ public:
 	SF_AS m_id;
 	vector<SFResObject*> m_mObject;
 
-	SFResSkillSwitch(SF_AS as):m_id(as)
-	{
-	}
-
-	~SFResSkillSwitch()
-	{
-	}
-
-	SFResObject* operator[](unsigned int index)
-	{
-		return m_mObject[index];
-	}
+	SFResSkillSwitch(SF_AS as);
+	~SFResSkillSwitch();
+	SFResObject* operator[](unsigned int objIndex);
 };
 
 //技能资源
@@ -80,21 +61,8 @@ public:
 	SF_EKA m_id;
 	SFResSkillSwitch* m_mSkillSwitchBmp[AS_MAX];
 
-	SFResSkill(SF_EKA eka) :m_id(eka)
-	{
-	}
-
-	~SFResSkill()
-	{
-		for (UINT i = 0; i<AS_MAX; i++)
-		{
-			if (m_mSkillSwitchBmp[i] != NULL)
-			{
-				delete m_mSkillSwitchBmp[i];
-				m_mSkillSwitchBmp[i] = NULL;
-			}
-		}
-	}
+	SFResSkill(SF_EKA eka);
+	~SFResSkill();
 };
 
 //玩家资源
@@ -103,22 +71,9 @@ class SFResPlayer
 public:
 	SFResSkill* m_mSkill[EKA_MAX];
 
-	SFResPlayer(SF_SKN skin)
-	{
-		memset(m_mSkill, 0, sizeof(SFResSkill*)*EKA_MAX);
-	}
-
-	~SFResPlayer()
-	{
-		for (UINT i = 0; i<EKA_MAX; i++)
-		{
-			if (m_mSkill[i] != NULL)
-			{
-				delete m_mSkill[i];
-				m_mSkill[i] = NULL;
-			}
-		}
-	}
+	SFResPlayer(SF_SKN skin);
+	SFResPlayer(string pid, SF_SKN skin);
+	~SFResPlayer();
 };
 
 #if 0

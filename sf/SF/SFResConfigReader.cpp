@@ -7,7 +7,7 @@ namespace SFResConfigReader
 	UINT getFirstSplit(char* dst, int max, const char* src, char split)
 	{
 		UINT lenSrc = strlen(src);
-		UINT minEnd = (max<lenSrc) ? max:lenSrc;
+		UINT minEnd = (max < lenSrc) ? max:lenSrc;
 
 		if (NULL==src || NULL==dst)
 		{
@@ -28,7 +28,7 @@ namespace SFResConfigReader
 	}
 
 	/*XML单个节点解析主逻辑*/
-	bool readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer)
+	bool readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer* resPlayer)
 	{
 		HRESULT hr = S_OK;
 		LPCWSTR name;
@@ -37,6 +37,10 @@ namespace SFResConfigReader
 		static void* parseCount[PRS_MAX] = {NULL};
 		static UINT boxType = 0;
 
+		if (resPlayer == NULL)
+		{
+			return false;
+		}
 		if (tabCount[1] == 1)//11
 		{
 			if (tabCount[2] == 0)//110
@@ -80,8 +84,8 @@ namespace SFResConfigReader
 								UINT i = 0;
 
 								parseCount[PRS_SKL] = new SFResSkill(iSkill);
-								resPlayer.m_mSkill[iSkill] = (SFResSkill*)parseCount[PRS_SKL];
-								((SFResSkill*)parseCount[PRS_SKL])->m_parent = &resPlayer;
+								resPlayer->m_mSkill[iSkill] = (SFResSkill*)parseCount[PRS_SKL];
+								((SFResSkill*)parseCount[PRS_SKL])->m_parent = resPlayer;
 								for (i = 0; i < AS_MAX; i++)
 								{
 									if (0 == strcmp(tmpSw, g_AsStr[i]))
@@ -339,7 +343,7 @@ namespace SFResConfigReader
 	}
 
 	/*XML解析主逻辑入口*/
-	bool readFromXML(char* xmlPath, SFResPlayer& resPlayer)
+	bool readFromXML(string xmlPath, SFResPlayer* resPlayer)
 	{
 		HRESULT hr = S_OK;
 		CComPtr<IStream> pFileStream;
@@ -355,11 +359,16 @@ namespace SFResConfigReader
 		UINT tabCount[SF_XML_TABS_MAX] = { 0 };
 		UINT tabs = 0;
 
+		if (resPlayer == NULL)
+		{
+			return false;
+		}
+
 		memset(tabCount, 0, SF_XML_TABS_MAX*sizeof(UINT));
 		tabs = 0;
 
 		//Open read-only input stream
-		hr = SHCreateStreamOnFileA(xmlPath, STGM_READ, &pFileStream);
+		hr = SHCreateStreamOnFileA(xmlPath.c_str(), STGM_READ, &pFileStream);
 		if (SUCCEEDED(hr))
 		{
 			hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);

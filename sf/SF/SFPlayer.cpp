@@ -1,35 +1,30 @@
 ﻿#pragma execution_character_set("utf-8")
 #include <SFPlayer.h>
 
-SFPlayer::SFPlayer()
+SFPlayer::SFPlayer(unsigned int id, SF_SKN skinId, int pid) :m_id(id), m_skinId(skinId), m_pid(pid)
 {
-	getSkillEnableFromFile("");
+	m_resPlayer = new SFResPlayer(TStrTrans::intIdToStrId(id), skinId);
+
+	getSkillEnableFromFile();
 	m_pSfconfig = SFConfig::GetInstance();
-	m_actionStatus = AS_STAND;
+	m_standStatus = AS_STAND;
 	m_nowSkill = EKA_MAX;
 	m_countSkillFrame = 0;
 }
 
-SFPlayer::SFPlayer(int id, int cid, int pid) :m_id(id), m_cid(cid), m_pid(pid)
+SFPlayer::~SFPlayer()
 {
-	getSkillEnableFromFile("");
-	m_pSfconfig = SFConfig::GetInstance();
-	m_actionStatus = AS_STAND;
-	m_nowSkill = EKA_MAX;
-	m_countSkillFrame = 0;
+	delete m_resPlayer;
 }
 
-void SFPlayer::getSkillEnableFromFile(string path)
+void SFPlayer::getSkillEnableFromFile()
 {
-	if (path == "")
+	for (int i = 0; i < EKA_MAX; i++)
 	{
-		for (int i = 0; i < EKA_MAX; i++)
+		m_aSkill[i] = NULL;
+		for (int j = 0; j < AS_MAX; j++)
 		{
-			m_aSkill[i] = NULL;
-			for (int j = 0; j < AS_MAX; j++)
-			{
-				m_enableSkill[j][i] = false;
-			}
+			m_enableSkill[j][i] = false;
 		}
 	}
 }
@@ -71,7 +66,7 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 		{
 			//found
 			SF_EKA ret = (SF_EKA)(m_pSfconfig->s_mEka[tmp]);
-			if (m_enableSkill[m_actionStatus][ret])
+			if (m_enableSkill[m_hitStatus][ret])
 			{
 				//enable，返回结果	<inc>
 				return ret;

@@ -109,5 +109,5 @@ namespace SFResConfigReader
 	};
 
 	bool readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer);
-	bool readFromXML(char* xmlPath, SFResPlayer& resPlayer);
+	bool readFromXML(string xmlPath, SFResPlayer* resPlayer);
 }

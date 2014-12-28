@@ -66,9 +66,6 @@
     <ClCompile Include="P\xml.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="test2.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="SF\SFResConfigReader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -79,6 +76,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SF\SFPlayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sf.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SF\SFResource.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

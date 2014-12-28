@@ -9,6 +9,9 @@ class SFConfig
 public:
 	map<string, SF_EKF> s_mEkf;
 	map<string, SF_EKA> s_mEka;
+	static string m_resPath;
+	static string m_resPlayerInfoPrefix;
+	static string m_resPlayerInfoFileName;
 
 private:
 	static SFConfig *m_pInstance;

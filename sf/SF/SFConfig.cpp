@@ -1,8 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 #include <SFConfig.h>
 
-SFConfig* SFConfig::m_pInstance = NULL;
-
 SFConfig::SFConfig()
 {
 	int i = 0;
