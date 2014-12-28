@@ -68,11 +68,6 @@ using namespace std;
 #pragma endregion
 
 #pragma region 全局变量
-/*
-PActPlayer g_Player1 = PActPlayer(D2D1::RectF(INIT_LX1, INIT_LY1, INIT_LX2, INIT_LY2));
-PActPlayer g_Player2 = PActPlayer(D2D1::RectF(INIT_RX1, INIT_RY1, INIT_RX2, INIT_RY2));
-*/
-
 SFConfig* SFConfig::m_pInstance = NULL;
 string SFConfig::m_resPath = "./data/";
 string SFConfig::m_resPlayerInfoPrefix = "p";
@@ -507,7 +502,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				wasHandled = true;
 				break;
 			case WM_KEYDOWN:
-				//只有非纯硬直状态才可以进入selectSkill阶段
+				//只有可控制状态才可以进入selectSkill阶段
 				if (g_p1.m_hitStatus == ASH_DEF)
 				{
 					switch (wParam)
