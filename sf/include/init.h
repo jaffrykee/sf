@@ -216,7 +216,7 @@ enum SF_TMR
 	TMR_MAX
 };
 
-const unsigned int gc_arrTmr[TMR_MAX] = { 0, 15, 10, 100 };
+const unsigned int gc_arrTmr[TMR_MAX] = { 0, 15, 10, 30 };
 #pragma endregion
 
 #pragma region 角色当前状态define(SF_ASH, SF_AS)

@@ -7,18 +7,18 @@
 using namespace std;
 
 //技能判定列表缓存最大数目
-#define EKL_MAX 6
+#define EKL_MAX 7
 
 //技能判定超时时间(ms)
 #define EKL_TIMEOUT TMR_CHAIN_MS
 
 /*
-	内有按键up事件列表（序列）和当前按键down状态数组。
-	*/
+	内有按键事件列表（序列）和当前按键down状态数组。
+*/
 class SFPEventStatus
 {
 public:
-	string m_sUp;
+	string m_sDownEvent;
 	unsigned char m_aStatus[EKD_MAX];
 
 	SFPEventStatus()
@@ -105,22 +105,22 @@ public:
 
 	void setTimeout()
 	{
-		m_sUp = "";
+		m_sDownEvent = "";
 	}
 
-	int addEvent(SF_EKU val)
+	int addEvent(SF_EKD val)
 	{
 		char cVal = '\0';
 
-		cVal = getEkuChar(val);
+		cVal = getEkdChar(val);
 		if (cVal)
 		{
-			if (m_sUp.size() >= EKL_MAX)
+			if (m_sDownEvent.size() >= EKL_MAX)
 			{
-				m_sUp = m_sUp.substr(1, EKL_MAX);
+				m_sDownEvent = m_sDownEvent.substr(1, EKL_MAX);
 			}
-			m_sUp.push_back(cVal);
-			return m_sUp.size();
+			m_sDownEvent.push_back(cVal);
+			return m_sDownEvent.size();
 		}
 		else
 		{

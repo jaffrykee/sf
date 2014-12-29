@@ -58,6 +58,8 @@ public:
 
 	//按键状态
 	SFPEventStatus m_eStatus;
+	//心跳超时计时
+	unsigned int m_iTimeOut;
 	SF_ASH m_hitStatus;
 	SF_AS m_standStatus;
 
@@ -68,11 +70,10 @@ public:
 
 	SFPlayer(unsigned int id, SF_SKN skinId, int pid);
 	~SFPlayer();
-	void setUpEventListTimeout();
+	void setEventListTimeout();
 	void enableDownStatus(SF_EKD val);
 	void disableDownStatus(SF_EKD val);
-	void addEvent(SF_EKU val);
-	string getEkaString(string tail);
+	void upEvent(SF_EKU val);
 	SF_EKA getActionSkill(string ekaStr);
 	bool selectSkill(SF_EKD key);
 	bool doSkill();

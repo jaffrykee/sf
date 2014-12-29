@@ -499,6 +499,22 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				case TMR_ACTION:
 					break;
 				case TMR_SKILL:
+					if (g_p1.m_iTimeOut < 5)
+					{
+						g_p1.m_iTimeOut++;
+					}
+					else
+					{
+						g_p1.setEventListTimeout();
+					}
+					if (g_p2.m_iTimeOut < 5)
+					{
+						g_p2.m_iTimeOut++;
+					}
+					else
+					{
+						g_p2.setEventListTimeout();
+					}
 					break;
 				}
 				result = 0;
@@ -580,52 +596,52 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				switch (wParam)
 				{
 				case KD_P1UP:
-					g_p1.addEvent(EK_8U);
+					g_p1.upEvent(EK_8U);
 					break;
 				case KD_P1LF:
-					g_p1.addEvent(EK_4U);
+					g_p1.upEvent(EK_4U);
 					break;
 				case KD_P1DW:
-					g_p1.addEvent(EK_2U);
+					g_p1.upEvent(EK_2U);
 					break;
 				case KD_P1RG:
-					g_p1.addEvent(EK_6U);
+					g_p1.upEvent(EK_6U);
 					break;
 				case KD_P1AA:
-					g_p1.addEvent(EK_AU);
+					g_p1.upEvent(EK_AU);
 					break;
 				case KD_P1BB:
-					g_p1.addEvent(EK_BU);
+					g_p1.upEvent(EK_BU);
 					break;
 				case KD_P1CC:
-					g_p1.addEvent(EK_CU);
+					g_p1.upEvent(EK_CU);
 					break;
 				case KD_P1DD:
-					g_p1.addEvent(EK_DU);
+					g_p1.upEvent(EK_DU);
 					break;
 				case KD_P2UP:
-					g_p2.addEvent(EK_8U);
+					g_p2.upEvent(EK_8U);
 					break;
 				case KD_P2LF:
-					g_p2.addEvent(EK_4U);
+					g_p2.upEvent(EK_4U);
 					break;
 				case KD_P2DW:
-					g_p2.addEvent(EK_2U);
+					g_p2.upEvent(EK_2U);
 					break;
 				case KD_P2RG:
-					g_p2.addEvent(EK_6U);
+					g_p2.upEvent(EK_6U);
 					break;
 				case KD_P2AA:
-					g_p2.addEvent(EK_AU);
+					g_p2.upEvent(EK_AU);
 					break;
 				case KD_P2BB:
-					g_p2.addEvent(EK_BU);
+					g_p2.upEvent(EK_BU);
 					break;
 				case KD_P2CC:
-					g_p2.addEvent(EK_CU);
+					g_p2.upEvent(EK_CU);
 					break;
 				case KD_P2DD:
-					g_p2.addEvent(EK_DU);
+					g_p2.upEvent(EK_DU);
 					break;
 				}
 				result = 0;
