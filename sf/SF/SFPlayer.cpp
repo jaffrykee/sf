@@ -71,12 +71,16 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 
 bool SFPlayer::selectSkill(SF_EKD key)
 {
-	SF_EKA ret;
+	SF_EKA ret = EKA_MAX;
 
 	m_iTimeOut = 0;
 	m_eStatus.addEvent(key);
 	enableDownStatus(key);
-	ret = getActionSkill(m_eStatus.m_sDownEvent);
+	//只有可控制状态才可以进入selectSkill阶段
+	if (m_hitStatus == ASH_DEF)
+	{
+		ret = getActionSkill(m_eStatus.m_sDownEvent);
+	}
 	if (ret == EKA_MAX)
 	{
 		return false;

@@ -499,6 +499,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				case TMR_ACTION:
 					break;
 				case TMR_SKILL:
+					//按键超时处理（清空键盘事件列表等）
 					if (g_p1.m_iTimeOut < 5)
 					{
 						g_p1.m_iTimeOut++;
@@ -521,73 +522,61 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				wasHandled = true;
 				break;
 			case WM_DISPLAYCHANGE:
-			{
 				InvalidateRect(hwnd, NULL, FALSE);
-			}
 				result = 0;
 				wasHandled = true;
 				break;
 			case WM_KEYDOWN:
-				//只有可控制状态才可以进入selectSkill阶段
-				if (g_p1.m_hitStatus == ASH_DEF)
+				switch (wParam)
 				{
-					switch (wParam)
-					{
-					case KD_P1UP:
-						g_p1.selectSkill(EK_8D);
-						break;
-					case KD_P1LF:
-						g_p1.selectSkill(EK_4D);
-						break;
-					case KD_P1DW:
-						g_p1.selectSkill(EK_2D);
-						break;
-					case KD_P1RG:
-						g_p1.selectSkill(EK_6D);
-						break;
-					case KD_P1AA:
-						g_p1.selectSkill(EK_AD);
-						break;
-					case KD_P1BB:
-						g_p1.selectSkill(EK_BD);
-						break;
-					case KD_P1CC:
-						g_p1.selectSkill(EK_CD);
-						break;
-					case KD_P1DD:
-						g_p1.selectSkill(EK_DD);
-						break;
-					}
-				}
-				if (g_p2.m_hitStatus == ASH_DEF)
-				{
-					switch (wParam)
-					{
-					case KD_P2UP:
-						g_p2.selectSkill(EK_8D);
-						break;
-					case KD_P2LF:
-						g_p2.selectSkill(EK_4D);
-						break;
-					case KD_P2DW:
-						g_p2.selectSkill(EK_2D);
-						break;
-					case KD_P2RG:
-						g_p2.selectSkill(EK_6D);
-						break;
-					case KD_P2AA:
-						g_p2.selectSkill(EK_AD);
-						break;
-					case KD_P2BB:
-						g_p2.selectSkill(EK_BD);
-						break;
-					case KD_P2CC:
-						g_p2.selectSkill(EK_CD);
-						break;
-					case KD_P2DD:
-						g_p2.selectSkill(EK_DD);
-						break;
-					}
+				case KD_P1UP:
+					g_p1.selectSkill(EK_8D);
+					break;
+				case KD_P1LF:
+					g_p1.selectSkill(EK_4D);
+					break;
+				case KD_P1DW:
+					g_p1.selectSkill(EK_2D);
+					break;
+				case KD_P1RG:
+					g_p1.selectSkill(EK_6D);
+					break;
+				case KD_P1AA:
+					g_p1.selectSkill(EK_AD);
+					break;
+				case KD_P1BB:
+					g_p1.selectSkill(EK_BD);
+					break;
+				case KD_P1CC:
+					g_p1.selectSkill(EK_CD);
+					break;
+				case KD_P1DD:
+					g_p1.selectSkill(EK_DD);
+					break;
+				case KD_P2UP:
+					g_p2.selectSkill(EK_8D);
+					break;
+				case KD_P2LF:
+					g_p2.selectSkill(EK_4D);
+					break;
+				case KD_P2DW:
+					g_p2.selectSkill(EK_2D);
+					break;
+				case KD_P2RG:
+					g_p2.selectSkill(EK_6D);
+					break;
+				case KD_P2AA:
+					g_p2.selectSkill(EK_AD);
+					break;
+				case KD_P2BB:
+					g_p2.selectSkill(EK_BD);
+					break;
+				case KD_P2CC:
+					g_p2.selectSkill(EK_CD);
+					break;
+				case KD_P2DD:
+					g_p2.selectSkill(EK_DD);
+					break;
 				}
 				result = 0;
 				wasHandled = true;
