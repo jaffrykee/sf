@@ -81,10 +81,20 @@ string g_strEkf1 = "";
 string g_strEkf2 = "";
 #pragma endregion
 
+#define SF_DEBUG
+
 #pragma region 入口
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
+
+#ifdef SF_DEBUG
+	AllocConsole();
+	int fd = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+	FILE *file = _fdopen(fd, "w");
+	*stdout = *file;
+	int status = setvbuf(stdout, 0, _IONBF, 0);
+#endif
 
 	if (SUCCEEDED(CoInitialize(NULL)))
 	{

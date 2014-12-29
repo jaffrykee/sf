@@ -28,6 +28,11 @@ SFResPlayer::~SFResPlayer()
 	}
 }
 
+SFResSkill* SFResPlayer::operator[](SF_EKA skillIndex)
+{
+	return m_mSkill[skillIndex];
+}
+
 SFResSkill::SFResSkill(SF_EKA eka) :m_id(eka)
 {
 }
@@ -42,6 +47,11 @@ SFResSkill::~SFResSkill()
 			m_mSkillSwitchBmp[i] = NULL;
 		}
 	}
+}
+
+SFResSkillSwitch* SFResSkill::operator[](SF_AS swIndex)
+{
+	return m_mSkillSwitchBmp[swIndex];
 }
 
 SFResSkillSwitch::SFResSkillSwitch(SF_AS as) :m_id(as)

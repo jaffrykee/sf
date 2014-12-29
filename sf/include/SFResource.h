@@ -63,6 +63,7 @@ public:
 
 	SFResSkill(SF_EKA eka);
 	~SFResSkill();
+	SFResSkillSwitch* operator[](SF_AS swIndex);
 };
 
 //玩家资源
@@ -74,6 +75,7 @@ public:
 	SFResPlayer(SF_SKN skin);
 	SFResPlayer(string pid, SF_SKN skin);
 	~SFResPlayer();
+	SFResSkill* operator[](SF_EKA skillIndex);
 };
 
 #if 0

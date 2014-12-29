@@ -5,7 +5,6 @@ SFPlayer::SFPlayer(unsigned int id, SF_SKN skinId, int pid) :m_id(id), m_skinId(
 {
 	m_resPlayer = new SFResPlayer(TStrTrans::intIdToStrId(id), skinId);
 
-	getSkillEnableFromFile();
 	m_pSfconfig = SFConfig::GetInstance();
 	m_standStatus = AS_STAND;
 	m_nowSkill = EKA_MAX;
@@ -15,18 +14,6 @@ SFPlayer::SFPlayer(unsigned int id, SF_SKN skinId, int pid) :m_id(id), m_skinId(
 SFPlayer::~SFPlayer()
 {
 	delete m_resPlayer;
-}
-
-void SFPlayer::getSkillEnableFromFile()
-{
-	for (int i = 0; i < EKA_MAX; i++)
-	{
-		m_aSkill[i] = NULL;
-		for (int j = 0; j < AS_MAX; j++)
-		{
-			m_enableSkill[j][i] = false;
-		}
-	}
 }
 
 void SFPlayer::setUpEventListTimeout()
@@ -62,14 +49,20 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 		string tmp = ekaStr.substr(i, ekaStr.size() - i);
 		map<string, SF_EKA>::iterator it = m_pSfconfig->s_mEka.find(tmp);
 
+		printf("\ne:%s", ekaStr.c_str());
 		if (it != m_pSfconfig->s_mEka.end())
 		{
 			//found
+			printf("\nt:%s", tmp.c_str());
 			SF_EKA ret = (SF_EKA)(m_pSfconfig->s_mEka[tmp]);
-			if (m_enableSkill[m_hitStatus][ret])
+			if ((*m_resPlayer)[ret])
 			{
-				//enable，返回结果	<inc>
-				return ret;
+				if ((*(*m_resPlayer)[ret])[m_standStatus])
+				{
+					//enable，返回结果	<inc>
+					printf("<<<");
+					return ret;
+				}
 			}
 			else
 			{

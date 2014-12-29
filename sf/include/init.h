@@ -39,6 +39,8 @@
 #include <atlcomcli.h>
 #include <iostream>
 #include <sstream>
+#include <Fcntl.h>
+#include <io.h>
 #pragma comment(lib, "comsuppwd.lib")
 #pragma comment(lib, "XmlLite.lib")
 #pragma endregion

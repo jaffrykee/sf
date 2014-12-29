@@ -150,6 +150,7 @@
     <ClInclude Include="include\SFResConfigReader.h" />
     <ClInclude Include="include\SFResource.h" />
     <ClInclude Include="include\TArray.h" />
+    <ClInclude Include="include\TDebug.h" />
     <ClInclude Include="include\TMap.h" />
     <ClInclude Include="include\TStrTrans.h" />
     <ClInclude Include="include\xml.h" />

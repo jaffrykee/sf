@@ -60,8 +60,6 @@ public:
 	SFPEventStatus m_eStatus;
 	SF_ASH m_hitStatus;
 	SF_AS m_standStatus;
-	//各个状态下被允许的技能
-	bool m_enableSkill[SF_AS::AS_MAX][SF_EKA::EKA_MAX];
 
 	//当前等待打印的技能
 	SF_EKA m_nowSkill;
@@ -70,7 +68,6 @@ public:
 
 	SFPlayer(unsigned int id, SF_SKN skinId, int pid);
 	~SFPlayer();
-	void getSkillEnableFromFile();
 	void setUpEventListTimeout();
 	void enableDownStatus(SF_EKD val);
 	void disableDownStatus(SF_EKD val);
