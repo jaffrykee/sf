@@ -149,6 +149,7 @@
     <ClInclude Include="include\SFPlayer.h" />
     <ClInclude Include="include\SFResConfigReader.h" />
     <ClInclude Include="include\SFResource.h" />
+    <ClInclude Include="include\SFActScene.h" />
     <ClInclude Include="include\TArray.h" />
     <ClInclude Include="include\TDebug.h" />
     <ClInclude Include="include\TMap.h" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="P\xml.cpp" />
     <ClCompile Include="sf.cpp" />
+    <ClCompile Include="SF\SFActScene.cpp" />
     <ClCompile Include="SF\SFConfig.cpp" />
     <ClCompile Include="SF\SFPlayer.cpp" />
     <ClCompile Include="SF\SFResConfigReader.cpp" />

@@ -79,6 +79,8 @@ SFPlayer g_p2 = SFPlayer(1, SKN_DEF, 2);
 
 string g_strEkf1 = "";
 string g_strEkf2 = "";
+
+SFActScene g_scn;
 #pragma endregion
 
 #define SF_DEBUG

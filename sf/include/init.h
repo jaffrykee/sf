@@ -405,6 +405,7 @@ class SFResSkill;
 class SFResSkillSwitch;
 class SFResObject;
 class SFResFrame;
+class SFPlayer;
 
 #include <SFConfig.h>
 #include <SFResource.h>
@@ -412,3 +413,4 @@ class SFResFrame;
 #include <SFPlayer.h>
 #include <TStrTrans.h>
 #include <SFResConfigReader.h>
+#include <SFActScene.h>
