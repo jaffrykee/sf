@@ -64,9 +64,6 @@
     <ClInclude Include="include\TDebug.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\SFActScene.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P\xml.cpp">
@@ -88,9 +85,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SF\SFResource.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SF\SFActScene.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
