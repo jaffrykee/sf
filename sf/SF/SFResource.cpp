@@ -60,6 +60,14 @@ SFResSkillSwitch::SFResSkillSwitch(SF_AS as) :m_id(as)
 
 SFResSkillSwitch::~SFResSkillSwitch()
 {
+	for (unsigned int i = 0; i < m_mObject.size(); i++)
+	{
+		if (m_mObject[i] != NULL)
+		{
+			delete m_mObject[i];
+			m_mObject[i] = NULL;
+		}
+	}
 }
 
 SFResObject* SFResSkillSwitch::operator[](unsigned int objIndex)
@@ -73,6 +81,14 @@ SFResObject::SFResObject(unsigned int index) :m_index(index)
 
 SFResObject::~SFResObject()
 {
+	for (unsigned int i = 0; i < m_mFrame.size(); i++)
+	{
+		if (m_mFrame[i] != NULL)
+		{
+			delete m_mFrame[i];
+			m_mFrame[i] = NULL;
+		}
+	}
 }
 
 SFResFrame* SFResObject::operator[](unsigned int frameIndex)
