@@ -74,13 +74,13 @@ string SFConfig::m_resPlayerInfoPrefix = "p";
 string SFConfig::m_resPlayerInfoFileName = "playerInfo.xml";
 SFConfig* g_pSfconfig = SFConfig::GetInstance();
 
-SFPlayer g_p1 = SFPlayer(1, SKN_DEF, 1);
-SFPlayer g_p2 = SFPlayer(1, SKN_DEF, 2);
+SFPlayer* g_pP1 = NULL;
+SFPlayer* g_pP2 = NULL;
 
 string g_strEkf1 = "";
 string g_strEkf2 = "";
 
-SFActScene g_scn;
+SFActScene* g_scn = NULL;
 #pragma endregion
 
 #define SF_DEBUG
@@ -234,6 +234,14 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 		hr = pSink->Close();
 	}
 	SafeRelease(&pSink);
+
+	//载入精灵
+	g_pP1 = new SFPlayer(1, SKN_DEF, 1);
+	g_pP2 = new SFPlayer(1, SKN_DEF, 2);
+
+	//创建场景
+	g_scn->addSprite(g_pP1);
+	g_scn->addSprite(g_pP2);
 
 	return hr;
 }
@@ -502,13 +510,13 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					break;
 				case TMR_SKILL:
 					//按键超时处理（清空键盘事件列表等）
-					if (g_p1.m_iTimeOut < 5)
+					if (g_pP1->m_iTimeOut < 5)
 					{
-						g_p1.m_iTimeOut++;
+						g_pP1->m_iTimeOut++;
 					}
 					else
 					{
-						g_p1.setEventListTimeout();
+						g_pP1->setEventListTimeout();
 					}
 					if (g_p2.m_iTimeOut < 5)
 					{

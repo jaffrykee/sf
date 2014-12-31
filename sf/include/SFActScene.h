@@ -3,11 +3,17 @@
 
 #include <init.h>
 
-typedef enum SF_SCN_MAPTYPE
+typedef enum SF_SCN_MAP
 {
-	SCN_DEF, SCN_SKY, SCN_WATER,
+	SCN_MAP_DEF, SCN_SKY, SCN_WATER,
 	SCN_MAX
-}SF_SCN;
+};
+
+typedef enum SF_SCN_STAGE
+{
+	SCN_STG_FREE, SCN_STG_LOADING, SCN_STG_PAINTING, SCN_STG_KILLING,
+	SCN_STG_MAX
+}SF_SCN_STG;
 
 #define SFSprite SFPlayer
 
@@ -16,9 +22,10 @@ class SFActScene
 {
 public:
 	vector<SFSprite*> m_aSprite;
-	SF_SCN m_mapType;
+	SF_SCN_MAP m_mapType;
+	SF_SCN_STAGE m_stage;
 
-	SFActScene(SF_SCN mapType = SCN_DEF);
+	SFActScene(SF_SCN_MAP mapType = SCN_MAP_DEF);
 	~SFActScene();
-	bool addSprite(SFSprite* p);
+	bool addSprite(SFSprite* pSprite);
 };
