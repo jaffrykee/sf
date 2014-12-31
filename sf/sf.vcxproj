@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="include\init.h" />
     <ClInclude Include="include\sf.h" />
+    <ClInclude Include="include\SFActScene.h" />
     <ClInclude Include="include\SFEventKey.h" />
     <ClInclude Include="include\SFConfig.h" />
     <ClInclude Include="include\SFPlayer.h" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="P\xml.cpp" />
     <ClCompile Include="sf.cpp" />
+    <ClCompile Include="SF\SFActScene.cpp" />
     <ClCompile Include="SF\SFConfig.cpp" />
     <ClCompile Include="SF\SFPlayer.cpp" />
     <ClCompile Include="SF\SFResConfigReader.cpp" />
