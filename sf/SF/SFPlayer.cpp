@@ -75,10 +75,15 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 	return EKA_MAX;
 }
 
+//downEvent
 bool SFPlayer::selectSkill(SF_EKD key)
 {
 	SF_EKA ret = EKA_MAX;
 
+	if (m_eStatus.m_aStatus[key] == 1)
+	{
+		return true;
+	}
 	m_iTimeOut = 0;
 	m_eStatus.addEvent(key);
 	enableDownStatus(key);
@@ -101,11 +106,6 @@ bool SFPlayer::selectSkill(SF_EKD key)
 bool SFPlayer::doSkill()
 {
 	return false;
-}
-
-int SFPlayer::getMaxSkillFrame()
-{
-	return m_aSkill[m_nowSkill]->m_maxFrame;
 }
 
 void SFPlayer::moveToNextFrame()

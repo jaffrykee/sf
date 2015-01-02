@@ -53,9 +53,6 @@ public:
 	//玩家资源
 	SFResPlayer* m_resPlayer;
 
-	//技能资源
-	SFSkill* m_aSkill[SF_EKA::EKA_MAX];
-
 	//按键状态
 	SFPEventStatus m_eStatus;
 	//心跳超时计时

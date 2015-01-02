@@ -231,12 +231,16 @@ enum SF_ASH
 enum SF_AS
 {
 	AS_STAND, AS_JUMP,
+	AS_STAND_U, AS_JUMP_U,
 	AS_MAX
 };
+#define SF_ASU(as) ((unsigned int)(((unsigned int)(AS_MAX))/2+(unsigned int)(as)))
+#define SF_ASUMIN (((unsigned int)(AS_MAX))/2)
 #define AS_DEF AS_STAND
 #define AS_STR_MAX 10
 const char g_AsStr[][AS_STR_MAX] = {
-	"def", "jump"
+	"def", "jump",
+	"def_u", "jump_u"
 };
 #pragma endregion
 
