@@ -106,3 +106,18 @@ void SFPlayer::moveToNextFrame()
 {
 
 }
+
+void SFPlayer::doTimer(SF_TMR timer)
+{
+	if (timer == TMR_SKILL)
+	{
+		if (m_iTimeOut < 5)
+		{
+			m_iTimeOut++;
+		}
+		else
+		{
+			setEventListTimeout();
+		}
+	}
+}

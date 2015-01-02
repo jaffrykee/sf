@@ -79,4 +79,5 @@ public:
 	bool doSkill();
 	int getMaxSkillFrame();
 	void moveToNextFrame();
+	void doTimer(SF_TMR);
 };
