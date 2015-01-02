@@ -320,24 +320,25 @@ namespace SFResConfigReader
 			}
 		}
 
-#ifdef RES_DEBUG
-		wprintf(L"\n");
-		for (int i = 1; i < SF_XML_TABS_MAX; i++)
+		if (SFConfig::m_enDebug[DEBUG_RES_LOAD])
 		{
-			if (tabCount[i] != 0)
+			wprintf(L"\n");
+			for (int i = 1; i < SF_XML_TABS_MAX; i++)
 			{
-				wprintf(L"    ");
+				if (tabCount[i] != 0)
+				{
+					wprintf(L"    ");
+				}
+				else
+				{
+					break;
+				}
 			}
-			else
+			for (int i = 0; i < SF_XML_TABS_MAX; i++)
 			{
-				break;
+				wprintf(L"%d ", tabCount[i]);
 			}
 		}
-		for (int i = 0; i < SF_XML_TABS_MAX; i++)
-		{
-			wprintf(L"%d ", tabCount[i]);
-		}
-#endif
 
 		return ret;
 	}
@@ -376,7 +377,6 @@ namespace SFResConfigReader
 		else
 		{
 			cout << "Error: Can't find the XML file. (\"" << xmlPath << "\")" << endl;
-			getchar();
 
 			return false;
 		}

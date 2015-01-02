@@ -72,6 +72,8 @@ SFConfig* SFConfig::m_pInstance = NULL;
 string SFConfig::m_resPath = "./data/";
 string SFConfig::m_resPlayerInfoPrefix = "p";
 string SFConfig::m_resPlayerInfoFileName = "playerInfo.xml";
+/*控制打印：DEBUG_COM, DEBUG_RES_LOAD, DEBUG_SKILL_KEY*/
+bool SFConfig::m_enDebug[DEBUG_MAX] = {true, false, true};
 SFConfig* g_pSfconfig = SFConfig::GetInstance();
 
 SFPlayer* g_pP1 = NULL;
@@ -83,20 +85,21 @@ string g_strEkf2 = "";
 SFActScene* g_scn = NULL;
 #pragma endregion
 
-#define SF_DEBUG
 
-#pragma region 入口
+#pragma region 入口以及初始配置
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
 
-#ifdef SF_DEBUG
-	AllocConsole();
-	int fd = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
-	FILE *file = _fdopen(fd, "w");
-	*stdout = *file;
-	int status = setvbuf(stdout, 0, _IONBF, 0);
-#endif
+	//控制台
+	if (SFConfig::m_enDebug[DEBUG_COM])
+	{
+		AllocConsole();
+		int fd = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+		FILE *file = _fdopen(fd, "w");
+		*stdout = *file;
+		int status = setvbuf(stdout, 0, _IONBF, 0);
+	}
 
 	if (SUCCEEDED(CoInitialize(NULL)))
 	{
@@ -169,7 +172,7 @@ HRESULT WinApp::Initialize()
 		FLOAT dpiX, dpiY;
 		m_pD2DFactory->GetDesktopDpi(&dpiX, &dpiY);
 		m_hwnd = CreateWindow(
-			"D2DWinApp", "Direct2D Demo Application", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+			"D2DWinApp", "SF", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 			static_cast<UINT>(ceil(ACT_WID.f*dpiX / 96.f)), static_cast<UINT>(ceil(ACT_HIG.f*dpiY / 96.f)),
 			NULL, NULL, HINST_THISCOMPONENT, this
 			);

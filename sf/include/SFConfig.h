@@ -12,6 +12,7 @@ public:
 	static string m_resPath;
 	static string m_resPlayerInfoPrefix;
 	static string m_resPlayerInfoFileName;
+	static bool m_enDebug[DEBUG_MAX];
 
 private:
 	static SFConfig *m_pInstance;

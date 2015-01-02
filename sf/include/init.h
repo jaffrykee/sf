@@ -395,8 +395,6 @@ enum SF_PRS
 	PRS_MAX
 };
 
-#define RES_DEBUG
-
 class SFConfig;
 
 class SFResPlayerMap;
@@ -407,6 +405,7 @@ class SFResObject;
 class SFResFrame;
 class SFPlayer;
 
+#include <SFDebug.h>
 #include <SFConfig.h>
 #include <SFResource.h>
 #include <SFEventKey.h>

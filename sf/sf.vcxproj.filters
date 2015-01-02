@@ -61,7 +61,10 @@
     <ClInclude Include="include\TStrTrans.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\TDebug.h">
+    <ClInclude Include="include\SFActScene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SFDebug.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -85,6 +88,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SF\SFResource.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SF\SFActScene.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

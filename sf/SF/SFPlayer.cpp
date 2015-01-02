@@ -48,14 +48,20 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 		if (it != m_pSfconfig->s_mEka.end())
 		{
 			//found
-			printf("\nt:%s<<", tmp.c_str());
+			if (SFConfig::m_enDebug[DEBUG_SKILL_KEY])
+			{
+				printf("\nt:%s<<", tmp.c_str());
+			}
 			SF_EKA ret = (SF_EKA)(m_pSfconfig->s_mEka[tmp]);
 			if ((*m_resPlayer)[ret])
 			{
 				if ((*(*m_resPlayer)[ret])[m_standStatus])
 				{
 					//enable，返回结果	<inc>
-					printf("<<");
+					if (SFConfig::m_enDebug[DEBUG_SKILL_KEY])
+					{
+						printf("<<");
+					}
 					return ret;
 				}
 			}
