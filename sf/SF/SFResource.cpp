@@ -49,6 +49,16 @@ SFResSkill::~SFResSkill()
 	}
 }
 
+bool SFResSkill::getEnableSpecialEvent(SF_AS as, SF_SSSE ssse)
+{
+	if (this->m_mSkillSwitchBmp[SF_SSSE_GETAS(as, ssse)] != NULL)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 SFResSkillSwitch* SFResSkill::operator[](SF_AS swIndex)
 {
 	return m_mSkillSwitchBmp[swIndex];
@@ -68,6 +78,16 @@ SFResSkillSwitch::~SFResSkillSwitch()
 			m_mObject[i] = NULL;
 		}
 	}
+}
+
+bool SFResSkillSwitch::getEnableSpecialEvent(SF_SSSE ssse)
+{
+	if (m_parent->m_mSkillSwitchBmp[SF_SSSE_GETAS(m_id, ssse)] != NULL)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 SFResObject* SFResSkillSwitch::operator[](unsigned int objIndex)

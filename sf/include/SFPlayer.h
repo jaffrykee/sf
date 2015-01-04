@@ -68,8 +68,10 @@ public:
 	SFPlayer(unsigned int id, SF_SKN skinId, int pid);
 	~SFPlayer();
 	void setEventListTimeout();
-	void enableDownStatus(SF_EKD val);
-	void disableDownStatus(SF_EKD val);
+	void setDownStatusEnable(SF_EKD val);
+	void setDownStatusDisable(SF_EKD val);
+	bool getEnableSavedInSkill(SF_EKA val, SF_AS sta);
+	bool getEnableUpEventInSkill(SF_EKA val, SF_AS sta);
 	void upEvent(SF_EKU val);
 	SF_EKA getActionSkill(string ekaStr);
 	bool selectSkill(SF_EKD key);

@@ -103,6 +103,23 @@ namespace SFResConfigReader
 								((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_parent = ((SFResSkill*)parseCount[PRS_SKL]);
 							}
 						}
+						else if (utfName == "savable")
+						{
+							if (parseCount[PRS_SKLSW] != NULL)
+							{
+								bool tmp;
+
+								if (utfValue == "true")
+								{
+									tmp = true;
+								}
+								else
+								{
+									tmp = false;
+								}
+								((SFResSkillSwitch*)(parseCount[PRS_SKLSW]))->m_savable = tmp;
+							}
+						}
 					POLL_XML_ATTR_END
 					#pragma endregion
 				}

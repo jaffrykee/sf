@@ -23,19 +23,49 @@ void SFPlayer::setEventListTimeout()
 	m_iTimeOut = 0;
 }
 
-void SFPlayer::enableDownStatus(SF_EKD val)
+void SFPlayer::setDownStatusEnable(SF_EKD val)
 {
 	m_eStatus.m_aStatus[val] = 1;
 }
 
-void SFPlayer::disableDownStatus(SF_EKD val)
+void SFPlayer::setDownStatusDisable(SF_EKD val)
 {
 	m_eStatus.m_aStatus[val] = 0;
 }
 
+bool SFPlayer::getEnableSavedInSkill(SF_EKA val, SF_AS sta)
+{
+	SFResSkill* pResSkill = m_resPlayer->m_mSkill[val];
+
+	if (pResSkill != NULL)
+	{
+		if (pResSkill->m_mSkillSwitchBmp[sta]->m_savable)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool SFPlayer::getEnableUpEventInSkill(SF_EKA val, SF_AS sta)
+{
+	SFResSkill* pResSkill = m_resPlayer->m_mSkill[val];
+
+	if (pResSkill != NULL)
+	{
+		if (pResSkill->getEnableSpecialEvent(sta, SSSE_U))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void SFPlayer::upEvent(SF_EKU val)
 {
-	disableDownStatus((SF_EKD)val);
+	setDownStatusDisable((SF_EKD)val);
 }
 
 SF_EKA SFPlayer::getActionSkill(string ekaStr)
@@ -86,7 +116,7 @@ bool SFPlayer::selectSkill(SF_EKD key)
 	}
 	m_iTimeOut = 0;
 	m_eStatus.addEvent(key);
-	enableDownStatus(key);
+	setDownStatusEnable(key);
 	//只有可控制状态才可以进入selectSkill阶段
 	if (m_hitStatus == ASH_DEF)
 	{

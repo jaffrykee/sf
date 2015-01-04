@@ -90,6 +90,8 @@
 						<xs:attribute name="name" type="xs:string"/>
 						<!-- 名字示例：26A_def，prefix一般为触发器名字，suffix代表何种状态下的技能，def代表地上，air代表空中，
 							cxx什么的代表被连锁或其他什么的。-->
+						<xs:attribute name="savable" type="xs:boolean"/>
+						<!-- 代表是否可以蓄力-->
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

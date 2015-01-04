@@ -47,10 +47,12 @@ public:
 	SFResSkill* m_parent;
 	SF_AS m_id;
 	vector<SFResObject*> m_mObject;
+	bool m_savable;
 
 	SFResSkillSwitch(SF_AS as);
 	~SFResSkillSwitch();
 	SFResObject* operator[](unsigned int objIndex);
+	bool getEnableSpecialEvent(SF_SSSE ssse);
 };
 
 //技能资源
@@ -64,6 +66,7 @@ public:
 	SFResSkill(SF_EKA eka);
 	~SFResSkill();
 	SFResSkillSwitch* operator[](SF_AS swIndex);
+	bool getEnableSpecialEvent(SF_AS as,SF_SSSE ssse);
 };
 
 //玩家资源

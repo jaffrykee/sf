@@ -234,8 +234,16 @@ enum SF_AS
 	AS_STAND_U, AS_JUMP_U,
 	AS_MAX
 };
-#define SF_ASU(as) ((unsigned int)(((unsigned int)(AS_MAX))/2+(unsigned int)(as)))
-#define SF_ASUMIN (((unsigned int)(AS_MAX))/2)
+
+typedef enum SF_SkillSwitchSpecialEvent
+{
+	SSSE_DEF, SSSE_U,
+	SSSE_MAX
+}SF_SSSE;
+#define SF_SSSE_BASICAS(as)		((SF_AS)(((unsigned int)(as))%((unsigned int)AS_MAX)/(unsigned int)SSSE_MAX))
+#define SF_SSSE_GETAS(as, ssse)	((SF_AS)((unsigned int)(((unsigned int)AS_MAX)/((unsigned int)SSSE_MAX)*((unsigned int)(ssse))	\
+	+ (unsigned int)(SF_SSSE_BASICAS(as)))))
+#define SF_SSSE_GETMINAS(ssse)	((SF_AS)((((unsigned int)(AS_MAX))/((unsigned int)SSSE_MAX))*((unsigned int)(ssse))))
 #define AS_DEF AS_STAND
 #define AS_STR_MAX 10
 const char g_AsStr[][AS_STR_MAX] = {
