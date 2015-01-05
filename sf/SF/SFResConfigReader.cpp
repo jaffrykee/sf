@@ -72,11 +72,12 @@ namespace SFResConfigReader
 					POLL_XML_ATTR_BEGIN
 						if (utfName == "name")
 						{
-							char strSkill[EKA_STR_MAX] = { 0 };
-							UINT tmp = 0;
+							vector<string> arrSkillStr;
+							string strSkill = "";
+							string tmp = 0;
 
-							tmp = getFirstSplit(strSkill, EKA_STR_MAX, utfValue.c_str(), '_');
-							if (tmp > 0)
+							TStrTrans::split(utfValue, "_", arrSkillStr);
+							if (tmp != "")
 							{
 								SF_EKA iSkill = SFConfig::GetInstance()->s_mEka[strSkill];
 								const char* tmpSw = utfValue.c_str() + tmp + 1;		//技能状态分支（站立还是跳跃，没有的话就是站立）

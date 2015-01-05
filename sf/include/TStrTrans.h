@@ -15,4 +15,5 @@ namespace TStrTrans
 	StringW Utf8ToUnicode(const char* buf);
 	StringA UnicodeToUtf8(const wchar_t* buf);
 	StringA intIdToStrId(unsigned int id);
+	void split(const string& src, const string& separator, vector<string>& dest);
 }

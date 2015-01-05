@@ -70,11 +70,12 @@ public:
 	void setEventListTimeout();
 	void setDownStatusEnable(SF_EKD val);
 	void setDownStatusDisable(SF_EKD val);
-	bool getEnableSavedInSkill(SF_EKA val, SF_AS sta);
-	bool getEnableUpEventInSkill(SF_EKA val, SF_AS sta);
+	bool getEnableSavedInSkill(SF_EKA skill, SF_AS sta);
+	bool getEnableUpEventInSkill(SF_EKA skill, SF_AS sta);
+	SF_EKA getActionSkill(string ekaStr);
+	SF_EKD getLastKeyFromSkill(SF_EKA skill);
 	bool upEvent(SF_EKU key);
 	bool downEvent(SF_EKD key);
-	SF_EKA getActionSkill(string ekaStr);
 	bool doSkill();
 	int getMaxSkillFrame();
 	void moveToNextFrame();

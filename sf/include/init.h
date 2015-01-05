@@ -207,6 +207,23 @@ enum SF_EKU
 	EK_AU, EK_BU, EK_CU, EK_DU, EK_EU, EK_FU,
 	EKU_MAX
 };
+
+#pragma region g_mapStrEkd
+const map<string, SF_EKD> g_mapStrEkd = {
+	pair<string, SF_EKD>("8", EK_8D),
+	pair<string, SF_EKD>("4", EK_4D),
+	pair<string, SF_EKD>("2", EK_2D),
+	pair<string, SF_EKD>("6", EK_6D),
+	pair<string, SF_EKD>("a", EK_S1D),
+	pair<string, SF_EKD>("b", EK_S2D),
+	pair<string, SF_EKD>("A", EK_AD),
+	pair<string, SF_EKD>("B", EK_BD),
+	pair<string, SF_EKD>("C", EK_CD),
+	pair<string, SF_EKD>("D", EK_DD),
+	pair<string, SF_EKD>("E", EK_ED),
+	pair<string, SF_EKD>("F", EK_FD)
+};
+#pragma endregion
 #pragma endregion
 
 #pragma region 计时器define(SF_TMR)
@@ -232,7 +249,6 @@ enum SF_ASH
 enum SF_AS
 {
 	AS_STAND, AS_JUMP,
-	AS_STAND_U, AS_JUMP_U,
 	AS_MAX
 };
 
@@ -241,15 +257,19 @@ typedef enum SF_SkillSwitchSpecialEvent
 	SSSE_DEF, SSSE_U,
 	SSSE_MAX
 }SF_SSSE;
-#define SF_SSSE_BASICAS(as)		((SF_AS)(((unsigned int)(as))%((unsigned int)AS_MAX)/(unsigned int)SSSE_MAX))
-#define SF_SSSE_GETAS(as, ssse)	((SF_AS)((unsigned int)(((unsigned int)AS_MAX)/((unsigned int)SSSE_MAX)*((unsigned int)(ssse))	\
-	+ (unsigned int)(SF_SSSE_BASICAS(as)))))
-#define SF_SSSE_GETMINAS(ssse)	((SF_AS)((((unsigned int)(AS_MAX))/((unsigned int)SSSE_MAX))*((unsigned int)(ssse))))
+
+//通过as得到它的基准as
+#define SF_SSSE_BASICAS(as)		((SF_AS)((as)%AS_MAX))
+//通过as得到对应的ssse下的as
+#define SF_SSSE_GETAS(as, ssse)		((SF_AS)(SF_SSSE_BASICAS(as) + (ssse)*AS_MAX))
 #define AS_DEF AS_STAND
-#define AS_STR_MAX 10
-const char g_AsStr[][AS_STR_MAX] = {
-	"def", "jump",
-	"def_u", "jump_u"
+
+const string g_strBasicAs[] = {
+	"def", "jump"
+};
+
+const string g_strSsse[] = {
+	"b", "u"
 };
 #pragma endregion
 
@@ -308,7 +328,7 @@ enum SF_EKF
 };
 
 #define EKF_STR_MAX 10
-const char g_EkfStr[][EKF_STR_MAX] = {
+const string g_strEkf[] = {
 	"j", "jex", "rj", "rjex",
 	"fj", "fjex", "bj", "bjex",
 #if 0
@@ -373,8 +393,7 @@ enum SF_EKA
 };
 #define EKA_ZERO EKA_DEF
 
-#define EKA_STR_MAX 10
-const char g_EkaStr[][EKA_STR_MAX] = {
+const string g_strEka[] = {
 	"DEF",
 	"8", "4", "2", "6", "44", "66",
 	"A", "B", "C", "D",
