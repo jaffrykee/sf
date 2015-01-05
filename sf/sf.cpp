@@ -73,7 +73,7 @@ string SFConfig::m_resPath = "./data/";
 string SFConfig::m_resPlayerInfoPrefix = "p";
 string SFConfig::m_resPlayerInfoFileName = "playerInfo.xml";
 /*控制打印：DEBUG_COM, DEBUG_RES_LOAD, DEBUG_SKILL_KEY*/
-bool SFConfig::m_enDebug[DEBUG_MAX] = {true, false, true};
+bool SFConfig::m_enDebug[DEBUG_MAX] = {true, true, true};
 SFConfig* g_pSfconfig = SFConfig::GetInstance();
 
 SFPlayer* g_pP1 = NULL;
@@ -238,14 +238,14 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 	}
 	SafeRelease(&pSink);
 
-	//载入精灵
+	//创建场景和精灵
+	sf_cout(DEBUG_COM, endl << "Loading resource.");
+	g_scn = new SFActScene();
 	g_pP1 = new SFPlayer(1, SKN_DEF, 1);
 	g_pP2 = new SFPlayer(1, SKN_DEF, 2);
-
-	//创建场景
-	g_scn = new SFActScene();
 	g_scn->addSprite(g_pP1);
 	g_scn->addSprite(g_pP2);
+	sf_cout(DEBUG_COM, endl << "Load resource finished.");
 
 	return hr;
 }
@@ -530,52 +530,52 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				switch (wParam)
 				{
 				case KD_P1UP:
-					g_pP1->selectSkill(EK_8D);
+					g_pP1->downEvent(EK_8D);
 					break;
 				case KD_P1LF:
-					g_pP1->selectSkill(EK_4D);
+					g_pP1->downEvent(EK_4D);
 					break;
 				case KD_P1DW:
-					g_pP1->selectSkill(EK_2D);
+					g_pP1->downEvent(EK_2D);
 					break;
 				case KD_P1RG:
-					g_pP1->selectSkill(EK_6D);
+					g_pP1->downEvent(EK_6D);
 					break;
 				case KD_P1AA:
-					g_pP1->selectSkill(EK_AD);
+					g_pP1->downEvent(EK_AD);
 					break;
 				case KD_P1BB:
-					g_pP1->selectSkill(EK_BD);
+					g_pP1->downEvent(EK_BD);
 					break;
 				case KD_P1CC:
-					g_pP1->selectSkill(EK_CD);
+					g_pP1->downEvent(EK_CD);
 					break;
 				case KD_P1DD:
-					g_pP1->selectSkill(EK_DD);
+					g_pP1->downEvent(EK_DD);
 					break;
 				case KD_P2UP:
-					g_pP2->selectSkill(EK_8D);
+					g_pP2->downEvent(EK_8D);
 					break;
 				case KD_P2LF:
-					g_pP2->selectSkill(EK_4D);
+					g_pP2->downEvent(EK_4D);
 					break;
 				case KD_P2DW:
-					g_pP2->selectSkill(EK_2D);
+					g_pP2->downEvent(EK_2D);
 					break;
 				case KD_P2RG:
-					g_pP2->selectSkill(EK_6D);
+					g_pP2->downEvent(EK_6D);
 					break;
 				case KD_P2AA:
-					g_pP2->selectSkill(EK_AD);
+					g_pP2->downEvent(EK_AD);
 					break;
 				case KD_P2BB:
-					g_pP2->selectSkill(EK_BD);
+					g_pP2->downEvent(EK_BD);
 					break;
 				case KD_P2CC:
-					g_pP2->selectSkill(EK_CD);
+					g_pP2->downEvent(EK_CD);
 					break;
 				case KD_P2DD:
-					g_pP2->selectSkill(EK_DD);
+					g_pP2->downEvent(EK_DD);
 					break;
 				}
 				result = 0;

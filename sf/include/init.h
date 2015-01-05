@@ -224,6 +224,7 @@ const unsigned int gc_arrTmr[TMR_MAX] = { 0, 15, 10, 30 };
 enum SF_ASH
 {
 	ASH_DEF, ASH_ATC, ASH_HITED, ASH_FLOOR, ASH_DAD,
+	ASH_SAVED,
 	ASH_MAX
 };
 

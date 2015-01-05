@@ -57,18 +57,15 @@ tips:linuxC风格太浓厚了，不过很灵活。
 					{	\
 						(POLL_SW[sf_nd]) = true;	\
 						(POLL_NODEHAD[sf_nd]) = true;	\
-						if (SFConfig::m_enDebug[DEBUG_RES_LOAD])	\
+						if(SFConfig::m_enDebug[DEBUG_RES_LOAD])	\
 						{	\
-							wprintf(L"\n");	\
+							cout << "\n";	\
 							for(UINT i = 0; i < POLL_TABSCOUNT - 1; i++)	\
-								wprintf(L"    ");	\
+								cout << "    ";	\
+							cout << "#" << (POLL_TABSCOUNT - 1) << ":" << (POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1] + 1);	\
+							wcout << L"<" << nodeName[sf_nd] << L">";	\
 						}	\
 						POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]++; \
-						if (SFConfig::m_enDebug[DEBUG_RES_LOAD])	\
-						{	\
-							wprintf(L"#%d:%d", POLL_TABSCOUNT - 1, POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]); \
-							wprintf(L"<%s>", nodeName[sf_nd]);	\
-						}	\
 						readXMLNode(POLL_PREADER, POLL_TABSCOUNT_ARR, POLL_RESPLAYER);	\
 					}	\
 				}	\
@@ -83,10 +80,7 @@ for (hr = pReader->MoveToFirstAttribute(); S_OK == hr; hr = pReader->MoveToNextA
 	pReader->GetValue(&value, NULL);		\
 	StringA utfName = TStrTrans::UnicodeToUtf8(name);		\
 	StringA utfValue = TStrTrans::UnicodeToUtf8(value);		\
-	if (SFConfig::m_enDebug[DEBUG_RES_LOAD])	\
-	{	\
-		cout << utfName << ":" << utfValue << " ";		\
-	}	\
+	sf_cout(DEBUG_RES_LOAD, utfName << ":" << utfValue << " ");		\
 	ret = true;
 
 #define POLL_XML_ATTR_END		\

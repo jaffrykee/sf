@@ -132,7 +132,7 @@ namespace SFResConfigReader
 					}
 					else if (tabCount[4] > 0)//12x1x
 					{
-						if (tabCount[5] == 0)//12x1x0
+						if (tabCount[5] == 0)//12x1x 0
 						{
 							#pragma region object
 							parseCount[PRS_OBJ] = new SFResObject(tabCount[4] - 1);
@@ -153,16 +153,16 @@ namespace SFResConfigReader
 							POLL_XML_ATTR_END
 							#pragma endregion
 						}
-						else if (tabCount[5] == 1)//12x1x1
+						else if (tabCount[5] == 1)//12x1x 1
 						{
-							if (tabCount[6] == 0)//12x1x10
+							if (tabCount[6] == 0)//12x1x 10
 							{
 								#pragma region frame_table
 								#pragma endregion
 							}
-							else if (tabCount[6] > 0)//12x1x1x
+							else if (tabCount[6] > 0)//12x1x 1x
 							{
-								if (tabCount[7] == 0)//12x1x1x0
+								if (tabCount[7] == 0)//12x1x 1x0
 								{
 									#pragma region frame
 									parseCount[PRS_FRM] = new SFResFrame(tabCount[6] - 1);
@@ -193,9 +193,9 @@ namespace SFResConfigReader
 									POLL_XML_ATTR_END
 									#pragma endregion
 								}
-								else if (tabCount[7] == 1)//12x1x1x1x
+								else if (tabCount[7] == 1)//12x1x 1x1x
 								{
-									if (tabCount[8] == 0)//12x1x1x10
+									if (tabCount[8] == 0)//12x1x 1x10
 									{
 										#pragma region rect(frame)
 										D2D1_RECT_F box;
@@ -243,16 +243,16 @@ namespace SFResConfigReader
 										#pragma endregion
 									}
 								}
-								else if (tabCount[7] == 2)//12x1x1x2x
+								else if (tabCount[7] == 2)//12x1x 1x2x
 								{
-									if (tabCount[8] == 0)//12x1x1x20
+									if (tabCount[8] == 0)//12x1x 1x20
 									{
 										#pragma region box_table
 										#pragma endregion
 									}
-									else if (tabCount[8] > 0)//12x1x1x2x
+									else if (tabCount[8] > 0)//12x1x 1x2x
 									{
-										if (tabCount[9] == 0)//12x1x1x2x0
+										if (tabCount[9] == 0)//12x1x 1x2x0
 										{
 											#pragma region box
 											POLL_XML_ATTR_BEGIN
@@ -268,9 +268,9 @@ namespace SFResConfigReader
 											POLL_XML_ATTR_END
 											#pragma endregion
 										}
-										else if (tabCount[9] == 1)//12x1x1x2x1
+										else if (tabCount[9] == 1)//12x1x 1x2x1
 										{
-											if (tabCount[10] == 0)//12x1x1x2x10
+											if (tabCount[10] == 0)//12x1x 1x2x1 0
 											{
 												#pragma region rect(box)
 												D2D1_RECT_F box;
@@ -339,12 +339,12 @@ namespace SFResConfigReader
 
 		if (SFConfig::m_enDebug[DEBUG_RES_LOAD])
 		{
-			wprintf(L"\n");
+			wcout << L"\n";
 			for (int i = 1; i < SF_XML_TABS_MAX; i++)
 			{
 				if (tabCount[i] != 0)
 				{
-					wprintf(L"    ");
+					wcout << L"    ";
 				}
 				else
 				{
@@ -353,7 +353,11 @@ namespace SFResConfigReader
 			}
 			for (int i = 0; i < SF_XML_TABS_MAX; i++)
 			{
-				wprintf(L"%d ", tabCount[i]);
+				wcout << tabCount[i];
+				if (i % 5 == 4)
+				{
+					wcout << " ";
+				}
 			}
 		}
 
@@ -393,8 +397,7 @@ namespace SFResConfigReader
 		}
 		else
 		{
-			cout << "Error: Can't find the XML file. (\"" << xmlPath << "\")" << endl;
-
+			sf_cout(DEBUG_COM, "Error: Can't find the XML file. (\"" << xmlPath << "\")" << endl);
 			return false;
 		}
 		pReader->SetInput(pFileStream);

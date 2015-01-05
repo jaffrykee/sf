@@ -63,50 +63,16 @@ bool SFPlayer::getEnableUpEventInSkill(SF_EKA val, SF_AS sta)
 	return false;
 }
 
-void SFPlayer::upEvent(SF_EKU val)
+bool SFPlayer::upEvent(SF_EKU key)
 {
-	setDownStatusDisable((SF_EKD)val);
-}
-
-SF_EKA SFPlayer::getActionSkill(string ekaStr)
-{
-	for (unsigned int i = 0; i < ekaStr.size(); i++)
+	setDownStatusDisable((SF_EKD)key);
+	if (m_hitStatus == ASH_SAVED)
 	{
-		string tmp = ekaStr.substr(i, ekaStr.size() - i);
-		map<string, SF_EKA>::iterator it = m_pSfconfig->s_mEka.find(tmp);
-
-		if (it != m_pSfconfig->s_mEka.end())
-		{
-			//found
-			if (SFConfig::m_enDebug[DEBUG_SKILL_KEY])
-			{
-				printf("\nt:%s<<", tmp.c_str());
-			}
-			SF_EKA ret = (SF_EKA)(m_pSfconfig->s_mEka[tmp]);
-			if ((*m_resPlayer)[ret])
-			{
-				if ((*(*m_resPlayer)[ret])[m_standStatus])
-				{
-					//enable，返回结果	<inc>
-					if (SFConfig::m_enDebug[DEBUG_SKILL_KEY])
-					{
-						printf("<<");
-					}
-					return ret;
-				}
-			}
-			else
-			{
-				//disable，继续循环，直到((found && enable) || 遍历结束)
-			}
-		}
 	}
-
-	return EKA_MAX;
+	return false;
 }
 
-//downEvent
-bool SFPlayer::selectSkill(SF_EKD key)
+bool SFPlayer::downEvent(SF_EKD key)
 {
 	SF_EKA ret = EKA_MAX;
 
@@ -131,6 +97,35 @@ bool SFPlayer::selectSkill(SF_EKD key)
 		m_nowSkill = ret;
 	}
 	return true;
+}
+
+SF_EKA SFPlayer::getActionSkill(string ekaStr)
+{
+	for (unsigned int i = 0; i < ekaStr.size(); i++)
+	{
+		string tmp = ekaStr.substr(i, ekaStr.size() - i);
+		map<string, SF_EKA>::iterator it = m_pSfconfig->s_mEka.find(tmp);
+
+		if (it != m_pSfconfig->s_mEka.end())
+		{
+			sf_cout(DEBUG_SKILL_KEY, endl << "t:" << tmp << "<<");
+			SF_EKA ret = (SF_EKA)(m_pSfconfig->s_mEka[tmp]);
+			if ((*m_resPlayer)[ret])
+			{
+				if ((*(*m_resPlayer)[ret])[m_standStatus])
+				{
+					sf_cout(DEBUG_SKILL_KEY, "<<");
+					return ret;
+				}
+			}
+			else
+			{
+				//disable，继续循环，直到((found && enable) || 遍历结束)
+			}
+		}
+	}
+
+	return EKA_MAX;
 }
 
 bool SFPlayer::doSkill()
