@@ -3,7 +3,7 @@
 
 SFConfig::SFConfig()
 {
-	int i = 0;
+#if 0
 #pragma region s_mEkf赋值
 	s_mEkf.insert(pair<string, SF_EKF>("j", EKF_j));
 	s_mEkf.insert(pair<string, SF_EKF>("jex", EKF_jex));
@@ -120,68 +120,7 @@ SFConfig::SFConfig()
 	s_mEkf.insert(pair<string, SF_EKF>("426426D", EKF_426426D));
 	s_mEkf.insert(pair<string, SF_EKF>("MAX", EKF_MAX));
 #pragma endregion
-
-#pragma region s_mEka赋值
-	s_mEka.insert(pair<string, SF_EKA>("A", EKA_A));
-	s_mEka.insert(pair<string, SF_EKA>("B", EKA_B));
-	s_mEka.insert(pair<string, SF_EKA>("C", EKA_C));
-	s_mEka.insert(pair<string, SF_EKA>("D", EKA_D));
-	s_mEka.insert(pair<string, SF_EKA>("8", EKA_8));
-	s_mEka.insert(pair<string, SF_EKA>("4", EKA_4));
-	s_mEka.insert(pair<string, SF_EKA>("2", EKA_2));
-	s_mEka.insert(pair<string, SF_EKA>("6", EKA_6));
-	s_mEka.insert(pair<string, SF_EKA>("44", EKA_44));
-	s_mEka.insert(pair<string, SF_EKA>("66", EKA_66));
-	s_mEka.insert(pair<string, SF_EKA>("26A", EKA_26A));
-	s_mEka.insert(pair<string, SF_EKA>("26B", EKA_26B));
-	s_mEka.insert(pair<string, SF_EKA>("26C", EKA_26C));
-	s_mEka.insert(pair<string, SF_EKA>("26D", EKA_26D));
-	s_mEka.insert(pair<string, SF_EKA>("24A", EKA_24A));
-	s_mEka.insert(pair<string, SF_EKA>("24B", EKA_24B));
-	s_mEka.insert(pair<string, SF_EKA>("24C", EKA_24C));
-	s_mEka.insert(pair<string, SF_EKA>("24D", EKA_24D));
-	s_mEka.insert(pair<string, SF_EKA>("626A", EKA_626A));
-	s_mEka.insert(pair<string, SF_EKA>("626B", EKA_626B));
-	s_mEka.insert(pair<string, SF_EKA>("626C", EKA_626C));
-	s_mEka.insert(pair<string, SF_EKA>("626D", EKA_626D));
-	s_mEka.insert(pair<string, SF_EKA>("424A", EKA_424A));
-	s_mEka.insert(pair<string, SF_EKA>("424B", EKA_424B));
-	s_mEka.insert(pair<string, SF_EKA>("424C", EKA_424C));
-	s_mEka.insert(pair<string, SF_EKA>("424D", EKA_424D));
-	s_mEka.insert(pair<string, SF_EKA>("426A", EKA_426A));
-	s_mEka.insert(pair<string, SF_EKA>("426B", EKA_426B));
-	s_mEka.insert(pair<string, SF_EKA>("426C", EKA_426C));
-	s_mEka.insert(pair<string, SF_EKA>("426D", EKA_426D));
-	s_mEka.insert(pair<string, SF_EKA>("624A", EKA_624A));
-	s_mEka.insert(pair<string, SF_EKA>("624B", EKA_624B));
-	s_mEka.insert(pair<string, SF_EKA>("624C", EKA_624C));
-	s_mEka.insert(pair<string, SF_EKA>("624D", EKA_624D));
-	s_mEka.insert(pair<string, SF_EKA>("2624A", EKA_2624A));
-	s_mEka.insert(pair<string, SF_EKA>("2624B", EKA_2624B));
-	s_mEka.insert(pair<string, SF_EKA>("2624C", EKA_2624C));
-	s_mEka.insert(pair<string, SF_EKA>("2624D", EKA_2624D));
-	s_mEka.insert(pair<string, SF_EKA>("2426A", EKA_2426A));
-	s_mEka.insert(pair<string, SF_EKA>("2426B", EKA_2426B));
-	s_mEka.insert(pair<string, SF_EKA>("2426C", EKA_2426C));
-	s_mEka.insert(pair<string, SF_EKA>("2426D", EKA_2426D));
-	s_mEka.insert(pair<string, SF_EKA>("2626A", EKA_2626A));
-	s_mEka.insert(pair<string, SF_EKA>("2626B", EKA_2626B));
-	s_mEka.insert(pair<string, SF_EKA>("2626C", EKA_2626C));
-	s_mEka.insert(pair<string, SF_EKA>("2626D", EKA_2626D));
-	s_mEka.insert(pair<string, SF_EKA>("2424A", EKA_2424A));
-	s_mEka.insert(pair<string, SF_EKA>("2424B", EKA_2424B));
-	s_mEka.insert(pair<string, SF_EKA>("2424C", EKA_2424C));
-	s_mEka.insert(pair<string, SF_EKA>("2424D", EKA_2424D));
-	s_mEka.insert(pair<string, SF_EKA>("624624A", EKA_624624A));
-	s_mEka.insert(pair<string, SF_EKA>("624624B", EKA_624624B));
-	s_mEka.insert(pair<string, SF_EKA>("624624C", EKA_624624C));
-	s_mEka.insert(pair<string, SF_EKA>("624624D", EKA_624624D));
-	s_mEka.insert(pair<string, SF_EKA>("426426A", EKA_426426A));
-	s_mEka.insert(pair<string, SF_EKA>("426426B", EKA_426426B));
-	s_mEka.insert(pair<string, SF_EKA>("426426C", EKA_426426C));
-	s_mEka.insert(pair<string, SF_EKA>("426426D", EKA_426426D));
-	s_mEka.insert(pair<string, SF_EKA>("MAX", EKA_MAX));
-#pragma endregion
+#endif
 }
 
 SFConfig* SFConfig::GetInstance()

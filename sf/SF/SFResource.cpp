@@ -4,15 +4,15 @@ SFConfig* g_config = SFConfig::GetInstance();
 
 SFResPlayer::SFResPlayer(SF_SKN skin)
 {
-	memset(m_mSkill, 0, sizeof(SFResSkill*)*EKA_MAX);
+	memset(m_arrSkill, 0, sizeof(SFResSkill*)*EKA_MAX*AS_MAX*SSSE_MAX);
 }
 
 SFResPlayer::SFResPlayer(string pid, SF_SKN skin)
 {
 	string confPath;
 
-	confPath = g_config->m_resPath + g_config->m_resPlayerInfoPrefix + pid + "/" + g_config->m_resPlayerInfoFileName;
-	memset(m_mSkill, 0, sizeof(SFResSkill*)*EKA_MAX);
+	confPath = g_resPath + g_resPlayerInfoPrefix + pid + "/" + g_resPlayerInfoFileName;
+	memset(m_arrSkill, 0, sizeof(SFResSkill*)*EKA_MAX*AS_MAX*SSSE_MAX);
 	SFResConfigReader::readFromXML(confPath, this);
 }
 
@@ -20,10 +20,16 @@ SFResPlayer::~SFResPlayer()
 {
 	for (UINT i = 0; i<EKA_MAX; i++)
 	{
-		if (m_mSkill[i] != NULL)
+		for (UINT j = 0; j < AS_MAX; j++)
 		{
-			delete m_mSkill[i];
-			m_mSkill[i] = NULL;
+			for (UINT k = 0; k < SSSE_MAX; k++)
+			{
+				if (m_arrSkill[i][j][k] != NULL)
+				{
+					delete m_arrSkill[i][j][k];
+					m_arrSkill[i][j][k] = NULL;
+				}
+			}
 		}
 	}
 }
@@ -71,25 +77,25 @@ bool SFResSkill::getEnableSpecialEvent(SF_AS as, SF_SSSE ssse)
 }
 */
 
-SFResSkillSwitch::SFResSkillSwitch(SF_AS as, SF_SSSE ssse) :m_id(as*ssse), m_as(as), m_ssse(ssse)
+SFResSkill::SFResSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse) :m_id(eka*as*ssse), m_eka(eka), m_as(as), m_ssse(ssse)
 {
 }
 
-SFResSkillSwitch::~SFResSkillSwitch()
+SFResSkill::~SFResSkill()
 {
-	for (unsigned int i = 0; i < m_mObject.size(); i++)
+	for (unsigned int i = 0; i < m_arrObject.size(); i++)
 	{
-		if (m_mObject[i] != NULL)
+		if (m_arrObject[i] != NULL)
 		{
-			delete m_mObject[i];
-			m_mObject[i] = NULL;
+			delete m_arrObject[i];
+			m_arrObject[i] = NULL;
 		}
 	}
 }
 
-bool SFResSkillSwitch::getEnableSpecialEvent(SF_SSSE ssse)
+bool SFResSkill::getEnableSpecialEvent(SF_SSSE ssse)
 {
-	if (m_parent->m_mSkillSwitchBmp[SF_SSSE_GETAS(m_as, ssse)] != NULL)
+	if (m_parent->m_arrSkill[m_eka][m_as][ssse] != NULL)
 	{
 		return true;
 	}
@@ -97,9 +103,9 @@ bool SFResSkillSwitch::getEnableSpecialEvent(SF_SSSE ssse)
 	return false;
 }
 
-SFResObject* SFResSkillSwitch::operator[](unsigned int objIndex)
+SFResObject* SFResSkill::operator[](unsigned int objIndex)
 {
-	return m_mObject[objIndex];
+	return m_arrObject[objIndex];
 }
 
 SFResObject::SFResObject(unsigned int index) :m_index(index)

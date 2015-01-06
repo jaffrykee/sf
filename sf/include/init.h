@@ -175,6 +175,12 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #define KD_P2MN VK_4
 #pragma endregion
 
+#pragma region 配置文件路径等
+const string g_resPath = "./data/";
+const string g_resPlayerInfoPrefix = "p";
+const string g_resPlayerInfoFileName = "playerInfo.xml";
+#pragma endregion
+
 #pragma region 角色定义(SF_PLR)
 enum SF_PLR
 {
@@ -193,7 +199,7 @@ enum SF_SKN
 #define SKN_DEF SKN_SK1
 #pragma endregion
 
-#pragma region 虚拟按键事件define(SF_EK)
+#pragma region 虚拟按键事件define(SF_EK)以及技能define(SF_EKA)
 enum SF_EKD
 {
 	EK_8D, EK_4D, EK_2D, EK_6D, EK_S1D, EK_S2D,
@@ -224,6 +230,7 @@ const map<string, SF_EKD> g_mapStrEkd = {
 	pair<string, SF_EKD>("F", EK_FD)
 };
 #pragma endregion
+
 #pragma endregion
 
 #pragma region 计时器define(SF_TMR)
@@ -407,6 +414,71 @@ enum SF_EKA
 	EKA_426426A, EKA_426426B, EKA_426426C, EKA_426426D,
 	EKA_MAX
 };
+
+#pragma region g_mapStrEka
+const map<string, SF_EKA> g_mapStrEka = {
+	pair<string, SF_EKA>("A", EKA_A),
+	pair<string, SF_EKA>("B", EKA_B),
+	pair<string, SF_EKA>("C", EKA_C),
+	pair<string, SF_EKA>("D", EKA_D),
+	pair<string, SF_EKA>("8", EKA_8),
+	pair<string, SF_EKA>("4", EKA_4),
+	pair<string, SF_EKA>("2", EKA_2),
+	pair<string, SF_EKA>("6", EKA_6),
+	pair<string, SF_EKA>("44", EKA_44),
+	pair<string, SF_EKA>("66", EKA_66),
+	pair<string, SF_EKA>("26A", EKA_26A),
+	pair<string, SF_EKA>("26B", EKA_26B),
+	pair<string, SF_EKA>("26C", EKA_26C),
+	pair<string, SF_EKA>("26D", EKA_26D),
+	pair<string, SF_EKA>("24A", EKA_24A),
+	pair<string, SF_EKA>("24B", EKA_24B),
+	pair<string, SF_EKA>("24C", EKA_24C),
+	pair<string, SF_EKA>("24D", EKA_24D),
+	pair<string, SF_EKA>("626A", EKA_626A),
+	pair<string, SF_EKA>("626B", EKA_626B),
+	pair<string, SF_EKA>("626C", EKA_626C),
+	pair<string, SF_EKA>("626D", EKA_626D),
+	pair<string, SF_EKA>("424A", EKA_424A),
+	pair<string, SF_EKA>("424B", EKA_424B),
+	pair<string, SF_EKA>("424C", EKA_424C),
+	pair<string, SF_EKA>("424D", EKA_424D),
+	pair<string, SF_EKA>("426A", EKA_426A),
+	pair<string, SF_EKA>("426B", EKA_426B),
+	pair<string, SF_EKA>("426C", EKA_426C),
+	pair<string, SF_EKA>("426D", EKA_426D),
+	pair<string, SF_EKA>("624A", EKA_624A),
+	pair<string, SF_EKA>("624B", EKA_624B),
+	pair<string, SF_EKA>("624C", EKA_624C),
+	pair<string, SF_EKA>("624D", EKA_624D),
+	pair<string, SF_EKA>("2624A", EKA_2624A),
+	pair<string, SF_EKA>("2624B", EKA_2624B),
+	pair<string, SF_EKA>("2624C", EKA_2624C),
+	pair<string, SF_EKA>("2624D", EKA_2624D),
+	pair<string, SF_EKA>("2426A", EKA_2426A),
+	pair<string, SF_EKA>("2426B", EKA_2426B),
+	pair<string, SF_EKA>("2426C", EKA_2426C),
+	pair<string, SF_EKA>("2426D", EKA_2426D),
+	pair<string, SF_EKA>("2626A", EKA_2626A),
+	pair<string, SF_EKA>("2626B", EKA_2626B),
+	pair<string, SF_EKA>("2626C", EKA_2626C),
+	pair<string, SF_EKA>("2626D", EKA_2626D),
+	pair<string, SF_EKA>("2424A", EKA_2424A),
+	pair<string, SF_EKA>("2424B", EKA_2424B),
+	pair<string, SF_EKA>("2424C", EKA_2424C),
+	pair<string, SF_EKA>("2424D", EKA_2424D),
+	pair<string, SF_EKA>("624624A", EKA_624624A),
+	pair<string, SF_EKA>("624624B", EKA_624624B),
+	pair<string, SF_EKA>("624624C", EKA_624624C),
+	pair<string, SF_EKA>("624624D", EKA_624624D),
+	pair<string, SF_EKA>("426426A", EKA_426426A),
+	pair<string, SF_EKA>("426426B", EKA_426426B),
+	pair<string, SF_EKA>("426426C", EKA_426426C),
+	pair<string, SF_EKA>("426426D", EKA_426426D),
+	pair<string, SF_EKA>("MAX", EKA_MAX)
+};
+#pragma endregion
+
 #define EKA_ZERO EKA_DEF
 
 const string g_strEka[] = {
@@ -439,7 +511,7 @@ const string g_strEka[] = {
 */
 enum SF_PRS
 {
-	PRS_SKL, PRS_SKLSW, PRS_OBJ, PRS_FRM,
+	PRS_SKL, PRS_OBJ, PRS_FRM,
 	PRS_MAX
 };
 

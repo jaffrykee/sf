@@ -44,15 +44,15 @@ public:
 class SFResSkill
 {
 public:
-	SFResSkill* m_parent;
+	SFResPlayer* m_parent;
 	UINT m_id;
 	SF_EKA m_eka;
 	SF_AS m_as;
 	SF_SSSE m_ssse;
-	vector<SFResObject*> m_mObject;
+	vector<SFResObject*> m_arrObject;
 	bool m_savable;
 
-	SFResSkill(SF_AS as, SF_SSSE ssse);
+	SFResSkill(SF_EKA m_eka, SF_AS as, SF_SSSE ssse);
 	~SFResSkill();
 	SFResObject* operator[](unsigned int objIndex);
 	bool getEnableSpecialEvent(SF_SSSE ssse);
@@ -77,7 +77,7 @@ public:
 class SFResPlayer
 {
 public:
-	SFResSkill* m_mSkill[EKA_MAX][AS_MAX][SSSE_MAX];
+	SFResSkill* m_arrSkill[EKA_MAX][AS_MAX][SSSE_MAX];
 
 	SFResPlayer(SF_SKN skin);
 	SFResPlayer(string pid, SF_SKN skin);

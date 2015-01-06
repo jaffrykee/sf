@@ -101,7 +101,7 @@
 						<xs:sequence>
 							<xs:element ref="object_table" minOccurs="0"></xs:element>
 						</xs:sequence>
-						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="eka" type="xs:string" use="required"/>
 						<!-- 名字示例：26A-->
 						<xs:attribute name="as" type="mstns:StrAs" default="def"/>
 						<xs:attribute name="ssse" type="mstns:StrSsse" default="basic"/>

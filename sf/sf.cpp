@@ -69,9 +69,6 @@ using namespace std;
 
 #pragma region 全局变量
 SFConfig* SFConfig::m_pInstance = NULL;
-string SFConfig::m_resPath = "./data/";
-string SFConfig::m_resPlayerInfoPrefix = "p";
-string SFConfig::m_resPlayerInfoFileName = "playerInfo.xml";
 /*控制打印：DEBUG_COM, DEBUG_RES_LOAD, DEBUG_SKILL_KEY*/
 bool SFConfig::m_enDebug[DEBUG_MAX] = {true, true, true};
 SFConfig* g_pSfconfig = SFConfig::GetInstance();

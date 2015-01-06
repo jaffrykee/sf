@@ -35,9 +35,10 @@ namespace SFResConfigReader
 		LPCWSTR value;
 		bool ret = false;
 		static void* parseCount[PRS_MAX] = {NULL};
-		static string s_as = "";
-		static string s_ssse = "";
-		static string s_savable = "";
+		static string s_skillEka = "";
+		static string s_skillAs = "";
+		static string s_skillSsse = "";
+		static string s_skillSavable = "";
 		static UINT boxType = 0;
 
 		if (resPlayer == NULL)
@@ -73,26 +74,21 @@ namespace SFResConfigReader
 				{
 					#pragma region skill
 					POLL_XML_ATTR_BEGIN
-						if (utfName == "name")
+						if (utfName == "eka")
 						{
-							SF_EKA iSkill = SFConfig::GetInstance()->s_mEka[utfValue];
-							bool found = false;
-
-							parseCount[PRS_SKL] = new SFResSkill(iSkill);
-							resPlayer->m_mSkill[iSkill] = (SFResSkill*)parseCount[PRS_SKL];
-							((SFResSkill*)parseCount[PRS_SKL])->m_parent = resPlayer;
+							s_skillEka = utfValue;
 						}
 						else if (utfName == "as")
 						{
-							s_as = utfValue;
+							s_skillAs = utfValue;
 						}
 						else if (utfName == "ssse")
 						{
-							s_ssse = utfValue;
+							s_skillSsse = utfValue;
 						}
 						else if (utfName == "savable")
 						{
-							s_savable = utfValue;
+							s_skillSavable = utfValue;
 						}
 					POLL_XML_ATTR_END
 					#pragma endregion
@@ -102,51 +98,56 @@ namespace SFResConfigReader
 					if (tabCount[4] == 0)//12x10
 					{
 						#pragma region object_table & skill's head end
-						map<string, SF_AS>::const_iterator itAs = g_mapAs.find(s_as);
-						map<string, SF_SSSE>::const_iterator itSsse = g_mapSsse.find(s_ssse);
+						map<string, SF_EKA>::const_iterator itEka = g_mapStrEka.find(s_skillEka);
+						map<string, SF_AS>::const_iterator itAs = g_mapAs.find(s_skillAs);
+						map<string, SF_SSSE>::const_iterator itSsse = g_mapSsse.find(s_skillSsse);
 
-						if (itAs != g_mapAs.end())
+						if (itEka != g_mapStrEka.end())
 						{
-							if (itSsse != g_mapSsse.end())
+							if (itAs != g_mapAs.end())
 							{
-								parseCount[PRS_SKLSW] = new SFResSkillSwitch(itAs->second, itSsse->second);
-								((SFResSkill*)parseCount[PRS_SKL])->m_mSkillSwitchBmp[itAs->second][itSsse->second] = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
-								((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_parent = ((SFResSkill*)parseCount[PRS_SKL]);
-
-
-								if (parseCount[PRS_SKLSW] != NULL)
+								if (itSsse != g_mapSsse.end())
 								{
-									bool tmp;
+									parseCount[PRS_SKL] = new SFResSkill(iSkill);
+									resPlayer->m_arrSkill[][][] = (SFResSkill*)parseCount[PRS_SKL];
+									((SFResSkill*)parseCount[PRS_SKL])->m_parent = resPlayer;
 
-									if (s_savable == "true")
+
+									parseCount[PRS_SKLSW] = new SFResSkillSwitch(itAs->second, itSsse->second);
+									((SFResSkill*)parseCount[PRS_SKL])->m_mSkillSwitchBmp[itAs->second][itSsse->second] = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
+									((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_parent = ((SFResSkill*)parseCount[PRS_SKL]);
+
+
+									if (parseCount[PRS_SKLSW] != NULL)
 									{
-										tmp = true;
+										bool tmp;
+
+										if (s_savable == "true")
+										{
+											tmp = true;
+										}
+										else
+										{
+											tmp = false;
+										}
+										((SFResSkillSwitch*)(parseCount[PRS_SKLSW]))->m_savable = tmp;
 									}
-									else
-									{
-										tmp = false;
-									}
-									((SFResSkillSwitch*)(parseCount[PRS_SKLSW]))->m_savable = tmp;
+								}
+								else
+								{
+									sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_skillSsse << "\" ssse Attr.");
+									return false;
 								}
 							}
 							else
 							{
-								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_ssse << "\" ssse Attr.");
+								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_skillAs << "\" as Attr.");
 								return false;
 							}
 						}
 						else
 						{
-							sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_as << "\" as Attr.");
-							return false;
-						}
-						if (itSsse != g_mapSsse.end())
-						{
-							itSsse->second;
-						}
-						else
-						{
-							sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_ssse << "\" ssse Attr.");
+							sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_skillEka << "\" " << << " Attr.");
 							return false;
 						}
 						#pragma endregion
