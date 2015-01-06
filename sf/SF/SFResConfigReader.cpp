@@ -35,6 +35,9 @@ namespace SFResConfigReader
 		LPCWSTR value;
 		bool ret = false;
 		static void* parseCount[PRS_MAX] = {NULL};
+		static string s_as = "";
+		static string s_ssse = "";
+		static string s_savable = "";
 		static UINT boxType = 0;
 
 		if (resPlayer == NULL)
@@ -72,54 +75,24 @@ namespace SFResConfigReader
 					POLL_XML_ATTR_BEGIN
 						if (utfName == "name")
 						{
-							vector<string> arrSkillStr;
-							string strSkill = "";
-							string tmp = 0;
+							SF_EKA iSkill = SFConfig::GetInstance()->s_mEka[utfValue];
+							bool found = false;
 
-							TStrTrans::split(utfValue, "_", arrSkillStr);
-							if (tmp != "")
-							{
-								SF_EKA iSkill = SFConfig::GetInstance()->s_mEka[strSkill];
-								const char* tmpSw = utfValue.c_str() + tmp + 1;		//技能状态分支（站立还是跳跃，没有的话就是站立）
-								bool found = false;
-								UINT i = 0;
-
-								parseCount[PRS_SKL] = new SFResSkill(iSkill);
-								resPlayer->m_mSkill[iSkill] = (SFResSkill*)parseCount[PRS_SKL];
-								((SFResSkill*)parseCount[PRS_SKL])->m_parent = resPlayer;
-								for (i = 0; i < AS_MAX; i++)
-								{
-									if (0 == strcmp(tmpSw, g_AsStr[i]))
-									{
-										found = true;
-										break;
-									}
-								}
-								if (!found)
-								{
-									i = 0;
-								}
-								parseCount[PRS_SKLSW] = new SFResSkillSwitch((SF_AS)i);
-								((SFResSkill*)parseCount[PRS_SKL])->m_mSkillSwitchBmp[i] = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
-								((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_parent = ((SFResSkill*)parseCount[PRS_SKL]);
-							}
+							parseCount[PRS_SKL] = new SFResSkill(iSkill);
+							resPlayer->m_mSkill[iSkill] = (SFResSkill*)parseCount[PRS_SKL];
+							((SFResSkill*)parseCount[PRS_SKL])->m_parent = resPlayer;
+						}
+						else if (utfName == "as")
+						{
+							s_as = utfValue;
+						}
+						else if (utfName == "ssse")
+						{
+							s_ssse = utfValue;
 						}
 						else if (utfName == "savable")
 						{
-							if (parseCount[PRS_SKLSW] != NULL)
-							{
-								bool tmp;
-
-								if (utfValue == "true")
-								{
-									tmp = true;
-								}
-								else
-								{
-									tmp = false;
-								}
-								((SFResSkillSwitch*)(parseCount[PRS_SKLSW]))->m_savable = tmp;
-							}
+							s_savable = utfValue;
 						}
 					POLL_XML_ATTR_END
 					#pragma endregion
@@ -128,7 +101,54 @@ namespace SFResConfigReader
 				{
 					if (tabCount[4] == 0)//12x10
 					{
-						#pragma region object_table
+						#pragma region object_table & skill's head end
+						map<string, SF_AS>::const_iterator itAs = g_mapAs.find(s_as);
+						map<string, SF_SSSE>::const_iterator itSsse = g_mapSsse.find(s_ssse);
+
+						if (itAs != g_mapAs.end())
+						{
+							if (itSsse != g_mapSsse.end())
+							{
+								parseCount[PRS_SKLSW] = new SFResSkillSwitch(itAs->second, itSsse->second);
+								((SFResSkill*)parseCount[PRS_SKL])->m_mSkillSwitchBmp[itAs->second][itSsse->second] = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
+								((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_parent = ((SFResSkill*)parseCount[PRS_SKL]);
+
+
+								if (parseCount[PRS_SKLSW] != NULL)
+								{
+									bool tmp;
+
+									if (s_savable == "true")
+									{
+										tmp = true;
+									}
+									else
+									{
+										tmp = false;
+									}
+									((SFResSkillSwitch*)(parseCount[PRS_SKLSW]))->m_savable = tmp;
+								}
+							}
+							else
+							{
+								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_ssse << "\" ssse Attr.");
+								return false;
+							}
+						}
+						else
+						{
+							sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_as << "\" as Attr.");
+							return false;
+						}
+						if (itSsse != g_mapSsse.end())
+						{
+							itSsse->second;
+						}
+						else
+						{
+							sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_ssse << "\" ssse Attr.");
+							return false;
+						}
 						#pragma endregion
 					}
 					else if (tabCount[4] > 0)//12x1x

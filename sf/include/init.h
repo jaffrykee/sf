@@ -254,23 +254,39 @@ enum SF_AS
 
 typedef enum SF_SkillSwitchSpecialEvent
 {
-	SSSE_DEF, SSSE_U,
+	SSSE_BASIC, SSSE_UP,
 	SSSE_MAX
 }SF_SSSE;
 
 //通过as得到它的基准as
 #define SF_SSSE_BASICAS(as)		((SF_AS)((as)%AS_MAX))
 //通过as得到对应的ssse下的as
-#define SF_SSSE_GETAS(as, ssse)		((SF_AS)(SF_SSSE_BASICAS(as) + (ssse)*AS_MAX))
+#define SF_SSSE_GETAS(as, ssse)		((SF_SSSE_BASICAS(as) + ((unsigned int)(ssse))*AS_MAX))
 #define AS_DEF AS_STAND
+#define SSSE_DEF SSSE_BASIC
 
-const string g_strBasicAs[] = {
+const string g_strAs[AS_MAX] = {
 	"def", "jump"
 };
-
-const string g_strSsse[] = {
-	"b", "u"
+const map<string, SF_AS> g_mapAs = {
+	pair<string, SF_AS>("def", AS_DEF),
+	pair<string, SF_AS>("jump", AS_JUMP)
 };
+
+const string g_strSsse[SSSE_MAX] = {
+	"basic", "up"
+};
+const map<string, SF_SSSE> g_mapSsse = {
+	pair<string, SF_SSSE>("basic", SSSE_BASIC),
+	pair<string, SF_SSSE>("up", SSSE_UP)
+};
+
+const string g_strAsSplit = "_";
+typedef enum SF_SkillAsSplitType
+{
+	SAST_NAME, SAST_AS, SAST_SSSE,
+	SAST_MAX
+}SF_SAST;
 #pragma endregion
 
 #pragma region 带状态的虚拟按键事件连锁define(SF_EKF)

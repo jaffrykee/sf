@@ -32,7 +32,7 @@ class SFResObject
 public:
 	unsigned int m_index;
 	unsigned int m_id;
-	SFResSkillSwitch* m_parent;
+	SFResSkill* m_parent;
 	vector<SFResFrame*> m_mFrame;
 
 	SFResObject(unsigned int index);
@@ -40,40 +40,44 @@ public:
 	SFResFrame* operator[](unsigned int frameIndex);
 };
 
-//技能状态分支
-class SFResSkillSwitch
+//技能资源
+class SFResSkill
 {
 public:
 	SFResSkill* m_parent;
-	SF_AS m_id;
+	UINT m_id;
+	SF_EKA m_eka;
+	SF_AS m_as;
+	SF_SSSE m_ssse;
 	vector<SFResObject*> m_mObject;
 	bool m_savable;
 
-	SFResSkillSwitch(SF_AS as);
-	~SFResSkillSwitch();
+	SFResSkill(SF_AS as, SF_SSSE ssse);
+	~SFResSkill();
 	SFResObject* operator[](unsigned int objIndex);
 	bool getEnableSpecialEvent(SF_SSSE ssse);
 };
 
+/*
 //技能资源
 class SFResSkill
 {
 public:
 	SFResPlayer* m_parent;
 	SF_EKA m_id;
-	SFResSkillSwitch* m_mSkillSwitchBmp[AS_MAX];
+	SFResSkillSwitch* m_mSkillSwitchBmp[AS_MAX][SSSE_MAX];
 
 	SFResSkill(SF_EKA eka);
 	~SFResSkill();
-	SFResSkillSwitch* operator[](SF_AS swIndex);
 	bool getEnableSpecialEvent(SF_AS as,SF_SSSE ssse);
 };
+*/
 
 //玩家资源
 class SFResPlayer
 {
 public:
-	SFResSkill* m_mSkill[EKA_MAX];
+	SFResSkill* m_mSkill[EKA_MAX][AS_MAX][SSSE_MAX];
 
 	SFResPlayer(SF_SKN skin);
 	SFResPlayer(string pid, SF_SKN skin);

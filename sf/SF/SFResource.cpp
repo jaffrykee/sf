@@ -28,6 +28,7 @@ SFResPlayer::~SFResPlayer()
 	}
 }
 
+/*
 SFResSkill* SFResPlayer::operator[](SF_EKA skillIndex)
 {
 	return m_mSkill[skillIndex];
@@ -35,16 +36,26 @@ SFResSkill* SFResPlayer::operator[](SF_EKA skillIndex)
 
 SFResSkill::SFResSkill(SF_EKA eka) :m_id(eka)
 {
+	for (UINT i = 0; i < AS_MAX; i++)
+	{
+		for (UINT j = 0; j < SSSE_MAX; j++)
+		{
+			m_mSkillSwitchBmp[i][j] = NULL;
+		}
+	}
 }
 
 SFResSkill::~SFResSkill()
 {
-	for (UINT i = 0; i<AS_MAX; i++)
+	for (UINT i = 0; i < AS_MAX; i++)
 	{
-		if (m_mSkillSwitchBmp[i] != NULL)
+		for (UINT j = 0; j < SSSE_MAX; j++)
 		{
-			delete m_mSkillSwitchBmp[i];
-			m_mSkillSwitchBmp[i] = NULL;
+			if (m_mSkillSwitchBmp[i][j] != NULL)
+			{
+				delete m_mSkillSwitchBmp[i][j];
+				m_mSkillSwitchBmp[i][j] = NULL;
+			}
 		}
 	}
 }
@@ -58,13 +69,9 @@ bool SFResSkill::getEnableSpecialEvent(SF_AS as, SF_SSSE ssse)
 
 	return false;
 }
+*/
 
-SFResSkillSwitch* SFResSkill::operator[](SF_AS swIndex)
-{
-	return m_mSkillSwitchBmp[swIndex];
-}
-
-SFResSkillSwitch::SFResSkillSwitch(SF_AS as) :m_id(as)
+SFResSkillSwitch::SFResSkillSwitch(SF_AS as, SF_SSSE ssse) :m_id(as*ssse), m_as(as), m_ssse(ssse)
 {
 }
 
@@ -82,7 +89,7 @@ SFResSkillSwitch::~SFResSkillSwitch()
 
 bool SFResSkillSwitch::getEnableSpecialEvent(SF_SSSE ssse)
 {
-	if (m_parent->m_mSkillSwitchBmp[SF_SSSE_GETAS(m_id, ssse)] != NULL)
+	if (m_parent->m_mSkillSwitchBmp[SF_SSSE_GETAS(m_as, ssse)] != NULL)
 	{
 		return true;
 	}
