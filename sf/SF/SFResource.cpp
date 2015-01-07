@@ -77,13 +77,17 @@ bool SFResSkill::getEnableSpecialEvent(SF_AS as, SF_SSSE ssse)
 }
 */
 
-SFResSkill::SFResSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse) :m_id(eka*as*ssse), m_eka(eka), m_as(as), m_ssse(ssse)
+SFResSkill::SFResSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent) :m_id(eka*as*ssse), m_eka(eka), m_as(as), m_ssse(ssse), m_parent(pParent)
 {
+	if (pParent != NULL)
+	{
+		pParent->m_arrSkill[eka][as][ssse] = this;
+	}
 }
 
 SFResSkill::~SFResSkill()
 {
-	for (unsigned int i = 0; i < m_arrObject.size(); i++)
+	for (UINT i = 0; i < m_arrObject.size(); i++)
 	{
 		if (m_arrObject[i] != NULL)
 		{
@@ -103,34 +107,42 @@ bool SFResSkill::getEnableSpecialEvent(SF_SSSE ssse)
 	return false;
 }
 
-SFResObject* SFResSkill::operator[](unsigned int objIndex)
+SFResObject* SFResSkill::operator[](UINT objIndex)
 {
 	return m_arrObject[objIndex];
 }
 
-SFResObject::SFResObject(unsigned int index) :m_index(index)
+SFResObject::SFResObject(UINT index, SFResSkill* pParent) :m_index(index), m_parent(pParent)
 {
+	if (pParent != NULL)
+	{
+		pParent->m_arrObject[index] = this;
+	}
 }
 
 SFResObject::~SFResObject()
 {
-	for (unsigned int i = 0; i < m_mFrame.size(); i++)
+	for (UINT i = 0; i < m_arrFrame.size(); i++)
 	{
-		if (m_mFrame[i] != NULL)
+		if (m_arrFrame[i] != NULL)
 		{
-			delete m_mFrame[i];
-			m_mFrame[i] = NULL;
+			delete m_arrFrame[i];
+			m_arrFrame[i] = NULL;
 		}
 	}
 }
 
-SFResFrame* SFResObject::operator[](unsigned int frameIndex)
+SFResFrame* SFResObject::operator[](UINT frameIndex)
 {
-	return m_mFrame[frameIndex];
+	return m_arrFrame[frameIndex];
 }
 
-SFResFrame::SFResFrame(unsigned int index) :m_index(index)
+SFResFrame::SFResFrame(UINT index, SFResObject* pParent) :m_index(index), m_parent(pParent)
 {
+	if (pParent != NULL)
+	{
+		pParent->m_arrFrame[index] = this;
+	}
 }
 
 SFResFrame::~SFResFrame()

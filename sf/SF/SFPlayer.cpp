@@ -1,7 +1,7 @@
 ﻿#pragma execution_character_set("utf-8")
 #include <SFPlayer.h>
 
-SFPlayer::SFPlayer(unsigned int id, SF_SKN skinId, int pid) :m_id(id), m_skinId(skinId), m_pid(pid)
+SFPlayer::SFPlayer(UINT id, SF_SKN skinId, int pid) :m_id(id), m_skinId(skinId), m_pid(pid)
 {
 	m_resPlayer = new SFResPlayer(TStrTrans::intIdToStrId(id), skinId);
 
@@ -65,7 +65,7 @@ bool SFPlayer::getEnableUpEventInSkill(SF_EKA skill, SF_AS sta)
 
 SF_EKA SFPlayer::getActionSkill(string ekaStr)
 {
-	for (unsigned int i = 0; i < ekaStr.size(); i++)
+	for (UINT i = 0; i < ekaStr.size(); i++)
 	{
 		string tmp = ekaStr.substr(i, ekaStr.size() - i);
 		map<string, SF_EKA>::iterator it = m_pSfconfig->s_mEka.find(tmp);

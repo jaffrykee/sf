@@ -8,12 +8,12 @@ class TArray
 {
 public:
 	TArray();
-	TArray(unsigned int size);
+	TArray(UINT size);
 	~TArray();
-	MyBMPixel& operator[](unsigned int id);
+	MyBMPixel& operator[](UINT id);
 
 protected:
-	unsigned int m_size;
+	UINT m_size;
 	MyBMPixel* m_pArrHead;
 
 private:
@@ -26,7 +26,7 @@ TArray<MyBMPixel>::TArray()
 }
 
 template<class MyBMPixel>
-TArray<MyBMPixel>::TArray(unsigned int size)
+TArray<MyBMPixel>::TArray(UINT size)
 {
 	m_size = size;
 	m_pArrHead = new MyBMPixel[size];
@@ -39,7 +39,7 @@ TArray<MyBMPixel>::~TArray()
 }
 
 template<class MyBMPixel>
-MyBMPixel& TArray<MyBMPixel>::operator[](unsigned int id)
+MyBMPixel& TArray<MyBMPixel>::operator[](UINT id)
 {
 	return m_pArrHead[id];
 }

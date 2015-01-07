@@ -11,7 +11,7 @@
 class SFResFrame
 {
 public:
-	unsigned int m_index;
+	UINT m_index;
 	float m_mid;
 	SFResObject* m_parent;
 	//渲染矩形
@@ -22,7 +22,7 @@ public:
 	list<D2D1_RECT_F> m_lBodyBox;
 	list<D2D1_RECT_F> m_lAttackBox;
 
-	SFResFrame(unsigned int index);
+	SFResFrame(UINT index, SFResObject* pParent);
 	~SFResFrame();
 };
 
@@ -30,14 +30,14 @@ public:
 class SFResObject
 {
 public:
-	unsigned int m_index;
-	unsigned int m_id;
+	UINT m_index;
+	UINT m_id;
 	SFResSkill* m_parent;
-	vector<SFResFrame*> m_mFrame;
+	vector<SFResFrame*> m_arrFrame;
 
-	SFResObject(unsigned int index);
+	SFResObject(UINT index, SFResSkill* pParent);
 	~SFResObject();
-	SFResFrame* operator[](unsigned int frameIndex);
+	SFResFrame* operator[](UINT frameIndex);
 };
 
 //技能资源
@@ -52,9 +52,9 @@ public:
 	vector<SFResObject*> m_arrObject;
 	bool m_savable;
 
-	SFResSkill(SF_EKA m_eka, SF_AS as, SF_SSSE ssse);
+	SFResSkill(SF_EKA m_eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent);
 	~SFResSkill();
-	SFResObject* operator[](unsigned int objIndex);
+	SFResObject* operator[](UINT objIndex);
 	bool getEnableSpecialEvent(SF_SSSE ssse);
 };
 
@@ -107,7 +107,7 @@ public:
 private:
 	SFResPlayerMap()
 	{
-		for (unsigned int i = 0; i < PLR_MAX; i++)
+		for (UINT i = 0; i < PLR_MAX; i++)
 		{
 			s_mPlayer[i] = NULL;
 		}

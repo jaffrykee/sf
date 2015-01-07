@@ -8,7 +8,7 @@ SFActScene::SFActScene(SF_SCN_MAP mapType) :m_mapType(mapType)
 
 SFActScene::~SFActScene()
 {
-	for (unsigned int i = 0; i < m_aSprite.size(); i++)
+	for (UINT i = 0; i < m_aSprite.size(); i++)
 	{
 		if (m_aSprite[i] != NULL)
 		{

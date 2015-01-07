@@ -56,7 +56,7 @@ public:
 	//按键状态
 	SFPEventStatus m_eStatus;
 	//心跳超时计时
-	unsigned int m_iTimeOut;
+	UINT m_iTimeOut;
 	SF_ASH m_hitStatus;
 	SF_AS m_standStatus;
 
@@ -65,7 +65,7 @@ public:
 	//当前等待打印的技能的帧计数器
 	int m_countSkillFrame;
 
-	SFPlayer(unsigned int id, SF_SKN skinId, int pid);
+	SFPlayer(UINT id, SF_SKN skinId, int pid);
 	~SFPlayer();
 	void setEventListTimeout();
 	void setDownStatusEnable(SF_EKD val);

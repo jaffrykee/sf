@@ -47,7 +47,7 @@ namespace TStrTrans
 		return &utf8[0];
 	}
 
-	StringA intIdToStrId(unsigned int id)
+	StringA intIdToStrId(UINT id)
 	{
 		stringstream ss;
 		string tmp;

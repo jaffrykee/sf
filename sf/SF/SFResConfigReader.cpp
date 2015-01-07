@@ -35,10 +35,10 @@ namespace SFResConfigReader
 		LPCWSTR value;
 		bool ret = false;
 		static void* parseCount[PRS_MAX] = {NULL};
-		static string s_skillEka = "";
-		static string s_skillAs = "";
-		static string s_skillSsse = "";
-		static string s_skillSavable = "";
+		static SF_EKA s_skillEka;
+		static SF_AS s_skillAs;
+		static SF_SSSE s_skillSsse;
+		static bool s_skillSavable;
 		static UINT boxType = 0;
 
 		if (resPlayer == NULL)
@@ -76,19 +76,53 @@ namespace SFResConfigReader
 					POLL_XML_ATTR_BEGIN
 						if (utfName == "eka")
 						{
-							s_skillEka = utfValue;
+							map<string, SF_EKA>::const_iterator itEka = g_mapStrEka.find(utfValue);
+							if (itEka != g_mapStrEka.end())
+							{
+								s_skillEka = itEka->second;
+							}
+							else
+							{
+								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << utfValue << "\" " << utfName << " Attr.");
+								return false;
+							}
 						}
 						else if (utfName == "as")
 						{
-							s_skillAs = utfValue;
+							map<string, SF_AS>::const_iterator itAs = g_mapAs.find(utfValue);
+							if (itAs != g_mapAs.end())
+							{
+								s_skillAs = itAs->second;
+							}
+							else
+							{
+								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << utfValue << "\" " << utfName << " Attr.");
+								return false;
+							}
 						}
 						else if (utfName == "ssse")
 						{
-							s_skillSsse = utfValue;
+							map<string, SF_SSSE>::const_iterator itSsse = g_mapSsse.find(utfValue);
+							if (itSsse != g_mapSsse.end())
+							{
+								s_skillSsse = itSsse->second;
+							}
+							else
+							{
+								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << utfValue << "\" " << utfName << " Attr.");
+								return false;
+							}
 						}
 						else if (utfName == "savable")
 						{
-							s_skillSavable = utfValue;
+							if (utfValue == "true")
+							{
+								s_skillSavable = true;
+							}
+							else
+							{
+								s_skillSavable = false;
+							}
 						}
 					POLL_XML_ATTR_END
 					#pragma endregion
@@ -97,10 +131,7 @@ namespace SFResConfigReader
 				{
 					if (tabCount[4] == 0)//12x10
 					{
-						#pragma region object_table & skill's head end
-						map<string, SF_EKA>::const_iterator itEka = g_mapStrEka.find(s_skillEka);
-						map<string, SF_AS>::const_iterator itAs = g_mapAs.find(s_skillAs);
-						map<string, SF_SSSE>::const_iterator itSsse = g_mapSsse.find(s_skillSsse);
+						#pragma region object_table & skill节点头结束
 
 						if (itEka != g_mapStrEka.end())
 						{
@@ -108,15 +139,11 @@ namespace SFResConfigReader
 							{
 								if (itSsse != g_mapSsse.end())
 								{
-									parseCount[PRS_SKL] = new SFResSkill(iSkill);
-									resPlayer->m_arrSkill[][][] = (SFResSkill*)parseCount[PRS_SKL];
+									parseCount[PRS_SKL] = new SFResSkill(s_skillEka, s_skillAs, s_skillSsse);
+									resPlayer->m_arrSkill[s_skillEka][s_skillAs][s_skillSsse] = (SFResSkill*)parseCount[PRS_SKL];
 									((SFResSkill*)parseCount[PRS_SKL])->m_parent = resPlayer;
-
-
-									parseCount[PRS_SKLSW] = new SFResSkillSwitch(itAs->second, itSsse->second);
-									((SFResSkill*)parseCount[PRS_SKL])->m_mSkillSwitchBmp[itAs->second][itSsse->second] = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
-									((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_parent = ((SFResSkill*)parseCount[PRS_SKL]);
-
+									((SFResSkill*)parseCount[PRS_SKL])->m_savable = s_skillSavable;
+									
 
 									if (parseCount[PRS_SKLSW] != NULL)
 									{
@@ -167,7 +194,7 @@ namespace SFResConfigReader
 								if (utfName == "id")
 								{
 									stringstream ss;
-									unsigned int iValue;
+									UINT iValue;
 
 									ss << utfValue;
 									ss >> iValue;
@@ -197,7 +224,7 @@ namespace SFResConfigReader
 										if (utfName == "id")
 										{
 											stringstream ss;
-											unsigned int iValue;
+											UINT iValue;
 
 											ss << utfValue;
 											ss >> iValue;
@@ -281,7 +308,7 @@ namespace SFResConfigReader
 												if (utfName == "type")
 												{
 													stringstream ss;
-													unsigned int iValue;
+													UINT iValue;
 
 													ss << utfValue;
 													ss >> iValue;

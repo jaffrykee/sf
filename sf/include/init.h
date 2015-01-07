@@ -240,7 +240,7 @@ enum SF_TMR
 	TMR_MAX
 };
 
-const unsigned int gc_arrTmr[TMR_MAX] = { 0, 15, 10, 30 };
+const UINT gc_arrTmr[TMR_MAX] = { 0, 15, 10, 30 };
 #pragma endregion
 
 #pragma region 角色当前状态define(SF_ASH, SF_AS)
@@ -268,7 +268,7 @@ typedef enum SF_SkillSwitchSpecialEvent
 //通过as得到它的基准as
 #define SF_SSSE_BASICAS(as)		((SF_AS)((as)%AS_MAX))
 //通过as得到对应的ssse下的as
-#define SF_SSSE_GETAS(as, ssse)		((SF_SSSE_BASICAS(as) + ((unsigned int)(ssse))*AS_MAX))
+#define SF_SSSE_GETAS(as, ssse)		((SF_SSSE_BASICAS(as) + ((UINT)(ssse))*AS_MAX))
 #define AS_DEF AS_STAND
 #define SSSE_DEF SSSE_BASIC
 
