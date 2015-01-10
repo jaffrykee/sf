@@ -132,51 +132,7 @@ namespace SFResConfigReader
 					if (tabCount[4] == 0)//12x10
 					{
 						#pragma region object_table & skill节点头结束
-
-						if (itEka != g_mapStrEka.end())
-						{
-							if (itAs != g_mapAs.end())
-							{
-								if (itSsse != g_mapSsse.end())
-								{
-									parseCount[PRS_SKL] = new SFResSkill(s_skillEka, s_skillAs, s_skillSsse);
-									resPlayer->m_arrSkill[s_skillEka][s_skillAs][s_skillSsse] = (SFResSkill*)parseCount[PRS_SKL];
-									((SFResSkill*)parseCount[PRS_SKL])->m_parent = resPlayer;
-									((SFResSkill*)parseCount[PRS_SKL])->m_savable = s_skillSavable;
-									
-
-									if (parseCount[PRS_SKLSW] != NULL)
-									{
-										bool tmp;
-
-										if (s_savable == "true")
-										{
-											tmp = true;
-										}
-										else
-										{
-											tmp = false;
-										}
-										((SFResSkillSwitch*)(parseCount[PRS_SKLSW]))->m_savable = tmp;
-									}
-								}
-								else
-								{
-									sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_skillSsse << "\" ssse Attr.");
-									return false;
-								}
-							}
-							else
-							{
-								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_skillAs << "\" as Attr.");
-								return false;
-							}
-						}
-						else
-						{
-							sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << s_skillEka << "\" " << << " Attr.");
-							return false;
-						}
+						parseCount[PRS_SKL] = new SFResSkill(s_skillEka, s_skillAs, s_skillSsse, resPlayer, s_skillSavable);
 						#pragma endregion
 					}
 					else if (tabCount[4] > 0)//12x1x
@@ -184,12 +140,7 @@ namespace SFResConfigReader
 						if (tabCount[5] == 0)//12x1x 0
 						{
 							#pragma region object
-							parseCount[PRS_OBJ] = new SFResObject(tabCount[4] - 1);
-							((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_mObject.insert(
-								((SFResSkillSwitch*)parseCount[PRS_SKLSW])->m_mObject.end(),
-								(SFResObject*)parseCount[PRS_OBJ]
-								);
-							((SFResObject*)parseCount[PRS_OBJ])->m_parent = (SFResSkillSwitch*)parseCount[PRS_SKLSW];
+							parseCount[PRS_OBJ] = new SFResObject((SFResSkill*)parseCount[PRS_SKL]);
 							POLL_XML_ATTR_BEGIN
 								if (utfName == "id")
 								{

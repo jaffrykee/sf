@@ -77,7 +77,8 @@ bool SFResSkill::getEnableSpecialEvent(SF_AS as, SF_SSSE ssse)
 }
 */
 
-SFResSkill::SFResSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent) :m_id(eka*as*ssse), m_eka(eka), m_as(as), m_ssse(ssse), m_parent(pParent)
+SFResSkill::SFResSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent,bool savable)
+	:m_id(eka*as*ssse), m_eka(eka), m_as(as), m_ssse(ssse), m_parent(pParent), m_savable(savable)
 {
 	if (pParent != NULL)
 	{
@@ -107,16 +108,17 @@ bool SFResSkill::getEnableSpecialEvent(SF_SSSE ssse)
 	return false;
 }
 
-SFResObject* SFResSkill::operator[](UINT objIndex)
+SFResObject* SFResSkill::operator[](UINT intObjIndex)
 {
-	return m_arrObject[objIndex];
+	return m_arrObject[intObjIndex];
 }
 
-SFResObject::SFResObject(UINT index, SFResSkill* pParent) :m_index(index), m_parent(pParent)
+SFResObject::SFResObject(SFResSkill* pParent) :m_parent(pParent)
 {
 	if (pParent != NULL)
 	{
-		pParent->m_arrObject[index] = this;
+		m_index = pParent->m_arrObject.size();
+		pParent->m_arrObject.insert(pParent->m_arrObject.end(), this);
 	}
 }
 
@@ -137,7 +139,7 @@ SFResFrame* SFResObject::operator[](UINT frameIndex)
 	return m_arrFrame[frameIndex];
 }
 
-SFResFrame::SFResFrame(UINT index, SFResObject* pParent) :m_index(index), m_parent(pParent)
+SFResFrame::SFResFrame(SFResObject* pParent) :m_index(index), m_parent(pParent)
 {
 	if (pParent != NULL)
 	{

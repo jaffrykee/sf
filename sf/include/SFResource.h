@@ -22,7 +22,7 @@ public:
 	list<D2D1_RECT_F> m_lBodyBox;
 	list<D2D1_RECT_F> m_lAttackBox;
 
-	SFResFrame(UINT index, SFResObject* pParent);
+	SFResFrame(SFResObject* pParent);
 	~SFResFrame();
 };
 
@@ -31,11 +31,11 @@ class SFResObject
 {
 public:
 	UINT m_index;
-	UINT m_id;
+	string m_strId;
 	SFResSkill* m_parent;
 	vector<SFResFrame*> m_arrFrame;
 
-	SFResObject(UINT index, SFResSkill* pParent);
+	SFResObject(SFResSkill* pParent);
 	~SFResObject();
 	SFResFrame* operator[](UINT frameIndex);
 };
@@ -52,9 +52,9 @@ public:
 	vector<SFResObject*> m_arrObject;
 	bool m_savable;
 
-	SFResSkill(SF_EKA m_eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent);
+	SFResSkill(SF_EKA m_eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent, bool savable = false);
 	~SFResSkill();
-	SFResObject* operator[](UINT objIndex);
+	SFResObject* operator[](UINT intObjIndex);
 	bool getEnableSpecialEvent(SF_SSSE ssse);
 };
 
