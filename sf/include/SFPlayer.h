@@ -62,6 +62,8 @@ public:
 
 	//当前等待打印的技能
 	SF_EKA m_nowSkill;
+	SF_AS m_nowAs;
+	SF_SSSE m_nowSsse;
 	//当前等待打印的技能的帧计数器
 	int m_countSkillFrame;
 
@@ -70,6 +72,7 @@ public:
 	void setEventListTimeout();
 	void setDownStatusEnable(SF_EKD val);
 	void setDownStatusDisable(SF_EKD val);
+	void setHitStatus(SF_ASH ash);
 	bool getEnableSavedInSkill(SF_EKA skill, SF_AS sta);
 	bool getEnableUpEventInSkill(SF_EKA skill, SF_AS sta);
 	SF_EKA getActionSkill(string ekaStr);

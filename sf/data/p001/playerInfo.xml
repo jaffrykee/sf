@@ -5,7 +5,7 @@
 		<skin name="附属"></skin>
 	</skin_table>
 	<skill_table>
-		<skill name="26A_def" savable="false">
+		<skill eka="26A" as="def" ssse="basic" savable="false">
 			<object_table>
 				<object id="1">
 					<frame_table>

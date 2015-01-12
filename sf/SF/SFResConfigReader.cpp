@@ -165,11 +165,7 @@ namespace SFResConfigReader
 								if (tabCount[7] == 0)//12x1x 1x0
 								{
 									#pragma region frame
-									parseCount[PRS_FRM] = new SFResFrame(tabCount[6] - 1);
-									((SFResObject*)parseCount[PRS_OBJ])->m_mFrame.insert(
-										((SFResObject*)parseCount[PRS_OBJ])->m_mFrame.end(),
-										(SFResFrame*)parseCount[PRS_FRM]
-										);
+									parseCount[PRS_FRM] = new SFResFrame((SFResObject*)parseCount[PRS_OBJ]);
 									((SFResFrame*)parseCount[PRS_FRM])->m_parent = (SFResObject*)parseCount[PRS_OBJ];
 									POLL_XML_ATTR_BEGIN
 										if (utfName == "id")

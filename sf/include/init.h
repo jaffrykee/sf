@@ -251,6 +251,10 @@ enum SF_ASH
 	ASH_SAVED,
 	ASH_MAX
 };
+const string g_strAsh[ASH_MAX] = {
+	"ASH_DEF", "ASH_ATC", "ASH_HITED", "ASH_FLOOR", "ASH_DAD",
+	"ASH_SAVED"
+};
 
 //位置状态
 enum SF_AS

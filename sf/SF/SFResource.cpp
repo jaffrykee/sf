@@ -96,6 +96,10 @@ SFResSkill::~SFResSkill()
 			m_arrObject[i] = NULL;
 		}
 	}
+	if (m_parent != NULL)
+	{
+		m_parent->m_arrSkill[m_eka][m_as][m_ssse] = NULL;
+	}
 }
 
 bool SFResSkill::getEnableSpecialEvent(SF_SSSE ssse)
@@ -132,6 +136,13 @@ SFResObject::~SFResObject()
 			m_arrFrame[i] = NULL;
 		}
 	}
+	if (m_parent != NULL)
+	{
+		if (m_index < m_parent->m_arrObject.size())
+		{
+			m_parent->m_arrObject[m_index] = NULL;
+		}
+	}
 }
 
 SFResFrame* SFResObject::operator[](UINT frameIndex)
@@ -139,14 +150,22 @@ SFResFrame* SFResObject::operator[](UINT frameIndex)
 	return m_arrFrame[frameIndex];
 }
 
-SFResFrame::SFResFrame(SFResObject* pParent) :m_index(index), m_parent(pParent)
+SFResFrame::SFResFrame(SFResObject* pParent) :m_parent(pParent)
 {
 	if (pParent != NULL)
 	{
-		pParent->m_arrFrame[index] = this;
+		m_index = pParent->m_arrFrame.size();
+		pParent->m_arrFrame.insert(pParent->m_arrFrame.end(), this);
 	}
 }
 
 SFResFrame::~SFResFrame()
 {
+	if (m_parent != NULL)
+	{
+		if (m_index < m_parent->m_arrFrame.size())
+		{
+			m_parent->m_arrFrame[m_index] = NULL;
+		}
+	}
 }

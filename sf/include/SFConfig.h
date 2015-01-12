@@ -7,8 +7,10 @@
 class SFConfig
 {
 public:
+/*
 	map<string, SF_EKF> s_mEkf;
 	map<string, SF_EKA> s_mEka;
+*/
 	static bool m_enDebug[DEBUG_MAX];
 
 private:

@@ -33,13 +33,19 @@ void SFPlayer::setDownStatusDisable(SF_EKD val)
 	m_eStatus.m_aStatus[val] = 0;
 }
 
+void SFPlayer::setHitStatus(SF_ASH ash)
+{
+	sf_cout(DEBUG_PLAYER_ACT, endl << "player" << this->m_pid << ":hitStatus <from>: " << g_strAsh[m_hitStatus] << " <to>: " << g_strAsh[ash]);
+	m_hitStatus = ash;
+}
+
 bool SFPlayer::getEnableSavedInSkill(SF_EKA skill, SF_AS sta)
 {
-	SFResSkill* pResSkill = m_resPlayer->m_mSkill[skill];
+	SFResSkill* pResSkill = m_resPlayer->m_arrSkill[skill][sta][SF_SSSE::SSSE_BASIC];
 
 	if (pResSkill != NULL)
 	{
-		if (pResSkill->m_mSkillSwitchBmp[sta]->m_savable)
+		if (pResSkill->m_savable)
 		{
 			return true;
 		}
@@ -50,14 +56,11 @@ bool SFPlayer::getEnableSavedInSkill(SF_EKA skill, SF_AS sta)
 
 bool SFPlayer::getEnableUpEventInSkill(SF_EKA skill, SF_AS sta)
 {
-	SFResSkill* pResSkill = m_resPlayer->m_mSkill[skill];
+	SFResSkill* pResSkill = m_resPlayer->m_arrSkill[skill][sta][SSSE_UP];
 
 	if (pResSkill != NULL)
 	{
-		if (pResSkill->getEnableSpecialEvent(sta, SSSE_U))
-		{
-			return true;
-		}
+		return true;
 	}
 
 	return false;
@@ -68,19 +71,27 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 	for (UINT i = 0; i < ekaStr.size(); i++)
 	{
 		string tmp = ekaStr.substr(i, ekaStr.size() - i);
-		map<string, SF_EKA>::iterator it = m_pSfconfig->s_mEka.find(tmp);
+		map<string, SF_EKA>::const_iterator it = g_mapStrEka.find(tmp);
 
-		if (it != m_pSfconfig->s_mEka.end())
+		if (it != g_mapStrEka.end())
 		{
 			sf_cout(DEBUG_SKILL_KEY, endl << "t:" << tmp << "<<");
-			SF_EKA ret = (SF_EKA)(m_pSfconfig->s_mEka[tmp]);
-			if ((*m_resPlayer)[ret])
+			SF_EKA ret = it->second;
+			if (m_resPlayer->m_arrSkill[ret][m_standStatus][SF_SSSE::SSSE_BASIC] != NULL)
 			{
-				if ((*(*m_resPlayer)[ret])[m_standStatus])
+				sf_cout(DEBUG_SKILL_KEY, "<<");
+				if (m_resPlayer->m_arrSkill[ret][m_standStatus][SF_SSSE::SSSE_BASIC]->m_savable == true)
 				{
-					sf_cout(DEBUG_SKILL_KEY, "<<");
-					return ret;
+					setHitStatus(ASH_SAVED);
 				}
+				else
+				{
+//					setHitStatus(ASH_ATC);
+				}
+				m_nowAs = m_standStatus;
+				m_nowSsse = SSSE_BASIC;
+
+				return ret;
 			}
 			else
 			{
@@ -92,17 +103,22 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 	return EKA_MAX;
 }
 
+//得到某一技能的最后一个的按键
 SF_EKD SFPlayer::getLastKeyFromSkill(SF_EKA skill)
 {
 	if (skill != EKA_DEF && skill != EKA_MAX)
 	{
 		string strSkill = g_strEka[skill];
-		strSkill.end();
+		string strLastKey = strSkill.substr(strSkill.length() - 1, 1);
+		map<string, SF_EKD>::const_iterator itEkd = g_mapStrEkd.find(strLastKey);
+
+		if (itEkd != g_mapStrEkd.end())
+		{
+			return itEkd->second;
+		}
 	}
-	else
-	{
-		return EKD_MAX;
-	}
+
+	return EKD_MAX;
 }
 
 bool SFPlayer::upEvent(SF_EKU key)
@@ -110,6 +126,10 @@ bool SFPlayer::upEvent(SF_EKU key)
 	setDownStatusDisable((SF_EKD)key);
 	if (m_hitStatus == ASH_SAVED)
 	{
+		if (getLastKeyFromSkill(m_nowSkill) == key)
+		{
+			m_nowSsse = SSSE_UP;
+		}
 	}
 	return false;
 }
