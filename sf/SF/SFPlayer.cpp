@@ -128,7 +128,20 @@ bool SFPlayer::upEvent(SF_EKU key)
 	{
 		if (getLastKeyFromSkill(m_nowSkill) == key)
 		{
-			m_nowSsse = SSSE_UP;
+			if (this->getEnableUpEventInSkill(m_nowSkill, m_nowAs))
+			{
+				m_nowSsse = SSSE_UP;
+				//setHitStatus(ASH_ATC);
+			}
+			else
+			{
+				//<inc>场景中应该有个释放控制的函数，能够让场景按照地图类型，将精灵归位。
+				m_nowSkill = EKA_DEF;
+				m_nowAs = AS_DEF;
+				m_nowSsse = SSSE_BASIC;
+				m_standStatus = AS_DEF;
+				setHitStatus(ASH_DEF);
+			}
 		}
 	}
 	return false;
