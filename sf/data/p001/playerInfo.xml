@@ -9,7 +9,7 @@
 			<object_table>
 				<object id="1">
 					<frame_table>
-						<frame id="1" m="0">
+						<frame id="1">
 							<rect t="150" l="-50" b="0" r="50"></rect>
 							<box_table>
 								<box type="1">
@@ -17,101 +17,101 @@
 								</box>
 							</box_table>
 						</frame>
-						<frame id="2" m="1">
-							<rect t="150" l="-50" b="0" r="52"></rect>
+						<frame id="2">
+							<rect t="150" l="-51" b="0" r="51"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-50" b="0" r="52"></rect>
+									<rect t="150" l="-51" b="0" r="51"></rect>
 								</box>
 							</box_table>
 						</frame>
-						<frame id="3" m="2">
-							<rect t="150" l="-50" b="0" r="54"></rect>
+						<frame id="3">
+							<rect t="150" l="-52" b="0" r="52"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-50" b="0" r="54"></rect>
+									<rect t="150" l="-52" b="0" r="52"></rect>
 								</box>
 								<box type="2">
 									<rect t="100" l="50" b="50" r="100"></rect>
 								</box>
 							</box_table>
 						</frame>
-						<frame id="4" m="3">
-							<rect t="150" l="-50" b="0" r="56"></rect>
+						<frame id="4">
+							<rect t="150" l="-53" b="0" r="53"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-50" b="0" r="56"></rect>
+									<rect t="150" l="-53" b="0" r="53"></rect>
 								</box>
 								<box type="2">
 									<rect t="100" l="52" b="50" r="102"></rect>
 								</box>
 							</box_table>
 						</frame>
-						<frame id="5" m="4">
-							<rect t="150" l="-50" b="0" r="58"></rect>
+						<frame id="5">
+							<rect t="150" l="-54" b="0" r="54"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-50" b="0" r="58"></rect>
+									<rect t="150" l="-54" b="0" r="54"></rect>
 								</box>
 								<box type="2">
 									<rect t="100" l="55" b="50" r="105"></rect>
 								</box>
 							</box_table>
 						</frame>
-						<frame id="6" m="5">
-							<rect t="150" l="-50" b="0" r="60"></rect>
+						<frame id="6">
+							<rect t="150" l="-55" b="0" r="55"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-50" b="0" r="60"></rect>
+									<rect t="150" l="-55" b="0" r="55"></rect>
 								</box>
 								<box type="2">
 									<rect t="100" l="60" b="50" r="110"></rect>
 								</box>
 							</box_table>
 						</frame>
-						<frame id="7" m="6">
-							<rect t="150" l="-48" b="0" r="60"></rect>
+						<frame id="7">
+							<rect t="150" l="-54" b="0" r="54"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-48" b="0" r="60"></rect>
+									<rect t="150" l="-54" b="0" r="54"></rect>
 								</box>
 								<box type="2">
 									<rect t="100" l="60" b="50" r="110"></rect>
 								</box>
 							</box_table>
 						</frame>
-						<frame id="8" m="7">
-							<rect t="150" l="-46" b="0" r="60"></rect>
+						<frame id="8">
+							<rect t="150" l="-53" b="0" r="53"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-46" b="0" r="60"></rect>
+									<rect t="150" l="-53" b="0" r="53"></rect>
 								</box>
 								<box type="2">
 									<rect t="100" l="60" b="50" r="110"></rect>
 								</box>
 							</box_table>
 						</frame>
-						<frame id="9" m="8">
-							<rect t="150" l="-44" b="0" r="60"></rect>
+						<frame id="9">
+							<rect t="150" l="-52" b="0" r="52"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-44" b="0" r="60"></rect>
+									<rect t="150" l="-52" b="0" r="52"></rect>
 								</box>
 							</box_table>
 						</frame>
-						<frame id="10" m="9">
-							<rect t="150" l="-42" b="0" r="60"></rect>
+						<frame id="10">
+							<rect t="150" l="-51" b="0" r="51"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-42" b="0" r="60"></rect>
+									<rect t="150" l="-51" b="0" r="51"></rect>
 								</box>
 							</box_table>
 						</frame>
-						<frame id="11" m="10">
-							<rect t="150" l="-40" b="0" r="60"></rect>
+						<frame id="11">
+							<rect t="150" l="-50" b="0" r="50"></rect>
 							<box_table>
 								<box type="1">
-									<rect t="150" l="-40" b="0" r="60"></rect>
+									<rect t="150" l="-50" b="0" r="50"></rect>
 								</box>
 							</box_table>
 						</frame>

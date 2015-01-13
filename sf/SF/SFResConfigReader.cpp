@@ -176,16 +176,6 @@ namespace SFResConfigReader
 											ss << utfValue;
 											ss >> iValue;
 										}
-										else if (utfName == "m")
-										{
-											stringstream ss;
-											float fValue;
-
-											ss << utfValue;
-											ss >> fValue;
-
-											((SFResFrame*)parseCount[PRS_FRM])->m_mid = fValue;
-										}
 									POLL_XML_ATTR_END
 									#pragma endregion
 								}

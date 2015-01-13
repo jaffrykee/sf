@@ -12,7 +12,6 @@ class SFResFrame
 {
 public:
 	UINT m_index;
-	float m_mid;
 	SFResObject* m_parent;
 	//渲染矩形
 	D2D1_RECT_F m_drawBox;

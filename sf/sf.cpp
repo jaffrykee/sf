@@ -82,7 +82,6 @@ string g_strEkf2 = "";
 SFActScene* g_scn = NULL;
 #pragma endregion
 
-
 #pragma region 入口以及初始配置
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
