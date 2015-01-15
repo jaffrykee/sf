@@ -519,6 +519,12 @@ enum SF_PRS
 	PRS_MAX
 };
 
+typedef struct SFSelectedPlayer
+{
+	UINT id;
+	SF_SKN skin;
+}SF_SP;
+
 class SFConfig;
 
 class SFResPlayerMap;

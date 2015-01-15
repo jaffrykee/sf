@@ -15,17 +15,37 @@ typedef enum SF_SCN_STAGE
 	SCN_STG_MAX
 }SF_SCN_STG;
 
-#define SFSprite SFPlayer
+//暂时没用
+typedef enum SF_PLR_GROUP
+{
+	PGR_PLR, PGR_MST,
+	PGR_MAX
+};
+
+#define SF_FIGHT_PLRGROUP_MAX 2
+const string g_strPlayerGroup[SF_FIGHT_PLRGROUP_MAX] = {
+	"p1", "p2"
+};
+
+//将来会改为继承关系，也有可能不改了
+typedef SFPlayer SFSprite;
+
+class SFSpriteGroup
+{
+public:
+	vector<SFSprite*> m_aSprite;
+};
 
 //场景类，目前只能是单线程，将来可能会向多线程发展。
 class SFActScene
 {
 public:
-	vector<SFSprite*> m_aSprite;
+	map<string, SFSpriteGroup*> m_mapSpriteGroup;
 	SF_SCN_MAP m_mapType;
 	SF_SCN_STAGE m_stage;
 
 	SFActScene(SF_SCN_MAP mapType = SCN_MAP_DEF);
 	~SFActScene();
-	bool addSprite(SFSprite* pSprite);
+	bool addSpriteGroup(string groupName);
+	bool addSprite(string groupName, SFSprite* pSprite);
 };

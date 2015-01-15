@@ -4,6 +4,10 @@
         Title="MainWindow" Height="800" Width="1280">
     <Grid>
         <DockPanel>
+            <DockPanel DockPanel.Dock="Top"></DockPanel>
+            <DockPanel DockPanel.Dock="Left"></DockPanel>
+            <DockPanel DockPanel.Dock="Bottom"></DockPanel>
+            <DockPanel DockPanel.Dock="Right"></DockPanel>
         </DockPanel>
     </Grid>
 </Window>
