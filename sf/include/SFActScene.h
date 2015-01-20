@@ -15,11 +15,11 @@ typedef enum SF_SCN_STAGE
 	SCN_STG_MAX
 }SF_SCN_STG;
 
-//暂时没用
-typedef enum SF_PLR_GROUP
+//暂时没用,PLR是玩家的意思，MST是怪物的意思
+typedef enum SF_PLR_GROUPTYPE
 {
-	PGR_PLR, PGR_MST,
-	PGR_MAX
+	PGT_PLR, PGT_MST,
+	PGT_MAX
 };
 
 #define SF_FIGHT_PLRGROUP_MAX 2
@@ -33,7 +33,12 @@ typedef SFPlayer SFSprite;
 class SFSpriteGroup
 {
 public:
+	string m_name;
 	vector<SFSprite*> m_aSprite;
+
+	SFSpriteGroup(string name);
+	~SFSpriteGroup();
+	bool addSprite(SFSprite* pSprite);
 };
 
 //场景类，目前只能是单线程，将来可能会向多线程发展。

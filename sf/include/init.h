@@ -534,6 +534,8 @@ class SFResSkillSwitch;
 class SFResObject;
 class SFResFrame;
 class SFPlayer;
+class SFActScene;
+class SFSpriteGroup;
 
 #include <SFDebug.h>
 #include <SFConfig.h>
@@ -541,5 +543,6 @@ class SFPlayer;
 #include <SFEventKey.h>
 #include <SFPlayer.h>
 #include <TStrTrans.h>
-#include <SFResConfigReader.h>
 #include <SFActScene.h>
+#include <SFResConfigReader.h>
+#include <SFSceneManager.h>
