@@ -17,6 +17,10 @@ namespace SFFightManager
 {
 	SFActScene* createScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2);
 	bool releaseScene(SFActScene* pScene);
-
 	SFPlayer* getPlayerInSceneByPGN(SFActScene* pScene, string groupName);
+}
+
+namespace SFEventManager
+{
+
 }

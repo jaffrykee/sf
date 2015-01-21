@@ -77,7 +77,7 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 #endif
 #pragma endregion
 
-#pragma region VK
+#pragma region WIN系统的按键定义，VK
 //定义数据字符0~9  
 #define   VK_0         0x30   
 #define   VK_1         0x31   
@@ -200,34 +200,28 @@ enum SF_SKN
 #pragma endregion
 
 #pragma region 虚拟按键事件define(SF_EK)以及技能define(SF_EKA)
-enum SF_EKD
+
+enum SF_EK
 {
-	EK_8D, EK_4D, EK_2D, EK_6D, EK_S1D, EK_S2D,
-	EK_AD, EK_BD, EK_CD, EK_DD, EK_ED, EK_FD,
-	EKD_MAX
+	EK_8, EK_4, EK_2, EK_6, EK_S1, EK_S2,
+	EK_A, EK_B, EK_C, EK_D, EK_E, EK_F,
+	EK_MAX
 };
 
-enum SF_EKU
-{
-	EK_8U, EK_4U, EK_2U, EK_6U, EK_S1U, EK_S2U,
-	EK_AU, EK_BU, EK_CU, EK_DU, EK_EU, EK_FU,
-	EKU_MAX
-};
-
-#pragma region g_mapStrEkd
-const map<string, SF_EKD> g_mapStrEkd = {
-	pair<string, SF_EKD>("8", EK_8D),
-	pair<string, SF_EKD>("4", EK_4D),
-	pair<string, SF_EKD>("2", EK_2D),
-	pair<string, SF_EKD>("6", EK_6D),
-	pair<string, SF_EKD>("a", EK_S1D),
-	pair<string, SF_EKD>("b", EK_S2D),
-	pair<string, SF_EKD>("A", EK_AD),
-	pair<string, SF_EKD>("B", EK_BD),
-	pair<string, SF_EKD>("C", EK_CD),
-	pair<string, SF_EKD>("D", EK_DD),
-	pair<string, SF_EKD>("E", EK_ED),
-	pair<string, SF_EKD>("F", EK_FD)
+#pragma region g_mapStrEk
+const map<string, SF_EK> g_mapStrEk = {
+	pair<string, SF_EK>("8", EK_8),
+	pair<string, SF_EK>("4", EK_4),
+	pair<string, SF_EK>("2", EK_2),
+	pair<string, SF_EK>("6", EK_6),
+	pair<string, SF_EK>("a", EK_S1),
+	pair<string, SF_EK>("b", EK_S2),
+	pair<string, SF_EK>("A", EK_A),
+	pair<string, SF_EK>("B", EK_B),
+	pair<string, SF_EK>("C", EK_C),
+	pair<string, SF_EK>("D", EK_D),
+	pair<string, SF_EK>("E", EK_E),
+	pair<string, SF_EK>("F", EK_F)
 };
 #pragma endregion
 

@@ -50,7 +50,11 @@ public:
 	SF_SCN_STAGE m_stage;
 
 	SFActScene(SF_SCN_MAP mapType = SCN_MAP_DEF);
+	SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType = SCN_MAP_DEF);
 	~SFActScene();
 	bool addSpriteGroup(string groupName);
 	bool addSprite(string groupName, SFSprite* pSprite);
+	SFPlayer* getPlayerInSceneByPGN(string groupName);
+	bool keyDown(WPARAM wParam);
+	bool keyUp(WPARAM wParam);
 };
