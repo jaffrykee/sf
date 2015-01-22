@@ -153,6 +153,8 @@
     <ClInclude Include="include\SFSceneManager.h" />
     <ClInclude Include="include\TArray.h" />
     <ClInclude Include="include\SFDebug.h" />
+    <ClInclude Include="include\TDIndexData.h" />
+    <ClInclude Include="include\TDIndexMap.h" />
     <ClInclude Include="include\TMap.h" />
     <ClInclude Include="include\TStrTrans.h" />
     <ClInclude Include="include\xml.h" />

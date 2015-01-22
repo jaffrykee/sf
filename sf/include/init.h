@@ -41,6 +41,9 @@
 #include <sstream>
 #include <Fcntl.h>
 #include <io.h>
+
+#include <TStrTrans.h>
+#include <TDIndexData.h>
 #pragma comment(lib, "comsuppwd.lib")
 #pragma comment(lib, "XmlLite.lib")
 #pragma endregion
@@ -181,7 +184,7 @@ const string g_resPlayerInfoPrefix = "p";
 const string g_resPlayerInfoFileName = "playerInfo.xml";
 #pragma endregion
 
-#pragma region 角色定义(SF_PLR)
+#pragma region SF_PLR:角色定义
 enum SF_PLR
 {
 	PLR_ZERO,
@@ -190,7 +193,7 @@ enum SF_PLR
 };
 #pragma endregion
 
-#pragma region 角色皮肤定义(SF_SKN)
+#pragma region SF_SKN:角色皮肤定义
 enum SF_SKN
 {
 	SKN_SK1, SKN_SK2, SKN_SK3, SKN_SK4,
@@ -199,200 +202,21 @@ enum SF_SKN
 #define SKN_DEF SKN_SK1
 #pragma endregion
 
-#pragma region 虚拟按键事件define(SF_EK)以及技能define(SF_EKA)
-
+#pragma region SF_EK:虚拟按键事件define
 enum SF_EK
 {
 	EK_8, EK_4, EK_2, EK_6, EK_S1, EK_S2,
 	EK_A, EK_B, EK_C, EK_D, EK_E, EK_F,
 	EK_MAX
 };
-
-#pragma region g_mapStrEk
-const map<string, SF_EK> g_mapStrEk = {
-	pair<string, SF_EK>("8", EK_8),
-	pair<string, SF_EK>("4", EK_4),
-	pair<string, SF_EK>("2", EK_2),
-	pair<string, SF_EK>("6", EK_6),
-	pair<string, SF_EK>("a", EK_S1),
-	pair<string, SF_EK>("b", EK_S2),
-	pair<string, SF_EK>("A", EK_A),
-	pair<string, SF_EK>("B", EK_B),
-	pair<string, SF_EK>("C", EK_C),
-	pair<string, SF_EK>("D", EK_D),
-	pair<string, SF_EK>("E", EK_E),
-	pair<string, SF_EK>("F", EK_F)
+const string g_strEk[EK_MAX] = {
+	"8", "4", "2", "6", "a", "b",
+	"A", "B", "C", "D", "E", "F"
 };
+const TDIndexData g_diEk = TDIndexData(g_strEk, EK_MAX);
 #pragma endregion
 
-#pragma endregion
-
-#pragma region 计时器define(SF_TMR)
-enum SF_TMR
-{
-	TMR_NULL, TMR_PAINT, TMR_ACTION, TMR_SKILL,
-	TMR_MAX
-};
-
-const UINT gc_arrTmr[TMR_MAX] = { 0, 15, 10, 30 };
-#pragma endregion
-
-#pragma region 角色当前状态define(SF_ASH, SF_AS)
-//动作状态
-enum SF_ASH
-{
-	ASH_DEF, ASH_ATC, ASH_HITED, ASH_FLOOR, ASH_DAD,
-	ASH_SAVED,
-	ASH_MAX
-};
-const string g_strAsh[ASH_MAX] = {
-	"ASH_DEF", "ASH_ATC", "ASH_HITED", "ASH_FLOOR", "ASH_DAD",
-	"ASH_SAVED"
-};
-
-//位置状态
-enum SF_AS
-{
-	AS_STAND, AS_JUMP,
-	AS_MAX
-};
-
-typedef enum SF_SkillSwitchSpecialEvent
-{
-	SSSE_BASIC, SSSE_UP,
-	SSSE_MAX
-}SF_SSSE;
-
-//通过as得到它的基准as
-#define SF_SSSE_BASICAS(as)		((SF_AS)((as)%AS_MAX))
-//通过as得到对应的ssse下的as
-#define SF_SSSE_GETAS(as, ssse)		((SF_SSSE_BASICAS(as) + ((UINT)(ssse))*AS_MAX))
-#define AS_DEF AS_STAND
-#define SSSE_DEF SSSE_BASIC
-
-const string g_strAs[AS_MAX] = {
-	"def", "jump"
-};
-const map<string, SF_AS> g_mapAs = {
-	pair<string, SF_AS>("def", AS_DEF),
-	pair<string, SF_AS>("jump", AS_JUMP)
-};
-
-const string g_strSsse[SSSE_MAX] = {
-	"basic", "up"
-};
-const map<string, SF_SSSE> g_mapSsse = {
-	pair<string, SF_SSSE>("basic", SSSE_BASIC),
-	pair<string, SF_SSSE>("up", SSSE_UP)
-};
-
-const string g_strAsSplit = "_";
-typedef enum SF_SkillAsSplitType
-{
-	SAST_NAME, SAST_AS, SAST_SSSE,
-	SAST_MAX
-}SF_SAST;
-#pragma endregion
-
-#pragma region 带状态的虚拟按键事件连锁define(SF_EKF)
-/*
-j:jump
-b:back
-s:squat
-f:front
-def:defend
-defs:squat defend
-jex:big jump
-r:run
-ddg:dodge(闪躲)
-以上均为物理依赖态，需要遵照物理守则，即落在地面，且不能到地下。
-作为skill数组的下标使用，所以从0开始。
-*/
-enum SF_EKF
-{
-	EKF_j, EKF_jex, EKF_rj, EKF_rjex,
-	EKF_fj, EKF_fjex, EKF_bj, EKF_bjex,
-#if 0
-	EKF_jA, EKF_jB, EKF_jC, EKF_jD,
-	//可能会于以后版本用到，即技能的运动轨迹与图像内容逻辑分开。
-#else
-	EKF_jA, EKF_jexA, EKF_rjA, EKF_rjexA,
-	EKF_fjA, EKF_fjexA, EKF_bjA, EKF_bjexA,
-	EKF_jB, EKF_jexB, EKF_rjB, EKF_rjexB,
-	EKF_fjB, EKF_fjexB, EKF_bjB, EKF_bjexB,
-	EKF_jC, EKF_jexC, EKF_rjC, EKF_rjexC,
-	EKF_fjC, EKF_fjexC, EKF_bjC, EKF_bjexC,
-	EKF_jD, EKF_jexD, EKF_rjD, EKF_rjexD,
-	EKF_fjD, EKF_fjexD, EKF_bjD, EKF_bjexD,
-#endif
-	EKF_b, EKF_def, EKF_defs,
-	EKF_s, EKF_sA, EKF_sB, EKF_sC, EKF_sD,
-	EKF_f, EKF_fA, EKF_fB, EKF_fC, EKF_fD,
-	EKF_r, EKF_ddg,
-
-	EKF_SKILL_MIN,
-	EKF_8, EKF_4, EKF_2, EKF_6, EKF_44, EKF_66,
-	EKF_A, EKF_B, EKF_C, EKF_D,
-	EKF_26A, EKF_26B, EKF_26C, EKF_26D,
-	EKF_24A, EKF_24B, EKF_24C, EKF_24D,
-	EKF_626A, EKF_626B, EKF_626C, EKF_626D,
-	EKF_424A, EKF_424B, EKF_424C, EKF_424D,
-	EKF_426A, EKF_426B, EKF_426C, EKF_426D,
-	EKF_624A, EKF_624B, EKF_624C, EKF_624D,
-	EKF_2624A, EKF_2624B, EKF_2624C, EKF_2624D,
-	EKF_2426A, EKF_2426B, EKF_2426C, EKF_2426D,
-	EKF_2626A, EKF_2626B, EKF_2626C, EKF_2626D,
-	EKF_2424A, EKF_2424B, EKF_2424C, EKF_2424D,
-	EKF_624624A, EKF_624624B, EKF_624624C, EKF_624624D,
-	EKF_426426A, EKF_426426B, EKF_426426C, EKF_426426D,
-	EKF_MAX
-};
-
-#define EKF_STR_MAX 10
-const string g_strEkf[] = {
-	"j", "jex", "rj", "rjex",
-	"fj", "fjex", "bj", "bjex",
-#if 0
-	"jA", "jB", "jC", "jD",
-	//可能会于以后版本用到，即技能的运动轨迹与图像内容逻辑分开。
-#else
-	"jA", "jexA", "rjA", "rjexA",
-	"fjA", "fjexA", "bjA", "bjexA",
-	"jB", "jexB", "rjB", "rjexB",
-	"fjB", "fjexB", "bjB", "bjexB",
-	"jC", "jexC", "rjC", "rjexC",
-	"fjC", "fjexC", "bjC", "bjexC",
-	"jD", "jexD", "rjD", "rjexD",
-	"fjD", "fjexD", "bjD", "bjexD",
-#endif
-	"b", "def", "defs",
-	"s", "sA", "sB", "sC", "sD",
-	"f", "fA", "fB", "fC", "fD",
-	"r", "ddg",
-
-	"SKILL_MIN",
-	"8", "4", "2", "6", "44", "66",
-	"A", "B", "C", "D",
-	"26A", "26B", "26C", "26D",
-	"24A", "24B", "24C", "24D",
-	"626A", "626B", "626C", "626D",
-	"424A", "424B", "424C", "424D",
-	"426A", "426B", "426C", "426D",
-	"624A", "624B", "624C", "624D",
-	"2624A", "2624B", "2624C", "2624D",
-	"2426A", "2426B", "2426C", "2426D",
-	"2626A", "2626B", "2626C", "2626D",
-	"2424A", "2424B", "2424C", "2424D",
-	"624624A", "624624B", "624624C", "624624D",
-	"426426A", "426426B", "426426C", "426426D",
-	"MAX"
-};
-#pragma endregion
-
-#pragma region 虚拟按键事件连锁define(SF_EKA)
-/*
-动作决策判断。
-*/
+#pragma region SF_EKA:技能按键序列
 enum SF_EKA
 {
 	EKA_DEF,
@@ -412,74 +236,7 @@ enum SF_EKA
 	EKA_426426A, EKA_426426B, EKA_426426C, EKA_426426D,
 	EKA_MAX
 };
-
-#pragma region g_mapStrEka
-const map<string, SF_EKA> g_mapStrEka = {
-	pair<string, SF_EKA>("A", EKA_A),
-	pair<string, SF_EKA>("B", EKA_B),
-	pair<string, SF_EKA>("C", EKA_C),
-	pair<string, SF_EKA>("D", EKA_D),
-	pair<string, SF_EKA>("8", EKA_8),
-	pair<string, SF_EKA>("4", EKA_4),
-	pair<string, SF_EKA>("2", EKA_2),
-	pair<string, SF_EKA>("6", EKA_6),
-	pair<string, SF_EKA>("44", EKA_44),
-	pair<string, SF_EKA>("66", EKA_66),
-	pair<string, SF_EKA>("26A", EKA_26A),
-	pair<string, SF_EKA>("26B", EKA_26B),
-	pair<string, SF_EKA>("26C", EKA_26C),
-	pair<string, SF_EKA>("26D", EKA_26D),
-	pair<string, SF_EKA>("24A", EKA_24A),
-	pair<string, SF_EKA>("24B", EKA_24B),
-	pair<string, SF_EKA>("24C", EKA_24C),
-	pair<string, SF_EKA>("24D", EKA_24D),
-	pair<string, SF_EKA>("626A", EKA_626A),
-	pair<string, SF_EKA>("626B", EKA_626B),
-	pair<string, SF_EKA>("626C", EKA_626C),
-	pair<string, SF_EKA>("626D", EKA_626D),
-	pair<string, SF_EKA>("424A", EKA_424A),
-	pair<string, SF_EKA>("424B", EKA_424B),
-	pair<string, SF_EKA>("424C", EKA_424C),
-	pair<string, SF_EKA>("424D", EKA_424D),
-	pair<string, SF_EKA>("426A", EKA_426A),
-	pair<string, SF_EKA>("426B", EKA_426B),
-	pair<string, SF_EKA>("426C", EKA_426C),
-	pair<string, SF_EKA>("426D", EKA_426D),
-	pair<string, SF_EKA>("624A", EKA_624A),
-	pair<string, SF_EKA>("624B", EKA_624B),
-	pair<string, SF_EKA>("624C", EKA_624C),
-	pair<string, SF_EKA>("624D", EKA_624D),
-	pair<string, SF_EKA>("2624A", EKA_2624A),
-	pair<string, SF_EKA>("2624B", EKA_2624B),
-	pair<string, SF_EKA>("2624C", EKA_2624C),
-	pair<string, SF_EKA>("2624D", EKA_2624D),
-	pair<string, SF_EKA>("2426A", EKA_2426A),
-	pair<string, SF_EKA>("2426B", EKA_2426B),
-	pair<string, SF_EKA>("2426C", EKA_2426C),
-	pair<string, SF_EKA>("2426D", EKA_2426D),
-	pair<string, SF_EKA>("2626A", EKA_2626A),
-	pair<string, SF_EKA>("2626B", EKA_2626B),
-	pair<string, SF_EKA>("2626C", EKA_2626C),
-	pair<string, SF_EKA>("2626D", EKA_2626D),
-	pair<string, SF_EKA>("2424A", EKA_2424A),
-	pair<string, SF_EKA>("2424B", EKA_2424B),
-	pair<string, SF_EKA>("2424C", EKA_2424C),
-	pair<string, SF_EKA>("2424D", EKA_2424D),
-	pair<string, SF_EKA>("624624A", EKA_624624A),
-	pair<string, SF_EKA>("624624B", EKA_624624B),
-	pair<string, SF_EKA>("624624C", EKA_624624C),
-	pair<string, SF_EKA>("624624D", EKA_624624D),
-	pair<string, SF_EKA>("426426A", EKA_426426A),
-	pair<string, SF_EKA>("426426B", EKA_426426B),
-	pair<string, SF_EKA>("426426C", EKA_426426C),
-	pair<string, SF_EKA>("426426D", EKA_426426D),
-	pair<string, SF_EKA>("MAX", EKA_MAX)
-};
-#pragma endregion
-
-#define EKA_ZERO EKA_DEF
-
-const string g_strEka[] = {
+const string g_strEka[EKA_MAX] = {
 	"DEF",
 	"8", "4", "2", "6", "44", "66",
 	"A", "B", "C", "D",
@@ -494,10 +251,75 @@ const string g_strEka[] = {
 	"2626A", "2626B", "2626C", "2626D",
 	"2424A", "2424B", "2424C", "2424D",
 	"624624A", "624624B", "624624C", "624624D",
-	"426426A", "426426B", "426426C", "426426D",
-	"MAX"
+	"426426A", "426426B", "426426C", "426426D"
 };
+const TDIndexData g_diEka = TDIndexData(g_strEka, EKA_MAX);
+#pragma endregion
 
+#pragma region SF_TMR:计时器define
+enum SF_TMR
+{
+	TMR_NULL, TMR_PAINT, TMR_ACTION, TMR_SKILL,
+	TMR_MAX
+};
+const UINT gc_aTmr[TMR_MAX] = {
+	0, 15, 10, 30
+};
+#pragma endregion
+
+#pragma region SF_ASH:角色动作状态
+enum SF_ASH
+{
+	ASH_DEF, ASH_ATC, ASH_HITED, ASH_FLOOR, ASH_DAD,
+	ASH_SAVED,
+	ASH_MAX
+};
+const string g_strAsh[ASH_MAX] = {
+	"ASH_DEF", "ASH_ATC", "ASH_HITED", "ASH_FLOOR", "ASH_DAD",
+	"ASH_SAVED"
+};
+const TDIndexData g_diAsh = TDIndexData(g_strAsh, ASH_MAX);
+#pragma endregion
+
+#pragma region SF_AS,SF_SSSE,SF_SAST:技能分支
+	#pragma region SF_AS:技能所归属的位置状态(1级分支)
+	enum SF_AS
+	{
+		AS_STAND, AS_JUMP,
+		AS_MAX
+	};
+	const string g_strAs[AS_MAX] = {
+		"def", "jump"
+	};
+	const TDIndexData g_diAs = TDIndexData(g_strAs, AS_MAX);
+	#pragma endregion
+
+	#pragma region SF_SSSE:技能所归属的次级分支(2级分支)
+	typedef enum SF_SkillSwitchSpecialEvent
+	{
+		SSSE_BASIC, SSSE_UP,
+		SSSE_MAX
+	}SF_SSSE;
+	const string g_strSsse[SSSE_MAX] = {
+		"basic", "up"
+	};
+	const TDIndexData g_diSsse = TDIndexData(g_strSsse, SSSE_MAX);
+	#pragma endregion
+
+	#pragma region SF_SAST:技能分支类型以及相关处理用define
+	typedef enum SF_SkillAsSplitType
+	{
+		SAST_NAME, SAST_AS, SAST_SSSE,
+		SAST_MAX
+	}SF_SAST;
+	//通过as得到它的基准as
+	#define SF_SSSE_BASICAS(as) ((SF_AS)((as)%AS_MAX))
+	//通过as得到对应的ssse下的as
+	#define SF_SSSE_GETAS(as, ssse) ((SF_SSSE_BASICAS(as) + ((UINT)(ssse))*AS_MAX))
+	#define AS_DEF AS_STAND
+	#define SSSE_DEF SSSE_BASIC
+	const string g_strAsSplit = "_";
+	#pragma endregion
 #pragma endregion
 
 /*
@@ -536,7 +358,6 @@ class SFSpriteGroup;
 #include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>
-#include <TStrTrans.h>
 #include <SFActScene.h>
 #include <SFResConfigReader.h>
 #include <SFSceneManager.h>

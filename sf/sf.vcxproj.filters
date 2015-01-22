@@ -70,6 +70,12 @@
     <ClInclude Include="include\SFSceneManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\TDIndexMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TDIndexData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P\xml.cpp">
