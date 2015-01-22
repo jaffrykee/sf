@@ -67,9 +67,6 @@
     <ClInclude Include="include\SFDebug.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\SFSceneManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\TDIndexMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -102,7 +99,7 @@
     <ClCompile Include="SF\SFActScene.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SF\SFSceneManager.cpp">
+    <ClCompile Include="T\TDIndexData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -42,13 +42,15 @@
 #include <Fcntl.h>
 #include <io.h>
 
-#include <TStrTrans.h>
-#include <TDIndexData.h>
 #pragma comment(lib, "comsuppwd.lib")
 #pragma comment(lib, "XmlLite.lib")
 #pragma endregion
 
 using namespace std;
+
+//前置include
+#include <TDIndexData.h>
+class TDIndexData;
 
 #pragma region inline和宏等
 template<class Interface>
@@ -262,7 +264,7 @@ enum SF_TMR
 	TMR_NULL, TMR_PAINT, TMR_ACTION, TMR_SKILL,
 	TMR_MAX
 };
-const UINT gc_aTmr[TMR_MAX] = {
+const UINT g_aTmr[TMR_MAX] = {
 	0, 15, 10, 30
 };
 #pragma endregion
@@ -353,6 +355,7 @@ class SFPlayer;
 class SFActScene;
 class SFSpriteGroup;
 
+//后置include
 #include <SFDebug.h>
 #include <SFConfig.h>
 #include <SFResource.h>
@@ -360,4 +363,3 @@ class SFSpriteGroup;
 #include <SFPlayer.h>
 #include <SFActScene.h>
 #include <SFResConfigReader.h>
-#include <SFSceneManager.h>

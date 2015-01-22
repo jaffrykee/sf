@@ -150,7 +150,6 @@
     <ClInclude Include="include\SFPlayer.h" />
     <ClInclude Include="include\SFResConfigReader.h" />
     <ClInclude Include="include\SFResource.h" />
-    <ClInclude Include="include\SFSceneManager.h" />
     <ClInclude Include="include\TArray.h" />
     <ClInclude Include="include\SFDebug.h" />
     <ClInclude Include="include\TDIndexData.h" />
@@ -167,7 +166,7 @@
     <ClCompile Include="SF\SFPlayer.cpp" />
     <ClCompile Include="SF\SFResConfigReader.cpp" />
     <ClCompile Include="SF\SFResource.cpp" />
-    <ClCompile Include="SF\SFSceneManager.cpp" />
+    <ClCompile Include="T\TDIndexData.cpp" />
     <ClCompile Include="T\TStrTrans.cpp" />
   </ItemGroup>
   <ItemGroup>

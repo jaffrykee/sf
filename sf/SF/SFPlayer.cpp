@@ -23,12 +23,12 @@ void SFPlayer::setEventListTimeout()
 	m_iTimeOut = 0;
 }
 
-void SFPlayer::setDownStatusEnable(SF_EKD val)
+void SFPlayer::setDownStatusEnable(SF_EK val)
 {
 	m_eStatus.m_aStatus[val] = 1;
 }
 
-void SFPlayer::setDownStatusDisable(SF_EKD val)
+void SFPlayer::setDownStatusDisable(SF_EK val)
 {
 	m_eStatus.m_aStatus[val] = 0;
 }
@@ -104,13 +104,13 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 }
 
 //得到某一技能的最后一个的按键
-SF_EKD SFPlayer::getLastKeyFromSkill(SF_EKA skill)
+SF_EK SFPlayer::getLastKeyFromSkill(SF_EKA skill)
 {
 	if (skill != EKA_DEF && skill != EKA_MAX)
 	{
 		string strSkill = g_strEka[skill];
 		string strLastKey = strSkill.substr(strSkill.length() - 1, 1);
-		map<string, SF_EKD>::const_iterator itEkd = g_mapStrEkd.find(strLastKey);
+		map<string, SF_EK>::const_iterator itEkd = g_mapStrEkd.find(strLastKey);
 
 		if (itEkd != g_mapStrEkd.end())
 		{
@@ -118,12 +118,12 @@ SF_EKD SFPlayer::getLastKeyFromSkill(SF_EKA skill)
 		}
 	}
 
-	return EKD_MAX;
+	return EK_MAX;
 }
 
-bool SFPlayer::upEvent(SF_EKU key)
+bool SFPlayer::upEvent(SF_EK key)
 {
-	setDownStatusDisable((SF_EKD)key);
+	setDownStatusDisable((SF_EK)key);
 	if (m_hitStatus == ASH_SAVED)
 	{
 		if (getLastKeyFromSkill(m_nowSkill) == key)
@@ -147,7 +147,7 @@ bool SFPlayer::upEvent(SF_EKU key)
 	return false;
 }
 
-bool SFPlayer::downEvent(SF_EKD key)
+bool SFPlayer::downEvent(SF_EK key)
 {
 	SF_EKA ret = EKA_MAX;
 

@@ -19,46 +19,46 @@ class SFPEventStatus
 {
 public:
 	string m_sDownEvent;
-	unsigned char m_aStatus[EKD_MAX];
+	unsigned char m_aStatus[EK_MAX];
 
 	SFPEventStatus()
 	{
-		for (int i = 0; i < EKD_MAX; i++)
+		for (int i = 0; i < EK_MAX; i++)
 		{
 			m_aStatus[i] = 0;
 		}
 	}
 
-	char getEkuChar(SF_EKU val)
+	char getEkuChar(SF_EK val)
 	{
 		switch (val)
 		{
-		case EK_8U:
+		case EK_8:
 			return '8';
-		case EK_4U:
+		case EK_4:
 			return '4';
-		case EK_2U:
+		case EK_2:
 			return '2';
-		case EK_6U:
+		case EK_6:
 			return '6';
 #if 0
-		case EK_S1U:
+		case EK_S1:
 			return 'S';
-		case EK_S2U:
+		case EK_S2:
 			return 'T';
 #endif
-		case EK_AU:
+		case EK_A:
 			return 'A';
-		case EK_BU:
+		case EK_B:
 			return 'B';
-		case EK_CU:
+		case EK_C:
 			return 'C';
-		case EK_DU:
+		case EK_D:
 			return 'D';
 #if 0
-		case EK_EU:
+		case EK_E:
 			return 'E';
-		case EK_FU:
+		case EK_F:
 			return 'F';
 #endif
 		default:
@@ -66,36 +66,36 @@ public:
 		}
 	}
 
-	char getEkdChar(SF_EKD val)
+	char getEkdChar(SF_EK val)
 	{
 		switch (val)
 		{
-		case EK_8D:
+		case EK_8:
 			return '8';
-		case EK_4D:
+		case EK_4:
 			return '4';
-		case EK_2D:
+		case EK_2:
 			return '2';
-		case EK_6D:
+		case EK_6:
 			return '6';
 #if 0
-		case EK_S1D:
+		case EK_S1:
 			return 'S';
-		case EK_S2D:
+		case EK_S2:
 			return 'T';
 #endif
-		case EK_AD:
+		case EK_A:
 			return 'A';
-		case EK_BD:
+		case EK_B:
 			return 'B';
-		case EK_CD:
+		case EK_C:
 			return 'C';
-		case EK_DD:
+		case EK_D:
 			return 'D';
 #if 0
-		case EK_ED:
+		case EK_E:
 			return 'E';
-		case EK_FD:
+		case EK_F:
 			return 'F';
 #endif
 		default:
@@ -108,7 +108,7 @@ public:
 		m_sDownEvent = "";
 	}
 
-	int addEvent(SF_EKD val)
+	int addEvent(SF_EK val)
 	{
 		char cVal = '\0';
 

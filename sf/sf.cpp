@@ -236,9 +236,9 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 
 	//创建场景和精灵
 	sf_cout(DEBUG_COM, endl << "Loading resource.");
-	g_scn = SFFightManager::createScene(1, SKN_DEF, 1, SKN_DEF);
-	g_pP1 = SFFightManager::getPlayerInSceneByPGN(g_scn, g_strFightPGN[SF_FIGHT_PGN::FIGHT_PGN_P1]);
-	g_pP2 = SFFightManager::getPlayerInSceneByPGN(g_scn, g_strFightPGN[SF_FIGHT_PGN::FIGHT_PGN_P2]);
+	g_scn = new SFActScene(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
+	g_pP1 = g_scn->getPlayerInSceneByPGN(g_strFightPGN[SF_FIGHT_PGN::FIGHT_PGN_P1]);
+	g_pP1 = g_scn->getPlayerInSceneByPGN(g_strFightPGN[SF_FIGHT_PGN::FIGHT_PGN_P2]);
 	sf_cout(DEBUG_COM, endl << "Load resource finished.");
 
 	return hr;
@@ -295,9 +295,9 @@ HRESULT WinApp::CreateDeviceResources()
 		}
 		if (SUCCEEDED(hr))
 		{
-			SetTimer(m_hwnd, TMR_PAINT, gc_arrTmr[TMR_PAINT], NULL);
-			SetTimer(m_hwnd, TMR_ACTION, gc_arrTmr[TMR_ACTION], NULL);
-			SetTimer(m_hwnd, TMR_SKILL, gc_arrTmr[TMR_SKILL], NULL);
+			SetTimer(m_hwnd, TMR_PAINT, g_aTmr[TMR_PAINT], NULL);
+			SetTimer(m_hwnd, TMR_ACTION, g_aTmr[TMR_ACTION], NULL);
+			SetTimer(m_hwnd, TMR_SKILL, g_aTmr[TMR_SKILL], NULL);
 		}
 	}
 
@@ -524,52 +524,52 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				switch (wParam)
 				{
 				case KD_P1UP:
-					g_pP1->downEvent(EK_8D);
+					g_pP1->downEvent(EK_8);
 					break;
 				case KD_P1LF:
-					g_pP1->downEvent(EK_4D);
+					g_pP1->downEvent(EK_4);
 					break;
 				case KD_P1DW:
-					g_pP1->downEvent(EK_2D);
+					g_pP1->downEvent(EK_2);
 					break;
 				case KD_P1RG:
-					g_pP1->downEvent(EK_6D);
+					g_pP1->downEvent(EK_6);
 					break;
 				case KD_P1AA:
-					g_pP1->downEvent(EK_AD);
+					g_pP1->downEvent(EK_A);
 					break;
 				case KD_P1BB:
-					g_pP1->downEvent(EK_BD);
+					g_pP1->downEvent(EK_B);
 					break;
 				case KD_P1CC:
-					g_pP1->downEvent(EK_CD);
+					g_pP1->downEvent(EK_C);
 					break;
 				case KD_P1DD:
-					g_pP1->downEvent(EK_DD);
+					g_pP1->downEvent(EK_D);
 					break;
 				case KD_P2UP:
-					g_pP2->downEvent(EK_8D);
+					g_pP2->downEvent(EK_8);
 					break;
 				case KD_P2LF:
-					g_pP2->downEvent(EK_4D);
+					g_pP2->downEvent(EK_4);
 					break;
 				case KD_P2DW:
-					g_pP2->downEvent(EK_2D);
+					g_pP2->downEvent(EK_2);
 					break;
 				case KD_P2RG:
-					g_pP2->downEvent(EK_6D);
+					g_pP2->downEvent(EK_6);
 					break;
 				case KD_P2AA:
-					g_pP2->downEvent(EK_AD);
+					g_pP2->downEvent(EK_A);
 					break;
 				case KD_P2BB:
-					g_pP2->downEvent(EK_BD);
+					g_pP2->downEvent(EK_B);
 					break;
 				case KD_P2CC:
-					g_pP2->downEvent(EK_CD);
+					g_pP2->downEvent(EK_C);
 					break;
 				case KD_P2DD:
-					g_pP2->downEvent(EK_DD);
+					g_pP2->downEvent(EK_D);
 					break;
 				}
 				result = 0;
@@ -579,52 +579,52 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 				switch (wParam)
 				{
 				case KD_P1UP:
-					g_pP1->upEvent(EK_8U);
+					g_pP1->upEvent(EK_8);
 					break;
 				case KD_P1LF:
-					g_pP1->upEvent(EK_4U);
+					g_pP1->upEvent(EK_4);
 					break;
 				case KD_P1DW:
-					g_pP1->upEvent(EK_2U);
+					g_pP1->upEvent(EK_2);
 					break;
 				case KD_P1RG:
-					g_pP1->upEvent(EK_6U);
+					g_pP1->upEvent(EK_6);
 					break;
 				case KD_P1AA:
-					g_pP1->upEvent(EK_AU);
+					g_pP1->upEvent(EK_A);
 					break;
 				case KD_P1BB:
-					g_pP1->upEvent(EK_BU);
+					g_pP1->upEvent(EK_B);
 					break;
 				case KD_P1CC:
-					g_pP1->upEvent(EK_CU);
+					g_pP1->upEvent(EK_C);
 					break;
 				case KD_P1DD:
-					g_pP1->upEvent(EK_DU);
+					g_pP1->upEvent(EK_D);
 					break;
 				case KD_P2UP:
-					g_pP2->upEvent(EK_8U);
+					g_pP2->upEvent(EK_8);
 					break;
 				case KD_P2LF:
-					g_pP2->upEvent(EK_4U);
+					g_pP2->upEvent(EK_4);
 					break;
 				case KD_P2DW:
-					g_pP2->upEvent(EK_2U);
+					g_pP2->upEvent(EK_2);
 					break;
 				case KD_P2RG:
-					g_pP2->upEvent(EK_6U);
+					g_pP2->upEvent(EK_6);
 					break;
 				case KD_P2AA:
-					g_pP2->upEvent(EK_AU);
+					g_pP2->upEvent(EK_A);
 					break;
 				case KD_P2BB:
-					g_pP2->upEvent(EK_BU);
+					g_pP2->upEvent(EK_B);
 					break;
 				case KD_P2CC:
-					g_pP2->upEvent(EK_CU);
+					g_pP2->upEvent(EK_C);
 					break;
 				case KD_P2DD:
-					g_pP2->upEvent(EK_DU);
+					g_pP2->upEvent(EK_D);
 					break;
 				}
 				result = 0;
