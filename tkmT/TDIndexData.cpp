@@ -1,5 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
-#include <TDIndexData.h>
+#include <TInit.h>
+#include <tkmT.h>
 
 TDIndexData::TDIndexData(const string* strData, UINT max) :m_str(strData)
 {

@@ -46,31 +46,16 @@
     <ClInclude Include="include\SFResource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\TArray.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TMap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\xml.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\SFResConfigReader.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\TStrTrans.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\SFActScene.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\SFDebug.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TDIndexMap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TDIndexData.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,10 +1,10 @@
 ﻿#pragma execution_character_set("utf-8")
-#include "stdafx.h"
-#include "TLib.h"
+#include <TInit.h>
+#include <tkmT.h>
 
-namespace TLib
+namespace TStrTrans
 {
-	StringW TStrTrans::AnsiToUnicode(const char* buf)
+	StringW AnsiToUnicode(const char* buf)
 	{
 		int len = ::MultiByteToWideChar(CP_ACP, 0, buf, -1, NULL, 0);
 		if (len == 0) return L"";
@@ -15,7 +15,7 @@ namespace TLib
 		return &unicode[0];
 	}
 
-	StringA TStrTrans::UnicodeToAnsi(const wchar_t* buf)
+	StringA UnicodeToAnsi(const wchar_t* buf)
 	{
 		int len = ::WideCharToMultiByte(CP_ACP, 0, buf, -1, NULL, 0, NULL, NULL);
 		if (len == 0) return "";
@@ -26,7 +26,7 @@ namespace TLib
 		return &utf8[0];
 	}
 
-	StringW TStrTrans::Utf8ToUnicode(const char* buf)
+	StringW Utf8ToUnicode(const char* buf)
 	{
 		int len = ::MultiByteToWideChar(CP_UTF8, 0, buf, -1, NULL, 0);
 		if (len == 0) return L"";
@@ -37,7 +37,7 @@ namespace TLib
 		return &unicode[0];
 	}
 
-	StringA TStrTrans::UnicodeToUtf8(const wchar_t* buf)
+	StringA UnicodeToUtf8(const wchar_t* buf)
 	{
 		int len = ::WideCharToMultiByte(CP_UTF8, 0, buf, -1, NULL, 0, NULL, NULL);
 		if (len == 0) return "";
@@ -48,7 +48,7 @@ namespace TLib
 		return &utf8[0];
 	}
 
-	StringA TStrTrans::intIdToStrId(UINT id)
+	StringA intIdToStrId(UINT id)
 	{
 		stringstream ss;
 		string tmp;
@@ -67,11 +67,11 @@ namespace TLib
 		{
 			return "" + tmp;
 		}
-
+		
 		return "";
 	}
 
-	void TStrTrans::split(const string& src, const string& separator, vector<string>& dest)
+	void split(const string& src, const string& separator, vector<string>& dest)
 	{
 		string str = src;
 		string substring;
@@ -92,18 +92,5 @@ namespace TLib
 		//the last token
 		substring = str.substr(start);
 		dest.push_back(substring);
-	}
-
-	TDIndexData::TDIndexData(const string* strData, UINT max) :m_str(strData)
-	{
-		for (UINT i = 0; i < max; i++)
-		{
-			m_map.insert(pair<string, UINT>(m_str[i], i));
-		}
-	}
-
-	TDIndexData::~TDIndexData()
-	{
-
 	}
 }

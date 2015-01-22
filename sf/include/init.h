@@ -49,8 +49,7 @@
 using namespace std;
 
 //前置include
-#include <TDIndexData.h>
-class TDIndexData;
+#include <tkmT.h>
 
 #pragma region inline和宏等
 template<class Interface>

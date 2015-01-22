@@ -1,3 +1,8 @@
+#pragma once
+#pragma execution_character_set("utf-8")
+#include <tkmT.h>
+#include <TArray.h>
+
 /*
 name:
 	TMap
@@ -14,11 +19,6 @@ date:
 version:
 	1
 */
-#ifndef TMAP_H
-#define TMAP_H
-#pragma execution_character_set("utf-8")
-#include <init.h>
-#include <TArray.h>
 
 #define TBM_WD_MAX 65535
 #define TBM_HI_MAX 65535
@@ -67,5 +67,3 @@ TArray<MyBMPixel>& TMap<MyBMPixel>::operator [](size_t id)
 {
 	return *m_pMapHead[id];
 }
-
-#endif

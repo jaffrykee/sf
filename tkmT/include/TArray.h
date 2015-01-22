@@ -1,7 +1,6 @@
-#ifndef TARRAY_H
-#define TARRAY_H
+﻿#pragma once
 #pragma execution_character_set("utf-8")
-#include <init.h>
+#include <tkmT.h>
 
 template<class MyBMPixel>
 class TArray
@@ -43,5 +42,3 @@ MyBMPixel& TArray<MyBMPixel>::operator[](UINT id)
 {
 	return m_pArrHead[id];
 }
-
-#endif
