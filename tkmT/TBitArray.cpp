@@ -10,8 +10,8 @@ TBitArray::TBitArray()
 TBitArray::TBitArray(unsigned short size)
 {
 	m_count = size;
-	m_size = size / sizeof(size_t) + ((size % sizeof(size_t)) ? 1:0);
-	m_pArrHead = new size_t[m_size];
+	m_size = size / sizeof(UINT) + ((size % sizeof(UINT)) ? 1:0);
+	m_pArrHead = new UINT[m_size];
 }
 
 TBitArray::~TBitArray()

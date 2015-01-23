@@ -2,7 +2,7 @@
 #include <TInit.h>
 #include <tkmT.h>
 
-TDIndexData::TDIndexData(const string* strData, UINT max) :m_str(strData)
+TDIndexData::TDIndexData(vector<string> strData, UINT max) :m_str(strData)
 {
 	for (UINT i = 0; i < max; i++)
 	{

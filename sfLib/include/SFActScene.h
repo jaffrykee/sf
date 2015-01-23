@@ -1,8 +1,6 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
 
-#include <init.h>
-
 typedef enum SF_SCN_MAP
 {
 	SCN_MAP_DEF, SCN_SKY, SCN_WATER,

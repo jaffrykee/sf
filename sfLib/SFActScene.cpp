@@ -1,5 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
-#include <SFActScene.h>
+#include <sfLibInit.h>
+#include <sfLib.h>
 
 SFSpriteGroup::SFSpriteGroup(string name) :m_name(name)
 {

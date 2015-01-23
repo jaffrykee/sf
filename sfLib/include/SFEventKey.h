@@ -1,9 +1,6 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
 
-#include <init.h>
-#include <list>
-
 using namespace std;
 
 //技能判定列表缓存最大数目

@@ -13,7 +13,7 @@ public:
 protected:
 	unsigned short m_size;
 	unsigned short m_count;
-	size_t* m_pArrHead;
+	UINT* m_pArrHead;
 
 private:
 };

@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIEditor", "UIEditor\UIEdit
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tkmT", "tkmT\tkmT.vcxproj", "{480C5F71-0AA0-4AC9-A693-945A4B266625}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sfLib", "sfLib\sfLib.vcxproj", "{634161C5-46E1-4AD1-9518-C9ACA3223ED1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,18 @@ Global
 		{480C5F71-0AA0-4AC9-A693-945A4B266625}.Release|Win32.ActiveCfg = Release|Win32
 		{480C5F71-0AA0-4AC9-A693-945A4B266625}.Release|Win32.Build.0 = Release|Win32
 		{480C5F71-0AA0-4AC9-A693-945A4B266625}.Release|x64.ActiveCfg = Release|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Debug|Win32.Build.0 = Debug|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Debug|x64.ActiveCfg = Debug|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Release|Any CPU.ActiveCfg = Release|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Release|Win32.ActiveCfg = Release|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Release|Win32.Build.0 = Release|Win32
+		{634161C5-46E1-4AD1-9518-C9ACA3223ED1}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

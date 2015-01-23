@@ -1,4 +1,6 @@
-#include <SFResource.h>
+﻿#pragma execution_character_set("utf-8")
+#include <sfLibInit.h>
+#include <sfLib.h>
 
 SFConfig* g_config = SFConfig::GetInstance();
 

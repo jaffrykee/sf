@@ -1,8 +1,6 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
 
-#include <init.h>
-
 using namespace std;
 
 #pragma region POLL_XML函数宏及其相关define

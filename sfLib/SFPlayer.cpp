@@ -1,5 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
-#include <SFPlayer.h>
+#include <sfLibInit.h>
+#include <sfLib.h>
 
 SFPlayer::SFPlayer(UINT id, SF_SKN skinId, int pid) :m_id(id), m_skinId(skinId), m_pid(pid)
 {

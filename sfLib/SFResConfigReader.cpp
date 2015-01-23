@@ -1,5 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
-#include <SFResConfigReader.h>
+#include <sfLibInit.h>
+#include <sfLib.h>
 
 namespace SFResConfigReader
 {
@@ -76,8 +77,8 @@ namespace SFResConfigReader
 					POLL_XML_ATTR_BEGIN
 						if (utfName == "eka")
 						{
-							map<string, SF_EKA>::const_iterator itEka = g_mapStrEka.find(utfValue);
-							if (itEka != g_mapStrEka.end())
+							map<string, UINT>::iterator itEk = g_diEk.m_map.find(utfValue);
+							if (itEka != g_diEk.m_map.end())
 							{
 								s_skillEka = itEka->second;
 							}

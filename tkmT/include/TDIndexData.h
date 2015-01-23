@@ -5,9 +5,9 @@
 class TDIndexData
 {
 public:
-	const string* m_str;
+	vector<string> m_str;
 	map<string, UINT> m_map;
 
-	TDIndexData(const string* strData, UINT max);
+	TDIndexData(vector<string> strData, UINT max);
 	~TDIndexData();
 };

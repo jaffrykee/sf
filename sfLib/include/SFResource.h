@@ -2,8 +2,6 @@
 #pragma execution_character_set("utf-8")
 //用于读取资源
 
-#include <init.h>
-
 /*
 	技能帧，如果不动，那么，渲染矩形的左下为(0,0)（即left和bottom都为0），渲染位移参照也是靠左下角为凭据的，位移
 参照上一帧的。

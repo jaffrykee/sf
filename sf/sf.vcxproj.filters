@@ -34,28 +34,7 @@
     <ClInclude Include="include\sf.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\SFPlayer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SFEventKey.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SFConfig.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SFResource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\xml.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SFResConfigReader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SFActScene.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SFDebug.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -63,25 +42,10 @@
     <ClCompile Include="P\xml.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SF\SFResConfigReader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="T\TStrTrans.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SF\SFConfig.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SF\SFPlayer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="sf.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SF\SFResource.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SF\SFActScene.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="T\TDIndexData.cpp">
