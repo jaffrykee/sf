@@ -6,7 +6,7 @@
 	技能帧，如果不动，那么，渲染矩形的左下为(0,0)（即left和bottom都为0），渲染位移参照也是靠左下角为凭据的，位移
 参照上一帧的。
 */
-class SFResFrame
+class __declspec(dllexport) SFResFrame
 {
 public:
 	UINT m_index;
@@ -24,7 +24,7 @@ public:
 };
 
 //技能对象
-class SFResObject
+class __declspec(dllexport) SFResObject
 {
 public:
 	UINT m_index;
@@ -38,7 +38,7 @@ public:
 };
 
 //技能资源
-class SFResSkill
+class __declspec(dllexport) SFResSkill
 {
 public:
 	SFResPlayer* m_parent;
@@ -71,7 +71,7 @@ public:
 */
 
 //玩家资源
-class SFResPlayer
+class __declspec(dllexport) SFResPlayer
 {
 public:
 	SFResSkill* m_arrSkill[EKA_MAX][AS_MAX][SSSE_MAX];

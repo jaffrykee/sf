@@ -2,7 +2,10 @@
 #pragma execution_character_set("utf-8")
 #include <tkmT.h>
 
-class TDIndexData
+template class __declspec(dllexport) vector<string>;
+template class __declspec(dllexport) map<string, UINT>;
+
+class _declspec(dllexport) TDIndexData
 {
 public:
 	vector<string> m_str;

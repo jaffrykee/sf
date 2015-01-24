@@ -24,7 +24,7 @@ version:
 #define TBM_HI_MAX 65535
 
 template <class MyBMPixel>
-class TMap
+class _declspec(dllexport) TMap
 {
 public:
 	size_t m_width;

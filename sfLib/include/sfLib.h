@@ -30,6 +30,10 @@
 #include <Fcntl.h>
 #include <io.h>
 
+#pragma comment(lib, "comsuppwd.lib")
+#pragma comment(lib, "XmlLite.lib")
+#pragma comment(lib, "Shlwapi.lib")
+
 #include <tkmT.h>
 
 class SFConfig;

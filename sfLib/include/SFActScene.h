@@ -26,7 +26,7 @@ typedef enum SF_FIGHT_PlayerGroupName
 	FIGHT_PGN_MAX
 }SF_FIGHT_PGN;
 
-class SFSpriteGroup
+class __declspec(dllexport) SFSpriteGroup
 {
 public:
 	string m_name;
@@ -38,7 +38,7 @@ public:
 };
 
 //场景类，目前只能是单线程，将来可能会向多线程发展。
-class SFActScene
+class __declspec(dllexport) SFActScene
 {
 public:
 	map<string, SFSpriteGroup*> m_mapSpriteGroup;

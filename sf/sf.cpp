@@ -68,9 +68,7 @@ using namespace std;
 #pragma endregion
 
 #pragma region 全局变量
-SFConfig* SFConfig::m_pInstance = NULL;
 /*控制打印：DEBUG_COM, DEBUG_RES_LOAD, DEBUG_SKILL_KEY*/
-bool SFConfig::m_enDebug[DEBUG_MAX] = {true, true, true, true};
 SFConfig* g_pSfconfig = SFConfig::GetInstance();
 
 SFPlayer* g_pP1 = NULL;

@@ -71,6 +71,14 @@
 #define   VK_z  0x7A   
 #pragma endregion
 
+#pragma region SF_KD:虚拟事件
+enum SF_KD{
+	KD_P1UP, KD_P1LF, KD_P1DW, KD_P1RG, KD_P1AA, KD_P1BB, KD_P1CC, KD_P1DD, KD_P1EE, KD_P1FF, KD_P1ST, KD_P1MN, 
+	KD_P2UP, KD_P2LF, KD_P2DW, KD_P2RG, KD_P2AA, KD_P2BB, KD_P2CC, KD_P2DD, KD_P2EE, KD_P2FF, KD_P2ST, KD_P2MN,
+	KD_MAX
+};
+#pragma endregion
+
 #pragma region 按键设置define
 #define KD_P1UP VK_W
 #define KD_P1LF VK_A
@@ -129,6 +137,7 @@ enum SF_EK
 #pragma region SF_EKA:技能按键序列
 enum SF_EKA
 {
+	EKA_DEF,
 	EKA_8, EKA_4, EKA_2, EKA_6, EKA_44, EKA_66,
 	EKA_A, EKA_B, EKA_C, EKA_D,
 	EKA_26A, EKA_26B, EKA_26C, EKA_26D,
@@ -217,7 +226,7 @@ typedef struct SFSelectedPlayer
 
 
 /* 全局配置单例类 */
-class SFConfig
+class __declspec(dllexport) SFConfig
 {
 public:
 /*

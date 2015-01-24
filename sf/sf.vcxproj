@@ -67,7 +67,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\tkmT\include;$(SolutionDir)\sfLib\include;$(ProjectDir)\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(TargetDir);</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(OutDir);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)sf\include;$(IncludePath)</IncludePath>
@@ -148,10 +148,7 @@
     <ClInclude Include="include\xml.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="P\xml.cpp" />
     <ClCompile Include="sf.cpp" />
-    <ClCompile Include="T\TDIndexData.cpp" />
-    <ClCompile Include="T\TStrTrans.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data\p001\playerInfo.xml" />

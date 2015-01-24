@@ -19,7 +19,7 @@ version:
 	1
 */
 
-class TBitMap
+class _declspec(dllexport) TBitMap
 {
 public:
 	unsigned short m_width;

@@ -39,16 +39,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="P\xml.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="T\TStrTrans.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="sf.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="T\TDIndexData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

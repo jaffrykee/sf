@@ -14,8 +14,6 @@
 
 // C RunTime Header Files
 
-#pragma comment(lib, "comsuppwd.lib")
-#pragma comment(lib, "XmlLite.lib")
 #pragma endregion
 
 using namespace std;

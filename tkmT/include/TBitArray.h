@@ -2,7 +2,7 @@
 #pragma execution_character_set("utf-8")
 #include <tkmT.h>
 
-class TBitArray
+class _declspec(dllexport) TBitArray
 {
 public:
 	TBitArray();

@@ -10,10 +10,10 @@ using namespace std;
 
 namespace TStrTrans
 {
-	StringW AnsiToUnicode(const char* buf);
-	StringA UnicodeToAnsi(const wchar_t* buf);
-	StringW Utf8ToUnicode(const char* buf);
-	StringA UnicodeToUtf8(const wchar_t* buf);
-	StringA intIdToStrId(UINT id);
-	void split(const string& src, const string& separator, vector<string>& dest);
+	StringW _declspec(dllexport) AnsiToUnicode(const char* buf);
+	StringA _declspec(dllexport) UnicodeToAnsi(const wchar_t* buf);
+	StringW _declspec(dllexport) Utf8ToUnicode(const char* buf);
+	StringA _declspec(dllexport) UnicodeToUtf8(const wchar_t* buf);
+	StringA _declspec(dllexport) intIdToStrId(UINT id);
+	void _declspec(dllexport) split(const string& src, const string& separator, vector<string>& dest);
 }

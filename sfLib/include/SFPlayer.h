@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class SFPlayerBuffer
+class __declspec(dllexport) SFPlayerBuffer
 {
 public:
 	int m_id;
@@ -12,7 +12,7 @@ public:
 	D2D_RECT_U m_headImgRect;
 };
 
-class SFSkillFrame
+class __declspec(dllexport) SFSkillFrame
 {
 public:
 	int m_id;
@@ -25,7 +25,7 @@ public:
 	bool m_enChain;
 };
 
-class SFSkill
+class __declspec(dllexport) SFSkill
 {
 public:
 	int m_id;
@@ -35,7 +35,7 @@ public:
 	list<SFSkillFrame> m_skillFrames;
 };
 
-class SFPlayer
+class __declspec(dllexport) SFPlayer
 {
 public:
 	//人物id，初始化调用资源用
@@ -84,4 +84,4 @@ public:
 };
 
 //将来会改为继承关系，也有可能不改了
-typedef SFPlayer SFSprite;
+typedef SFPlayer __declspec(dllexport) SFSprite;

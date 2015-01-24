@@ -109,6 +109,6 @@ namespace SFResConfigReader
 		L"frame_table", L"frame", L"rect", L"box_table", L"box", L"rect"
 	};
 
-	bool readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer);
-	bool readFromXML(string xmlPath, SFResPlayer* resPlayer);
+	bool __declspec(dllexport) readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer);
+	bool __declspec(dllexport) readFromXML(string xmlPath, SFResPlayer* resPlayer);
 }

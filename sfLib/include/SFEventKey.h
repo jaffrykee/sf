@@ -12,7 +12,7 @@ using namespace std;
 /*
 	内有按键事件列表（序列）和当前按键down状态数组。
 */
-class SFPEventStatus
+class __declspec(dllexport) SFPEventStatus
 {
 public:
 	string m_sDownEvent;

@@ -36,7 +36,7 @@ namespace SFResConfigReader
 		LPCWSTR value;
 		bool ret = false;
 		static void* parseCount[PRS_MAX] = {NULL};
-		static SF_EK s_skillEk;
+		static SF_EKA s_skillEka;
 		static SF_AS s_skillAs;
 		static SF_SSSE s_skillSsse;
 		static bool s_skillSavable;
@@ -77,10 +77,10 @@ namespace SFResConfigReader
 					POLL_XML_ATTR_BEGIN
 						if (utfName == "eka")
 						{
-							map<string, UINT>::iterator itEk = SFConfig::GetInstance()->m_pDiEk->m_map.find(utfValue);
-							if (itEk != SFConfig::GetInstance()->m_pDiEk->m_map.end())
+							map<string, UINT>::iterator itEka = SFConfig::GetInstance()->m_pDiEka->m_map.find(utfValue);
+							if (itEka != SFConfig::GetInstance()->m_pDiEka->m_map.end())
 							{
-								s_skillEk = (SF_EK)itEk->second;
+								s_skillEka = (SF_EKA)itEka->second;
 							}
 							else
 							{
@@ -90,10 +90,10 @@ namespace SFResConfigReader
 						}
 						else if (utfName == "as")
 						{
-							map<string, SF_AS>::iterator itAs = SFConfig::GetInstance()->m_pDiAs->m_map.find(utfValue);
-							if (itAs != SFConfig::GetInstance()->m_mapAs.end())
+							map<string, UINT>::iterator itAs = SFConfig::GetInstance()->m_pDiAs->m_map.find(utfValue);
+							if (itAs != SFConfig::GetInstance()->m_pDiAs->m_map.end())
 							{
-								s_skillAs = itAs->second;
+								s_skillAs = (SF_AS)itAs->second;
 							}
 							else
 							{
@@ -103,10 +103,10 @@ namespace SFResConfigReader
 						}
 						else if (utfName == "ssse")
 						{
-							map<string, SF_SSSE>::const_iterator itSsse = SFConfig::GetInstance()->m_mapSsse.find(utfValue);
-							if (itSsse != SFConfig::GetInstance()->m_mapSsse.end())
+							map<string, UINT>::const_iterator itSsse = SFConfig::GetInstance()->m_pDiSsse->m_map.find(utfValue);
+							if (itSsse != SFConfig::GetInstance()->m_pDiSsse->m_map.end())
 							{
-								s_skillSsse = itSsse->second;
+								s_skillSsse = (SF_SSSE)itSsse->second;
 							}
 							else
 							{

@@ -2,7 +2,10 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
-SFConfig::SFConfig() :
+SFConfig* SFConfig::m_pInstance = NULL;
+SFConfig::SFCGarbo SFConfig::s_garbo;
+
+SFConfig::SFConfig():
 #pragma region 全局配置默认值
 	m_enDebug(new bool[DEBUG_MAX]{
 		true, true, true, true
