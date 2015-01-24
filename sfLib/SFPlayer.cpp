@@ -36,7 +36,7 @@ void SFPlayer::setDownStatusDisable(SF_EK val)
 
 void SFPlayer::setHitStatus(SF_ASH ash)
 {
-	sf_cout(DEBUG_PLAYER_ACT, endl << "player" << this->m_pid << ":hitStatus <from>: " << g_strAsh[m_hitStatus] << " <to>: " << g_strAsh[ash]);
+	sf_cout(DEBUG_PLAYER_ACT, endl << "player" << this->m_pid << ":hitStatus <from>: " << SFConfig::GetInstance()->m_strAsh[m_hitStatus] << " <to>: " << SFConfig::GetInstance()->m_strAsh[ash]);
 	m_hitStatus = ash;
 }
 
@@ -72,9 +72,9 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 	for (UINT i = 0; i < ekaStr.size(); i++)
 	{
 		string tmp = ekaStr.substr(i, ekaStr.size() - i);
-		map<string, SF_EKA>::const_iterator it = g_mapStrEka.find(tmp);
+		map<string, SF_EKA>::const_iterator it = SFConfig::GetInstance()->m_mapStrEka.find(tmp);
 
-		if (it != g_mapStrEka.end())
+		if (it != SFConfig::GetInstance()->m_mapStrEka.end())
 		{
 			sf_cout(DEBUG_SKILL_KEY, endl << "t:" << tmp << "<<");
 			SF_EKA ret = it->second;
@@ -109,11 +109,11 @@ SF_EK SFPlayer::getLastKeyFromSkill(SF_EKA skill)
 {
 	if (skill != EKA_DEF && skill != EKA_MAX)
 	{
-		string strSkill = g_strEka[skill];
+		string strSkill = SFConfig::GetInstance()->m_strEka[skill];
 		string strLastKey = strSkill.substr(strSkill.length() - 1, 1);
-		map<string, SF_EK>::const_iterator itEkd = g_mapStrEkd.find(strLastKey);
+		map<string, SF_EK>::const_iterator itEkd = SFConfig::GetInstance()->m_mapStrEkd.find(strLastKey);
 
-		if (itEkd != g_mapStrEkd.end())
+		if (itEkd != SFConfig::GetInstance()->m_mapStrEkd.end())
 		{
 			return itEkd->second;
 		}

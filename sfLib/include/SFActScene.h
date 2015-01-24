@@ -25,13 +25,6 @@ typedef enum SF_FIGHT_PlayerGroupName
 	FIGHT_PGN_P1, FIGHT_PGN_P2,
 	FIGHT_PGN_MAX
 }SF_FIGHT_PGN;
-const string g_strFightPGN[FIGHT_PGN_MAX] = {
-	"p1", "p2"
-};
-const TDIndexData g_diFightPGN = TDIndexData(g_strFightPGN, FIGHT_PGN_MAX);
-
-//将来会改为继承关系，也有可能不改了
-typedef SFPlayer SFSprite;
 
 class SFSpriteGroup
 {

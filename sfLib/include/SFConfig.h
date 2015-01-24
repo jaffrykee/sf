@@ -1,7 +1,6 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
 
-
 #pragma region WIN系统的按键定义，VK
 //定义数据字符0~9  
 #define   VK_0         0x30   
@@ -119,16 +118,16 @@ enum SF_SKN
 #pragma endregion
 
 #pragma region SF_EK:虚拟按键事件define
-typedef enum SF_EK
+enum SF_EK
 {
 	EK_8, EK_4, EK_2, EK_6, EK_S1, EK_S2,
 	EK_A, EK_B, EK_C, EK_D, EK_E, EK_F,
 	EK_MAX
-}SF_EK_T;
+};
 #pragma endregion
 
 #pragma region SF_EKA:技能按键序列
-typedef enum SF_EKA
+enum SF_EKA
 {
 	EKA_8, EKA_4, EKA_2, EKA_6, EKA_44, EKA_66,
 	EKA_A, EKA_B, EKA_C, EKA_D,
@@ -145,7 +144,7 @@ typedef enum SF_EKA
 	EKA_624624A, EKA_624624B, EKA_624624C, EKA_624624D,
 	EKA_426426A, EKA_426426B, EKA_426426C, EKA_426426D,
 	EKA_MAX
-}SF_EKA_T;
+};
 #pragma endregion
 
 #pragma region SF_TMR:计时器define
@@ -153,9 +152,6 @@ enum SF_TMR
 {
 	TMR_NULL, TMR_PAINT, TMR_ACTION, TMR_SKILL,
 	TMR_MAX
-};
-const UINT g_aTmr[TMR_MAX] = {
-	0, 15, 10, 30
 };
 #pragma endregion
 
@@ -166,11 +162,6 @@ enum SF_ASH
 	ASH_SAVED,
 	ASH_MAX
 };
-const string g_strAsh[ASH_MAX] = {
-	"ASH_DEF", "ASH_ATC", "ASH_HITED", "ASH_FLOOR", "ASH_DAD",
-	"ASH_SAVED"
-};
-const TDIndexData g_diAsh = TDIndexData(g_strAsh, ASH_MAX);
 #pragma endregion
 
 #pragma region SF_AS,SF_SSSE,SF_SAST:技能分支
@@ -180,10 +171,6 @@ enum SF_AS
 	AS_STAND, AS_JUMP,
 	AS_MAX
 };
-const string g_strAs[AS_MAX] = {
-	"def", "jump"
-};
-const TDIndexData g_diAs = TDIndexData(g_strAs, AS_MAX);
 #pragma endregion
 
 #pragma region SF_SSSE:技能所归属的次级分支(2级分支)
@@ -192,10 +179,6 @@ typedef enum SF_SkillSwitchSpecialEvent
 	SSSE_BASIC, SSSE_UP,
 	SSSE_MAX
 }SF_SSSE;
-const string g_strSsse[SSSE_MAX] = {
-	"basic", "up"
-};
-const TDIndexData g_diSsse = TDIndexData(g_strSsse, SSSE_MAX);
 #pragma endregion
 
 #pragma region SF_SAST:技能分支类型以及相关处理用define
@@ -210,7 +193,6 @@ typedef enum SF_SkillAsSplitType
 #define SF_SSSE_GETAS(as, ssse) ((SF_SSSE_BASICAS(as) + ((UINT)(ssse))*AS_MAX))
 #define AS_DEF AS_STAND
 #define SSSE_DEF SSSE_BASIC
-const string g_strAsSplit = "_";
 #pragma endregion
 #pragma endregion
 
@@ -231,7 +213,7 @@ typedef struct SFSelectedPlayer
 {
 	UINT id;
 	SF_SKN skin;
-}SF_SP;
+}SF_SP_T;
 
 
 /* 全局配置单例类 */
@@ -242,15 +224,20 @@ public:
 	map<string, SF_EKF> s_mEkf;
 	map<string, SF_EKA> s_mEka;
 */
-	static bool m_enDebug[DEBUG_MAX];
+	bool* m_enDebug;
 
-	string g_resPath;
-	string g_resPlayerInfoPrefix;
-	string g_resPlayerInfoFileName;
+	string m_resPath;
+	string m_resPlayerInfoPrefix;
+	string m_resPlayerInfoFileName;
 
-	TDIndexData* g_pDiEk;
-	TDIndexData* g_pDiEka;
-	UINT* g_aTmr;
+	TDIndexData* m_pDiEk;
+	TDIndexData* m_pDiEka;
+	UINT* m_aTmr;
+	TDIndexData* m_pDiAsh;
+	TDIndexData* m_pDiAs;
+	TDIndexData* m_pDiSsse;
+	string m_strAsSplit;
+	TDIndexData* m_pDiFightPGN;
 
 private:
 	static SFConfig *m_pInstance;

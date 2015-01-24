@@ -9,46 +9,36 @@ enum SF_DEBUG
 };
 
 #define sf_comma ,
+#define SF_OUT_BEGIN(enable)	\
+do	\
+{	\
+	if (SFConfig::GetInstance()->m_enDebug[enable])	\
+	{	\
+
+#define SF_OUT_END	\
+	}	\
+}	\
+while (0)
 
 //对于printf中的“,”，使用sf_comma来表示
 #define sf_printf(sf_dbug,parameters)	\
-do	\
-{	\
-	if (SFConfig::m_enDebug[sf_dbug])	\
-	{	\
+SF_OUT_BEGIN(sf_dbug)	\
 		printf(parameters);		\
-	}	\
-}	\
-while (0)
+SF_OUT_END
 
 //对于wprintf中的“,”，使用sf_comma来表示
 #define sf_wprintf(sf_dbug,parameters)	\
-do	\
-{	\
-	if (SFConfig::m_enDebug[sf_dbug])	\
-	{	\
+SF_OUT_BEGIN(sf_dbug)	\
 		wprintf(parameters);	\
-	}	\
-}	\
-while (0)
+SF_OUT_END
 
 #define sf_cout(sf_dbug,parameters)	\
-do	\
-{	\
-	if (SFConfig::m_enDebug[sf_dbug])	\
-	{	\
+SF_OUT_BEGIN(sf_dbug)	\
 		cout<< parameters;	\
-	}	\
-}	\
-while (0)
+SF_OUT_END
 
 #define sf_wcout(sf_dbug,parameters)	\
-do	\
-{	\
-	if (SFConfig::m_enDebug[sf_dbug])	\
-	{	\
+SF_OUT_BEGIN(sf_dbug)	\
 		wcout<< parameters;	\
-	}	\
-}	\
-while (0)
+SF_OUT_END
 

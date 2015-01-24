@@ -82,3 +82,6 @@ public:
 	void moveToNextFrame();
 	void doTimer(SF_TMR);
 };
+
+//将来会改为继承关系，也有可能不改了
+typedef SFPlayer SFSprite;

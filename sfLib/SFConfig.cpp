@@ -3,14 +3,18 @@
 #include <sfLib.h>
 
 SFConfig::SFConfig() :
-	g_resPath("./data/"),
-	g_resPlayerInfoPrefix("p"),
-	g_resPlayerInfoFileName("playerInfo.xml"),
-	g_pDiEk(new TDIndexData({
+#pragma region 全局配置默认值
+	m_enDebug(new bool[DEBUG_MAX]{
+		true, true, true, true
+	}),
+	m_resPath("./data/"),
+	m_resPlayerInfoPrefix("p"),
+	m_resPlayerInfoFileName("playerInfo.xml"),
+	m_pDiEk(new TDIndexData({
 		"8", "4", "2", "6", "a", "b",
 		"A", "B", "C", "D", "E", "F"
 	}, EK_MAX)),
-	g_pDiEka(new TDIndexData({
+	m_pDiEka(new TDIndexData({
 		"8", "4", "2", "6", "44", "66",
 		"A", "B", "C", "D",
 		"26A", "26B", "26C", "26D",
@@ -26,9 +30,24 @@ SFConfig::SFConfig() :
 		"624624A", "624624B", "624624C", "624624D",
 		"426426A", "426426B", "426426C", "426426D"
 	}, EKA_MAX)),
-	g_aTmr(new UINT[]{
+	m_aTmr(new UINT[]{
 		0, 15, 10, 30
-	})
+	}),
+	m_pDiAsh(new TDIndexData({
+		"ASH_DEF", "ASH_ATC", "ASH_HITED", "ASH_FLOOR", "ASH_DAD",
+		"ASH_SAVED"
+	}, ASH_MAX)),
+	m_pDiAs(new TDIndexData({
+		"def", "jump" 
+	}, AS_MAX)),
+	m_pDiSsse(new TDIndexData({
+		"basic", "up"
+	}, SSSE_MAX)),
+	m_strAsSplit("_"),
+	m_pDiFightPGN(new TDIndexData({
+		"p1", "p2"
+	}, FIGHT_PGN_MAX))
+#pragma endregion
 {
 }
 

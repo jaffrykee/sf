@@ -2,8 +2,6 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
-SFConfig* g_config = SFConfig::GetInstance();
-
 SFResPlayer::SFResPlayer(SF_SKN skin)
 {
 	memset(m_arrSkill, 0, sizeof(SFResSkill*)*EKA_MAX*AS_MAX*SSSE_MAX);
@@ -13,7 +11,7 @@ SFResPlayer::SFResPlayer(string pid, SF_SKN skin)
 {
 	string confPath;
 
-	confPath = g_resPath + g_resPlayerInfoPrefix + pid + "/" + g_resPlayerInfoFileName;
+	confPath = SFConfig::GetInstance()->m_resPath + SFConfig::GetInstance()->m_resPlayerInfoPrefix + pid + "/" + SFConfig::GetInstance()->m_resPlayerInfoFileName;
 	memset(m_arrSkill, 0, sizeof(SFResSkill*)*EKA_MAX*AS_MAX*SSSE_MAX);
 	SFResConfigReader::readFromXML(confPath, this);
 }

@@ -42,8 +42,8 @@ SFActScene::SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_
 	SFPlayer* pPlayer2 = new SFPlayer(resId2, skin2, 2);
 	SFActScene* pScene = new SFActScene();
 
-	pScene->addSprite(g_strFightPGN[FIGHT_PGN_P1], pPlayer1);
-	pScene->addSprite(g_strFightPGN[FIGHT_PGN_P2], pPlayer2);
+	pScene->addSprite(SFConfig::GetInstance()->m_strFightPGN[FIGHT_PGN_P1], pPlayer1);
+	pScene->addSprite(SFConfig::GetInstance()->m_strFightPGN[FIGHT_PGN_P2], pPlayer2);
 	m_stage = SCN_STG_FREE;
 }
 

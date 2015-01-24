@@ -55,7 +55,7 @@ tips:linuxC风格太浓厚了，不过很灵活。
 					{	\
 						(POLL_SW[sf_nd]) = true;	\
 						(POLL_NODEHAD[sf_nd]) = true;	\
-						if(SFConfig::m_enDebug[DEBUG_RES_LOAD])	\
+						if(SFConfig::GetInstance()->m_enDebug[DEBUG_RES_LOAD])	\
 						{	\
 							cout << "\n";	\
 							for(UINT i = 0; i < POLL_TABSCOUNT - 1; i++)	\
