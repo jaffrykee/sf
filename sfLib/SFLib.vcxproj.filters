@@ -30,6 +30,9 @@
     <ClCompile Include="SFResConfigReader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="SFEventManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\SFActScene.h">
@@ -57,6 +60,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\sfLibInit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SFEventManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

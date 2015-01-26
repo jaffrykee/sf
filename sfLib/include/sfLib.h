@@ -48,6 +48,8 @@ class SFPlayer;
 class SFActScene;
 class SFSpriteGroup;
 
+class SFEventManager;
+
 //后置include
 #include <SFDebug.h>
 #include <SFConfig.h>
@@ -55,4 +57,5 @@ class SFSpriteGroup;
 #include <SFEventKey.h>
 #include <SFPlayer.h>
 #include <SFActScene.h>
+#include <SFEventManager.h>
 #include <SFResConfigReader.h>

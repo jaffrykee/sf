@@ -234,10 +234,7 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 
 	//创建场景和精灵
 	sf_cout(DEBUG_COM, endl << "Loading resource.");
-	SFConfig* g_config = SFConfig::GetInstance();
 	g_scn = new SFActScene(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
-//	g_pP1 = g_scn->getPlayerInSceneByPGN(SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P1]);
-//	g_pP1 = g_scn->getPlayerInSceneByPGN(SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P2]);
 	g_pP1 = g_scn->m_mapSpriteGroup[SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P1]]->m_aSprite[0];
 	g_pP2 = g_scn->m_mapSpriteGroup[SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P2]]->m_aSprite[0];
 	sf_cout(DEBUG_COM, endl << "Load resource finished.");
