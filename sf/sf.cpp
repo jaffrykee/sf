@@ -86,7 +86,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
 
 	//控制台
-	if (SFConfig::m_enDebug[DEBUG_COM])
+	if (SFConfig::GetInstance()->m_enDebug[DEBUG_COM])
 	{
 		AllocConsole();
 		int fd = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
@@ -234,9 +234,12 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 
 	//创建场景和精灵
 	sf_cout(DEBUG_COM, endl << "Loading resource.");
+	SFConfig* g_config = SFConfig::GetInstance();
 	g_scn = new SFActScene(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
-	g_pP1 = g_scn->getPlayerInSceneByPGN(g_strFightPGN[SF_FIGHT_PGN::FIGHT_PGN_P1]);
-	g_pP1 = g_scn->getPlayerInSceneByPGN(g_strFightPGN[SF_FIGHT_PGN::FIGHT_PGN_P2]);
+//	g_pP1 = g_scn->getPlayerInSceneByPGN(SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P1]);
+//	g_pP1 = g_scn->getPlayerInSceneByPGN(SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P2]);
+	g_pP1 = g_scn->m_mapSpriteGroup[SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P1]]->m_aSprite[0];
+	g_pP2 = g_scn->m_mapSpriteGroup[SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P2]]->m_aSprite[0];
 	sf_cout(DEBUG_COM, endl << "Load resource finished.");
 
 	return hr;
@@ -293,9 +296,9 @@ HRESULT WinApp::CreateDeviceResources()
 		}
 		if (SUCCEEDED(hr))
 		{
-			SetTimer(m_hwnd, TMR_PAINT, g_aTmr[TMR_PAINT], NULL);
-			SetTimer(m_hwnd, TMR_ACTION, g_aTmr[TMR_ACTION], NULL);
-			SetTimer(m_hwnd, TMR_SKILL, g_aTmr[TMR_SKILL], NULL);
+			SetTimer(m_hwnd, TMR_PAINT, SFConfig::GetInstance()->m_aTmr[TMR_PAINT], NULL);
+			SetTimer(m_hwnd, TMR_ACTION, SFConfig::GetInstance()->m_aTmr[TMR_ACTION], NULL);
+			SetTimer(m_hwnd, TMR_SKILL, SFConfig::GetInstance()->m_aTmr[TMR_SKILL], NULL);
 		}
 	}
 

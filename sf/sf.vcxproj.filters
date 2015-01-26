@@ -15,11 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Xsd Include="data\skillFrame.xsd">
-      <Filter>头文件</Filter>
-    </Xsd>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="img\black.png">
       <Filter>资源文件</Filter>
     </Image>
@@ -45,5 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="data\p001\playerInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xsd Include="data\skillFrame.xsd">
+      <Filter>头文件</Filter>
+    </Xsd>
   </ItemGroup>
 </Project>

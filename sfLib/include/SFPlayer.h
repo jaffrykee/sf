@@ -84,4 +84,4 @@ public:
 };
 
 //将来会改为继承关系，也有可能不改了
-typedef SFPlayer __declspec(dllexport) SFSprite;
+typedef SFPlayer SFSprite;

@@ -131,14 +131,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Xsd Include="data\skillFrame.xsd">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </Xsd>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="img\black.png" />
     <Image Include="img\blue.png" />
   </ItemGroup>
@@ -151,15 +143,18 @@
     <ClCompile Include="sf.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="data\p001\playerInfo.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\sfLib\sfLib.vcxproj">
       <Project>{634161c5-46e1-4ad1-9518-c9aca3223ed1}</Project>
     </ProjectReference>
     <ProjectReference Include="..\tkmT\tkmT.vcxproj">
       <Project>{480c5f71-0aa0-4ac9-a693-945a4b266625}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="data\p001\playerInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xsd Include="data\skillFrame.xsd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

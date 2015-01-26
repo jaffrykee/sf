@@ -2,8 +2,8 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
-SFConfig* SFConfig::m_pInstance = NULL;
-SFConfig::SFCGarbo SFConfig::s_garbo;
+__declspec(dllexport) SFConfig* SFConfig::m_pInstance = NULL;
+__declspec(dllexport) SFConfig::SFCGarbo SFConfig::s_garbo;
 
 SFConfig::SFConfig():
 #pragma region 全局配置默认值
@@ -18,6 +18,7 @@ SFConfig::SFConfig():
 		"A", "B", "C", "D", "E", "F"
 	}, EK_MAX)),
 	m_pDiEka(new TDIndexData({
+		"DEF",
 		"8", "4", "2", "6", "44", "66",
 		"A", "B", "C", "D",
 		"26A", "26B", "26C", "26D",
@@ -56,8 +57,19 @@ SFConfig::SFConfig():
 
 SFConfig* SFConfig::GetInstance()
 {
-	if (m_pInstance == NULL)  //判断是否第一次调用  
+	if (m_pInstance == NULL)  //判断是否第一次调用
+	{
 		m_pInstance = new SFConfig();
+		//控制台
+		if (SFConfig::GetInstance()->m_enDebug[DEBUG_COM])
+		{
+			AllocConsole();
+			int fd = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
+			FILE *file = _fdopen(fd, "w");
+			*stdout = *file;
+			int status = setvbuf(stdout, 0, _IONBF, 0);
+		}
+	}
 	return m_pInstance;
 }
 
