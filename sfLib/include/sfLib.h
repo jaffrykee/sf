@@ -51,11 +51,11 @@ class SFSpriteGroup;
 class SFEventManager;
 
 //后置include
+#include <SFEventManager.h>
 #include <SFDebug.h>
 #include <SFConfig.h>
 #include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>
 #include <SFActScene.h>
-#include <SFEventManager.h>
 #include <SFResConfigReader.h>

@@ -35,7 +35,7 @@ SFActScene::SFActScene(SF_SCN_MAP mapType) :m_mapType(mapType)
 	m_stage = SCN_STG_FREE;
 }
 
-SFActScene::SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType) :m_mapType(mapType)
+SFActScene::SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType):m_mapType(mapType)
 {
 	SFPlayer* pPlayer1 = new SFPlayer(resId1, skin1, 1);
 	SFPlayer* pPlayer2 = new SFPlayer(resId2, skin2, 2);
@@ -110,12 +110,6 @@ SFPlayer* SFActScene::getPlayerInSceneByPGN(string groupName)
 	return NULL;
 }
 
-bool SFActScene::keyDown(WPARAM wParam)
+bool SFActScene::doEvent(SF_TEV event)
 {
-	return true;
-}
-
-bool SFActScene::keyUp(WPARAM wParam)
-{
-	return true;
 }

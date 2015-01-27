@@ -51,6 +51,5 @@ public:
 	bool addSpriteGroup(string groupName);
 	bool addSprite(string groupName, SFSprite* pSprite);
 	SFPlayer* getPlayerInSceneByPGN(string groupName);
-	bool keyDown(WPARAM wParam);
-	bool keyUp(WPARAM wParam);
+	bool doEvent(SF_TEV event);
 };
