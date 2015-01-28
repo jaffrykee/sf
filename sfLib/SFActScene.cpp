@@ -93,8 +93,8 @@ m_mapTevEk({
 	SFPlayer* pPlayer1 = new SFPlayer(resId1, skin1, 1);
 	SFPlayer* pPlayer2 = new SFPlayer(resId2, skin2, 2);
 
-	addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1], pPlayer1);
-	addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2], pPlayer2);
+	addFightP1(pPlayer1);
+	addFightP2(pPlayer2);
 	m_stage = SCN_STG_FREE;
 	setDirection(true);
 }
@@ -223,7 +223,11 @@ bool SFActScene::doEvent(SF_TEV event)
 	{
 		bool ret1, ret2;
 
-		if (getFightP1() != NULL && getFightP2() != NULL)
+		if (event == TEV_TMR_PAINT)
+		{
+			return true;
+		}
+		else if (getFightP1() != NULL && getFightP2() != NULL)
 		{
 			getFightP1()->doTimer(event);
 			getFightP2()->doTimer(event);
@@ -237,6 +241,16 @@ bool SFActScene::doEvent(SF_TEV event)
 	}
 
 	return false;
+}
+
+bool SFActScene::addFightP1(SFSprite* pSprite)
+{
+	return addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1], pSprite);
+}
+
+bool SFActScene::addFightP2(SFSprite* pSprite)
+{
+	return addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2], pSprite);
 }
 
 SFPlayer* SFActScene::getFightP1()

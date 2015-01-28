@@ -8,7 +8,7 @@ __declspec(dllexport) SFConfig::SFCGarbo SFConfig::s_garbo;
 SFConfig::SFConfig():
 #pragma region 全局配置默认值
 	m_enDebug(new bool[DEBUG_MAX]{
-		true, true, true, true
+		true, false, true, true
 	}),
 	m_resPath("./data/"),
 	m_resPlayerInfoPrefix("p"),
@@ -108,7 +108,8 @@ SFConfig::SFConfig():
 		}),
 		pair<UINT, MapEvent_T>(WM_TIMER, {
 			pair<WPARAM, SF_TEV>(TMR_ACTION, TEV_TMR_ACTION),
-			pair<WPARAM, SF_TEV>(TMR_SKILL, TEV_TMR_SKILL)
+			pair<WPARAM, SF_TEV>(TMR_SKILL, TEV_TMR_SKILL),
+			pair<WPARAM, SF_TEV>(TMR_PAINT, TEV_TMR_PAINT)
 		})
 	}),
 	m_pEventManager(NULL)

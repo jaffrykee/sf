@@ -46,6 +46,10 @@ public:
 	SF_SCN_STAGE m_stage;
 
 	map<SF_TEV, SF_EK> m_mapTevEk;
+	//静摩擦系数
+	FLOAT m_fMoveFs;
+	//动摩擦系数
+	FLOAT m_fMoveFk;
 
 	SFActScene(SF_SCN_MAP mapType = SCN_MAP_DEF);
 	SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType = SCN_MAP_DEF);
@@ -56,6 +60,8 @@ public:
 	bool doEvent(SF_TEV event);
 
 	//将来可能会将Fight类型的Scene以继承类的方式提出来。
+	bool addFightP1(SFSprite* pSprite);
+	bool addFightP2(SFSprite* pSprite);
 	SFPlayer* getFightP1();
 	SFPlayer* getFightP2();
 	void setDirection(bool isP1Left);

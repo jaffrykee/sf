@@ -484,36 +484,29 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 		if (pWinApp)
 		{
-			if (g_pEventManager->doSystemEvent(message, wParam, lParam))
+			switch (message)
 			{
-				result = 0;
-				wasHandled = true;
-			}
-			else
-			{
-				switch (message)
-				{
 				case WM_SIZE:
-				{
-					UINT width = LOWORD(lParam);
-					UINT height = HIWORD(lParam);
-					pWinApp->OnResize(width, height);
-				}
+					{
+						UINT width = LOWORD(lParam);
+						UINT height = HIWORD(lParam);
+						pWinApp->OnResize(width, height);
+					}
 					result = 0;
 					wasHandled = true;
 					break;
 				case WM_TIMER:
 					switch (wParam)
 					{
-					case TMR_PAINT:
-						pWinApp->OnRender();
-						ValidateRect(hwnd, NULL);
-						break;
-					case TMR_ACTION:
-						break;
-					case TMR_SKILL:
-						//按键超时处理（清空键盘事件列表等）
-						break;
+						case TMR_PAINT:
+							pWinApp->OnRender();
+							ValidateRect(hwnd, NULL);
+							break;
+						case TMR_ACTION:
+							break;
+						case TMR_SKILL:
+							//按键超时处理（清空键盘事件列表等）
+							break;
 					}
 					result = 0;
 					wasHandled = true;
@@ -527,9 +520,9 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					/*已经不在此处处理，交给SFEventManager
 					switch (wParam)
 					{
-					case KD_P1UP:
-					g_pP1->downEvent(EK_8);
-					break;
+						case KD_P1UP:
+							g_pP1->downEvent(EK_8);
+							break;
 					}
 					*/
 					result = 0;
@@ -539,29 +532,33 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					/*已经不在此处处理，交给SFEventManager
 					switch (wParam)
 					{
-					case KD_P1UP:
-					g_pP1->upEvent(EK_8);
-					break;
+						case KD_P1UP:
+							g_pP1->upEvent(EK_8);
+							break;
 					}*/
 					result = 0;
 					wasHandled = true;
 					break;
 				case WM_PAINT:
-				{
-					pWinApp->OnRender();
-					ValidateRect(hwnd, NULL);
-				}
+					{
+						pWinApp->OnRender();
+						ValidateRect(hwnd, NULL);
+					}
 					result = 0;
 					wasHandled = true;
 					break;
 				case WM_DESTROY:
-				{
-					PostQuitMessage(0);
-				}
+					{
+						PostQuitMessage(0);
+					}
 					result = 1;
 					wasHandled = true;
 					break;
-				}
+			}
+			if (g_pEventManager->doSystemEvent(message, wParam, lParam))
+			{
+				result = 0;
+				wasHandled = true;
 			}
 		}
 		if (!wasHandled)
