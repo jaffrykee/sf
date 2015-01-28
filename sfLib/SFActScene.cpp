@@ -35,14 +35,68 @@ SFActScene::SFActScene(SF_SCN_MAP mapType) :m_mapType(mapType)
 	m_stage = SCN_STG_FREE;
 }
 
-SFActScene::SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType):m_mapType(mapType)
+SFActScene::SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType):
+#pragma region 默认值
+m_mapType(mapType),
+m_mapTevEk({
+	pair<SF_TEV, SF_EK>(TEV_KD_P1UP, EK_8),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1LF, EK_4),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1DW, EK_2),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1RG, EK_6),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1AA, EK_A),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1BB, EK_B),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1CC, EK_C),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1DD, EK_D),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1EE, EK_E),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1FF, EK_F),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1ST, EK_S1),
+	pair<SF_TEV, SF_EK>(TEV_KD_P1MN, EK_S2),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2UP, EK_8),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2LF, EK_6),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2DW, EK_2),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2RG, EK_4),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2AA, EK_A),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2BB, EK_B),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2CC, EK_C),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2DD, EK_D),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2EE, EK_E),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2FF, EK_F),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2ST, EK_S1),
+	pair<SF_TEV, SF_EK>(TEV_KD_P2MN, EK_S2),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1UP, EK_8),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1LF, EK_4),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1DW, EK_2),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1RG, EK_6),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1AA, EK_A),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1BB, EK_B),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1CC, EK_C),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1DD, EK_D),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1EE, EK_E),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1FF, EK_F),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1ST, EK_S1),
+	pair<SF_TEV, SF_EK>(TEV_KU_P1MN, EK_S2),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2UP, EK_8),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2LF, EK_6),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2DW, EK_2),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2RG, EK_4),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2AA, EK_A),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2BB, EK_B),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2CC, EK_C),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2DD, EK_D),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2EE, EK_E),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2FF, EK_F),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2ST, EK_S1),
+	pair<SF_TEV, SF_EK>(TEV_KU_P2MN, EK_S2)
+})
+#pragma endregion
 {
 	SFPlayer* pPlayer1 = new SFPlayer(resId1, skin1, 1);
 	SFPlayer* pPlayer2 = new SFPlayer(resId2, skin2, 2);
 
-	addSprite(SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P1], pPlayer1);
-	addSprite(SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P2], pPlayer2);
+	addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1], pPlayer1);
+	addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2], pPlayer2);
 	m_stage = SCN_STG_FREE;
+	setDirection(true);
 }
 
 SFActScene::~SFActScene()
@@ -112,4 +166,103 @@ SFPlayer* SFActScene::getPlayerInSceneByPGN(string groupName)
 
 bool SFActScene::doEvent(SF_TEV event)
 {
+	if (event >= TEV_KEY_MIN && event <= TEV_KEY_MAX)
+	{
+		if (event >= TEV_KD_MIN && event <= TEV_KD_MAX)
+		{
+			if (event >= TEV_KD_P1MIN && event <= TEV_KD_P1MAX)
+			{
+				if (getFightP1())
+				{
+					return getFightP1()->downEvent(m_mapTevEk[event]);
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else if (event >= TEV_KD_P2MIN && event <= TEV_KD_P2MAX)
+			{
+				if (getFightP2())
+				{
+					return getFightP2()->downEvent(m_mapTevEk[event]);
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+		else if (event >= TEV_KU_MIN && event <= TEV_KU_MAX)
+		{
+			if (event >= TEV_KU_P1MIN && event <= TEV_KU_P1MAX)
+			{
+				if (getFightP1())
+				{
+					return getFightP1()->upEvent(m_mapTevEk[event]);
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else if (event >= TEV_KU_P2MIN && event <= TEV_KU_P2MAX)
+			{
+				if (getFightP2())
+				{
+					return getFightP2()->upEvent(m_mapTevEk[event]);
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+	}
+	else if (event >= TEV_TMR_MIN && event <= TEV_TMR_MAX)
+	{
+		bool ret1, ret2;
+
+		if (getFightP1() != NULL && getFightP2() != NULL)
+		{
+			getFightP1()->doTimer(event);
+			getFightP2()->doTimer(event);
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	return false;
+}
+
+SFPlayer* SFActScene::getFightP1()
+{
+	return m_mapSpriteGroup[g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1]]->m_aSprite[0];
+}
+
+SFPlayer* SFActScene::getFightP2()
+{
+	return m_mapSpriteGroup[g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2]]->m_aSprite[0];
+}
+
+void SFActScene::setDirection(bool isP1Left)
+{
+	if (isP1Left)
+	{
+		m_mapTevEk[TEV_KU_P1LF] = EK_4;
+		m_mapTevEk[TEV_KU_P1RG] = EK_6;
+		m_mapTevEk[TEV_KU_P2LF] = EK_6;
+		m_mapTevEk[TEV_KU_P2RG] = EK_4;
+	}
+	else
+	{
+		m_mapTevEk[TEV_KU_P1LF] = EK_6;
+		m_mapTevEk[TEV_KU_P1RG] = EK_4;
+		m_mapTevEk[TEV_KU_P2LF] = EK_4;
+		m_mapTevEk[TEV_KU_P2RG] = EK_6;
+	}
 }

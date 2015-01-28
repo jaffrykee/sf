@@ -80,7 +80,7 @@ public:
 	bool doSkill();
 	int getMaxSkillFrame();
 	void moveToNextFrame();
-	void doTimer(SF_TMR);
+	void doTimer(SF_TEV);
 };
 
 //将来会改为继承关系，也有可能不改了

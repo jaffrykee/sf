@@ -110,7 +110,8 @@ SFConfig::SFConfig():
 			pair<WPARAM, SF_TEV>(TMR_ACTION, TEV_TMR_ACTION),
 			pair<WPARAM, SF_TEV>(TMR_SKILL, TEV_TMR_SKILL)
 		})
-	})
+	}),
+	m_pEventManager(NULL)
 #pragma endregion
 {
 }

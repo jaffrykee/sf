@@ -51,9 +51,9 @@ class SFSpriteGroup;
 class SFEventManager;
 
 //后置include
+#include <SFConfig.h>
 #include <SFEventManager.h>
 #include <SFDebug.h>
-#include <SFConfig.h>
 #include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>

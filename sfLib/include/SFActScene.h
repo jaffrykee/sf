@@ -45,6 +45,8 @@ public:
 	SF_SCN_MAP m_mapType;
 	SF_SCN_STAGE m_stage;
 
+	map<SF_TEV, SF_EK> m_mapTevEk;
+
 	SFActScene(SF_SCN_MAP mapType = SCN_MAP_DEF);
 	SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType = SCN_MAP_DEF);
 	~SFActScene();
@@ -52,4 +54,9 @@ public:
 	bool addSprite(string groupName, SFSprite* pSprite);
 	SFPlayer* getPlayerInSceneByPGN(string groupName);
 	bool doEvent(SF_TEV event);
+
+	//将来可能会将Fight类型的Scene以继承类的方式提出来。
+	SFPlayer* getFightP1();
+	SFPlayer* getFightP2();
+	void setDirection(bool isP1Left);
 };

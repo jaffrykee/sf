@@ -6,7 +6,7 @@ SFPlayer::SFPlayer(UINT id, SF_SKN skinId, int pid) :m_id(id), m_skinId(skinId),
 {
 	m_resPlayer = new SFResPlayer(TStrTrans::intIdToStrId(id), skinId);
 
-	m_pSfconfig = SFConfig::GetInstance();
+	m_pSfconfig = g_pConf;
 	m_standStatus = AS_STAND;
 	m_nowSkill = EKA_MAX;
 	m_countSkillFrame = 0;
@@ -36,7 +36,7 @@ void SFPlayer::setDownStatusDisable(SF_EK val)
 
 void SFPlayer::setHitStatus(SF_ASH ash)
 {
-	sf_cout(DEBUG_PLAYER_ACT, endl << "player" << this->m_pid << ":hitStatus <from>: " << SFConfig::GetInstance()->m_pDiAsh->m_str[m_hitStatus] << " <to>: " << SFConfig::GetInstance()->m_pDiAsh->m_str[ash]);
+	sf_cout(DEBUG_PLAYER_ACT, endl << "player" << this->m_pid << ":hitStatus <from>: " << g_pConf->m_pDiAsh->m_str[m_hitStatus] << " <to>: " << g_pConf->m_pDiAsh->m_str[ash]);
 	m_hitStatus = ash;
 }
 
@@ -72,9 +72,9 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 	for (UINT i = 0; i < ekaStr.size(); i++)
 	{
 		string tmp = ekaStr.substr(i, ekaStr.size() - i);
-		map<string, UINT>::iterator it = SFConfig::GetInstance()->m_pDiEka->m_map.find(tmp);
+		map<string, UINT>::iterator it = g_pConf->m_pDiEka->m_map.find(tmp);
 
-		if (it != SFConfig::GetInstance()->m_pDiEka->m_map.end())
+		if (it != g_pConf->m_pDiEka->m_map.end())
 		{
 			sf_cout(DEBUG_SKILL_KEY, endl << "t:" << tmp << "<<");
 			SF_EKA ret = (SF_EKA)it->second;
@@ -109,11 +109,11 @@ SF_EK SFPlayer::getLastKeyFromSkill(SF_EKA skill)
 {
 	if (skill != EKA_DEF && skill != EKA_MAX)
 	{
-		string strSkill = SFConfig::GetInstance()->m_pDiEka->m_str[skill];
+		string strSkill = g_pConf->m_pDiEka->m_str[skill];
 		string strLastKey = strSkill.substr(strSkill.length() - 1, 1);
-		map<string, UINT>::iterator itEk = SFConfig::GetInstance()->m_pDiEk->m_map.find(strLastKey);
+		map<string, UINT>::iterator itEk = g_pConf->m_pDiEk->m_map.find(strLastKey);
 
-		if (itEk != SFConfig::GetInstance()->m_pDiEk->m_map.end())
+		if (itEk != g_pConf->m_pDiEk->m_map.end())
 		{
 			return (SF_EK)itEk->second;
 		}
@@ -185,9 +185,9 @@ void SFPlayer::moveToNextFrame()
 
 }
 
-void SFPlayer::doTimer(SF_TMR timer)
+void SFPlayer::doTimer(SF_TEV timer)
 {
-	if (timer == TMR_SKILL)
+	if (timer == TEV_TMR_SKILL)
 	{
 		if (m_iTimeOut < 5)
 		{

@@ -77,8 +77,8 @@ namespace SFResConfigReader
 					POLL_XML_ATTR_BEGIN
 						if (utfName == "eka")
 						{
-							map<string, UINT>::iterator itEka = SFConfig::GetInstance()->m_pDiEka->m_map.find(utfValue);
-							if (itEka != SFConfig::GetInstance()->m_pDiEka->m_map.end())
+							map<string, UINT>::iterator itEka = g_pConf->m_pDiEka->m_map.find(utfValue);
+							if (itEka != g_pConf->m_pDiEka->m_map.end())
 							{
 								s_skillEka = (SF_EKA)itEka->second;
 							}
@@ -90,8 +90,8 @@ namespace SFResConfigReader
 						}
 						else if (utfName == "as")
 						{
-							map<string, UINT>::iterator itAs = SFConfig::GetInstance()->m_pDiAs->m_map.find(utfValue);
-							if (itAs != SFConfig::GetInstance()->m_pDiAs->m_map.end())
+							map<string, UINT>::iterator itAs = g_pConf->m_pDiAs->m_map.find(utfValue);
+							if (itAs != g_pConf->m_pDiAs->m_map.end())
 							{
 								s_skillAs = (SF_AS)itAs->second;
 							}
@@ -103,8 +103,8 @@ namespace SFResConfigReader
 						}
 						else if (utfName == "ssse")
 						{
-							map<string, UINT>::const_iterator itSsse = SFConfig::GetInstance()->m_pDiSsse->m_map.find(utfValue);
-							if (itSsse != SFConfig::GetInstance()->m_pDiSsse->m_map.end())
+							map<string, UINT>::const_iterator itSsse = g_pConf->m_pDiSsse->m_map.find(utfValue);
+							if (itSsse != g_pConf->m_pDiSsse->m_map.end())
 							{
 								s_skillSsse = (SF_SSSE)itSsse->second;
 							}
@@ -324,7 +324,7 @@ namespace SFResConfigReader
 			}
 		}
 
-		if (SFConfig::GetInstance()->m_enDebug[DEBUG_RES_LOAD])
+		if (g_pConf->m_enDebug[DEBUG_RES_LOAD])
 		{
 			wcout << L"\n";
 			for (int i = 1; i < SF_XML_TABS_MAX; i++)

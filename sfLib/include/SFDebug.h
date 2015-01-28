@@ -12,7 +12,7 @@ enum SF_DEBUG
 #define SF_OUT_BEGIN(enable)	\
 do	\
 {	\
-	if (SFConfig::GetInstance()->m_enDebug[enable])	\
+	if (g_pConf->m_enDebug[enable])	\
 	{	\
 
 #define SF_OUT_END	\

@@ -69,8 +69,6 @@ using namespace std;
 
 #pragma region 全局变量
 /*控制打印：DEBUG_COM, DEBUG_RES_LOAD, DEBUG_SKILL_KEY*/
-SFConfig* g_pSfconfig = SFConfig::GetInstance();
-
 SFPlayer* g_pP1 = NULL;
 SFPlayer* g_pP2 = NULL;
 
@@ -86,7 +84,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
 
 	//控制台
-	if (SFConfig::GetInstance()->m_enDebug[DEBUG_COM])
+	if (g_pConf->m_enDebug[DEBUG_COM])
 	{
 		AllocConsole();
 		int fd = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
@@ -234,9 +232,11 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 
 	//创建场景和精灵
 	sf_cout(DEBUG_COM, endl << "Loading resource.");
+	g_pEventManager = new SFEventManager();
 	g_scn = new SFActScene(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
-	g_pP1 = g_scn->m_mapSpriteGroup[SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P1]]->m_aSprite[0];
-	g_pP2 = g_scn->m_mapSpriteGroup[SFConfig::GetInstance()->m_pDiFightPGN->m_str[FIGHT_PGN_P2]]->m_aSprite[0];
+	g_pP1 = g_scn->getFightP1();
+	g_pP2 = g_scn->getFightP2();
+	g_pEventManager->setActiveScene(g_scn);
 	sf_cout(DEBUG_COM, endl << "Load resource finished.");
 
 	return hr;
@@ -293,9 +293,9 @@ HRESULT WinApp::CreateDeviceResources()
 		}
 		if (SUCCEEDED(hr))
 		{
-			SetTimer(m_hwnd, TMR_PAINT, SFConfig::GetInstance()->m_aTmr[TMR_PAINT], NULL);
-			SetTimer(m_hwnd, TMR_ACTION, SFConfig::GetInstance()->m_aTmr[TMR_ACTION], NULL);
-			SetTimer(m_hwnd, TMR_SKILL, SFConfig::GetInstance()->m_aTmr[TMR_SKILL], NULL);
+			SetTimer(m_hwnd, TMR_PAINT, g_pConf->m_aTmr[TMR_PAINT], NULL);
+			SetTimer(m_hwnd, TMR_ACTION, g_pConf->m_aTmr[TMR_ACTION], NULL);
+			SetTimer(m_hwnd, TMR_SKILL, g_pConf->m_aTmr[TMR_SKILL], NULL);
 		}
 	}
 
@@ -484,165 +484,84 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 
 		if (pWinApp)
 		{
-			switch (message)
+			if (g_pEventManager->doSystemEvent(message, wParam, lParam))
 			{
-			case WM_SIZE:
-			{
-				UINT width = LOWORD(lParam);
-				UINT height = HIWORD(lParam);
-				pWinApp->OnResize(width, height);
+				result = 0;
+				wasHandled = true;
 			}
-				result = 0;
-				wasHandled = true;
-				break;
-			case WM_TIMER:
-				switch (wParam)
+			else
+			{
+				switch (message)
 				{
-				case TMR_PAINT:
-					pWinApp->OnRender();
-					ValidateRect(hwnd, NULL);
-					break;
-				case TMR_ACTION:
-					break;
-				case TMR_SKILL:
-					//按键超时处理（清空键盘事件列表等）
-					g_pP1->doTimer(TMR_SKILL);
-					g_pP2->doTimer(TMR_SKILL);
-					break;
+				case WM_SIZE:
+				{
+					UINT width = LOWORD(lParam);
+					UINT height = HIWORD(lParam);
+					pWinApp->OnResize(width, height);
 				}
-				result = 0;
-				wasHandled = true;
-				break;
-			case WM_DISPLAYCHANGE:
-				InvalidateRect(hwnd, NULL, FALSE);
-				result = 0;
-				wasHandled = true;
-				break;
-			case WM_KEYDOWN:
-				switch (wParam)
-				{
-				case KD_P1UP:
+					result = 0;
+					wasHandled = true;
+					break;
+				case WM_TIMER:
+					switch (wParam)
+					{
+					case TMR_PAINT:
+						pWinApp->OnRender();
+						ValidateRect(hwnd, NULL);
+						break;
+					case TMR_ACTION:
+						break;
+					case TMR_SKILL:
+						//按键超时处理（清空键盘事件列表等）
+						break;
+					}
+					result = 0;
+					wasHandled = true;
+					break;
+				case WM_DISPLAYCHANGE:
+					InvalidateRect(hwnd, NULL, FALSE);
+					result = 0;
+					wasHandled = true;
+					break;
+				case WM_KEYDOWN:
+					/*已经不在此处处理，交给SFEventManager
+					switch (wParam)
+					{
+					case KD_P1UP:
 					g_pP1->downEvent(EK_8);
 					break;
-				case KD_P1LF:
-					g_pP1->downEvent(EK_4);
+					}
+					*/
+					result = 0;
+					wasHandled = true;
 					break;
-				case KD_P1DW:
-					g_pP1->downEvent(EK_2);
-					break;
-				case KD_P1RG:
-					g_pP1->downEvent(EK_6);
-					break;
-				case KD_P1AA:
-					g_pP1->downEvent(EK_A);
-					break;
-				case KD_P1BB:
-					g_pP1->downEvent(EK_B);
-					break;
-				case KD_P1CC:
-					g_pP1->downEvent(EK_C);
-					break;
-				case KD_P1DD:
-					g_pP1->downEvent(EK_D);
-					break;
-				case KD_P2UP:
-					g_pP2->downEvent(EK_8);
-					break;
-				case KD_P2LF:
-					g_pP2->downEvent(EK_4);
-					break;
-				case KD_P2DW:
-					g_pP2->downEvent(EK_2);
-					break;
-				case KD_P2RG:
-					g_pP2->downEvent(EK_6);
-					break;
-				case KD_P2AA:
-					g_pP2->downEvent(EK_A);
-					break;
-				case KD_P2BB:
-					g_pP2->downEvent(EK_B);
-					break;
-				case KD_P2CC:
-					g_pP2->downEvent(EK_C);
-					break;
-				case KD_P2DD:
-					g_pP2->downEvent(EK_D);
-					break;
-				}
-				result = 0;
-				wasHandled = true;
-				break;
-			case WM_KEYUP:
-				switch (wParam)
-				{
-				case KD_P1UP:
+				case WM_KEYUP:
+					/*已经不在此处处理，交给SFEventManager
+					switch (wParam)
+					{
+					case KD_P1UP:
 					g_pP1->upEvent(EK_8);
 					break;
-				case KD_P1LF:
-					g_pP1->upEvent(EK_4);
+					}*/
+					result = 0;
+					wasHandled = true;
 					break;
-				case KD_P1DW:
-					g_pP1->upEvent(EK_2);
+				case WM_PAINT:
+				{
+					pWinApp->OnRender();
+					ValidateRect(hwnd, NULL);
+				}
+					result = 0;
+					wasHandled = true;
 					break;
-				case KD_P1RG:
-					g_pP1->upEvent(EK_6);
-					break;
-				case KD_P1AA:
-					g_pP1->upEvent(EK_A);
-					break;
-				case KD_P1BB:
-					g_pP1->upEvent(EK_B);
-					break;
-				case KD_P1CC:
-					g_pP1->upEvent(EK_C);
-					break;
-				case KD_P1DD:
-					g_pP1->upEvent(EK_D);
-					break;
-				case KD_P2UP:
-					g_pP2->upEvent(EK_8);
-					break;
-				case KD_P2LF:
-					g_pP2->upEvent(EK_4);
-					break;
-				case KD_P2DW:
-					g_pP2->upEvent(EK_2);
-					break;
-				case KD_P2RG:
-					g_pP2->upEvent(EK_6);
-					break;
-				case KD_P2AA:
-					g_pP2->upEvent(EK_A);
-					break;
-				case KD_P2BB:
-					g_pP2->upEvent(EK_B);
-					break;
-				case KD_P2CC:
-					g_pP2->upEvent(EK_C);
-					break;
-				case KD_P2DD:
-					g_pP2->upEvent(EK_D);
+				case WM_DESTROY:
+				{
+					PostQuitMessage(0);
+				}
+					result = 1;
+					wasHandled = true;
 					break;
 				}
-				result = 0;
-				wasHandled = true;
-				break;
-			case WM_PAINT:
-			{
-				pWinApp->OnRender();
-				ValidateRect(hwnd, NULL);
-			}
-				result = 0;
-				wasHandled = true;
-				break;
-			case WM_DESTROY:
-			{
-				PostQuitMessage(0);
-			}
-				result = 1;
-				wasHandled = true;
-				break;
 			}
 		}
 		if (!wasHandled)

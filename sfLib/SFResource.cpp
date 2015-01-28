@@ -11,7 +11,7 @@ SFResPlayer::SFResPlayer(string pid, SF_SKN skin)
 {
 	string confPath;
 
-	confPath = SFConfig::GetInstance()->m_resPath + SFConfig::GetInstance()->m_resPlayerInfoPrefix + pid + "/" + SFConfig::GetInstance()->m_resPlayerInfoFileName;
+	confPath = g_pConf->m_resPath + g_pConf->m_resPlayerInfoPrefix + pid + "/" + g_pConf->m_resPlayerInfoFileName;
 	memset(m_arrSkill, 0, sizeof(SFResSkill*)*EKA_MAX*AS_MAX*SSSE_MAX);
 	SFResConfigReader::readFromXML(confPath, this);
 }
