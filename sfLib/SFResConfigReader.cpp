@@ -184,49 +184,27 @@ namespace SFResConfigReader
 								{
 									if (tabCount[8] == 0)//12x1x 1x10
 									{
-										#pragma region rect(frame)
-										D2D1_RECT_F box;
-
+										#pragma region point(frame) 代表物体的位移属性
 										POLL_XML_ATTR_BEGIN
-											if (utfName == "t")
+											if (utfName == "x")
 											{
 												stringstream ss;
 												float fValue;
 
 												ss << utfValue;
 												ss >> fValue;
-												box.top = fValue;
+												((SFResFrame*)parseCount[PRS_FRM])->m_poiMove.x = fValue;
 											}
-											else if (utfName == "l")
+											else if (utfName == "y")
 											{
 												stringstream ss;
 												float fValue;
 
 												ss << utfValue;
 												ss >> fValue;
-												box.left = fValue;
-											}
-											else if (utfName == "b")
-											{
-												stringstream ss;
-												float fValue;
-
-												ss << utfValue;
-												ss >> fValue;
-												box.bottom = fValue;
-											}
-											else if (utfName == "r")
-											{
-												stringstream ss;
-												float fValue;
-
-												ss << utfValue;
-												ss >> fValue;
-												box.right = fValue;
+												((SFResFrame*)parseCount[PRS_FRM])->m_poiMove.y = fValue;
 											}
 										POLL_XML_ATTR_END
-
-										((SFResFrame*)parseCount[PRS_FRM])->m_drawBox = box;
 										#pragma endregion
 									}
 								}
@@ -260,7 +238,7 @@ namespace SFResConfigReader
 											if (tabCount[10] == 0)//12x1x 1x2x1 0
 											{
 												#pragma region rect(box)
-												D2D1_RECT_F box;
+												static D2D1_RECT_F box;
 												POLL_XML_ATTR_BEGIN
 													if (utfName == "t")
 													{
@@ -401,8 +379,8 @@ namespace SFResConfigReader
 						POLL_XML_NODE_BEGIN(ND_OBJ)
 							POLL_XML_NODE_BEGIN(ND_FRM_TBL)
 								POLL_XML_NODE_BEGIN(ND_FRM)
-									POLL_XML_NODE_BEGIN(ND_FRM_RCT)
-									POLL_XML_NODE_END(ND_FRM_RCT)
+									POLL_XML_NODE_BEGIN(ND_FRM_POI)
+									POLL_XML_NODE_END(ND_FRM_POI)
 									POLL_XML_NODE_BEGIN(ND_BOX_TBL)
 										POLL_XML_NODE_BEGIN(ND_BOX)
 											POLL_XML_NODE_BEGIN(ND_BOX_RCT)

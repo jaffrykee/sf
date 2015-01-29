@@ -555,6 +555,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					wasHandled = true;
 					break;
 			}
+			//SFLib处理阶段
 			if (g_pEventManager->doSystemEvent(message, wParam, lParam))
 			{
 				result = 0;

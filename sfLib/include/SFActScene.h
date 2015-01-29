@@ -25,6 +25,9 @@ typedef enum SF_FIGHT_PlayerGroupName
 	FIGHT_PGN_P1, FIGHT_PGN_P2,
 	FIGHT_PGN_MAX
 }SF_FIGHT_PGN;
+const vector <string> conf_aStrFightPGN = {
+	"p1", "p2"
+};
 
 class __declspec(dllexport) SFSpriteGroup
 {

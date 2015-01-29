@@ -10,7 +10,7 @@
 				<object id="1">
 					<frame_table>
 						<frame id="1">
-							<rect t="150" l="-50" b="0" r="50"></rect>
+							<point x="0" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-50" b="-75" r="50"></rect>
@@ -18,7 +18,7 @@
 							</box_table>
 						</frame>
 						<frame id="2">
-							<rect t="150" l="-51" b="0" r="51"></rect>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-51" b="-75" r="51"></rect>
@@ -26,7 +26,7 @@
 							</box_table>
 						</frame>
 						<frame id="3">
-							<rect t="75" l="-52" b="-75" r="52"></rect>
+							<point x="2" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-52" b="-75" r="52"></rect>
@@ -37,7 +37,7 @@
 							</box_table>
 						</frame>
 						<frame id="4">
-							<rect t="75" l="-53" b="-75" r="53"></rect>
+							<point x="3" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-53" b="-75" r="53"></rect>
@@ -48,7 +48,7 @@
 							</box_table>
 						</frame>
 						<frame id="5">
-							<rect t="75" l="-54" b="-75" r="54"></rect>
+							<point x="4" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-54" b="-75" r="54"></rect>
@@ -59,7 +59,7 @@
 							</box_table>
 						</frame>
 						<frame id="6">
-							<rect t="75" l="-55" b="-75" r="55"></rect>
+							<point x="5" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-55" b="-75" r="55"></rect>
@@ -70,7 +70,7 @@
 							</box_table>
 						</frame>
 						<frame id="7">
-							<rect t="75" l="-54" b="-75" r="54"></rect>
+							<point x="6" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-54" b="-75" r="54"></rect>
@@ -81,7 +81,7 @@
 							</box_table>
 						</frame>
 						<frame id="8">
-							<rect t="75" l="-53" b="-75" r="53"></rect>
+							<point x="7" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-53" b="-75" r="53"></rect>
@@ -92,7 +92,7 @@
 							</box_table>
 						</frame>
 						<frame id="9">
-							<rect t="75" l="-52" b="-75" r="52"></rect>
+							<point x="8" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-52" b="-75" r="52"></rect>
@@ -100,7 +100,7 @@
 							</box_table>
 						</frame>
 						<frame id="10">
-							<rect t="75" l="-51" b="-75" r="51"></rect>
+							<point x="9" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-51" b="-75" r="51"></rect>
@@ -108,7 +108,7 @@
 							</box_table>
 						</frame>
 						<frame id="11">
-							<rect t="75" l="-50" b="-75" r="50"></rect>
+							<point x="10" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="75" l="-50" b="-75" r="50"></rect>

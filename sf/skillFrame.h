@@ -25,6 +25,7 @@ System::Xml::Serialization::XmlRootAttribute(L"skillFrame"),
 System::ComponentModel::Design::HelpKeywordAttribute(L"vs.data.DataSet")]
 public ref class skillFrame : public ::System::Data::DataSet {
     public : ref class rectDataTable;
+    public : ref class pointDataTable;
     public : ref class box_tableDataTable;
     public : ref class boxDataTable;
     public : ref class frame_tableDataTable;
@@ -37,6 +38,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
     public : ref class skillDataTable;
     public : ref class player_infoDataTable;
     public : ref class rectRow;
+    public : ref class pointRow;
     public : ref class box_tableRow;
     public : ref class boxRow;
     public : ref class frame_tableRow;
@@ -49,6 +51,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
     public : ref class skillRow;
     public : ref class player_infoRow;
     public : ref class rectRowChangeEvent;
+    public : ref class pointRowChangeEvent;
     public : ref class box_tableRowChangeEvent;
     public : ref class boxRowChangeEvent;
     public : ref class frame_tableRowChangeEvent;
@@ -62,6 +65,8 @@ public ref class skillFrame : public ::System::Data::DataSet {
     public : ref class player_infoRowChangeEvent;
     
     private: skillFrame::rectDataTable^  tablerect;
+    
+    private: skillFrame::pointDataTable^  tablepoint;
     
     private: skillFrame::box_tableDataTable^  tablebox_table;
     
@@ -87,7 +92,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
     
     private: ::System::Data::DataRelation^  relationbox_rect;
     
-    private: ::System::Data::DataRelation^  relationframe_rect;
+    private: ::System::Data::DataRelation^  relationframe_point;
     
     private: ::System::Data::DataRelation^  relationframe_box_table;
     
@@ -113,6 +118,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     delegate System::Void rectRowChangeEventHandler(::System::Object^  sender, skillFrame::rectRowChangeEvent^  e);
+    
+    public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+    delegate System::Void pointRowChangeEventHandler(::System::Object^  sender, skillFrame::pointRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     delegate System::Void box_tableRowChangeEventHandler(::System::Object^  sender, skillFrame::box_tableRowChangeEvent^  e);
@@ -159,6 +167,14 @@ public ref class skillFrame : public ::System::Data::DataSet {
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
     property skillFrame::rectDataTable^  rect {
         skillFrame::rectDataTable^  get();
+    }
+    
+    public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+    System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
+    System::ComponentModel::Browsable(false), 
+    System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
+    property skillFrame::pointDataTable^  point {
+        skillFrame::pointDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -314,6 +330,10 @@ public ref class skillFrame : public ::System::Data::DataSet {
     
     private: [System::Diagnostics::DebuggerNonUserCodeAttribute]
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+    ::System::Boolean ShouldSerializepoint();
+    
+    private: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+    [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ::System::Boolean ShouldSerializebox_table();
     
     private: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -381,8 +401,6 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         private: ::System::Data::DataColumn^  columnbox_Id;
         
-        private: ::System::Data::DataColumn^  columnframe_Id;
-        
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
         event skillFrame::rectRowChangeEventHandler^  rectRowChanging;
         
@@ -435,12 +453,6 @@ public ref class skillFrame : public ::System::Data::DataSet {
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
-        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property ::System::Data::DataColumn^  frame_IdColumn {
-            ::System::Data::DataColumn^  get();
-        }
-        
-        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
         System::ComponentModel::Browsable(false)]
         property ::System::Int32 Count {
@@ -459,13 +471,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::rectRow^  AddrectRow(
-                    System::Single t, 
-                    System::Single l, 
-                    System::Single b, 
-                    System::Single r, 
-                    skillFrame::boxRow^  parentboxRowBybox_rect, 
-                    skillFrame::frameRow^  parentframeRowByframe_rect);
+        skillFrame::rectRow^  AddrectRow(System::Single t, System::Single l, System::Single b, System::Single r, skillFrame::boxRow^  parentboxRowBybox_rect);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -518,6 +524,136 @@ public ref class skillFrame : public ::System::Data::DataSet {
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
         ::System::Void RemoverectRow(skillFrame::rectRow^  row);
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        static ::System::Xml::Schema::XmlSchemaComplexType^  GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs);
+    };
+    
+    public : /// <summary>
+///Represents the strongly named DataTable class.
+///</summary>
+    [System::Serializable, 
+    System::Xml::Serialization::XmlSchemaProviderAttribute(L"GetTypedTableSchema")]
+    ref class pointDataTable : public ::System::Data::DataTable, public ::System::Collections::IEnumerable {
+        
+        private: ::System::Data::DataColumn^  columnx;
+        
+        private: ::System::Data::DataColumn^  columny;
+        
+        private: ::System::Data::DataColumn^  columnframe_Id;
+        
+        public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        event skillFrame::pointRowChangeEventHandler^  pointRowChanging;
+        
+        public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        event skillFrame::pointRowChangeEventHandler^  pointRowChanged;
+        
+        public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        event skillFrame::pointRowChangeEventHandler^  pointRowDeleting;
+        
+        public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        event skillFrame::pointRowChangeEventHandler^  pointRowDeleted;
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        pointDataTable();
+        internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        pointDataTable(::System::Data::DataTable^  table);
+        protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        pointDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context);
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property ::System::Data::DataColumn^  xColumn {
+            ::System::Data::DataColumn^  get();
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property ::System::Data::DataColumn^  yColumn {
+            ::System::Data::DataColumn^  get();
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property ::System::Data::DataColumn^  frame_IdColumn {
+            ::System::Data::DataColumn^  get();
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
+        System::ComponentModel::Browsable(false)]
+        property ::System::Int32 Count {
+            ::System::Int32 get();
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property skillFrame::pointRow^  default [::System::Int32 ] {
+            skillFrame::pointRow^  get(::System::Int32 index);
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        ::System::Void AddpointRow(skillFrame::pointRow^  row);
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        skillFrame::pointRow^  AddpointRow(System::Single x, System::Single y, skillFrame::frameRow^  parentframeRowByframe_point);
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        virtual ::System::Collections::IEnumerator^  GetEnumerator();
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        virtual ::System::Data::DataTable^  Clone() override;
+        
+        protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        virtual ::System::Data::DataTable^  CreateInstance() override;
+        
+        internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        ::System::Void InitVars();
+        
+        private: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        ::System::Void InitClass();
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        skillFrame::pointRow^  NewpointRow();
+        
+        protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        virtual ::System::Data::DataRow^  NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) override;
+        
+        protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        virtual ::System::Type^  GetRowType() override;
+        
+        protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        virtual ::System::Void OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) override;
+        
+        protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        virtual ::System::Void OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) override;
+        
+        protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        virtual ::System::Void OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) override;
+        
+        protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        virtual ::System::Void OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) override;
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        ::System::Void RemovepointRow(skillFrame::pointRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1962,23 +2098,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property System::Int32 frame_Id {
-            System::Int32 get();
-            System::Void set(System::Int32 value);
-        }
-        
-        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
-        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
         property skillFrame::boxRow^  boxRow {
             skillFrame::boxRow^  get();
             System::Void set(skillFrame::boxRow^  value);
-        }
-        
-        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
-        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::frameRow^  frameRow {
-            skillFrame::frameRow^  get();
-            System::Void set(skillFrame::frameRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2020,6 +2142,61 @@ public ref class skillFrame : public ::System::Data::DataSet {
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
         ::System::Void Setbox_IdNull();
+    };
+    
+    public : /// <summary>
+///Represents strongly named DataRow class.
+///</summary>
+    ref class pointRow : public ::System::Data::DataRow {
+        
+        private: skillFrame::pointDataTable^  tablepoint;
+        
+        internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        pointRow(::System::Data::DataRowBuilder^  rb);
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property System::Single x {
+            System::Single get();
+            System::Void set(System::Single value);
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property System::Single y {
+            System::Single get();
+            System::Void set(System::Single value);
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property System::Int32 frame_Id {
+            System::Int32 get();
+            System::Void set(System::Int32 value);
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property skillFrame::frameRow^  frameRow {
+            skillFrame::frameRow^  get();
+            System::Void set(skillFrame::frameRow^  value);
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        ::System::Boolean IsxNull();
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        ::System::Void SetxNull();
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        ::System::Boolean IsyNull();
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        ::System::Void SetyNull();
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2225,7 +2402,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::rectRow^  >^  GetrectRows();
+        cli::array< skillFrame::pointRow^  >^  GetpointRows();
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2607,6 +2784,32 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///Row event argument class
 ///</summary>
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+    ref class pointRowChangeEvent : public ::System::EventArgs {
+        
+        private: skillFrame::pointRow^  eventRow;
+        
+        private: ::System::Data::DataRowAction eventAction;
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
+        [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        pointRowChangeEvent(skillFrame::pointRow^  row, ::System::Data::DataRowAction action);
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property skillFrame::pointRow^  Row {
+            skillFrame::pointRow^  get();
+        }
+        
+        public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
+        System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
+        property ::System::Data::DataRowAction Action {
+            ::System::Data::DataRowAction get();
+        }
+    };
+    
+    public : /// <summary>
+///Row event argument class
+///</summary>
+    [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class box_tableRowChangeEvent : public ::System::EventArgs {
         
         private: skillFrame::box_tableRow^  eventRow;
@@ -2916,6 +3119,9 @@ inline skillFrame::skillFrame(::System::Runtime::Serialization::SerializationInf
         if (ds->Tables[L"rect"] != nullptr) {
             __super::Tables->Add((gcnew skillFrame::rectDataTable(ds->Tables[L"rect"])));
         }
+        if (ds->Tables[L"point"] != nullptr) {
+            __super::Tables->Add((gcnew skillFrame::pointDataTable(ds->Tables[L"point"])));
+        }
         if (ds->Tables[L"box_table"] != nullptr) {
             __super::Tables->Add((gcnew skillFrame::box_tableDataTable(ds->Tables[L"box_table"])));
         }
@@ -2969,6 +3175,10 @@ inline skillFrame::skillFrame(::System::Runtime::Serialization::SerializationInf
 
 inline skillFrame::rectDataTable^  skillFrame::rect::get() {
     return this->tablerect;
+}
+
+inline skillFrame::pointDataTable^  skillFrame::point::get() {
+    return this->tablepoint;
 }
 
 inline skillFrame::box_tableDataTable^  skillFrame::box_table::get() {
@@ -3059,6 +3269,9 @@ inline ::System::Void skillFrame::ReadXmlSerializable(::System::Xml::XmlReader^ 
         if (ds->Tables[L"rect"] != nullptr) {
             __super::Tables->Add((gcnew skillFrame::rectDataTable(ds->Tables[L"rect"])));
         }
+        if (ds->Tables[L"point"] != nullptr) {
+            __super::Tables->Add((gcnew skillFrame::pointDataTable(ds->Tables[L"point"])));
+        }
         if (ds->Tables[L"box_table"] != nullptr) {
             __super::Tables->Add((gcnew skillFrame::box_tableDataTable(ds->Tables[L"box_table"])));
         }
@@ -3123,6 +3336,12 @@ inline ::System::Void skillFrame::InitVars(::System::Boolean initTable) {
     if (initTable == true) {
         if (this->tablerect != nullptr) {
             this->tablerect->InitVars();
+        }
+    }
+    this->tablepoint = (cli::safe_cast<skillFrame::pointDataTable^  >(__super::Tables[L"point"]));
+    if (initTable == true) {
+        if (this->tablepoint != nullptr) {
+            this->tablepoint->InitVars();
         }
     }
     this->tablebox_table = (cli::safe_cast<skillFrame::box_tableDataTable^  >(__super::Tables[L"box_table"]));
@@ -3192,7 +3411,7 @@ inline ::System::Void skillFrame::InitVars(::System::Boolean initTable) {
         }
     }
     this->relationbox_rect = this->Relations[L"box_rect"];
-    this->relationframe_rect = this->Relations[L"frame_rect"];
+    this->relationframe_point = this->Relations[L"frame_point"];
     this->relationframe_box_table = this->Relations[L"frame_box_table"];
     this->relationbox_table_box = this->Relations[L"box_table_box"];
     this->relationobject_frame_table = this->Relations[L"object_frame_table"];
@@ -3214,6 +3433,8 @@ inline ::System::Void skillFrame::InitClass() {
     this->SchemaSerializationMode = ::System::Data::SchemaSerializationMode::IncludeSchema;
     this->tablerect = (gcnew skillFrame::rectDataTable());
     __super::Tables->Add(this->tablerect);
+    this->tablepoint = (gcnew skillFrame::pointDataTable());
+    __super::Tables->Add(this->tablepoint);
     this->tablebox_table = (gcnew skillFrame::box_tableDataTable());
     __super::Tables->Add(this->tablebox_table);
     this->tablebox = (gcnew skillFrame::boxDataTable());
@@ -3243,9 +3464,9 @@ inline ::System::Void skillFrame::InitClass() {
     fkc->AcceptRejectRule = ::System::Data::AcceptRejectRule::None;
     fkc->DeleteRule = ::System::Data::Rule::Cascade;
     fkc->UpdateRule = ::System::Data::Rule::Cascade;
-    fkc = (gcnew ::System::Data::ForeignKeyConstraint(L"frame_rect", gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tableframe->frame_IdColumn}, 
-        gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tablerect->frame_IdColumn}));
-    this->tablerect->Constraints->Add(fkc);
+    fkc = (gcnew ::System::Data::ForeignKeyConstraint(L"frame_point", gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tableframe->frame_IdColumn}, 
+        gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tablepoint->frame_IdColumn}));
+    this->tablepoint->Constraints->Add(fkc);
     fkc->AcceptRejectRule = ::System::Data::AcceptRejectRule::None;
     fkc->DeleteRule = ::System::Data::Rule::Cascade;
     fkc->UpdateRule = ::System::Data::Rule::Cascade;
@@ -3313,10 +3534,10 @@ inline ::System::Void skillFrame::InitClass() {
         gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tablerect->box_IdColumn}, false));
     this->relationbox_rect->Nested = true;
     this->Relations->Add(this->relationbox_rect);
-    this->relationframe_rect = (gcnew ::System::Data::DataRelation(L"frame_rect", gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tableframe->frame_IdColumn}, 
-        gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tablerect->frame_IdColumn}, false));
-    this->relationframe_rect->Nested = true;
-    this->Relations->Add(this->relationframe_rect);
+    this->relationframe_point = (gcnew ::System::Data::DataRelation(L"frame_point", gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tableframe->frame_IdColumn}, 
+        gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tablepoint->frame_IdColumn}, false));
+    this->relationframe_point->Nested = true;
+    this->Relations->Add(this->relationframe_point);
     this->relationframe_box_table = (gcnew ::System::Data::DataRelation(L"frame_box_table", gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tableframe->frame_IdColumn}, 
         gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tablebox_table->frame_IdColumn}, false));
     this->relationframe_box_table->Nested = true;
@@ -3360,6 +3581,10 @@ inline ::System::Void skillFrame::InitClass() {
 }
 
 inline ::System::Boolean skillFrame::ShouldSerializerect() {
+    return false;
+}
+
+inline ::System::Boolean skillFrame::ShouldSerializepoint() {
     return false;
 }
 
@@ -3506,10 +3731,6 @@ inline ::System::Data::DataColumn^  skillFrame::rectDataTable::box_IdColumn::get
     return this->columnbox_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::rectDataTable::frame_IdColumn::get() {
-    return this->columnframe_Id;
-}
-
 inline ::System::Int32 skillFrame::rectDataTable::Count::get() {
     return this->Rows->Count;
 }
@@ -3522,20 +3743,12 @@ inline ::System::Void skillFrame::rectDataTable::AddrectRow(skillFrame::rectRow^
     this->Rows->Add(row);
 }
 
-inline skillFrame::rectRow^  skillFrame::rectDataTable::AddrectRow(
-            System::Single t, 
-            System::Single l, 
-            System::Single b, 
-            System::Single r, 
-            skillFrame::boxRow^  parentboxRowBybox_rect, 
-            skillFrame::frameRow^  parentframeRowByframe_rect) {
+inline skillFrame::rectRow^  skillFrame::rectDataTable::AddrectRow(System::Single t, System::Single l, System::Single b, 
+            System::Single r, skillFrame::boxRow^  parentboxRowBybox_rect) {
     skillFrame::rectRow^  rowrectRow = (cli::safe_cast<skillFrame::rectRow^  >(this->NewRow()));
-    cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(6) {t, l, b, r, nullptr, nullptr};
+    cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(5) {t, l, b, r, nullptr};
     if (parentboxRowBybox_rect != nullptr) {
         columnValuesArray[4] = parentboxRowBybox_rect[1];
-    }
-    if (parentframeRowByframe_rect != nullptr) {
-        columnValuesArray[5] = parentframeRowByframe_rect[1];
     }
     rowrectRow->ItemArray = columnValuesArray;
     this->Rows->Add(rowrectRow);
@@ -3562,7 +3775,6 @@ inline ::System::Void skillFrame::rectDataTable::InitVars() {
     this->columnb = __super::Columns[L"b"];
     this->columnr = __super::Columns[L"r"];
     this->columnbox_Id = __super::Columns[L"box_Id"];
-    this->columnframe_Id = __super::Columns[L"frame_Id"];
 }
 
 inline ::System::Void skillFrame::rectDataTable::InitClass() {
@@ -3576,8 +3788,6 @@ inline ::System::Void skillFrame::rectDataTable::InitClass() {
     __super::Columns->Add(this->columnr);
     this->columnbox_Id = (gcnew ::System::Data::DataColumn(L"box_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
     __super::Columns->Add(this->columnbox_Id);
-    this->columnframe_Id = (gcnew ::System::Data::DataColumn(L"frame_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
-    __super::Columns->Add(this->columnframe_Id);
     this->columnt->Namespace = L"";
     this->columnl->Namespace = L"";
     this->columnb->Namespace = L"";
@@ -3650,6 +3860,209 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::rectDataTable::
     ::System::Xml::Schema::XmlSchemaAttribute^  attribute2 = (gcnew ::System::Xml::Schema::XmlSchemaAttribute());
     attribute2->Name = L"tableTypeName";
     attribute2->FixedValue = L"rectDataTable";
+    type->Attributes->Add(attribute2);
+    type->Particle = sequence;
+    ::System::Xml::Schema::XmlSchema^  dsSchema = ds->GetSchemaSerializable();
+    if (xs->Contains(dsSchema->TargetNamespace)) {
+        ::System::IO::MemoryStream^  s1 = (gcnew ::System::IO::MemoryStream());
+        ::System::IO::MemoryStream^  s2 = (gcnew ::System::IO::MemoryStream());
+        try {
+            ::System::Xml::Schema::XmlSchema^  schema = nullptr;
+            dsSchema->Write(s1);
+            for (            ::System::Collections::IEnumerator^  schemas = xs->Schemas(dsSchema->TargetNamespace)->GetEnumerator(); schemas->MoveNext();             ) {
+                schema = (cli::safe_cast<::System::Xml::Schema::XmlSchema^  >(schemas->Current));
+                s2->SetLength(0);
+                schema->Write(s2);
+                if (s1->Length == s2->Length) {
+                    s1->Position = 0;
+                    s2->Position = 0;
+                    for (                    ; ((s1->Position != s1->Length) 
+                                && (s1->ReadByte() == s2->ReadByte()));                     ) {
+                        ;
+                    }
+                    if (s1->Position == s1->Length) {
+                        return type;
+                    }
+                }
+            }
+        }
+        finally {
+            if (s1 != nullptr) {
+                s1->Close();
+            }
+            if (s2 != nullptr) {
+                s2->Close();
+            }
+        }
+    }
+    xs->Add(dsSchema);
+    return type;
+}
+
+
+inline skillFrame::pointDataTable::pointDataTable() {
+    this->TableName = L"point";
+    this->BeginInit();
+    this->InitClass();
+    this->EndInit();
+}
+
+inline skillFrame::pointDataTable::pointDataTable(::System::Data::DataTable^  table) {
+    this->TableName = table->TableName;
+    if (table->CaseSensitive != table->DataSet->CaseSensitive) {
+        this->CaseSensitive = table->CaseSensitive;
+    }
+    if (table->Locale->ToString() != table->DataSet->Locale->ToString()) {
+        this->Locale = table->Locale;
+    }
+    if (table->Namespace != table->DataSet->Namespace) {
+        this->Namespace = table->Namespace;
+    }
+    this->Prefix = table->Prefix;
+    this->MinimumCapacity = table->MinimumCapacity;
+}
+
+inline skillFrame::pointDataTable::pointDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+        ::System::Data::DataTable(info, context) {
+    this->InitVars();
+}
+
+inline ::System::Data::DataColumn^  skillFrame::pointDataTable::xColumn::get() {
+    return this->columnx;
+}
+
+inline ::System::Data::DataColumn^  skillFrame::pointDataTable::yColumn::get() {
+    return this->columny;
+}
+
+inline ::System::Data::DataColumn^  skillFrame::pointDataTable::frame_IdColumn::get() {
+    return this->columnframe_Id;
+}
+
+inline ::System::Int32 skillFrame::pointDataTable::Count::get() {
+    return this->Rows->Count;
+}
+
+inline skillFrame::pointRow^  skillFrame::pointDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<skillFrame::pointRow^  >(this->Rows[index]));
+}
+
+inline ::System::Void skillFrame::pointDataTable::AddpointRow(skillFrame::pointRow^  row) {
+    this->Rows->Add(row);
+}
+
+inline skillFrame::pointRow^  skillFrame::pointDataTable::AddpointRow(System::Single x, System::Single y, skillFrame::frameRow^  parentframeRowByframe_point) {
+    skillFrame::pointRow^  rowpointRow = (cli::safe_cast<skillFrame::pointRow^  >(this->NewRow()));
+    cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(3) {x, y, nullptr};
+    if (parentframeRowByframe_point != nullptr) {
+        columnValuesArray[2] = parentframeRowByframe_point[1];
+    }
+    rowpointRow->ItemArray = columnValuesArray;
+    this->Rows->Add(rowpointRow);
+    return rowpointRow;
+}
+
+inline ::System::Collections::IEnumerator^  skillFrame::pointDataTable::GetEnumerator() {
+    return this->Rows->GetEnumerator();
+}
+
+inline ::System::Data::DataTable^  skillFrame::pointDataTable::Clone() {
+    skillFrame::pointDataTable^  cln = (cli::safe_cast<skillFrame::pointDataTable^  >(__super::Clone()));
+    cln->InitVars();
+    return cln;
+}
+
+inline ::System::Data::DataTable^  skillFrame::pointDataTable::CreateInstance() {
+    return (gcnew skillFrame::pointDataTable());
+}
+
+inline ::System::Void skillFrame::pointDataTable::InitVars() {
+    this->columnx = __super::Columns[L"x"];
+    this->columny = __super::Columns[L"y"];
+    this->columnframe_Id = __super::Columns[L"frame_Id"];
+}
+
+inline ::System::Void skillFrame::pointDataTable::InitClass() {
+    this->columnx = (gcnew ::System::Data::DataColumn(L"x", ::System::Single::typeid, nullptr, ::System::Data::MappingType::Attribute));
+    __super::Columns->Add(this->columnx);
+    this->columny = (gcnew ::System::Data::DataColumn(L"y", ::System::Single::typeid, nullptr, ::System::Data::MappingType::Attribute));
+    __super::Columns->Add(this->columny);
+    this->columnframe_Id = (gcnew ::System::Data::DataColumn(L"frame_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
+    __super::Columns->Add(this->columnframe_Id);
+    this->columnx->Namespace = L"";
+    this->columny->Namespace = L"";
+}
+
+inline skillFrame::pointRow^  skillFrame::pointDataTable::NewpointRow() {
+    return (cli::safe_cast<skillFrame::pointRow^  >(this->NewRow()));
+}
+
+inline ::System::Data::DataRow^  skillFrame::pointDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew skillFrame::pointRow(builder));
+}
+
+inline ::System::Type^  skillFrame::pointDataTable::GetRowType() {
+    return skillFrame::pointRow::typeid;
+}
+
+inline ::System::Void skillFrame::pointDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+    __super::OnRowChanged(e);
+    {
+        this->pointRowChanged(this, (gcnew skillFrame::pointRowChangeEvent((cli::safe_cast<skillFrame::pointRow^  >(e->Row)), 
+                e->Action)));
+    }
+}
+
+inline ::System::Void skillFrame::pointDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+    __super::OnRowChanging(e);
+    {
+        this->pointRowChanging(this, (gcnew skillFrame::pointRowChangeEvent((cli::safe_cast<skillFrame::pointRow^  >(e->Row)), 
+                e->Action)));
+    }
+}
+
+inline ::System::Void skillFrame::pointDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+    __super::OnRowDeleted(e);
+    {
+        this->pointRowDeleted(this, (gcnew skillFrame::pointRowChangeEvent((cli::safe_cast<skillFrame::pointRow^  >(e->Row)), 
+                e->Action)));
+    }
+}
+
+inline ::System::Void skillFrame::pointDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+    __super::OnRowDeleting(e);
+    {
+        this->pointRowDeleting(this, (gcnew skillFrame::pointRowChangeEvent((cli::safe_cast<skillFrame::pointRow^  >(e->Row)), 
+                e->Action)));
+    }
+}
+
+inline ::System::Void skillFrame::pointDataTable::RemovepointRow(skillFrame::pointRow^  row) {
+    this->Rows->Remove(row);
+}
+
+inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::pointDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+    ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
+    ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
+    skillFrame^  ds = (gcnew skillFrame());
+    ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
+    any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
+    any1->MinOccurs = ::System::Decimal(0);
+    any1->MaxOccurs = ::System::Decimal::MaxValue;
+    any1->ProcessContents = ::System::Xml::Schema::XmlSchemaContentProcessing::Lax;
+    sequence->Items->Add(any1);
+    ::System::Xml::Schema::XmlSchemaAny^  any2 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
+    any2->Namespace = L"urn:schemas-microsoft-com:xml-diffgram-v1";
+    any2->MinOccurs = ::System::Decimal(1);
+    any2->ProcessContents = ::System::Xml::Schema::XmlSchemaContentProcessing::Lax;
+    sequence->Items->Add(any2);
+    ::System::Xml::Schema::XmlSchemaAttribute^  attribute1 = (gcnew ::System::Xml::Schema::XmlSchemaAttribute());
+    attribute1->Name = L"namespace";
+    attribute1->FixedValue = ds->Namespace;
+    type->Attributes->Add(attribute1);
+    ::System::Xml::Schema::XmlSchemaAttribute^  attribute2 = (gcnew ::System::Xml::Schema::XmlSchemaAttribute());
+    attribute2->Name = L"tableTypeName";
+    attribute2->FixedValue = L"pointDataTable";
     type->Attributes->Add(attribute2);
     type->Particle = sequence;
     ::System::Xml::Schema::XmlSchema^  dsSchema = ds->GetSchemaSerializable();
@@ -5992,30 +6405,11 @@ inline System::Void skillFrame::rectRow::box_Id::set(System::Int32 value) {
     this[this->tablerect->box_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::rectRow::frame_Id::get() {
-    try {
-        return (cli::safe_cast<::System::Int32 >(this[this->tablerect->frame_IdColumn]));
-    }
-    catch (::System::InvalidCastException^ e) {
-        throw (gcnew ::System::Data::StrongTypingException(L"表“rect”中列“frame_Id”的值为 DBNull。", e));
-    }
-}
-inline System::Void skillFrame::rectRow::frame_Id::set(System::Int32 value) {
-    this[this->tablerect->frame_IdColumn] = value;
-}
-
 inline skillFrame::boxRow^  skillFrame::rectRow::boxRow::get() {
     return (cli::safe_cast<skillFrame::boxRow^  >(this->GetParentRow(this->Table->ParentRelations[L"box_rect"])));
 }
 inline System::Void skillFrame::rectRow::boxRow::set(skillFrame::boxRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"box_rect"]);
-}
-
-inline skillFrame::frameRow^  skillFrame::rectRow::frameRow::get() {
-    return (cli::safe_cast<skillFrame::frameRow^  >(this->GetParentRow(this->Table->ParentRelations[L"frame_rect"])));
-}
-inline System::Void skillFrame::rectRow::frameRow::set(skillFrame::frameRow^  value) {
-    this->SetParentRow(value, this->Table->ParentRelations[L"frame_rect"]);
 }
 
 inline ::System::Boolean skillFrame::rectRow::IstNull() {
@@ -6058,12 +6452,77 @@ inline ::System::Void skillFrame::rectRow::Setbox_IdNull() {
     this[this->tablerect->box_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::rectRow::Isframe_IdNull() {
-    return this->IsNull(this->tablerect->frame_IdColumn);
+
+inline skillFrame::pointRow::pointRow(::System::Data::DataRowBuilder^  rb) : 
+        ::System::Data::DataRow(rb) {
+    this->tablepoint = (cli::safe_cast<skillFrame::pointDataTable^  >(this->Table));
 }
 
-inline ::System::Void skillFrame::rectRow::Setframe_IdNull() {
-    this[this->tablerect->frame_IdColumn] = ::System::Convert::DBNull;
+inline System::Single skillFrame::pointRow::x::get() {
+    try {
+        return (cli::safe_cast<::System::Single >(this[this->tablepoint->xColumn]));
+    }
+    catch (::System::InvalidCastException^ e) {
+        throw (gcnew ::System::Data::StrongTypingException(L"表“point”中列“x”的值为 DBNull。", e));
+    }
+}
+inline System::Void skillFrame::pointRow::x::set(System::Single value) {
+    this[this->tablepoint->xColumn] = value;
+}
+
+inline System::Single skillFrame::pointRow::y::get() {
+    try {
+        return (cli::safe_cast<::System::Single >(this[this->tablepoint->yColumn]));
+    }
+    catch (::System::InvalidCastException^ e) {
+        throw (gcnew ::System::Data::StrongTypingException(L"表“point”中列“y”的值为 DBNull。", e));
+    }
+}
+inline System::Void skillFrame::pointRow::y::set(System::Single value) {
+    this[this->tablepoint->yColumn] = value;
+}
+
+inline System::Int32 skillFrame::pointRow::frame_Id::get() {
+    try {
+        return (cli::safe_cast<::System::Int32 >(this[this->tablepoint->frame_IdColumn]));
+    }
+    catch (::System::InvalidCastException^ e) {
+        throw (gcnew ::System::Data::StrongTypingException(L"表“point”中列“frame_Id”的值为 DBNull。", e));
+    }
+}
+inline System::Void skillFrame::pointRow::frame_Id::set(System::Int32 value) {
+    this[this->tablepoint->frame_IdColumn] = value;
+}
+
+inline skillFrame::frameRow^  skillFrame::pointRow::frameRow::get() {
+    return (cli::safe_cast<skillFrame::frameRow^  >(this->GetParentRow(this->Table->ParentRelations[L"frame_point"])));
+}
+inline System::Void skillFrame::pointRow::frameRow::set(skillFrame::frameRow^  value) {
+    this->SetParentRow(value, this->Table->ParentRelations[L"frame_point"]);
+}
+
+inline ::System::Boolean skillFrame::pointRow::IsxNull() {
+    return this->IsNull(this->tablepoint->xColumn);
+}
+
+inline ::System::Void skillFrame::pointRow::SetxNull() {
+    this[this->tablepoint->xColumn] = ::System::Convert::DBNull;
+}
+
+inline ::System::Boolean skillFrame::pointRow::IsyNull() {
+    return this->IsNull(this->tablepoint->yColumn);
+}
+
+inline ::System::Void skillFrame::pointRow::SetyNull() {
+    this[this->tablepoint->yColumn] = ::System::Convert::DBNull;
+}
+
+inline ::System::Boolean skillFrame::pointRow::Isframe_IdNull() {
+    return this->IsNull(this->tablepoint->frame_IdColumn);
+}
+
+inline ::System::Void skillFrame::pointRow::Setframe_IdNull() {
+    this[this->tablepoint->frame_IdColumn] = ::System::Convert::DBNull;
 }
 
 
@@ -6280,12 +6739,12 @@ inline ::System::Void skillFrame::frameRow::Setframe_table_IdNull() {
     this[this->tableframe->frame_table_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::rectRow^  >^  skillFrame::frameRow::GetrectRows() {
-    if (this->Table->ChildRelations[L"frame_rect"] == nullptr) {
-        return gcnew cli::array< skillFrame::rectRow^  >(0);
+inline cli::array< skillFrame::pointRow^  >^  skillFrame::frameRow::GetpointRows() {
+    if (this->Table->ChildRelations[L"frame_point"] == nullptr) {
+        return gcnew cli::array< skillFrame::pointRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::rectRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"frame_rect"])));
+        return (cli::safe_cast<cli::array< skillFrame::pointRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"frame_point"])));
     }
 }
 
@@ -6699,6 +7158,20 @@ inline skillFrame::rectRow^  skillFrame::rectRowChangeEvent::Row::get() {
 }
 
 inline ::System::Data::DataRowAction skillFrame::rectRowChangeEvent::Action::get() {
+    return this->eventAction;
+}
+
+
+inline skillFrame::pointRowChangeEvent::pointRowChangeEvent(skillFrame::pointRow^  row, ::System::Data::DataRowAction action) {
+    this->eventRow = row;
+    this->eventAction = action;
+}
+
+inline skillFrame::pointRow^  skillFrame::pointRowChangeEvent::Row::get() {
+    return this->eventRow;
+}
+
+inline ::System::Data::DataRowAction skillFrame::pointRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 

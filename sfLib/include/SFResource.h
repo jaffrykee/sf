@@ -11,8 +11,12 @@ class __declspec(dllexport) SFResFrame
 public:
 	UINT m_index;
 	SFResObject* m_parent;
+/*已失效
 	//渲染矩形
 	D2D1_RECT_F m_drawBox;
+*/
+	//Object 位移
+	D2D1_POINT_2F m_poiMove;
 	//位图资源
 	ID2D1Bitmap* m_mBmp;
 
