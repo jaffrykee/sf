@@ -27,7 +27,7 @@
 			<xs:attribute name="l" type="xs:float"/>
 			<xs:attribute name="b" type="xs:float"/>
 			<xs:attribute name="r" type="xs:float"/>
-			<!-- 上为y轴正方向，右为x轴正方向（与屏幕坐标系不一样），重心在原点的位置。-->
+			<!-- 下为y轴正方向，右为x轴正方向（与屏幕坐标系相同），重心在原点的位置。-->
 		</xs:complexType>
 	</xs:element>
 
@@ -35,7 +35,7 @@
 		<xs:complexType>
 			<xs:attribute name="x" type="xs:float"/>
 			<xs:attribute name="y" type="xs:float"/>
-			<!-- 上为y轴正方向，右为x轴正方向（与屏幕坐标系不一样）。-->
+			<!-- 下为y轴正方向，右为x轴正方向（与屏幕坐标系相同）。-->
 		</xs:complexType>
 	</xs:element>
 	

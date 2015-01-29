@@ -9,7 +9,6 @@ enum SF_KD{
 };
 #pragma endregion
 
-
 #pragma region SF_PLR:角色定义
 enum SF_PLR
 {
@@ -87,6 +86,9 @@ enum SF_TMR
 {
 	TMR_NULL, TMR_PAINT, TMR_ACTION, TMR_SKILL,
 	TMR_MAX
+};
+const vector<UINT> conf_aIntTmr = {
+	0, 15, 10, 30
 };
 #pragma endregion
 
@@ -362,7 +364,7 @@ public:
 
 	TDIndexData* m_pDiEk;
 	TDIndexData* m_pDiEka;
-	UINT* m_aTmr;
+	vector<UINT> m_aTmr;
 	TDIndexData* m_pDiAsh;
 	TDIndexData* m_pDiAs;
 	TDIndexData* m_pDiSsse;

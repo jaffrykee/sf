@@ -15,9 +15,7 @@ SFConfig::SFConfig():
 	m_resPlayerInfoFileName("playerInfo.xml"),
 	m_pDiEk(new TDIndexData(conf_aStrEk)),
 	m_pDiEka(new TDIndexData(conf_aStrEka)),
-	m_aTmr(new UINT[]{
-		0, 15, 10, 30
-	}),
+	m_aTmr(conf_aIntTmr),
 	m_pDiAsh(new TDIndexData(conf_aStrAsh)),
 	m_pDiAs(new TDIndexData(conf_aStrAs)),
 	m_pDiSsse(new TDIndexData(conf_aStrSsse)),
