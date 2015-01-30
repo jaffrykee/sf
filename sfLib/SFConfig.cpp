@@ -22,6 +22,10 @@ SFConfig::SFConfig():
 	m_strAsSplit("_"),
 	m_pDiFightPGN(new TDIndexData(conf_aStrFightPGN)),
 	m_mapEvent(conf_mapEvent),
+	m_aResPlayerXMLNodeIsOnly(conf_aResPlayerXMLNodeIsOnly),
+	m_aResPlayerXMLNodeName(conf_aResPlayerXMLNodeName),
+	m_aResSceneXMLNodeIsOnly(conf_aResSceneXMLNodeIsOnly),
+	m_aResSceneXMLNodeName(conf_aResSceneXMLNodeName),
 	m_pEventManager(NULL)
 #pragma endregion
 {

@@ -143,18 +143,63 @@ typedef enum SF_SkillAsSplitType
 #pragma endregion
 #pragma endregion
 
-/*
-记录目前xml解析到哪里，数组存放的是指针。PRS是parse的意思。
-PRS_SKL:SFResSkill*
-PRS_SKLSW:SFResSkillSwitch*
-PRS_OBJ:SFResObject*
-PRS_FRM:SFResFrame*
-*/
-enum SF_PRS
-{
-	PRS_SKL, PRS_OBJ, PRS_FRM,
-	PRS_MAX
-};
+#pragma region XML解析相关
+#define NODE_NAME_MAX 64
+	#pragma region 精灵的解析
+	typedef enum SF_ResParseNodeForPlayer
+	{
+		RNP_PLY_INF, RNP_SKN_TBL, RNP_SKN, RNP_SKL_TBL, RNP_SKL,
+		RNP_OBJ_TBL, RNP_OBJ, RNP_FRM_TBL, RNP_FRM, RNP_FRM_POI,
+		RNP_BOX_TBL, RNP_BOX, RNP_BOX_RCT,
+		RNP_MAX
+	}SF_RNP;
+
+	const vector<bool> conf_aResPlayerXMLNodeIsOnly = {
+		true, true, false, true, false,
+		true, false, true, false, true,
+		true, false, true
+	};
+
+	const vector<wstring> conf_aResPlayerXMLNodeName = {
+		L"player_info", L"skin_table", L"skin", L"skill_table", L"skill",
+		L"object_table", L"object", L"frame_table", L"frame", L"point",
+		L"box_table", L"box", L"rect"
+	};
+
+
+	/*
+	记录目前xml解析到哪里，数组存放的是指针。PRS是parse的意思。
+	PRS_SKL:SFResSkill*
+	PRS_SKLSW:SFResSkillSwitch*
+	PRS_OBJ:SFResObject*
+	PRS_FRM:SFResFrame*
+	*/
+	enum SF_PRS
+	{
+		PRS_SKL, PRS_OBJ, PRS_FRM,
+		PRS_MAX
+	};
+	#pragma endregion
+
+	#pragma region 场景的解析
+	typedef enum SF_ResParseNodeForScene
+	{
+		RNS_SCN_INF, RNS_SCN_TBL, RNS_SCN, RNS_CMR_INF, RNS_SPR_TBL,
+		RNS_SPR,
+		RNS_MAX
+	}SF_RNS;
+
+	const vector<bool> conf_aResSceneXMLNodeIsOnly = {
+		true, true, false, true, true,
+		false
+	};
+
+	const vector<wstring> conf_aResSceneXMLNodeName = {
+		L"scene_info", L"scene_table", L"scene", L"camera_info", L"sprite_table",
+		L"sprite"
+	};
+	#pragma endregion
+#pragma endregion
 
 typedef struct SFSelectedPlayer
 {
@@ -371,6 +416,13 @@ public:
 	string m_strAsSplit;
 	TDIndexData* m_pDiFightPGN;
 	MapEventGroup_T m_mapEvent;
+
+#pragma region XML解析相关
+	vector<bool> m_aResPlayerXMLNodeIsOnly;
+	vector<wstring> m_aResPlayerXMLNodeName;
+	vector<bool> m_aResSceneXMLNodeIsOnly;
+	vector<wstring> m_aResSceneXMLNodeName;
+#pragma endregion
 
 	SFEventManager* m_pEventManager;
 
