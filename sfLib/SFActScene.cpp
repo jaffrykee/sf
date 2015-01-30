@@ -90,9 +90,9 @@ m_mapTevEk({
 }),
 m_width(2000),
 m_height(1000),
-m_ground(100),
-m_poiInitP1({100,100}),
-m_poiInitP2({100,100})
+m_ground(80),
+m_poiInitP1({800,920}),
+m_poiInitP2({1200,920})
 #pragma endregion
 {
 	SFPlayer* pPlayer1 = new SFPlayer(resId1, skin1, 1);
@@ -251,6 +251,11 @@ bool SFActScene::doEvent(SF_TEV event)
 	return false;
 }
 
+bool SFActScene::doCollision()
+{
+	return true;
+}
+
 bool SFActScene::addFightP1(SFSprite* pSprite)
 {
 	return addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1], pSprite);
@@ -285,13 +290,15 @@ bool SFActScene::setPositionFightP1(D2D1_POINT_2F point)
 
 bool SFActScene::initPositionFightP1()
 {
-	FLOAT xxx = getFightP1()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0]->m_arrFrame[0]->m_lBodyBox.begin()->bottom;
+	FLOAT dy = getFightP1()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0]->m_arrFrame[0]->m_lBodyBox.begin()->bottom;
+	m_poiInitP1.y -= dy;
+
 	return setPositionFightP1(m_poiInitP1);
 }
 
 bool SFActScene::setPositionFightP2(D2D1_POINT_2F point)
 {
-	if (getFightP2 != NULL)
+	if (getFightP2() != NULL)
 	{
 		getFightP2()->m_position = point;
 
@@ -303,6 +310,9 @@ bool SFActScene::setPositionFightP2(D2D1_POINT_2F point)
 
 bool SFActScene::initPositionFightP2()
 {
+	FLOAT dy = getFightP2()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0]->m_arrFrame[0]->m_lBodyBox.begin()->bottom;
+	m_poiInitP2.y -= dy;
+
 	return setPositionFightP1(m_poiInitP2);
 }
 

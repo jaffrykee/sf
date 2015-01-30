@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene_info xmlns="">
+	<scene_table>
+		<scene width="2000" height="1000" type="fight">
+			<sprite_table>
+				<sprite id="player1" x="800">
+				</sprite>
+				<sprite id="player2" x="1200">
+				</sprite>
+				<sprite id="ground" y="920">
+				</sprite>
+			</sprite_table>
+		</scene>
+	</scene_table>
+</scene_info>

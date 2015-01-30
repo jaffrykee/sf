@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<player_info xmlns="http://tkmgame.com/shark/skillFrame.xsd">
+<player_info xmlns="http://tkmgame.com/shark/playerFrame.xsd">
 	<skin_table>
 		<skin name="默认"></skin>
 		<skin name="附属"></skin>
