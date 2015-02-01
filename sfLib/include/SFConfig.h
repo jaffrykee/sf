@@ -145,6 +145,54 @@ typedef enum SF_SkillAsSplitType
 
 #pragma region XML解析相关
 #define NODE_NAME_MAX 64
+#define SF_XML_TABS_MAX 64
+
+struct SFXsdNode
+{
+	bool m_isOnly;
+	wstring m_wstrName;
+};
+
+struct SFXsdFrame
+{
+	UINT m_index;
+	bool m_isOnly;
+	wstring m_wstrName;
+	vector<SFXsdFrame> m_arrSon;
+
+	SFXsdFrame(UINT index = 0, bool isOnly = false, wstring name = L"") :m_index(index), m_isOnly(isOnly), m_wstrName(name)
+	{
+
+	}
+
+	SFXsdFrame(UINT index, const vector<SFXsdNode>& body) :m_index(index), m_isOnly(body[index].m_isOnly), m_wstrName(body[index].m_wstrName)
+	{
+
+	}
+
+	SFXsdFrame(UINT index, bool isOnly, wstring name, vector<SFXsdFrame> son) :m_index(index), m_isOnly(isOnly), m_wstrName(name), m_arrSon(son)
+	{
+
+	}
+
+	SFXsdFrame(UINT index, const vector<SFXsdNode>& body, vector<SFXsdFrame> son) :m_index(index), m_isOnly(body[index].m_isOnly), m_wstrName(body[index].m_wstrName), m_arrSon(son)
+	{
+
+	}
+
+	SFXsdFrame& operator[](UINT index)
+	{
+		if (index < m_arrSon.size())
+		{
+			return m_arrSon[index];
+		}
+		else
+		{
+			return SFXsdFrame();
+		}
+	}
+};
+
 	#pragma region 精灵的解析
 	typedef enum SF_ResParseNodeForPlayer
 	{
@@ -166,6 +214,36 @@ typedef enum SF_SkillAsSplitType
 		L"box_table", L"box", L"rect"
 	};
 
+	const vector<SFXsdNode> conf_aResPlayerXsdNode= {
+		{true, L"player_info" },
+		{true, L"skin_table"}, 
+		{false, L"skin"}, 
+		{true, L"skill_table"}, 
+		{false, L"skill"},
+
+		{true, L"object_table"}, 
+		{true, L"object"}, 
+		{true, L"frame_table"}, 
+		{true, L"frame"}, 
+		{true, L"point"},
+
+		{true, L"box_table"}, 
+		{true, L"box"}, 
+		{true, L"rect"}
+	};
+
+	SFXsdFrame conf_xfPlayer = {
+		RNP_PLY_INF, conf_aResPlayerXsdNode, {
+			{ RNP_SKN_TBL, conf_aResPlayerXsdNode, {
+					{ RNP_SKN, conf_aResPlayerXsdNode }
+				}
+			},
+			{ RNP_SKL_TBL, conf_aResPlayerXsdNode, {
+					{ RNP_SKL, conf_aResPlayerXsdNode }
+				}
+			}
+		}
+	}
 
 	/*
 	记录目前xml解析到哪里，数组存放的是指针。PRS是parse的意思。
@@ -189,14 +267,13 @@ typedef enum SF_SkillAsSplitType
 		RNS_MAX
 	}SF_RNS;
 
-	const vector<bool> conf_aResSceneXMLNodeIsOnly = {
-		true, true, false, true, true,
-		false
-	};
-
-	const vector<wstring> conf_aResSceneXMLNodeName = {
-		L"scene_info", L"scene_table", L"scene", L"camera_info", L"sprite_table",
-		L"sprite"
+	const vector<SFXsdNode> conf_aResSceneXsdNode = {
+		{true, L"scene_info"}, 
+		{true, L"scene_table"}, 
+		{true, L"scene"}, 
+		{true, L"camera_info"}, 
+		{true, L"sprite_table"},
+		{true, L"sprite"}
 	};
 	#pragma endregion
 #pragma endregion
