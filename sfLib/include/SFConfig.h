@@ -202,18 +202,6 @@ struct SFXsdFrame
 		RNP_MAX
 	}SF_RNP;
 
-	const vector<bool> conf_aResPlayerXMLNodeIsOnly = {
-		true, true, false, true, false,
-		true, false, true, false, true,
-		true, false, true
-	};
-
-	const vector<wstring> conf_aResPlayerXMLNodeName = {
-		L"player_info", L"skin_table", L"skin", L"skill_table", L"skill",
-		L"object_table", L"object", L"frame_table", L"frame", L"point",
-		L"box_table", L"box", L"rect"
-	};
-
 	const vector<SFXsdNode> conf_aResPlayerXsdNode= {
 		{true, L"player_info" },
 		{true, L"skin_table"}, 
@@ -222,28 +210,60 @@ struct SFXsdFrame
 		{false, L"skill"},
 
 		{true, L"object_table"}, 
-		{true, L"object"}, 
+		{false, L"object"}, 
 		{true, L"frame_table"}, 
-		{true, L"frame"}, 
+		{false, L"frame"}, 
 		{true, L"point"},
 
 		{true, L"box_table"}, 
-		{true, L"box"}, 
+		{false, L"box"}, 
 		{true, L"rect"}
 	};
 
 	SFXsdFrame conf_xfPlayer = {
-		RNP_PLY_INF, conf_aResPlayerXsdNode, {
-			{ RNP_SKN_TBL, conf_aResPlayerXsdNode, {
-					{ RNP_SKN, conf_aResPlayerXsdNode }
+		RNP_PLY_INF, conf_aResPlayerXsdNode,
+		{
+			{RNP_SKN_TBL, conf_aResPlayerXsdNode,
+				{
+					{RNP_SKN, conf_aResPlayerXsdNode }
 				}
 			},
-			{ RNP_SKL_TBL, conf_aResPlayerXsdNode, {
-					{ RNP_SKL, conf_aResPlayerXsdNode }
+			{RNP_SKL_TBL, conf_aResPlayerXsdNode,
+				{
+					{RNP_SKL, conf_aResPlayerXsdNode,
+						{
+							{RNP_OBJ_TBL, conf_aResPlayerXsdNode, 
+								{
+									{RNP_OBJ, conf_aResPlayerXsdNode, 
+										{
+											{RNP_FRM_TBL, conf_aResPlayerXsdNode,
+												{
+													{RNP_FRM, conf_aResPlayerXsdNode ,
+														{
+															{RNP_FRM_POI, conf_aResPlayerXsdNode},
+															{RNP_BOX_TBL, conf_aResPlayerXsdNode,
+																{
+																	{RNP_BOX, conf_aResPlayerXsdNode,
+																		{
+																			{RNP_BOX_RCT,conf_aResPlayerXsdNode}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
-	}
+	};
 
 	/*
 	记录目前xml解析到哪里，数组存放的是指针。PRS是parse的意思。
