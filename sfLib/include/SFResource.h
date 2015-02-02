@@ -79,6 +79,7 @@ class __declspec(dllexport) SFResPlayer
 {
 public:
 	SFResSkill* m_arrSkill[EKA_MAX][AS_MAX][SSSE_MAX];
+//	vector<vector<vector<SFResSkill>>> m_arrSkill2;
 
 	SFResPlayer(SF_SKN skin);
 	SFResPlayer(string pid, SF_SKN skin);
@@ -158,3 +159,15 @@ public:
 	}
 };
 #endif
+
+//场景资源
+class __declspec(dllexport) SFResScene
+{
+public:
+	SFResSkill* m_arrSkill[EKA_MAX][AS_MAX][SSSE_MAX];
+
+	SFResScene(SF_SKN skin);
+	SFResScene(string pid, SF_SKN skin);
+	~SFResScene();
+	//	SFResSkill* operator[](SF_EKA skillIndex);
+};

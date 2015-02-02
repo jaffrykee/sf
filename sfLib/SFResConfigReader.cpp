@@ -332,6 +332,78 @@ namespace SFResConfigReader
 	/*XML解析主逻辑入口*/
 	bool readFromXML(string xmlPath, SFResPlayer* resPlayer)
 	{
+		nodeIsOnly;
+		nodeHad;
+		HRESULT hr = S_OK;
+		CComPtr<IStream> pFileStream;
+		CComPtr<IXmlReader> pReader;
+		XmlNodeType nodeType = XmlNodeType_None;
+		WCHAR trueName[NODE_NAME_MAX] = {0};
+		LPCWSTR name;
+		bool nodeSw[ND_MAX] = {false};
+		bool nodeIsOnly[ND_MAX] = {false};
+		bool nodeHad[ND_MAX] = {false};
+		UINT nodeCount[ND_MAX] = { 0 };
+
+		UINT tabCount[SF_XML_TABS_MAX] = { 0 };
+		UINT tabs = 0;
+
+		if (resPlayer == NULL)
+		{
+			return false;
+		}
+
+		memset(tabCount, 0, SF_XML_TABS_MAX*sizeof(UINT));
+		tabs = 0;
+
+		//Open read-only input stream
+		hr = SHCreateStreamOnFileA(xmlPath.c_str(), STGM_READ, &pFileStream);
+		if (SUCCEEDED(hr))
+		{
+			hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);
+		}
+		else
+		{
+			sf_cout(DEBUG_COM, "Error: Can't find the XML file. (\"" << xmlPath << "\")" << endl);
+			return false;
+		}
+		pReader->SetInput(pFileStream);
+		hr = pReader->Read(NULL);
+
+		POLL_XML_NODE_BEGIN(ND_PLY_INF)
+			POLL_XML_NODE_BEGIN(ND_SKN_TBL)
+				POLL_XML_NODE_BEGIN(ND_SKN)
+				POLL_XML_NODE_END(ND_SKN)
+			POLL_XML_NODE_END(ND_SKN_TBL)
+			POLL_XML_NODE_BEGIN(ND_SKL_TBL)
+				POLL_XML_NODE_BEGIN(ND_SKL)
+					POLL_XML_NODE_BEGIN(ND_OBJ_TBL)
+						POLL_XML_NODE_BEGIN(ND_OBJ)
+							POLL_XML_NODE_BEGIN(ND_FRM_TBL)
+								POLL_XML_NODE_BEGIN(ND_FRM)
+									POLL_XML_NODE_BEGIN(ND_FRM_POI)
+									POLL_XML_NODE_END(ND_FRM_POI)
+									POLL_XML_NODE_BEGIN(ND_BOX_TBL)
+										POLL_XML_NODE_BEGIN(ND_BOX)
+											POLL_XML_NODE_BEGIN(ND_BOX_RCT)
+											POLL_XML_NODE_END(ND_BOX_RCT)
+										POLL_XML_NODE_END(ND_BOX)
+									POLL_XML_NODE_END(ND_BOX_TBL)
+								POLL_XML_NODE_END(ND_FRM)
+							POLL_XML_NODE_END(ND_FRM_TBL)
+						POLL_XML_NODE_END(ND_OBJ)
+					POLL_XML_NODE_END(ND_OBJ_TBL)
+				POLL_XML_NODE_END(ND_SKL)
+			POLL_XML_NODE_END(ND_SKL_TBL)
+		POLL_XML_NODE_END(ND_PLY_INF)
+
+		return true;
+	}
+	
+	bool readFromXML(string xmlPath)
+	{
+		nodeIsOnly;
+		nodeHad;
 		HRESULT hr = S_OK;
 		CComPtr<IStream> pFileStream;
 		CComPtr<IXmlReader> pReader;
