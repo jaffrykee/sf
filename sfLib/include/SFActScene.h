@@ -66,7 +66,6 @@ public:
 	bool addSprite(string groupName, SFSprite* pSprite);
 	SFPlayer* getPlayerInSceneByPGN(string groupName);
 	bool doEvent(SF_TEV event);
-	bool doCollision();
 
 	//将来可能会将Fight类型的Scene以继承类的方式提出来。
 	bool addFightP1(SFSprite* pSprite);

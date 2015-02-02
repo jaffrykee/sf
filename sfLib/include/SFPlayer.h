@@ -39,7 +39,7 @@ class __declspec(dllexport) SFPlayer
 {
 public:
 	//人物id，初始化调用资源用
-	string m_id;
+	int m_id;
 	//皮肤id，初始化调用资源用
 	int m_skinId;
 	string m_name;
@@ -69,7 +69,6 @@ public:
 	D2D1_POINT_2F m_position;
 
 	SFPlayer(UINT id, SF_SKN skinId, int pid);
-	SFPlayer(string id, SF_SKN skinId, int pid);
 	~SFPlayer();
 	void setEventListTimeout();
 	void setDownStatusEnable(SF_EK val);
