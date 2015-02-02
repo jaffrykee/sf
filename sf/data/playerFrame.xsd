@@ -7,6 +7,15 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
 
+	<xs:element name="player_info">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="skin_table" minOccurs="0"></xs:element>
+				<xs:element ref="skill_table" minOccurs="0"></xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
 	<xs:simpleType name="StrAs">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="def"/>
@@ -115,15 +124,6 @@
 						<!-- 代表是否可以蓄力-->
 					</xs:complexType>
 				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="player_info">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="skin_table" minOccurs="0"></xs:element>
-				<xs:element ref="skill_table" minOccurs="0"></xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

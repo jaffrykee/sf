@@ -70,6 +70,7 @@
     <ClInclude Include="include\TBitArray.h" />
     <ClInclude Include="include\TBitMap.h" />
     <ClInclude Include="include\TDIndexData.h" />
+    <ClInclude Include="include\TDIndexDataEx.h" />
     <ClInclude Include="include\TInit.h" />
     <ClInclude Include="include\tkmT.h" />
     <ClInclude Include="include\TStrTrans.h" />

@@ -397,4 +397,52 @@ namespace SFResConfigReader
 
 		return true;
 	}
+
+}
+
+SFXmlReader::SFXmlReader(string xsdPath)
+{
+	HRESULT hr = S_OK;
+	CComPtr<IStream> pFileStream;
+	CComPtr<IXmlReader> pReader;
+	XmlNodeType nodeType = XmlNodeType_None;
+	LPCWSTR name;
+	LPCWSTR value;
+	bool ret;
+
+	//Open read-only input stream
+	hr = SHCreateStreamOnFileA(xsdPath.c_str(), STGM_READ, &pFileStream);
+	if (SUCCEEDED(hr))
+	{
+		hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);
+	}
+	else
+	{
+		sf_cout(DEBUG_COM, "Error: Can't find the XML file. (\"" << xsdPath << "\")" << endl);
+	}
+	pReader->SetInput(pFileStream);
+	hr = pReader->Read(NULL);
+
+	UINT tabs = 0;
+	UINT tabsO = 0;
+	for (; S_OK == hr; hr = pReader->Read(NULL))
+	{
+		pReader->GetLocalName(&name, NULL);
+		if (name[0] > L' ')
+		{
+			pReader->GetNodeType(&nodeType);
+			if (nodeType == XmlNodeType_Element)
+			{
+				pReader->GetDepth(&tabs);
+				sf_wcout(DEBUG_COM, endl);
+				for (UINT i = 0; i < tabs; i++)
+				{
+					sf_wcout(DEBUG_COM, L"\t");
+				}
+				sf_wcout(DEBUG_COM, name << L" ");
+				POLL_XML_ATTR_BEGIN
+				POLL_XML_ATTR_END
+			}
+		}
+	}
 }

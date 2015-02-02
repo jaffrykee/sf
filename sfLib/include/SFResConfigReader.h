@@ -112,3 +112,33 @@ namespace SFResConfigReader
 	bool __declspec(dllexport) readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer);
 	bool __declspec(dllexport) readFromXML(string xmlPath, SFResPlayer* resPlayer);
 }
+
+class __declspec(dllexport) SFXmlReader
+{
+public:
+	struct XsdNodeData;
+	struct XsdAttrData
+	{
+		wstring m_name;
+		wstring m_defValue;
+		XsdNodeData* m_pParent;
+	};
+
+	struct XsdNodeData
+	{
+		wstring m_name;
+		bool m_isOnly;
+		UINT m_depth;
+
+		XsdNodeData* m_pParent;
+		map<string, XsdAttrData> m_attrData;
+		map<string, XsdNodeData> m_nodeData;
+	};
+
+	string m_path;
+	string m_name;
+	XsdNodeData m_rootNode;
+	map<string, XsdNodeData&> m_allData;
+
+	SFXmlReader(string xsdPath);
+};

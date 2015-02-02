@@ -34,11 +34,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sf.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Xml Include="data\p001\playerInfo.xml" />
     <Xml Include="data\sceneInfo.xml" />
     <Xml Include="data\ground\playerInfo.xml" />
@@ -50,5 +45,10 @@
     <Xsd Include="data\sceneFrame.xsd">
       <Filter>头文件</Filter>
     </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,3 +13,4 @@ using namespace std;
 #include <TDIndexData.h>
 #include <TInit.h>
 #include <TStrTrans.h>
+#include <TDIndexDataEx.h>

@@ -1,23 +1,28 @@
 ﻿#pragma execution_character_set("utf-8")
-#include <init.h>
+#include <sf.h>
+using namespace std;
 
-char path[] = "./data/p001/playerInfo.xml";
+//string path = "./data/p001/playerInfo.xml";
+string path = "./data/playerFrame.xsd";
 
 void main()
 {
-	SFResPlayer resPlayer(SKN_SK1);
-	SFConfig* pConfig = SFConfig::GetInstance();
+/*
+	g_pEventManager = new SFEventManager();
+	SFActScene g_scn(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
+	SFPlayer* g_pP1 = g_scn.getFightP1();
+	SFPlayer* g_pP2 = g_scn.getFightP2();
 
-	system("chcp 65001");
-	SFResConfigReader::readFromXML(path, resPlayer);
-	for (int i = 0; i < EKA_MAX; i++)
+	for (UINT i = 0; i < EKA_MAX; i++)
 	{
-		if (resPlayer.m_mSkill[i] != NULL)
+		if (g_pP1->m_resPlayer->m_arrSkill[i][0][0] != NULL)
 		{
 			cout << endl << i << " : ";
-			cout << g_EkaStr[i];
+			cout << g_pConf->m_pDiEka->m_str[i];
 		}
-	}
+	}*/
+
+	SFXmlReader a(path);
 
 	getchar();
 }
