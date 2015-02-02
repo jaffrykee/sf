@@ -83,13 +83,32 @@ for (hr = pReader->MoveToFirstAttribute(); S_OK == hr; hr = pReader->MoveToNextA
 
 #define POLL_XML_ATTR_END		\
 }
+
+#define NODE_NAME_MAX 64
 #pragma endregion
 
 #pragma region playerInfo.xml中的所有节点相关define以及路径define
+enum SF_XML_ND
+{
+	ND_PLY_INF, ND_SKN_TBL, ND_SKN, ND_SKL_TBL, ND_SKL, ND_OBJ_TBL, ND_OBJ,
+	ND_FRM_TBL, ND_FRM, ND_FRM_POI, ND_BOX_TBL, ND_BOX, ND_BOX_RCT,
+	ND_MAX
+};
+#define SF_XML_TABS_MAX ND_MAX
 #pragma endregion
 
 namespace SFResConfigReader
 {
+	const bool nodeIsOnly[SF_XML_ND::ND_MAX] = {
+		true, true, false, true, false, true, false,
+		true, false, true, true, false, true
+	};
+
+	const WCHAR nodeName[SF_XML_ND::ND_MAX][NODE_NAME_MAX] = {
+		L"player_info", L"skin_table", L"skin", L"skill_table", L"skill", L"object_table", L"object",
+		L"frame_table", L"frame", L"point", L"box_table", L"box", L"rect"
+	};
+
 	bool __declspec(dllexport) readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer& resPlayer);
 	bool __declspec(dllexport) readFromXML(string xmlPath, SFResPlayer* resPlayer);
 }
