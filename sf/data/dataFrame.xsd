@@ -1,0 +1,161 @@
+<<<<<<< HEAD
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dataFrame"
+    targetNamespace="http://tkmgame.com/shark/dataFrame.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tkmgame.com/shark/dataFrame.xsd"
+    xmlns:mstns="http://tkmgame.com/shark/dataFrame.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:element name="imgFrames">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="imgFrame" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="id" type="xs:int"></xs:element>
+							<xs:element name="imgX" type="xs:float"></xs:element>
+							<xs:element name="imgY" type="xs:float"></xs:element>
+							<xs:element name="imgPath" type="xs:string"></xs:element>
+							<xs:element name="enAtted" type="xs:boolean"></xs:element>
+							<xs:element name="selfX1" type="xs:float"></xs:element>
+							<xs:element name="selfY1" type="xs:float"></xs:element>
+							<xs:element name="selfX2" type="xs:float"></xs:element>
+							<xs:element name="selfY2" type="xs:float"></xs:element>
+							<xs:element name="enAtt" type="xs:boolean"></xs:element>
+							<xs:element name="attX1" type="xs:float"></xs:element>
+							<xs:element name="attY1" type="xs:float"></xs:element>
+							<xs:element name="attX2" type="xs:float"></xs:element>
+							<xs:element name="attY2" type="xs:float"></xs:element>
+							<xs:element name="enBreak" type="xs:boolean"></xs:element>
+							<xs:element name="enChain" type="xs:boolean"></xs:element>
+							<xs:element name="chain1" type="xs:int"></xs:element>
+							<xs:element name="chain2" type="xs:int"></xs:element>
+							<xs:element name="time" type="xs:int"></xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Skills">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Skill" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="id" type="xs:int"></xs:element>
+							<xs:element name="name" type="xs:string"></xs:element>
+							<xs:element name="key" type="xs:string"></xs:element>
+							<xs:element ref="imgFrames" minOccurs="0"></xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Players">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Player" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="id" type="xs:int"></xs:element>
+							<xs:element name="name" type="xs:string"></xs:element>
+							<xs:element name="headImgPath" type="xs:string"></xs:element>
+							<xs:element name="imgX1" type="xs:int"></xs:element>
+							<xs:element name="imgY1" type="xs:int"></xs:element>
+							<xs:element name="imgX2" type="xs:int"></xs:element>
+							<xs:element name="imgY2" type="xs:int"></xs:element>
+							<xs:element ref="Skills" minOccurs="0"></xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
+=======
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dataFrame"
+    targetNamespace="http://tkmgame.com/shark/dataFrame.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tkmgame.com/shark/dataFrame.xsd"
+    xmlns:mstns="http://tkmgame.com/shark/dataFrame.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+	<xs:element name="imgFrames">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="imgFrame" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="id" type="xs:int"></xs:element>
+							<xs:element name="imgX" type="xs:float"></xs:element>
+							<xs:element name="imgY" type="xs:float"></xs:element>
+							<xs:element name="imgPath" type="xs:string"></xs:element>
+							<xs:element name="enAtted" type="xs:boolean"></xs:element>
+							<xs:element name="selfX1" type="xs:float"></xs:element>
+							<xs:element name="selfY1" type="xs:float"></xs:element>
+							<xs:element name="selfX2" type="xs:float"></xs:element>
+							<xs:element name="selfY2" type="xs:float"></xs:element>
+							<xs:element name="enAtt" type="xs:boolean"></xs:element>
+							<xs:element name="attX1" type="xs:float"></xs:element>
+							<xs:element name="attY1" type="xs:float"></xs:element>
+							<xs:element name="attX2" type="xs:float"></xs:element>
+							<xs:element name="attY2" type="xs:float"></xs:element>
+							<xs:element name="enBreak" type="xs:boolean"></xs:element>
+							<xs:element name="enChain" type="xs:boolean"></xs:element>
+							<xs:element name="chain1" type="xs:int"></xs:element>
+							<xs:element name="chain2" type="xs:int"></xs:element>
+							<xs:element name="time" type="xs:int"></xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Skills">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Skill" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="id" type="xs:int"></xs:element>
+							<xs:element name="name" type="xs:string"></xs:element>
+							<xs:element name="key" type="xs:string"></xs:element>
+							<xs:element ref="imgFrames" minOccurs="0"></xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Players">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Player" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="id" type="xs:int"></xs:element>
+							<xs:element name="name" type="xs:string"></xs:element>
+							<xs:element name="headImgPath" type="xs:string"></xs:element>
+							<xs:element name="imgX1" type="xs:int"></xs:element>
+							<xs:element name="imgY1" type="xs:int"></xs:element>
+							<xs:element name="imgX2" type="xs:int"></xs:element>
+							<xs:element name="imgY2" type="xs:int"></xs:element>
+							<xs:element ref="Skills" minOccurs="0"></xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
+>>>>>>> origin/dev

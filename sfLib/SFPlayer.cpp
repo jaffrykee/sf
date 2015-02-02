@@ -2,21 +2,9 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
-SFPlayer::SFPlayer(UINT id, SF_SKN skinId, int pid) :m_skinId(skinId), m_pid(pid)
+SFPlayer::SFPlayer(UINT id, SF_SKN skinId, int pid) :m_id(id), m_skinId(skinId), m_pid(pid)
 {
-	m_id = TStrTrans::intIdToStrId(id);
-	m_resPlayer = new SFResPlayer(m_id, skinId);
-
-	m_pSfconfig = g_pConf;
-	m_standStatus = AS_STAND;
-	m_nowSkill = EKA_MAX;
-	m_countSkillFrame = 0;
-	m_iTimeOut = 0;
-}
-
-SFPlayer::SFPlayer(string id, SF_SKN skinId, int pid) :m_id(id), m_skinId(skinId), m_pid(pid)
-{
-	m_resPlayer = new SFResPlayer(m_id, skinId);
+	m_resPlayer = new SFResPlayer(TStrTrans::intIdToStrId(id), skinId);
 
 	m_pSfconfig = g_pConf;
 	m_standStatus = AS_STAND;
