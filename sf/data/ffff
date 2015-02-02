@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="skillFrame"
-	targetNamespace="http://tkmgame.com/shark/playerFrame.xsd"
+	targetNamespace="http://tkmgame.com/shark/skillFrame.xsd"
     elementFormDefault="qualified"
-	xmlns="http://tkmgame.com/shark/playerFrame.xsd"
-    xmlns:mstns="http://tkmgame.com/shark/playerFrame.xsd"
+	xmlns="http://tkmgame.com/shark/skillFrame.xsd"
+    xmlns:mstns="http://tkmgame.com/shark/skillFrame.xsd"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
 
@@ -27,7 +27,7 @@
 			<xs:attribute name="l" type="xs:float"/>
 			<xs:attribute name="b" type="xs:float"/>
 			<xs:attribute name="r" type="xs:float"/>
-			<!-- 下为y轴正方向，右为x轴正方向（与屏幕坐标系相同），重心在原点的位置。-->
+			<!-- 上为y轴正方向，右为x轴正方向（与屏幕坐标系不一样），重心在原点的位置。-->
 		</xs:complexType>
 	</xs:element>
 
@@ -35,7 +35,7 @@
 		<xs:complexType>
 			<xs:attribute name="x" type="xs:float"/>
 			<xs:attribute name="y" type="xs:float"/>
-			<!-- 下为y轴正方向，右为x轴正方向（与屏幕坐标系相同）。-->
+			<!-- 上为y轴正方向，右为x轴正方向（与屏幕坐标系不一样）。-->
 		</xs:complexType>
 	</xs:element>
 	
