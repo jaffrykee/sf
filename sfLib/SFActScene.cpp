@@ -87,12 +87,7 @@ m_mapTevEk({
 	pair<SF_TEV, SF_EK>(TEV_KU_P2FF, EK_F),
 	pair<SF_TEV, SF_EK>(TEV_KU_P2ST, EK_S1),
 	pair<SF_TEV, SF_EK>(TEV_KU_P2MN, EK_S2)
-}),
-m_width(2000),
-m_height(1000),
-m_ground(80),
-m_poiInitP1({800,920}),
-m_poiInitP2({1200,920})
+})
 #pragma endregion
 {
 	SFPlayer* pPlayer1 = new SFPlayer(resId1, skin1, 1);
@@ -101,9 +96,6 @@ m_poiInitP2({1200,920})
 	addFightP1(pPlayer1);
 	addFightP2(pPlayer2);
 	m_stage = SCN_STG_FREE;
-	initPositionFightP1();
-	initPositionFightP2();
-	doCollision();
 	setDirection(true);
 }
 
@@ -251,11 +243,6 @@ bool SFActScene::doEvent(SF_TEV event)
 	return false;
 }
 
-bool SFActScene::doCollision()
-{
-	return true;
-}
-
 bool SFActScene::addFightP1(SFSprite* pSprite)
 {
 	return addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1], pSprite);
@@ -276,46 +263,6 @@ SFPlayer* SFActScene::getFightP2()
 	return m_mapSpriteGroup[g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2]]->m_aSprite[0];
 }
 
-bool SFActScene::setPositionFightP1(D2D1_POINT_2F point)
-{
-	if (getFightP1() != NULL)
-	{
-		getFightP1()->m_position = point;
-
-		return true;
-	}
-
-	return false;
-}
-
-bool SFActScene::initPositionFightP1()
-{
-	FLOAT dy = getFightP1()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0]->m_arrFrame[0]->m_lBodyBox.begin()->bottom;
-	m_poiInitP1.y -= dy;
-
-	return setPositionFightP1(m_poiInitP1);
-}
-
-bool SFActScene::setPositionFightP2(D2D1_POINT_2F point)
-{
-	if (getFightP2() != NULL)
-	{
-		getFightP2()->m_position = point;
-
-		return true;
-	}
-
-	return false;
-}
-
-bool SFActScene::initPositionFightP2()
-{
-	FLOAT dy = getFightP2()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0]->m_arrFrame[0]->m_lBodyBox.begin()->bottom;
-	m_poiInitP2.y -= dy;
-
-	return setPositionFightP1(m_poiInitP2);
-}
-
 void SFActScene::setDirection(bool isP1Left)
 {
 	if (isP1Left)
@@ -331,17 +278,5 @@ void SFActScene::setDirection(bool isP1Left)
 		m_mapTevEk[TEV_KU_P1RG] = EK_4;
 		m_mapTevEk[TEV_KU_P2LF] = EK_4;
 		m_mapTevEk[TEV_KU_P2RG] = EK_6;
-	}
-}
-
-void SFActScene::refreshDirection()
-{
-	if (getFightP1()->m_position.x < getFightP2()->m_position.x)
-	{
-		setDirection(true);
-	}
-	else
-	{
-		setDirection(false);
 	}
 }
