@@ -50,5 +50,8 @@
     <Xsd Include="data\sceneFrame.xsd">
       <Filter>头文件</Filter>
     </Xsd>
+    <Xsd Include="data\skillFrame.xsd">
+      <Filter>头文件</Filter>
+    </Xsd>
   </ItemGroup>
 </Project>
