@@ -15,17 +15,15 @@ SFConfig::SFConfig():
 	m_resPlayerInfoFileName("playerInfo.xml"),
 	m_pDiEk(new TDIndexData(conf_aStrEk)),
 	m_pDiEka(new TDIndexData(conf_aStrEka)),
-	m_aTmr(conf_aIntTmr),
+	m_aTmr(new UINT[]{
+		0, 15, 10, 30
+	}),
 	m_pDiAsh(new TDIndexData(conf_aStrAsh)),
 	m_pDiAs(new TDIndexData(conf_aStrAs)),
 	m_pDiSsse(new TDIndexData(conf_aStrSsse)),
 	m_strAsSplit("_"),
 	m_pDiFightPGN(new TDIndexData(conf_aStrFightPGN)),
 	m_mapEvent(conf_mapEvent),
-	m_aResPlayerXMLNodeIsOnly(conf_aResPlayerXMLNodeIsOnly),
-	m_aResPlayerXMLNodeName(conf_aResPlayerXMLNodeName),
-	m_aResSceneXMLNodeIsOnly(conf_aResSceneXMLNodeIsOnly),
-	m_aResSceneXMLNodeName(conf_aResSceneXMLNodeName),
 	m_pEventManager(NULL)
 #pragma endregion
 {

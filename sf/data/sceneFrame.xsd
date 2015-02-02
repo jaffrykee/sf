@@ -33,7 +33,7 @@
 				<xs:element name="sprite" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element ref="sprite_table" minOccurs="0"></xs:element>
+							<xs:element ref="sprite_table" minOccurs="1"></xs:element>
 						</xs:sequence>
 						<xs:attribute name="id" type="mstns:spriteId" use="required"/>
 						<xs:attribute name="x" type="xs:float" default="0"/>
@@ -50,8 +50,8 @@
 				<xs:element name="scene" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element ref="camera_info" minOccurs="0"></xs:element>
-							<xs:element ref="sprite_table" minOccurs="0"></xs:element>
+							<xs:element ref="camera_info" minOccurs="1"></xs:element>
+							<xs:element ref="sprite_table" minOccurs="1"></xs:element>
 						</xs:sequence>
 						<xs:attribute name="width" type="xs:float" use="required"/>
 						<xs:attribute name="height" type="xs:float" use="required"/>
@@ -65,7 +65,7 @@
 	<xs:element name="scene_info">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="scene_table" minOccurs="0"></xs:element>
+				<xs:element ref="scene_table" minOccurs="1"></xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
