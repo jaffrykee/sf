@@ -65,8 +65,5 @@
     <ClInclude Include="include\SFEventManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\SFCamera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

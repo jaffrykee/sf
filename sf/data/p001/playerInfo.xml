@@ -5,22 +5,6 @@
 		<skin name="附属"></skin>
 	</skin_table>
 	<skill_table>
-		<skill eka="DEF" as="def" ssse="basic" savable="false">
-			<object_table>
-				<object id="1">
-					<frame_table>
-						<frame id="1">
-							<point x="0" y="0"></point>
-							<box_table>
-								<box type="1">
-									<rect t="-75" l="-50" b="75" r="50"></rect>
-								</box>
-							</box_table>
-						</frame>
-					</frame_table>
-				</object>
-			</object_table>
-		</skill>
 		<skill eka="26A" as="def" ssse="basic" savable="false">
 			<object_table>
 				<object id="1">
@@ -29,7 +13,7 @@
 							<point x="0" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-50" b="75" r="50"></rect>
+									<rect t="75" l="-50" b="-75" r="50"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -37,7 +21,7 @@
 							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-51" b="75" r="51"></rect>
+									<rect t="75" l="-51" b="-75" r="51"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -45,10 +29,10 @@
 							<point x="2" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-52" b="75" r="52"></rect>
+									<rect t="75" l="-52" b="-75" r="52"></rect>
 								</box>
 								<box type="2">
-									<rect t="-25" l="50" b="25" r="100"></rect>
+									<rect t="25" l="50" b="-25" r="100"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -56,10 +40,10 @@
 							<point x="3" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-53" b="75" r="53"></rect>
+									<rect t="75" l="-53" b="-75" r="53"></rect>
 								</box>
 								<box type="2">
-									<rect t="-25" l="52" b="25" r="102"></rect>
+									<rect t="25" l="52" b="-25" r="102"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -67,10 +51,10 @@
 							<point x="4" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-54" b="75" r="54"></rect>
+									<rect t="75" l="-54" b="-75" r="54"></rect>
 								</box>
 								<box type="2">
-									<rect t="-25" l="55" b="25" r="105"></rect>
+									<rect t="25" l="55" b="-25" r="105"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -78,10 +62,10 @@
 							<point x="5" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-55" b="75" r="55"></rect>
+									<rect t="75" l="-55" b="-75" r="55"></rect>
 								</box>
 								<box type="2">
-									<rect t="-25" l="60" b="25" r="110"></rect>
+									<rect t="25" l="60" b="-25" r="110"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -89,10 +73,10 @@
 							<point x="6" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-54" b="75" r="54"></rect>
+									<rect t="75" l="-54" b="-75" r="54"></rect>
 								</box>
 								<box type="2">
-									<rect t="-25" l="60" b="25" r="110"></rect>
+									<rect t="25" l="60" b="-25" r="110"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -100,10 +84,10 @@
 							<point x="7" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-53" b="75" r="53"></rect>
+									<rect t="75" l="-53" b="-75" r="53"></rect>
 								</box>
 								<box type="2">
-									<rect t="-25" l="60" b="25" r="110"></rect>
+									<rect t="25" l="60" b="-25" r="110"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -111,7 +95,7 @@
 							<point x="8" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-52" b="75" r="52"></rect>
+									<rect t="75" l="-52" b="-75" r="52"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -119,7 +103,7 @@
 							<point x="9" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-51" b="75" r="51"></rect>
+									<rect t="75" l="-51" b="-75" r="51"></rect>
 								</box>
 							</box_table>
 						</frame>
@@ -127,7 +111,7 @@
 							<point x="10" y="0"></point>
 							<box_table>
 								<box type="1">
-									<rect t="-75" l="-50" b="75" r="50"></rect>
+									<rect t="75" l="-50" b="-75" r="50"></rect>
 								</box>
 							</box_table>
 						</frame>
