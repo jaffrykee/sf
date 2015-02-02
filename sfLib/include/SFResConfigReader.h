@@ -14,7 +14,7 @@ using namespace std;
 #define POLL_TABSCOUNT (tabs)
 #define POLL_NODECOUNT nodeCount
 #define POLL_TABSCOUNT_ARR tabCount
-#define POLL_RES pRes
+#define POLL_RESPLAYER resPlayer
 
 /*
 遍历该级xml的每一个枚举为"sf_nd"的节点。
@@ -35,10 +35,10 @@ tips:linuxC风格太浓厚了，不过很灵活。
 			{	\
 				if ((POLL_SW[sf_nd]))	\
 				{	\
-					if (0 == wcscmp(POLL_NAME, POLL_NODENAME[sf_nd].c_str()))	\
+					if (0 == wcscmp(POLL_NAME, POLL_NODENAME[sf_nd]))	\
 					{	\
 						POLL_SW[sf_nd] = false;	\
-						for(int i = sf_nd + 1; i < nodeIsOnly.size(); i++)	\
+						for(int i = sf_nd + 1; i < ND_MAX; i++)	\
 						{	\
 							POLL_NODEHAD[i] = false;	\
 						}	\
@@ -51,7 +51,7 @@ tips:linuxC风格太浓厚了，不过很灵活。
 				}	\
 				else	\
 				{	\
-					if (0 == wcscmp(POLL_NAME, POLL_NODENAME[sf_nd].c_str()))	\
+					if (0 == wcscmp(POLL_NAME, POLL_NODENAME[sf_nd]))	\
 					{	\
 						(POLL_SW[sf_nd]) = true;	\
 						(POLL_NODEHAD[sf_nd]) = true;	\
@@ -64,7 +64,7 @@ tips:linuxC风格太浓厚了，不过很灵活。
 							wcout << L"<" << nodeName[sf_nd] << L">";	\
 						}	\
 						POLL_TABSCOUNT_ARR[POLL_TABSCOUNT - 1]++; \
-						readXMLNode(POLL_PREADER, POLL_TABSCOUNT_ARR, POLL_RES);	\
+						readXMLNode(POLL_PREADER, POLL_TABSCOUNT_ARR, POLL_RESPLAYER);	\
 					}	\
 				}	\
 			}	\
