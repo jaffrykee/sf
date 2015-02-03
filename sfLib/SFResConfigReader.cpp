@@ -400,7 +400,18 @@ namespace SFResConfigReader
 
 }
 
-SFXmlReader::SFXmlReader(string xsdPath) :m_pRootNode(NULL)
+SFXmlReader::SFXmlReader(string xsdPath):m_pRootNode(NULL)
+{
+	initFrameByXsd(xsdPath);
+}
+
+SFXmlReader::SFXmlReader(string xsdPath, PtrFuncXmlNode_T pFuncNode, PtrFuncXmlAttr_T pFuncAttr):
+	m_pRootNode(NULL), m_pFuncXmlNode(pFuncNode), m_pFuncXmlAttr(pFuncAttr)
+{
+	initFrameByXsd(xsdPath);
+}
+
+bool SFXmlReader::initFrameByXsd(string xsdPath)
 {
 	HRESULT hr = S_OK;
 	CComPtr<IStream> pFileStream;
@@ -421,6 +432,8 @@ SFXmlReader::SFXmlReader(string xsdPath) :m_pRootNode(NULL)
 	else
 	{
 		sf_cout(DEBUG_COM, "Error: Can't find the XML file. (\"" << xsdPath << "\")" << endl);
+
+		return false;
 	}
 	pReader->SetInput(pFileStream);
 	hr = pReader->Read(NULL);
@@ -437,12 +450,12 @@ SFXmlReader::SFXmlReader(string xsdPath) :m_pRootNode(NULL)
 				pReader->GetNodeType(&nodeType);
 				if (nodeType == XmlNodeType_Element)
 				{
-					sf_wcout(DEBUG_COM, endl);
+					sf_wcout(DEBUG_RES_LOAD, endl);
 					for (UINT i = 0; i < tabs; i++)
 					{
-						sf_wcout(DEBUG_COM, L"\t");
+						sf_wcout(DEBUG_RES_LOAD, L"\t");
 					}
-					sf_wcout(DEBUG_COM, nodeName << L" ");
+					sf_wcout(DEBUG_RES_LOAD, nodeName << L" ");
 
 					POLL_XML_ATTR_BEGIN
 						if (wcscmp(nodeName, L"element") == 0)
@@ -509,4 +522,11 @@ SFXmlReader::SFXmlReader(string xsdPath) :m_pRootNode(NULL)
 			}
 		}
 	}
+
+	return true;
+}
+
+bool SFXmlReader::getDataFromXml(string xmlPath)
+{
+
 }

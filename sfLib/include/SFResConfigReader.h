@@ -125,11 +125,20 @@ public:
 		vector<string> m_attrData;
 		vector<XsdNodeData*> m_nodeData;
 	};
+	typedef UINT(*PtrFuncXmlNode_T)(string& nodeName);
+	typedef UINT(*PtrFuncXmlAttr_T)(string& attrName, string& attrValue);
 
 	string m_path;
 	string m_name;
 	XsdNodeData* m_pRootNode;
 	map<string, XsdNodeData> m_data;
 
+	PtrFuncXmlNode_T m_pFuncXmlNode;
+	PtrFuncXmlAttr_T m_pFuncXmlAttr;
+
 	SFXmlReader(string xsdPath);
+	SFXmlReader(string xsdPath, PtrFuncXmlNode_T, PtrFuncXmlAttr_T);
+
+	bool initFrameByXsd(string xsdPath);
+	bool getDataFromXml(string xmlPath);
 };
