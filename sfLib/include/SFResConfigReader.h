@@ -116,29 +116,20 @@ namespace SFResConfigReader
 class __declspec(dllexport) SFXmlReader
 {
 public:
-	struct XsdNodeData;
-	struct XsdAttrData
-	{
-		wstring m_name;
-		wstring m_defValue;
-		XsdNodeData* m_pParent;
-	};
-
 	struct XsdNodeData
 	{
-		wstring m_name;
+		string m_name;
 		bool m_isOnly;
-		UINT m_depth;
 
-		XsdNodeData* m_pParent;
-		map<string, XsdAttrData> m_attrData;
-		map<string, XsdNodeData> m_nodeData;
+		XsdNodeData* m_parent;
+		vector<string> m_attrData;
+		vector<XsdNodeData*> m_nodeData;
 	};
 
 	string m_path;
 	string m_name;
-	XsdNodeData m_rootNode;
-	map<string, XsdNodeData&> m_allData;
+	XsdNodeData* m_pRootNode;
+	map<string, XsdNodeData> m_data;
 
 	SFXmlReader(string xsdPath);
 };

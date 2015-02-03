@@ -11,7 +11,7 @@ using namespace System::Security::Permissions;
 // 此源代码由 xsd 自动生成, Version=4.0.30319.33440。
 // 
 using namespace System;
-ref class skillFrame;
+ref class playerFrame;
 
 
 /// <summary>
@@ -21,9 +21,9 @@ ref class skillFrame;
 System::ComponentModel::DesignerCategoryAttribute(L"code"), 
 System::ComponentModel::ToolboxItem(true), 
 System::Xml::Serialization::XmlSchemaProviderAttribute(L"GetTypedDataSetSchema"), 
-System::Xml::Serialization::XmlRootAttribute(L"skillFrame"), 
+System::Xml::Serialization::XmlRootAttribute(L"playerFrame"), 
 System::ComponentModel::Design::HelpKeywordAttribute(L"vs.data.DataSet")]
-public ref class skillFrame : public ::System::Data::DataSet {
+public ref class playerFrame : public ::System::Data::DataSet {
     public : ref class player_infoDataTable;
     public : ref class skin_tableDataTable;
     public : ref class skinDataTable;
@@ -64,31 +64,31 @@ public ref class skillFrame : public ::System::Data::DataSet {
     public : ref class boxRowChangeEvent;
     public : ref class rectRowChangeEvent;
     
-    private: skillFrame::player_infoDataTable^  tableplayer_info;
+    private: playerFrame::player_infoDataTable^  tableplayer_info;
     
-    private: skillFrame::skin_tableDataTable^  tableskin_table;
+    private: playerFrame::skin_tableDataTable^  tableskin_table;
     
-    private: skillFrame::skinDataTable^  tableskin;
+    private: playerFrame::skinDataTable^  tableskin;
     
-    private: skillFrame::skill_tableDataTable^  tableskill_table;
+    private: playerFrame::skill_tableDataTable^  tableskill_table;
     
-    private: skillFrame::skillDataTable^  tableskill;
+    private: playerFrame::skillDataTable^  tableskill;
     
-    private: skillFrame::object_tableDataTable^  tableobject_table;
+    private: playerFrame::object_tableDataTable^  tableobject_table;
     
-    private: skillFrame::objectDataTable^  tableobject;
+    private: playerFrame::objectDataTable^  tableobject;
     
-    private: skillFrame::frame_tableDataTable^  tableframe_table;
+    private: playerFrame::frame_tableDataTable^  tableframe_table;
     
-    private: skillFrame::frameDataTable^  tableframe;
+    private: playerFrame::frameDataTable^  tableframe;
     
-    private: skillFrame::pointDataTable^  tablepoint;
+    private: playerFrame::pointDataTable^  tablepoint;
     
-    private: skillFrame::box_tableDataTable^  tablebox_table;
+    private: playerFrame::box_tableDataTable^  tablebox_table;
     
-    private: skillFrame::boxDataTable^  tablebox;
+    private: playerFrame::boxDataTable^  tablebox;
     
-    private: skillFrame::rectDataTable^  tablerect;
+    private: playerFrame::rectDataTable^  tablerect;
     
     private: ::System::Data::DataRelation^  relationplayer_info_skin_table;
     
@@ -117,152 +117,152 @@ public ref class skillFrame : public ::System::Data::DataSet {
     private: ::System::Data::SchemaSerializationMode _schemaSerializationMode;
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void player_infoRowChangeEventHandler(::System::Object^  sender, skillFrame::player_infoRowChangeEvent^  e);
+    delegate System::Void player_infoRowChangeEventHandler(::System::Object^  sender, playerFrame::player_infoRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void skin_tableRowChangeEventHandler(::System::Object^  sender, skillFrame::skin_tableRowChangeEvent^  e);
+    delegate System::Void skin_tableRowChangeEventHandler(::System::Object^  sender, playerFrame::skin_tableRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void skinRowChangeEventHandler(::System::Object^  sender, skillFrame::skinRowChangeEvent^  e);
+    delegate System::Void skinRowChangeEventHandler(::System::Object^  sender, playerFrame::skinRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void skill_tableRowChangeEventHandler(::System::Object^  sender, skillFrame::skill_tableRowChangeEvent^  e);
+    delegate System::Void skill_tableRowChangeEventHandler(::System::Object^  sender, playerFrame::skill_tableRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void skillRowChangeEventHandler(::System::Object^  sender, skillFrame::skillRowChangeEvent^  e);
+    delegate System::Void skillRowChangeEventHandler(::System::Object^  sender, playerFrame::skillRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void object_tableRowChangeEventHandler(::System::Object^  sender, skillFrame::object_tableRowChangeEvent^  e);
+    delegate System::Void object_tableRowChangeEventHandler(::System::Object^  sender, playerFrame::object_tableRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void objectRowChangeEventHandler(::System::Object^  sender, skillFrame::objectRowChangeEvent^  e);
+    delegate System::Void objectRowChangeEventHandler(::System::Object^  sender, playerFrame::objectRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void frame_tableRowChangeEventHandler(::System::Object^  sender, skillFrame::frame_tableRowChangeEvent^  e);
+    delegate System::Void frame_tableRowChangeEventHandler(::System::Object^  sender, playerFrame::frame_tableRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void frameRowChangeEventHandler(::System::Object^  sender, skillFrame::frameRowChangeEvent^  e);
+    delegate System::Void frameRowChangeEventHandler(::System::Object^  sender, playerFrame::frameRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void pointRowChangeEventHandler(::System::Object^  sender, skillFrame::pointRowChangeEvent^  e);
+    delegate System::Void pointRowChangeEventHandler(::System::Object^  sender, playerFrame::pointRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void box_tableRowChangeEventHandler(::System::Object^  sender, skillFrame::box_tableRowChangeEvent^  e);
+    delegate System::Void box_tableRowChangeEventHandler(::System::Object^  sender, playerFrame::box_tableRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void boxRowChangeEventHandler(::System::Object^  sender, skillFrame::boxRowChangeEvent^  e);
+    delegate System::Void boxRowChangeEventHandler(::System::Object^  sender, playerFrame::boxRowChangeEvent^  e);
     
     public : [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    delegate System::Void rectRowChangeEventHandler(::System::Object^  sender, skillFrame::rectRowChangeEvent^  e);
+    delegate System::Void rectRowChangeEventHandler(::System::Object^  sender, playerFrame::rectRowChangeEvent^  e);
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    skillFrame();
+    playerFrame();
     protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-    skillFrame(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context);
+    playerFrame(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context);
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::player_infoDataTable^  player_info {
-        skillFrame::player_infoDataTable^  get();
+    property playerFrame::player_infoDataTable^  player_info {
+        playerFrame::player_infoDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::skin_tableDataTable^  skin_table {
-        skillFrame::skin_tableDataTable^  get();
+    property playerFrame::skin_tableDataTable^  skin_table {
+        playerFrame::skin_tableDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::skinDataTable^  skin {
-        skillFrame::skinDataTable^  get();
+    property playerFrame::skinDataTable^  skin {
+        playerFrame::skinDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::skill_tableDataTable^  skill_table {
-        skillFrame::skill_tableDataTable^  get();
+    property playerFrame::skill_tableDataTable^  skill_table {
+        playerFrame::skill_tableDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::skillDataTable^  skill {
-        skillFrame::skillDataTable^  get();
+    property playerFrame::skillDataTable^  skill {
+        playerFrame::skillDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::object_tableDataTable^  object_table {
-        skillFrame::object_tableDataTable^  get();
+    property playerFrame::object_tableDataTable^  object_table {
+        playerFrame::object_tableDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::objectDataTable^  object {
-        skillFrame::objectDataTable^  get();
+    property playerFrame::objectDataTable^  object {
+        playerFrame::objectDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::frame_tableDataTable^  frame_table {
-        skillFrame::frame_tableDataTable^  get();
+    property playerFrame::frame_tableDataTable^  frame_table {
+        playerFrame::frame_tableDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::frameDataTable^  frame {
-        skillFrame::frameDataTable^  get();
+    property playerFrame::frameDataTable^  frame {
+        playerFrame::frameDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::pointDataTable^  point {
-        skillFrame::pointDataTable^  get();
+    property playerFrame::pointDataTable^  point {
+        playerFrame::pointDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::box_tableDataTable^  box_table {
-        skillFrame::box_tableDataTable^  get();
+    property playerFrame::box_tableDataTable^  box_table {
+        playerFrame::box_tableDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::boxDataTable^  box {
-        skillFrame::boxDataTable^  get();
+    property playerFrame::boxDataTable^  box {
+        playerFrame::boxDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
     System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0"), 
     System::ComponentModel::Browsable(false), 
     System::ComponentModel::DesignerSerializationVisibility(::System::ComponentModel::DesignerSerializationVisibility::Content)]
-    property skillFrame::rectDataTable^  rect {
-        skillFrame::rectDataTable^  get();
+    property playerFrame::rectDataTable^  rect {
+        playerFrame::rectDataTable^  get();
     }
     
     public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -394,16 +394,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnplayer_info_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::player_infoRowChangeEventHandler^  player_infoRowChanging;
+        event playerFrame::player_infoRowChangeEventHandler^  player_infoRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::player_infoRowChangeEventHandler^  player_infoRowChanged;
+        event playerFrame::player_infoRowChangeEventHandler^  player_infoRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::player_infoRowChangeEventHandler^  player_infoRowDeleting;
+        event playerFrame::player_infoRowChangeEventHandler^  player_infoRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::player_infoRowChangeEventHandler^  player_infoRowDeleted;
+        event playerFrame::player_infoRowChangeEventHandler^  player_infoRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -429,17 +429,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::player_infoRow^  default [::System::Int32 ] {
-            skillFrame::player_infoRow^  get(::System::Int32 index);
+        property playerFrame::player_infoRow^  default [::System::Int32 ] {
+            playerFrame::player_infoRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Addplayer_infoRow(skillFrame::player_infoRow^  row);
+        ::System::Void Addplayer_infoRow(playerFrame::player_infoRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::player_infoRow^  Addplayer_infoRow();
+        playerFrame::player_infoRow^  Addplayer_infoRow();
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -463,7 +463,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::player_infoRow^  Newplayer_infoRow();
+        playerFrame::player_infoRow^  Newplayer_infoRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -491,7 +491,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Removeplayer_infoRow(skillFrame::player_infoRow^  row);
+        ::System::Void Removeplayer_infoRow(playerFrame::player_infoRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -510,16 +510,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnplayer_info_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skin_tableRowChangeEventHandler^  skin_tableRowChanging;
+        event playerFrame::skin_tableRowChangeEventHandler^  skin_tableRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skin_tableRowChangeEventHandler^  skin_tableRowChanged;
+        event playerFrame::skin_tableRowChangeEventHandler^  skin_tableRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skin_tableRowChangeEventHandler^  skin_tableRowDeleting;
+        event playerFrame::skin_tableRowChangeEventHandler^  skin_tableRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skin_tableRowChangeEventHandler^  skin_tableRowDeleted;
+        event playerFrame::skin_tableRowChangeEventHandler^  skin_tableRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -551,17 +551,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skin_tableRow^  default [::System::Int32 ] {
-            skillFrame::skin_tableRow^  get(::System::Int32 index);
+        property playerFrame::skin_tableRow^  default [::System::Int32 ] {
+            playerFrame::skin_tableRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Addskin_tableRow(skillFrame::skin_tableRow^  row);
+        ::System::Void Addskin_tableRow(playerFrame::skin_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::skin_tableRow^  Addskin_tableRow(skillFrame::player_infoRow^  parentplayer_infoRowByplayer_info_skin_table);
+        playerFrame::skin_tableRow^  Addskin_tableRow(playerFrame::player_infoRow^  parentplayer_infoRowByplayer_info_skin_table);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -585,7 +585,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::skin_tableRow^  Newskin_tableRow();
+        playerFrame::skin_tableRow^  Newskin_tableRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -613,7 +613,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Removeskin_tableRow(skillFrame::skin_tableRow^  row);
+        ::System::Void Removeskin_tableRow(playerFrame::skin_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -632,16 +632,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnskin_table_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skinRowChangeEventHandler^  skinRowChanging;
+        event playerFrame::skinRowChangeEventHandler^  skinRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skinRowChangeEventHandler^  skinRowChanged;
+        event playerFrame::skinRowChangeEventHandler^  skinRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skinRowChangeEventHandler^  skinRowDeleting;
+        event playerFrame::skinRowChangeEventHandler^  skinRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skinRowChangeEventHandler^  skinRowDeleted;
+        event playerFrame::skinRowChangeEventHandler^  skinRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -673,17 +673,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skinRow^  default [::System::Int32 ] {
-            skillFrame::skinRow^  get(::System::Int32 index);
+        property playerFrame::skinRow^  default [::System::Int32 ] {
+            playerFrame::skinRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void AddskinRow(skillFrame::skinRow^  row);
+        ::System::Void AddskinRow(playerFrame::skinRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::skinRow^  AddskinRow(System::String^  name, skillFrame::skin_tableRow^  parentskin_tableRowByskin_table_skin);
+        playerFrame::skinRow^  AddskinRow(System::String^  name, playerFrame::skin_tableRow^  parentskin_tableRowByskin_table_skin);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -707,7 +707,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::skinRow^  NewskinRow();
+        playerFrame::skinRow^  NewskinRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -735,7 +735,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void RemoveskinRow(skillFrame::skinRow^  row);
+        ::System::Void RemoveskinRow(playerFrame::skinRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -754,16 +754,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnplayer_info_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skill_tableRowChangeEventHandler^  skill_tableRowChanging;
+        event playerFrame::skill_tableRowChangeEventHandler^  skill_tableRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skill_tableRowChangeEventHandler^  skill_tableRowChanged;
+        event playerFrame::skill_tableRowChangeEventHandler^  skill_tableRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skill_tableRowChangeEventHandler^  skill_tableRowDeleting;
+        event playerFrame::skill_tableRowChangeEventHandler^  skill_tableRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skill_tableRowChangeEventHandler^  skill_tableRowDeleted;
+        event playerFrame::skill_tableRowChangeEventHandler^  skill_tableRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -795,17 +795,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skill_tableRow^  default [::System::Int32 ] {
-            skillFrame::skill_tableRow^  get(::System::Int32 index);
+        property playerFrame::skill_tableRow^  default [::System::Int32 ] {
+            playerFrame::skill_tableRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Addskill_tableRow(skillFrame::skill_tableRow^  row);
+        ::System::Void Addskill_tableRow(playerFrame::skill_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::skill_tableRow^  Addskill_tableRow(skillFrame::player_infoRow^  parentplayer_infoRowByplayer_info_skill_table);
+        playerFrame::skill_tableRow^  Addskill_tableRow(playerFrame::player_infoRow^  parentplayer_infoRowByplayer_info_skill_table);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -829,7 +829,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::skill_tableRow^  Newskill_tableRow();
+        playerFrame::skill_tableRow^  Newskill_tableRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -857,7 +857,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Removeskill_tableRow(skillFrame::skill_tableRow^  row);
+        ::System::Void Removeskill_tableRow(playerFrame::skill_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -884,16 +884,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnskill_table_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skillRowChangeEventHandler^  skillRowChanging;
+        event playerFrame::skillRowChangeEventHandler^  skillRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skillRowChangeEventHandler^  skillRowChanged;
+        event playerFrame::skillRowChangeEventHandler^  skillRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skillRowChangeEventHandler^  skillRowDeleting;
+        event playerFrame::skillRowChangeEventHandler^  skillRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::skillRowChangeEventHandler^  skillRowDeleted;
+        event playerFrame::skillRowChangeEventHandler^  skillRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -949,18 +949,18 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skillRow^  default [::System::Int32 ] {
-            skillFrame::skillRow^  get(::System::Int32 index);
+        property playerFrame::skillRow^  default [::System::Int32 ] {
+            playerFrame::skillRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void AddskillRow(skillFrame::skillRow^  row);
+        ::System::Void AddskillRow(playerFrame::skillRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::skillRow^  AddskillRow(System::String^  eka, System::String^  as, System::String^  ssse, System::Boolean savable, 
-                    skillFrame::skill_tableRow^  parentskill_tableRowByskill_table_skill);
+        playerFrame::skillRow^  AddskillRow(System::String^  eka, System::String^  as, System::String^  ssse, System::Boolean savable, 
+                    playerFrame::skill_tableRow^  parentskill_tableRowByskill_table_skill);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -984,7 +984,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::skillRow^  NewskillRow();
+        playerFrame::skillRow^  NewskillRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1012,7 +1012,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void RemoveskillRow(skillFrame::skillRow^  row);
+        ::System::Void RemoveskillRow(playerFrame::skillRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1031,16 +1031,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnskill_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::object_tableRowChangeEventHandler^  object_tableRowChanging;
+        event playerFrame::object_tableRowChangeEventHandler^  object_tableRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::object_tableRowChangeEventHandler^  object_tableRowChanged;
+        event playerFrame::object_tableRowChangeEventHandler^  object_tableRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::object_tableRowChangeEventHandler^  object_tableRowDeleting;
+        event playerFrame::object_tableRowChangeEventHandler^  object_tableRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::object_tableRowChangeEventHandler^  object_tableRowDeleted;
+        event playerFrame::object_tableRowChangeEventHandler^  object_tableRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1072,17 +1072,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::object_tableRow^  default [::System::Int32 ] {
-            skillFrame::object_tableRow^  get(::System::Int32 index);
+        property playerFrame::object_tableRow^  default [::System::Int32 ] {
+            playerFrame::object_tableRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Addobject_tableRow(skillFrame::object_tableRow^  row);
+        ::System::Void Addobject_tableRow(playerFrame::object_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::object_tableRow^  Addobject_tableRow(skillFrame::skillRow^  parentskillRowByskill_object_table);
+        playerFrame::object_tableRow^  Addobject_tableRow(playerFrame::skillRow^  parentskillRowByskill_object_table);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1106,7 +1106,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::object_tableRow^  Newobject_tableRow();
+        playerFrame::object_tableRow^  Newobject_tableRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1134,7 +1134,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Removeobject_tableRow(skillFrame::object_tableRow^  row);
+        ::System::Void Removeobject_tableRow(playerFrame::object_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1155,16 +1155,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnobject_table_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::objectRowChangeEventHandler^  objectRowChanging;
+        event playerFrame::objectRowChangeEventHandler^  objectRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::objectRowChangeEventHandler^  objectRowChanged;
+        event playerFrame::objectRowChangeEventHandler^  objectRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::objectRowChangeEventHandler^  objectRowDeleting;
+        event playerFrame::objectRowChangeEventHandler^  objectRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::objectRowChangeEventHandler^  objectRowDeleted;
+        event playerFrame::objectRowChangeEventHandler^  objectRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1202,17 +1202,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::objectRow^  default [::System::Int32 ] {
-            skillFrame::objectRow^  get(::System::Int32 index);
+        property playerFrame::objectRow^  default [::System::Int32 ] {
+            playerFrame::objectRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void AddobjectRow(skillFrame::objectRow^  row);
+        ::System::Void AddobjectRow(playerFrame::objectRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::objectRow^  AddobjectRow(System::Int32 id, skillFrame::object_tableRow^  parentobject_tableRowByobject_table_object);
+        playerFrame::objectRow^  AddobjectRow(System::Int32 id, playerFrame::object_tableRow^  parentobject_tableRowByobject_table_object);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1236,7 +1236,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::objectRow^  NewobjectRow();
+        playerFrame::objectRow^  NewobjectRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1264,7 +1264,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void RemoveobjectRow(skillFrame::objectRow^  row);
+        ::System::Void RemoveobjectRow(playerFrame::objectRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1283,16 +1283,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnobject_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::frame_tableRowChangeEventHandler^  frame_tableRowChanging;
+        event playerFrame::frame_tableRowChangeEventHandler^  frame_tableRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::frame_tableRowChangeEventHandler^  frame_tableRowChanged;
+        event playerFrame::frame_tableRowChangeEventHandler^  frame_tableRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::frame_tableRowChangeEventHandler^  frame_tableRowDeleting;
+        event playerFrame::frame_tableRowChangeEventHandler^  frame_tableRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::frame_tableRowChangeEventHandler^  frame_tableRowDeleted;
+        event playerFrame::frame_tableRowChangeEventHandler^  frame_tableRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1324,17 +1324,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::frame_tableRow^  default [::System::Int32 ] {
-            skillFrame::frame_tableRow^  get(::System::Int32 index);
+        property playerFrame::frame_tableRow^  default [::System::Int32 ] {
+            playerFrame::frame_tableRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Addframe_tableRow(skillFrame::frame_tableRow^  row);
+        ::System::Void Addframe_tableRow(playerFrame::frame_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::frame_tableRow^  Addframe_tableRow(skillFrame::objectRow^  parentobjectRowByobject_frame_table);
+        playerFrame::frame_tableRow^  Addframe_tableRow(playerFrame::objectRow^  parentobjectRowByobject_frame_table);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1358,7 +1358,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::frame_tableRow^  Newframe_tableRow();
+        playerFrame::frame_tableRow^  Newframe_tableRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1386,7 +1386,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Removeframe_tableRow(skillFrame::frame_tableRow^  row);
+        ::System::Void Removeframe_tableRow(playerFrame::frame_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1407,16 +1407,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnframe_table_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::frameRowChangeEventHandler^  frameRowChanging;
+        event playerFrame::frameRowChangeEventHandler^  frameRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::frameRowChangeEventHandler^  frameRowChanged;
+        event playerFrame::frameRowChangeEventHandler^  frameRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::frameRowChangeEventHandler^  frameRowDeleting;
+        event playerFrame::frameRowChangeEventHandler^  frameRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::frameRowChangeEventHandler^  frameRowDeleted;
+        event playerFrame::frameRowChangeEventHandler^  frameRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1454,17 +1454,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::frameRow^  default [::System::Int32 ] {
-            skillFrame::frameRow^  get(::System::Int32 index);
+        property playerFrame::frameRow^  default [::System::Int32 ] {
+            playerFrame::frameRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void AddframeRow(skillFrame::frameRow^  row);
+        ::System::Void AddframeRow(playerFrame::frameRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::frameRow^  AddframeRow(System::Int32 id, skillFrame::frame_tableRow^  parentframe_tableRowByframe_table_frame);
+        playerFrame::frameRow^  AddframeRow(System::Int32 id, playerFrame::frame_tableRow^  parentframe_tableRowByframe_table_frame);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1488,7 +1488,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::frameRow^  NewframeRow();
+        playerFrame::frameRow^  NewframeRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1516,7 +1516,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void RemoveframeRow(skillFrame::frameRow^  row);
+        ::System::Void RemoveframeRow(playerFrame::frameRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1537,16 +1537,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnframe_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::pointRowChangeEventHandler^  pointRowChanging;
+        event playerFrame::pointRowChangeEventHandler^  pointRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::pointRowChangeEventHandler^  pointRowChanged;
+        event playerFrame::pointRowChangeEventHandler^  pointRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::pointRowChangeEventHandler^  pointRowDeleting;
+        event playerFrame::pointRowChangeEventHandler^  pointRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::pointRowChangeEventHandler^  pointRowDeleted;
+        event playerFrame::pointRowChangeEventHandler^  pointRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1584,17 +1584,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::pointRow^  default [::System::Int32 ] {
-            skillFrame::pointRow^  get(::System::Int32 index);
+        property playerFrame::pointRow^  default [::System::Int32 ] {
+            playerFrame::pointRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void AddpointRow(skillFrame::pointRow^  row);
+        ::System::Void AddpointRow(playerFrame::pointRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::pointRow^  AddpointRow(System::Single x, System::Single y, skillFrame::frameRow^  parentframeRowByframe_point);
+        playerFrame::pointRow^  AddpointRow(System::Single x, System::Single y, playerFrame::frameRow^  parentframeRowByframe_point);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1618,7 +1618,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::pointRow^  NewpointRow();
+        playerFrame::pointRow^  NewpointRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1646,7 +1646,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void RemovepointRow(skillFrame::pointRow^  row);
+        ::System::Void RemovepointRow(playerFrame::pointRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1665,16 +1665,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnframe_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::box_tableRowChangeEventHandler^  box_tableRowChanging;
+        event playerFrame::box_tableRowChangeEventHandler^  box_tableRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::box_tableRowChangeEventHandler^  box_tableRowChanged;
+        event playerFrame::box_tableRowChangeEventHandler^  box_tableRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::box_tableRowChangeEventHandler^  box_tableRowDeleting;
+        event playerFrame::box_tableRowChangeEventHandler^  box_tableRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::box_tableRowChangeEventHandler^  box_tableRowDeleted;
+        event playerFrame::box_tableRowChangeEventHandler^  box_tableRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1706,17 +1706,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::box_tableRow^  default [::System::Int32 ] {
-            skillFrame::box_tableRow^  get(::System::Int32 index);
+        property playerFrame::box_tableRow^  default [::System::Int32 ] {
+            playerFrame::box_tableRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Addbox_tableRow(skillFrame::box_tableRow^  row);
+        ::System::Void Addbox_tableRow(playerFrame::box_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::box_tableRow^  Addbox_tableRow(skillFrame::frameRow^  parentframeRowByframe_box_table);
+        playerFrame::box_tableRow^  Addbox_tableRow(playerFrame::frameRow^  parentframeRowByframe_box_table);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1740,7 +1740,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::box_tableRow^  Newbox_tableRow();
+        playerFrame::box_tableRow^  Newbox_tableRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1768,7 +1768,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void Removebox_tableRow(skillFrame::box_tableRow^  row);
+        ::System::Void Removebox_tableRow(playerFrame::box_tableRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1789,16 +1789,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnbox_table_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::boxRowChangeEventHandler^  boxRowChanging;
+        event playerFrame::boxRowChangeEventHandler^  boxRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::boxRowChangeEventHandler^  boxRowChanged;
+        event playerFrame::boxRowChangeEventHandler^  boxRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::boxRowChangeEventHandler^  boxRowDeleting;
+        event playerFrame::boxRowChangeEventHandler^  boxRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::boxRowChangeEventHandler^  boxRowDeleted;
+        event playerFrame::boxRowChangeEventHandler^  boxRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1836,17 +1836,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::boxRow^  default [::System::Int32 ] {
-            skillFrame::boxRow^  get(::System::Int32 index);
+        property playerFrame::boxRow^  default [::System::Int32 ] {
+            playerFrame::boxRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void AddboxRow(skillFrame::boxRow^  row);
+        ::System::Void AddboxRow(playerFrame::boxRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::boxRow^  AddboxRow(System::Int32 type, skillFrame::box_tableRow^  parentbox_tableRowBybox_table_box);
+        playerFrame::boxRow^  AddboxRow(System::Int32 type, playerFrame::box_tableRow^  parentbox_tableRowBybox_table_box);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1870,7 +1870,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::boxRow^  NewboxRow();
+        playerFrame::boxRow^  NewboxRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1898,7 +1898,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void RemoveboxRow(skillFrame::boxRow^  row);
+        ::System::Void RemoveboxRow(playerFrame::boxRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1923,16 +1923,16 @@ public ref class skillFrame : public ::System::Data::DataSet {
         private: ::System::Data::DataColumn^  columnbox_Id;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::rectRowChangeEventHandler^  rectRowChanging;
+        event playerFrame::rectRowChangeEventHandler^  rectRowChanging;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::rectRowChangeEventHandler^  rectRowChanged;
+        event playerFrame::rectRowChangeEventHandler^  rectRowChanged;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::rectRowChangeEventHandler^  rectRowDeleting;
+        event playerFrame::rectRowChangeEventHandler^  rectRowDeleting;
         
         public: [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        event skillFrame::rectRowChangeEventHandler^  rectRowDeleted;
+        event playerFrame::rectRowChangeEventHandler^  rectRowDeleted;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -1982,17 +1982,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::rectRow^  default [::System::Int32 ] {
-            skillFrame::rectRow^  get(::System::Int32 index);
+        property playerFrame::rectRow^  default [::System::Int32 ] {
+            playerFrame::rectRow^  get(::System::Int32 index);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void AddrectRow(skillFrame::rectRow^  row);
+        ::System::Void AddrectRow(playerFrame::rectRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::rectRow^  AddrectRow(System::Single t, System::Single l, System::Single b, System::Single r, skillFrame::boxRow^  parentboxRowBybox_rect);
+        playerFrame::rectRow^  AddrectRow(System::Single t, System::Single l, System::Single b, System::Single r, playerFrame::boxRow^  parentboxRowBybox_rect);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2016,7 +2016,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillFrame::rectRow^  NewrectRow();
+        playerFrame::rectRow^  NewrectRow();
         
         protected: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2044,7 +2044,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        ::System::Void RemoverectRow(skillFrame::rectRow^  row);
+        ::System::Void RemoverectRow(playerFrame::rectRow^  row);
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2056,7 +2056,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class player_infoRow : public ::System::Data::DataRow {
         
-        private: skillFrame::player_infoDataTable^  tableplayer_info;
+        private: playerFrame::player_infoDataTable^  tableplayer_info;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2070,11 +2070,11 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::skin_tableRow^  >^  Getskin_tableRows();
+        cli::array< playerFrame::skin_tableRow^  >^  Getskin_tableRows();
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::skill_tableRow^  >^  Getskill_tableRows();
+        cli::array< playerFrame::skill_tableRow^  >^  Getskill_tableRows();
     };
     
     public : /// <summary>
@@ -2082,7 +2082,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class skin_tableRow : public ::System::Data::DataRow {
         
-        private: skillFrame::skin_tableDataTable^  tableskin_table;
+        private: playerFrame::skin_tableDataTable^  tableskin_table;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2103,9 +2103,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::player_infoRow^  player_infoRow {
-            skillFrame::player_infoRow^  get();
-            System::Void set(skillFrame::player_infoRow^  value);
+        property playerFrame::player_infoRow^  player_infoRow {
+            playerFrame::player_infoRow^  get();
+            System::Void set(playerFrame::player_infoRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2118,7 +2118,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::skinRow^  >^  GetskinRows();
+        cli::array< playerFrame::skinRow^  >^  GetskinRows();
     };
     
     public : /// <summary>
@@ -2126,7 +2126,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class skinRow : public ::System::Data::DataRow {
         
-        private: skillFrame::skinDataTable^  tableskin;
+        private: playerFrame::skinDataTable^  tableskin;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2147,9 +2147,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skin_tableRow^  skin_tableRow {
-            skillFrame::skin_tableRow^  get();
-            System::Void set(skillFrame::skin_tableRow^  value);
+        property playerFrame::skin_tableRow^  skin_tableRow {
+            playerFrame::skin_tableRow^  get();
+            System::Void set(playerFrame::skin_tableRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2166,7 +2166,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class skill_tableRow : public ::System::Data::DataRow {
         
-        private: skillFrame::skill_tableDataTable^  tableskill_table;
+        private: playerFrame::skill_tableDataTable^  tableskill_table;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2187,9 +2187,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::player_infoRow^  player_infoRow {
-            skillFrame::player_infoRow^  get();
-            System::Void set(skillFrame::player_infoRow^  value);
+        property playerFrame::player_infoRow^  player_infoRow {
+            playerFrame::player_infoRow^  get();
+            System::Void set(playerFrame::player_infoRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2202,7 +2202,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::skillRow^  >^  GetskillRows();
+        cli::array< playerFrame::skillRow^  >^  GetskillRows();
     };
     
     public : /// <summary>
@@ -2210,7 +2210,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class skillRow : public ::System::Data::DataRow {
         
-        private: skillFrame::skillDataTable^  tableskill;
+        private: playerFrame::skillDataTable^  tableskill;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2259,9 +2259,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skill_tableRow^  skill_tableRow {
-            skillFrame::skill_tableRow^  get();
-            System::Void set(skillFrame::skill_tableRow^  value);
+        property playerFrame::skill_tableRow^  skill_tableRow {
+            playerFrame::skill_tableRow^  get();
+            System::Void set(playerFrame::skill_tableRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2298,7 +2298,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::object_tableRow^  >^  Getobject_tableRows();
+        cli::array< playerFrame::object_tableRow^  >^  Getobject_tableRows();
     };
     
     public : /// <summary>
@@ -2306,7 +2306,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class object_tableRow : public ::System::Data::DataRow {
         
-        private: skillFrame::object_tableDataTable^  tableobject_table;
+        private: playerFrame::object_tableDataTable^  tableobject_table;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2327,9 +2327,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skillRow^  skillRow {
-            skillFrame::skillRow^  get();
-            System::Void set(skillFrame::skillRow^  value);
+        property playerFrame::skillRow^  skillRow {
+            playerFrame::skillRow^  get();
+            System::Void set(playerFrame::skillRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2342,7 +2342,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::objectRow^  >^  GetobjectRows();
+        cli::array< playerFrame::objectRow^  >^  GetobjectRows();
     };
     
     public : /// <summary>
@@ -2350,7 +2350,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class objectRow : public ::System::Data::DataRow {
         
-        private: skillFrame::objectDataTable^  tableobject;
+        private: playerFrame::objectDataTable^  tableobject;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2378,9 +2378,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::object_tableRow^  object_tableRow {
-            skillFrame::object_tableRow^  get();
-            System::Void set(skillFrame::object_tableRow^  value);
+        property playerFrame::object_tableRow^  object_tableRow {
+            playerFrame::object_tableRow^  get();
+            System::Void set(playerFrame::object_tableRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2393,7 +2393,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::frame_tableRow^  >^  Getframe_tableRows();
+        cli::array< playerFrame::frame_tableRow^  >^  Getframe_tableRows();
     };
     
     public : /// <summary>
@@ -2401,7 +2401,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class frame_tableRow : public ::System::Data::DataRow {
         
-        private: skillFrame::frame_tableDataTable^  tableframe_table;
+        private: playerFrame::frame_tableDataTable^  tableframe_table;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2422,9 +2422,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::objectRow^  objectRow {
-            skillFrame::objectRow^  get();
-            System::Void set(skillFrame::objectRow^  value);
+        property playerFrame::objectRow^  objectRow {
+            playerFrame::objectRow^  get();
+            System::Void set(playerFrame::objectRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2437,7 +2437,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::frameRow^  >^  GetframeRows();
+        cli::array< playerFrame::frameRow^  >^  GetframeRows();
     };
     
     public : /// <summary>
@@ -2445,7 +2445,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class frameRow : public ::System::Data::DataRow {
         
-        private: skillFrame::frameDataTable^  tableframe;
+        private: playerFrame::frameDataTable^  tableframe;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2473,9 +2473,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::frame_tableRow^  frame_tableRow {
-            skillFrame::frame_tableRow^  get();
-            System::Void set(skillFrame::frame_tableRow^  value);
+        property playerFrame::frame_tableRow^  frame_tableRow {
+            playerFrame::frame_tableRow^  get();
+            System::Void set(playerFrame::frame_tableRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2488,11 +2488,11 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::pointRow^  >^  GetpointRows();
+        cli::array< playerFrame::pointRow^  >^  GetpointRows();
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::box_tableRow^  >^  Getbox_tableRows();
+        cli::array< playerFrame::box_tableRow^  >^  Getbox_tableRows();
     };
     
     public : /// <summary>
@@ -2500,7 +2500,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class pointRow : public ::System::Data::DataRow {
         
-        private: skillFrame::pointDataTable^  tablepoint;
+        private: playerFrame::pointDataTable^  tablepoint;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2528,9 +2528,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::frameRow^  frameRow {
-            skillFrame::frameRow^  get();
-            System::Void set(skillFrame::frameRow^  value);
+        property playerFrame::frameRow^  frameRow {
+            playerFrame::frameRow^  get();
+            System::Void set(playerFrame::frameRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2563,7 +2563,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class box_tableRow : public ::System::Data::DataRow {
         
-        private: skillFrame::box_tableDataTable^  tablebox_table;
+        private: playerFrame::box_tableDataTable^  tablebox_table;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2584,9 +2584,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::frameRow^  frameRow {
-            skillFrame::frameRow^  get();
-            System::Void set(skillFrame::frameRow^  value);
+        property playerFrame::frameRow^  frameRow {
+            playerFrame::frameRow^  get();
+            System::Void set(playerFrame::frameRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2599,7 +2599,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::boxRow^  >^  GetboxRows();
+        cli::array< playerFrame::boxRow^  >^  GetboxRows();
     };
     
     public : /// <summary>
@@ -2607,7 +2607,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class boxRow : public ::System::Data::DataRow {
         
-        private: skillFrame::boxDataTable^  tablebox;
+        private: playerFrame::boxDataTable^  tablebox;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2635,9 +2635,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::box_tableRow^  box_tableRow {
-            skillFrame::box_tableRow^  get();
-            System::Void set(skillFrame::box_tableRow^  value);
+        property playerFrame::box_tableRow^  box_tableRow {
+            playerFrame::box_tableRow^  get();
+            System::Void set(playerFrame::box_tableRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2658,7 +2658,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        cli::array< skillFrame::rectRow^  >^  GetrectRows();
+        cli::array< playerFrame::rectRow^  >^  GetrectRows();
     };
     
     public : /// <summary>
@@ -2666,7 +2666,7 @@ public ref class skillFrame : public ::System::Data::DataSet {
 ///</summary>
     ref class rectRow : public ::System::Data::DataRow {
         
-        private: skillFrame::rectDataTable^  tablerect;
+        private: playerFrame::rectDataTable^  tablerect;
         
         internal: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
@@ -2708,9 +2708,9 @@ public ref class skillFrame : public ::System::Data::DataSet {
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::boxRow^  boxRow {
-            skillFrame::boxRow^  get();
-            System::Void set(skillFrame::boxRow^  value);
+        property playerFrame::boxRow^  boxRow {
+            playerFrame::boxRow^  get();
+            System::Void set(playerFrame::boxRow^  value);
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
@@ -2760,17 +2760,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class player_infoRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::player_infoRow^  eventRow;
+        private: playerFrame::player_infoRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        player_infoRowChangeEvent(skillFrame::player_infoRow^  row, ::System::Data::DataRowAction action);
+        player_infoRowChangeEvent(playerFrame::player_infoRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::player_infoRow^  Row {
-            skillFrame::player_infoRow^  get();
+        property playerFrame::player_infoRow^  Row {
+            playerFrame::player_infoRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -2786,17 +2786,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class skin_tableRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::skin_tableRow^  eventRow;
+        private: playerFrame::skin_tableRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skin_tableRowChangeEvent(skillFrame::skin_tableRow^  row, ::System::Data::DataRowAction action);
+        skin_tableRowChangeEvent(playerFrame::skin_tableRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skin_tableRow^  Row {
-            skillFrame::skin_tableRow^  get();
+        property playerFrame::skin_tableRow^  Row {
+            playerFrame::skin_tableRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -2812,17 +2812,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class skinRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::skinRow^  eventRow;
+        private: playerFrame::skinRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skinRowChangeEvent(skillFrame::skinRow^  row, ::System::Data::DataRowAction action);
+        skinRowChangeEvent(playerFrame::skinRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skinRow^  Row {
-            skillFrame::skinRow^  get();
+        property playerFrame::skinRow^  Row {
+            playerFrame::skinRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -2838,17 +2838,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class skill_tableRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::skill_tableRow^  eventRow;
+        private: playerFrame::skill_tableRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skill_tableRowChangeEvent(skillFrame::skill_tableRow^  row, ::System::Data::DataRowAction action);
+        skill_tableRowChangeEvent(playerFrame::skill_tableRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skill_tableRow^  Row {
-            skillFrame::skill_tableRow^  get();
+        property playerFrame::skill_tableRow^  Row {
+            playerFrame::skill_tableRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -2864,17 +2864,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class skillRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::skillRow^  eventRow;
+        private: playerFrame::skillRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        skillRowChangeEvent(skillFrame::skillRow^  row, ::System::Data::DataRowAction action);
+        skillRowChangeEvent(playerFrame::skillRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::skillRow^  Row {
-            skillFrame::skillRow^  get();
+        property playerFrame::skillRow^  Row {
+            playerFrame::skillRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -2890,17 +2890,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class object_tableRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::object_tableRow^  eventRow;
+        private: playerFrame::object_tableRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        object_tableRowChangeEvent(skillFrame::object_tableRow^  row, ::System::Data::DataRowAction action);
+        object_tableRowChangeEvent(playerFrame::object_tableRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::object_tableRow^  Row {
-            skillFrame::object_tableRow^  get();
+        property playerFrame::object_tableRow^  Row {
+            playerFrame::object_tableRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -2916,17 +2916,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class objectRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::objectRow^  eventRow;
+        private: playerFrame::objectRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        objectRowChangeEvent(skillFrame::objectRow^  row, ::System::Data::DataRowAction action);
+        objectRowChangeEvent(playerFrame::objectRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::objectRow^  Row {
-            skillFrame::objectRow^  get();
+        property playerFrame::objectRow^  Row {
+            playerFrame::objectRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -2942,17 +2942,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class frame_tableRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::frame_tableRow^  eventRow;
+        private: playerFrame::frame_tableRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        frame_tableRowChangeEvent(skillFrame::frame_tableRow^  row, ::System::Data::DataRowAction action);
+        frame_tableRowChangeEvent(playerFrame::frame_tableRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::frame_tableRow^  Row {
-            skillFrame::frame_tableRow^  get();
+        property playerFrame::frame_tableRow^  Row {
+            playerFrame::frame_tableRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -2968,17 +2968,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class frameRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::frameRow^  eventRow;
+        private: playerFrame::frameRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        frameRowChangeEvent(skillFrame::frameRow^  row, ::System::Data::DataRowAction action);
+        frameRowChangeEvent(playerFrame::frameRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::frameRow^  Row {
-            skillFrame::frameRow^  get();
+        property playerFrame::frameRow^  Row {
+            playerFrame::frameRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -2994,17 +2994,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class pointRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::pointRow^  eventRow;
+        private: playerFrame::pointRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        pointRowChangeEvent(skillFrame::pointRow^  row, ::System::Data::DataRowAction action);
+        pointRowChangeEvent(playerFrame::pointRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::pointRow^  Row {
-            skillFrame::pointRow^  get();
+        property playerFrame::pointRow^  Row {
+            playerFrame::pointRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -3020,17 +3020,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class box_tableRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::box_tableRow^  eventRow;
+        private: playerFrame::box_tableRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        box_tableRowChangeEvent(skillFrame::box_tableRow^  row, ::System::Data::DataRowAction action);
+        box_tableRowChangeEvent(playerFrame::box_tableRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::box_tableRow^  Row {
-            skillFrame::box_tableRow^  get();
+        property playerFrame::box_tableRow^  Row {
+            playerFrame::box_tableRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -3046,17 +3046,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class boxRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::boxRow^  eventRow;
+        private: playerFrame::boxRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        boxRowChangeEvent(skillFrame::boxRow^  row, ::System::Data::DataRowAction action);
+        boxRowChangeEvent(playerFrame::boxRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::boxRow^  Row {
-            skillFrame::boxRow^  get();
+        property playerFrame::boxRow^  Row {
+            playerFrame::boxRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -3072,17 +3072,17 @@ public ref class skillFrame : public ::System::Data::DataSet {
     [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
     ref class rectRowChangeEvent : public ::System::EventArgs {
         
-        private: skillFrame::rectRow^  eventRow;
+        private: playerFrame::rectRow^  eventRow;
         
         private: ::System::Data::DataRowAction eventAction;
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute]
         [System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        rectRowChangeEvent(skillFrame::rectRow^  row, ::System::Data::DataRowAction action);
+        rectRowChangeEvent(playerFrame::rectRow^  row, ::System::Data::DataRowAction action);
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
         System::CodeDom::Compiler::GeneratedCodeAttribute(L"System.Data.Design.TypedDataSetGenerator", L"4.0.0.0")]
-        property skillFrame::rectRow^  Row {
-            skillFrame::rectRow^  get();
+        property playerFrame::rectRow^  Row {
+            playerFrame::rectRow^  get();
         }
         
         public: [System::Diagnostics::DebuggerNonUserCodeAttribute, 
@@ -3094,20 +3094,20 @@ public ref class skillFrame : public ::System::Data::DataSet {
 };
 
 
-inline skillFrame::skillFrame() {
+inline playerFrame::playerFrame() {
     this->BeginInit();
     this->InitClass();
-    ::System::ComponentModel::CollectionChangeEventHandler^  schemaChangedHandler = gcnew ::System::ComponentModel::CollectionChangeEventHandler(this, &skillFrame::SchemaChanged);
+    ::System::ComponentModel::CollectionChangeEventHandler^  schemaChangedHandler = gcnew ::System::ComponentModel::CollectionChangeEventHandler(this, &playerFrame::SchemaChanged);
     __super::Tables->CollectionChanged += schemaChangedHandler;
     __super::Relations->CollectionChanged += schemaChangedHandler;
     this->EndInit();
 }
 
-inline skillFrame::skillFrame(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::playerFrame(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataSet(info, context, false) {
     if (this->IsBinarySerialized(info, context) == true) {
         this->InitVars(false);
-        ::System::ComponentModel::CollectionChangeEventHandler^  schemaChangedHandler1 = gcnew ::System::ComponentModel::CollectionChangeEventHandler(this, &skillFrame::SchemaChanged);
+        ::System::ComponentModel::CollectionChangeEventHandler^  schemaChangedHandler1 = gcnew ::System::ComponentModel::CollectionChangeEventHandler(this, &playerFrame::SchemaChanged);
         this->Tables->CollectionChanged += schemaChangedHandler1;
         this->Relations->CollectionChanged += schemaChangedHandler1;
         return;
@@ -3117,43 +3117,43 @@ inline skillFrame::skillFrame(::System::Runtime::Serialization::SerializationInf
         ::System::Data::DataSet^  ds = (gcnew ::System::Data::DataSet());
         ds->ReadXmlSchema((gcnew ::System::Xml::XmlTextReader((gcnew ::System::IO::StringReader(strSchema)))));
         if (ds->Tables[L"player_info"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::player_infoDataTable(ds->Tables[L"player_info"])));
+            __super::Tables->Add((gcnew playerFrame::player_infoDataTable(ds->Tables[L"player_info"])));
         }
         if (ds->Tables[L"skin_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::skin_tableDataTable(ds->Tables[L"skin_table"])));
+            __super::Tables->Add((gcnew playerFrame::skin_tableDataTable(ds->Tables[L"skin_table"])));
         }
         if (ds->Tables[L"skin"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::skinDataTable(ds->Tables[L"skin"])));
+            __super::Tables->Add((gcnew playerFrame::skinDataTable(ds->Tables[L"skin"])));
         }
         if (ds->Tables[L"skill_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::skill_tableDataTable(ds->Tables[L"skill_table"])));
+            __super::Tables->Add((gcnew playerFrame::skill_tableDataTable(ds->Tables[L"skill_table"])));
         }
         if (ds->Tables[L"skill"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::skillDataTable(ds->Tables[L"skill"])));
+            __super::Tables->Add((gcnew playerFrame::skillDataTable(ds->Tables[L"skill"])));
         }
         if (ds->Tables[L"object_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::object_tableDataTable(ds->Tables[L"object_table"])));
+            __super::Tables->Add((gcnew playerFrame::object_tableDataTable(ds->Tables[L"object_table"])));
         }
         if (ds->Tables[L"object"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::objectDataTable(ds->Tables[L"object"])));
+            __super::Tables->Add((gcnew playerFrame::objectDataTable(ds->Tables[L"object"])));
         }
         if (ds->Tables[L"frame_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::frame_tableDataTable(ds->Tables[L"frame_table"])));
+            __super::Tables->Add((gcnew playerFrame::frame_tableDataTable(ds->Tables[L"frame_table"])));
         }
         if (ds->Tables[L"frame"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::frameDataTable(ds->Tables[L"frame"])));
+            __super::Tables->Add((gcnew playerFrame::frameDataTable(ds->Tables[L"frame"])));
         }
         if (ds->Tables[L"point"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::pointDataTable(ds->Tables[L"point"])));
+            __super::Tables->Add((gcnew playerFrame::pointDataTable(ds->Tables[L"point"])));
         }
         if (ds->Tables[L"box_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::box_tableDataTable(ds->Tables[L"box_table"])));
+            __super::Tables->Add((gcnew playerFrame::box_tableDataTable(ds->Tables[L"box_table"])));
         }
         if (ds->Tables[L"box"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::boxDataTable(ds->Tables[L"box"])));
+            __super::Tables->Add((gcnew playerFrame::boxDataTable(ds->Tables[L"box"])));
         }
         if (ds->Tables[L"rect"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::rectDataTable(ds->Tables[L"rect"])));
+            __super::Tables->Add((gcnew playerFrame::rectDataTable(ds->Tables[L"rect"])));
         }
         this->DataSetName = ds->DataSetName;
         this->Prefix = ds->Prefix;
@@ -3168,142 +3168,142 @@ inline skillFrame::skillFrame(::System::Runtime::Serialization::SerializationInf
         this->ReadXmlSchema((gcnew ::System::Xml::XmlTextReader((gcnew ::System::IO::StringReader(strSchema)))));
     }
     this->GetSerializationData(info, context);
-    ::System::ComponentModel::CollectionChangeEventHandler^  schemaChangedHandler = gcnew ::System::ComponentModel::CollectionChangeEventHandler(this, &skillFrame::SchemaChanged);
+    ::System::ComponentModel::CollectionChangeEventHandler^  schemaChangedHandler = gcnew ::System::ComponentModel::CollectionChangeEventHandler(this, &playerFrame::SchemaChanged);
     __super::Tables->CollectionChanged += schemaChangedHandler;
     this->Relations->CollectionChanged += schemaChangedHandler;
 }
 
-inline skillFrame::player_infoDataTable^  skillFrame::player_info::get() {
+inline playerFrame::player_infoDataTable^  playerFrame::player_info::get() {
     return this->tableplayer_info;
 }
 
-inline skillFrame::skin_tableDataTable^  skillFrame::skin_table::get() {
+inline playerFrame::skin_tableDataTable^  playerFrame::skin_table::get() {
     return this->tableskin_table;
 }
 
-inline skillFrame::skinDataTable^  skillFrame::skin::get() {
+inline playerFrame::skinDataTable^  playerFrame::skin::get() {
     return this->tableskin;
 }
 
-inline skillFrame::skill_tableDataTable^  skillFrame::skill_table::get() {
+inline playerFrame::skill_tableDataTable^  playerFrame::skill_table::get() {
     return this->tableskill_table;
 }
 
-inline skillFrame::skillDataTable^  skillFrame::skill::get() {
+inline playerFrame::skillDataTable^  playerFrame::skill::get() {
     return this->tableskill;
 }
 
-inline skillFrame::object_tableDataTable^  skillFrame::object_table::get() {
+inline playerFrame::object_tableDataTable^  playerFrame::object_table::get() {
     return this->tableobject_table;
 }
 
-inline skillFrame::objectDataTable^  skillFrame::object::get() {
+inline playerFrame::objectDataTable^  playerFrame::object::get() {
     return this->tableobject;
 }
 
-inline skillFrame::frame_tableDataTable^  skillFrame::frame_table::get() {
+inline playerFrame::frame_tableDataTable^  playerFrame::frame_table::get() {
     return this->tableframe_table;
 }
 
-inline skillFrame::frameDataTable^  skillFrame::frame::get() {
+inline playerFrame::frameDataTable^  playerFrame::frame::get() {
     return this->tableframe;
 }
 
-inline skillFrame::pointDataTable^  skillFrame::point::get() {
+inline playerFrame::pointDataTable^  playerFrame::point::get() {
     return this->tablepoint;
 }
 
-inline skillFrame::box_tableDataTable^  skillFrame::box_table::get() {
+inline playerFrame::box_tableDataTable^  playerFrame::box_table::get() {
     return this->tablebox_table;
 }
 
-inline skillFrame::boxDataTable^  skillFrame::box::get() {
+inline playerFrame::boxDataTable^  playerFrame::box::get() {
     return this->tablebox;
 }
 
-inline skillFrame::rectDataTable^  skillFrame::rect::get() {
+inline playerFrame::rectDataTable^  playerFrame::rect::get() {
     return this->tablerect;
 }
 
-inline ::System::Data::SchemaSerializationMode skillFrame::SchemaSerializationMode::get() {
+inline ::System::Data::SchemaSerializationMode playerFrame::SchemaSerializationMode::get() {
     return this->_schemaSerializationMode;
 }
-inline System::Void skillFrame::SchemaSerializationMode::set(::System::Data::SchemaSerializationMode value) {
+inline System::Void playerFrame::SchemaSerializationMode::set(::System::Data::SchemaSerializationMode value) {
     this->_schemaSerializationMode = __identifier(value);
 }
 
-inline ::System::Data::DataTableCollection^  skillFrame::Tables::get() {
+inline ::System::Data::DataTableCollection^  playerFrame::Tables::get() {
     return __super::Tables;
 }
 
-inline ::System::Data::DataRelationCollection^  skillFrame::Relations::get() {
+inline ::System::Data::DataRelationCollection^  playerFrame::Relations::get() {
     return __super::Relations;
 }
 
-inline ::System::Void skillFrame::InitializeDerivedDataSet() {
+inline ::System::Void playerFrame::InitializeDerivedDataSet() {
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline ::System::Data::DataSet^  skillFrame::Clone() {
-    skillFrame^  cln = (cli::safe_cast<skillFrame^  >(__super::Clone()));
+inline ::System::Data::DataSet^  playerFrame::Clone() {
+    playerFrame^  cln = (cli::safe_cast<playerFrame^  >(__super::Clone()));
     cln->InitVars();
     cln->SchemaSerializationMode = this->SchemaSerializationMode;
     return cln;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeTables() {
+inline ::System::Boolean playerFrame::ShouldSerializeTables() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeRelations() {
+inline ::System::Boolean playerFrame::ShouldSerializeRelations() {
     return false;
 }
 
-inline ::System::Void skillFrame::ReadXmlSerializable(::System::Xml::XmlReader^  reader) {
+inline ::System::Void playerFrame::ReadXmlSerializable(::System::Xml::XmlReader^  reader) {
     if (this->DetermineSchemaSerializationMode(reader) == ::System::Data::SchemaSerializationMode::IncludeSchema) {
         this->Reset();
         ::System::Data::DataSet^  ds = (gcnew ::System::Data::DataSet());
         ds->ReadXml(reader);
         if (ds->Tables[L"player_info"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::player_infoDataTable(ds->Tables[L"player_info"])));
+            __super::Tables->Add((gcnew playerFrame::player_infoDataTable(ds->Tables[L"player_info"])));
         }
         if (ds->Tables[L"skin_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::skin_tableDataTable(ds->Tables[L"skin_table"])));
+            __super::Tables->Add((gcnew playerFrame::skin_tableDataTable(ds->Tables[L"skin_table"])));
         }
         if (ds->Tables[L"skin"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::skinDataTable(ds->Tables[L"skin"])));
+            __super::Tables->Add((gcnew playerFrame::skinDataTable(ds->Tables[L"skin"])));
         }
         if (ds->Tables[L"skill_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::skill_tableDataTable(ds->Tables[L"skill_table"])));
+            __super::Tables->Add((gcnew playerFrame::skill_tableDataTable(ds->Tables[L"skill_table"])));
         }
         if (ds->Tables[L"skill"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::skillDataTable(ds->Tables[L"skill"])));
+            __super::Tables->Add((gcnew playerFrame::skillDataTable(ds->Tables[L"skill"])));
         }
         if (ds->Tables[L"object_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::object_tableDataTable(ds->Tables[L"object_table"])));
+            __super::Tables->Add((gcnew playerFrame::object_tableDataTable(ds->Tables[L"object_table"])));
         }
         if (ds->Tables[L"object"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::objectDataTable(ds->Tables[L"object"])));
+            __super::Tables->Add((gcnew playerFrame::objectDataTable(ds->Tables[L"object"])));
         }
         if (ds->Tables[L"frame_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::frame_tableDataTable(ds->Tables[L"frame_table"])));
+            __super::Tables->Add((gcnew playerFrame::frame_tableDataTable(ds->Tables[L"frame_table"])));
         }
         if (ds->Tables[L"frame"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::frameDataTable(ds->Tables[L"frame"])));
+            __super::Tables->Add((gcnew playerFrame::frameDataTable(ds->Tables[L"frame"])));
         }
         if (ds->Tables[L"point"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::pointDataTable(ds->Tables[L"point"])));
+            __super::Tables->Add((gcnew playerFrame::pointDataTable(ds->Tables[L"point"])));
         }
         if (ds->Tables[L"box_table"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::box_tableDataTable(ds->Tables[L"box_table"])));
+            __super::Tables->Add((gcnew playerFrame::box_tableDataTable(ds->Tables[L"box_table"])));
         }
         if (ds->Tables[L"box"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::boxDataTable(ds->Tables[L"box"])));
+            __super::Tables->Add((gcnew playerFrame::boxDataTable(ds->Tables[L"box"])));
         }
         if (ds->Tables[L"rect"] != nullptr) {
-            __super::Tables->Add((gcnew skillFrame::rectDataTable(ds->Tables[L"rect"])));
+            __super::Tables->Add((gcnew playerFrame::rectDataTable(ds->Tables[L"rect"])));
         }
         this->DataSetName = ds->DataSetName;
         this->Prefix = ds->Prefix;
@@ -3320,91 +3320,91 @@ inline ::System::Void skillFrame::ReadXmlSerializable(::System::Xml::XmlReader^ 
     }
 }
 
-inline ::System::Xml::Schema::XmlSchema^  skillFrame::GetSchemaSerializable() {
+inline ::System::Xml::Schema::XmlSchema^  playerFrame::GetSchemaSerializable() {
     ::System::IO::MemoryStream^  stream = (gcnew ::System::IO::MemoryStream());
     this->WriteXmlSchema((gcnew ::System::Xml::XmlTextWriter(stream, nullptr)));
     stream->Position = 0;
     return ::System::Xml::Schema::XmlSchema::Read((gcnew ::System::Xml::XmlTextReader(stream)), nullptr);
 }
 
-inline ::System::Void skillFrame::InitVars() {
+inline ::System::Void playerFrame::InitVars() {
     this->InitVars(true);
 }
 
-inline ::System::Void skillFrame::InitVars(::System::Boolean initTable) {
-    this->tableplayer_info = (cli::safe_cast<skillFrame::player_infoDataTable^  >(__super::Tables[L"player_info"]));
+inline ::System::Void playerFrame::InitVars(::System::Boolean initTable) {
+    this->tableplayer_info = (cli::safe_cast<playerFrame::player_infoDataTable^  >(__super::Tables[L"player_info"]));
     if (initTable == true) {
         if (this->tableplayer_info != nullptr) {
             this->tableplayer_info->InitVars();
         }
     }
-    this->tableskin_table = (cli::safe_cast<skillFrame::skin_tableDataTable^  >(__super::Tables[L"skin_table"]));
+    this->tableskin_table = (cli::safe_cast<playerFrame::skin_tableDataTable^  >(__super::Tables[L"skin_table"]));
     if (initTable == true) {
         if (this->tableskin_table != nullptr) {
             this->tableskin_table->InitVars();
         }
     }
-    this->tableskin = (cli::safe_cast<skillFrame::skinDataTable^  >(__super::Tables[L"skin"]));
+    this->tableskin = (cli::safe_cast<playerFrame::skinDataTable^  >(__super::Tables[L"skin"]));
     if (initTable == true) {
         if (this->tableskin != nullptr) {
             this->tableskin->InitVars();
         }
     }
-    this->tableskill_table = (cli::safe_cast<skillFrame::skill_tableDataTable^  >(__super::Tables[L"skill_table"]));
+    this->tableskill_table = (cli::safe_cast<playerFrame::skill_tableDataTable^  >(__super::Tables[L"skill_table"]));
     if (initTable == true) {
         if (this->tableskill_table != nullptr) {
             this->tableskill_table->InitVars();
         }
     }
-    this->tableskill = (cli::safe_cast<skillFrame::skillDataTable^  >(__super::Tables[L"skill"]));
+    this->tableskill = (cli::safe_cast<playerFrame::skillDataTable^  >(__super::Tables[L"skill"]));
     if (initTable == true) {
         if (this->tableskill != nullptr) {
             this->tableskill->InitVars();
         }
     }
-    this->tableobject_table = (cli::safe_cast<skillFrame::object_tableDataTable^  >(__super::Tables[L"object_table"]));
+    this->tableobject_table = (cli::safe_cast<playerFrame::object_tableDataTable^  >(__super::Tables[L"object_table"]));
     if (initTable == true) {
         if (this->tableobject_table != nullptr) {
             this->tableobject_table->InitVars();
         }
     }
-    this->tableobject = (cli::safe_cast<skillFrame::objectDataTable^  >(__super::Tables[L"object"]));
+    this->tableobject = (cli::safe_cast<playerFrame::objectDataTable^  >(__super::Tables[L"object"]));
     if (initTable == true) {
         if (this->tableobject != nullptr) {
             this->tableobject->InitVars();
         }
     }
-    this->tableframe_table = (cli::safe_cast<skillFrame::frame_tableDataTable^  >(__super::Tables[L"frame_table"]));
+    this->tableframe_table = (cli::safe_cast<playerFrame::frame_tableDataTable^  >(__super::Tables[L"frame_table"]));
     if (initTable == true) {
         if (this->tableframe_table != nullptr) {
             this->tableframe_table->InitVars();
         }
     }
-    this->tableframe = (cli::safe_cast<skillFrame::frameDataTable^  >(__super::Tables[L"frame"]));
+    this->tableframe = (cli::safe_cast<playerFrame::frameDataTable^  >(__super::Tables[L"frame"]));
     if (initTable == true) {
         if (this->tableframe != nullptr) {
             this->tableframe->InitVars();
         }
     }
-    this->tablepoint = (cli::safe_cast<skillFrame::pointDataTable^  >(__super::Tables[L"point"]));
+    this->tablepoint = (cli::safe_cast<playerFrame::pointDataTable^  >(__super::Tables[L"point"]));
     if (initTable == true) {
         if (this->tablepoint != nullptr) {
             this->tablepoint->InitVars();
         }
     }
-    this->tablebox_table = (cli::safe_cast<skillFrame::box_tableDataTable^  >(__super::Tables[L"box_table"]));
+    this->tablebox_table = (cli::safe_cast<playerFrame::box_tableDataTable^  >(__super::Tables[L"box_table"]));
     if (initTable == true) {
         if (this->tablebox_table != nullptr) {
             this->tablebox_table->InitVars();
         }
     }
-    this->tablebox = (cli::safe_cast<skillFrame::boxDataTable^  >(__super::Tables[L"box"]));
+    this->tablebox = (cli::safe_cast<playerFrame::boxDataTable^  >(__super::Tables[L"box"]));
     if (initTable == true) {
         if (this->tablebox != nullptr) {
             this->tablebox->InitVars();
         }
     }
-    this->tablerect = (cli::safe_cast<skillFrame::rectDataTable^  >(__super::Tables[L"rect"]));
+    this->tablerect = (cli::safe_cast<playerFrame::rectDataTable^  >(__super::Tables[L"rect"]));
     if (initTable == true) {
         if (this->tablerect != nullptr) {
             this->tablerect->InitVars();
@@ -3424,38 +3424,38 @@ inline ::System::Void skillFrame::InitVars(::System::Boolean initTable) {
     this->relationbox_rect = this->Relations[L"box_rect"];
 }
 
-inline ::System::Void skillFrame::InitClass() {
-    this->DataSetName = L"skillFrame";
+inline ::System::Void playerFrame::InitClass() {
+    this->DataSetName = L"playerFrame";
     this->Prefix = L"";
     this->Namespace = L"http://tkmgame.com/shark/playerFrame.xsd";
     this->Locale = (gcnew ::System::Globalization::CultureInfo(L""));
     this->EnforceConstraints = true;
     this->SchemaSerializationMode = ::System::Data::SchemaSerializationMode::IncludeSchema;
-    this->tableplayer_info = (gcnew skillFrame::player_infoDataTable());
+    this->tableplayer_info = (gcnew playerFrame::player_infoDataTable());
     __super::Tables->Add(this->tableplayer_info);
-    this->tableskin_table = (gcnew skillFrame::skin_tableDataTable());
+    this->tableskin_table = (gcnew playerFrame::skin_tableDataTable());
     __super::Tables->Add(this->tableskin_table);
-    this->tableskin = (gcnew skillFrame::skinDataTable());
+    this->tableskin = (gcnew playerFrame::skinDataTable());
     __super::Tables->Add(this->tableskin);
-    this->tableskill_table = (gcnew skillFrame::skill_tableDataTable());
+    this->tableskill_table = (gcnew playerFrame::skill_tableDataTable());
     __super::Tables->Add(this->tableskill_table);
-    this->tableskill = (gcnew skillFrame::skillDataTable());
+    this->tableskill = (gcnew playerFrame::skillDataTable());
     __super::Tables->Add(this->tableskill);
-    this->tableobject_table = (gcnew skillFrame::object_tableDataTable());
+    this->tableobject_table = (gcnew playerFrame::object_tableDataTable());
     __super::Tables->Add(this->tableobject_table);
-    this->tableobject = (gcnew skillFrame::objectDataTable());
+    this->tableobject = (gcnew playerFrame::objectDataTable());
     __super::Tables->Add(this->tableobject);
-    this->tableframe_table = (gcnew skillFrame::frame_tableDataTable());
+    this->tableframe_table = (gcnew playerFrame::frame_tableDataTable());
     __super::Tables->Add(this->tableframe_table);
-    this->tableframe = (gcnew skillFrame::frameDataTable());
+    this->tableframe = (gcnew playerFrame::frameDataTable());
     __super::Tables->Add(this->tableframe);
-    this->tablepoint = (gcnew skillFrame::pointDataTable());
+    this->tablepoint = (gcnew playerFrame::pointDataTable());
     __super::Tables->Add(this->tablepoint);
-    this->tablebox_table = (gcnew skillFrame::box_tableDataTable());
+    this->tablebox_table = (gcnew playerFrame::box_tableDataTable());
     __super::Tables->Add(this->tablebox_table);
-    this->tablebox = (gcnew skillFrame::boxDataTable());
+    this->tablebox = (gcnew playerFrame::boxDataTable());
     __super::Tables->Add(this->tablebox);
-    this->tablerect = (gcnew skillFrame::rectDataTable());
+    this->tablerect = (gcnew playerFrame::rectDataTable());
     __super::Tables->Add(this->tablerect);
     ::System::Data::ForeignKeyConstraint^  fkc;
     fkc = (gcnew ::System::Data::ForeignKeyConstraint(L"player_info_skin_table", gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->tableplayer_info->player_info_IdColumn}, 
@@ -3580,66 +3580,66 @@ inline ::System::Void skillFrame::InitClass() {
     this->Relations->Add(this->relationbox_rect);
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeplayer_info() {
+inline ::System::Boolean playerFrame::ShouldSerializeplayer_info() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeskin_table() {
+inline ::System::Boolean playerFrame::ShouldSerializeskin_table() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeskin() {
+inline ::System::Boolean playerFrame::ShouldSerializeskin() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeskill_table() {
+inline ::System::Boolean playerFrame::ShouldSerializeskill_table() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeskill() {
+inline ::System::Boolean playerFrame::ShouldSerializeskill() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeobject_table() {
+inline ::System::Boolean playerFrame::ShouldSerializeobject_table() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeobject() {
+inline ::System::Boolean playerFrame::ShouldSerializeobject() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeframe_table() {
+inline ::System::Boolean playerFrame::ShouldSerializeframe_table() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializeframe() {
+inline ::System::Boolean playerFrame::ShouldSerializeframe() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializepoint() {
+inline ::System::Boolean playerFrame::ShouldSerializepoint() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializebox_table() {
+inline ::System::Boolean playerFrame::ShouldSerializebox_table() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializebox() {
+inline ::System::Boolean playerFrame::ShouldSerializebox() {
     return false;
 }
 
-inline ::System::Boolean skillFrame::ShouldSerializerect() {
+inline ::System::Boolean playerFrame::ShouldSerializerect() {
     return false;
 }
 
-inline ::System::Void skillFrame::SchemaChanged(::System::Object^  sender, ::System::ComponentModel::CollectionChangeEventArgs^  e) {
+inline ::System::Void playerFrame::SchemaChanged(::System::Object^  sender, ::System::ComponentModel::CollectionChangeEventArgs^  e) {
     if (e->Action == ::System::ComponentModel::CollectionChangeAction::Remove) {
         this->InitVars();
     }
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::GetTypedDataSetSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
-    skillFrame^  ds = (gcnew skillFrame());
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::GetTypedDataSetSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
     ::System::Xml::Schema::XmlSchemaAny^  any = (gcnew ::System::Xml::Schema::XmlSchemaAny());
@@ -3684,14 +3684,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::GetTypedDataSet
 }
 
 
-inline skillFrame::player_infoDataTable::player_infoDataTable() {
+inline playerFrame::player_infoDataTable::player_infoDataTable() {
     this->TableName = L"player_info";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::player_infoDataTable::player_infoDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::player_infoDataTable::player_infoDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -3706,55 +3706,55 @@ inline skillFrame::player_infoDataTable::player_infoDataTable(::System::Data::Da
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::player_infoDataTable::player_infoDataTable(::System::Runtime::Serialization::SerializationInfo^  info, 
+inline playerFrame::player_infoDataTable::player_infoDataTable(::System::Runtime::Serialization::SerializationInfo^  info, 
             ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::player_infoDataTable::player_info_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::player_infoDataTable::player_info_IdColumn::get() {
     return this->columnplayer_info_Id;
 }
 
-inline ::System::Int32 skillFrame::player_infoDataTable::Count::get() {
+inline ::System::Int32 playerFrame::player_infoDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::player_infoRow^  skillFrame::player_infoDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::player_infoRow^  >(this->Rows[index]));
+inline playerFrame::player_infoRow^  playerFrame::player_infoDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::player_infoRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::player_infoDataTable::Addplayer_infoRow(skillFrame::player_infoRow^  row) {
+inline ::System::Void playerFrame::player_infoDataTable::Addplayer_infoRow(playerFrame::player_infoRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::player_infoRow^  skillFrame::player_infoDataTable::Addplayer_infoRow() {
-    skillFrame::player_infoRow^  rowplayer_infoRow = (cli::safe_cast<skillFrame::player_infoRow^  >(this->NewRow()));
+inline playerFrame::player_infoRow^  playerFrame::player_infoDataTable::Addplayer_infoRow() {
+    playerFrame::player_infoRow^  rowplayer_infoRow = (cli::safe_cast<playerFrame::player_infoRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(1) {nullptr};
     rowplayer_infoRow->ItemArray = columnValuesArray;
     this->Rows->Add(rowplayer_infoRow);
     return rowplayer_infoRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::player_infoDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::player_infoDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::player_infoDataTable::Clone() {
-    skillFrame::player_infoDataTable^  cln = (cli::safe_cast<skillFrame::player_infoDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::player_infoDataTable::Clone() {
+    playerFrame::player_infoDataTable^  cln = (cli::safe_cast<playerFrame::player_infoDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::player_infoDataTable::CreateInstance() {
-    return (gcnew skillFrame::player_infoDataTable());
+inline ::System::Data::DataTable^  playerFrame::player_infoDataTable::CreateInstance() {
+    return (gcnew playerFrame::player_infoDataTable());
 }
 
-inline ::System::Void skillFrame::player_infoDataTable::InitVars() {
+inline ::System::Void playerFrame::player_infoDataTable::InitVars() {
     this->columnplayer_info_Id = __super::Columns[L"player_info_Id"];
 }
 
-inline ::System::Void skillFrame::player_infoDataTable::InitClass() {
+inline ::System::Void playerFrame::player_infoDataTable::InitClass() {
     this->columnplayer_info_Id = (gcnew ::System::Data::DataColumn(L"player_info_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
     __super::Columns->Add(this->columnplayer_info_Id);
     this->Constraints->Add((gcnew ::System::Data::UniqueConstraint(L"Constraint1", gcnew cli::array< ::System::Data::DataColumn^  >(1) {this->columnplayer_info_Id}, 
@@ -3764,58 +3764,58 @@ inline ::System::Void skillFrame::player_infoDataTable::InitClass() {
     this->columnplayer_info_Id->Unique = true;
 }
 
-inline skillFrame::player_infoRow^  skillFrame::player_infoDataTable::Newplayer_infoRow() {
-    return (cli::safe_cast<skillFrame::player_infoRow^  >(this->NewRow()));
+inline playerFrame::player_infoRow^  playerFrame::player_infoDataTable::Newplayer_infoRow() {
+    return (cli::safe_cast<playerFrame::player_infoRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::player_infoDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::player_infoRow(builder));
+inline ::System::Data::DataRow^  playerFrame::player_infoDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::player_infoRow(builder));
 }
 
-inline ::System::Type^  skillFrame::player_infoDataTable::GetRowType() {
-    return skillFrame::player_infoRow::typeid;
+inline ::System::Type^  playerFrame::player_infoDataTable::GetRowType() {
+    return playerFrame::player_infoRow::typeid;
 }
 
-inline ::System::Void skillFrame::player_infoDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::player_infoDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->player_infoRowChanged(this, (gcnew skillFrame::player_infoRowChangeEvent((cli::safe_cast<skillFrame::player_infoRow^  >(e->Row)), 
+        this->player_infoRowChanged(this, (gcnew playerFrame::player_infoRowChangeEvent((cli::safe_cast<playerFrame::player_infoRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::player_infoDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::player_infoDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->player_infoRowChanging(this, (gcnew skillFrame::player_infoRowChangeEvent((cli::safe_cast<skillFrame::player_infoRow^  >(e->Row)), 
+        this->player_infoRowChanging(this, (gcnew playerFrame::player_infoRowChangeEvent((cli::safe_cast<playerFrame::player_infoRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::player_infoDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::player_infoDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->player_infoRowDeleted(this, (gcnew skillFrame::player_infoRowChangeEvent((cli::safe_cast<skillFrame::player_infoRow^  >(e->Row)), 
+        this->player_infoRowDeleted(this, (gcnew playerFrame::player_infoRowChangeEvent((cli::safe_cast<playerFrame::player_infoRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::player_infoDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::player_infoDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->player_infoRowDeleting(this, (gcnew skillFrame::player_infoRowChangeEvent((cli::safe_cast<skillFrame::player_infoRow^  >(e->Row)), 
+        this->player_infoRowDeleting(this, (gcnew playerFrame::player_infoRowChangeEvent((cli::safe_cast<playerFrame::player_infoRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::player_infoDataTable::Removeplayer_infoRow(skillFrame::player_infoRow^  row) {
+inline ::System::Void playerFrame::player_infoDataTable::Removeplayer_infoRow(playerFrame::player_infoRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::player_infoDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::player_infoDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -3874,14 +3874,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::player_infoData
 }
 
 
-inline skillFrame::skin_tableDataTable::skin_tableDataTable() {
+inline playerFrame::skin_tableDataTable::skin_tableDataTable() {
     this->TableName = L"skin_table";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::skin_tableDataTable::skin_tableDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::skin_tableDataTable::skin_tableDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -3896,33 +3896,34 @@ inline skillFrame::skin_tableDataTable::skin_tableDataTable(::System::Data::Data
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::skin_tableDataTable::skin_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::skin_tableDataTable::skin_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, 
+            ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skin_tableDataTable::skin_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skin_tableDataTable::skin_table_IdColumn::get() {
     return this->columnskin_table_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skin_tableDataTable::player_info_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skin_tableDataTable::player_info_IdColumn::get() {
     return this->columnplayer_info_Id;
 }
 
-inline ::System::Int32 skillFrame::skin_tableDataTable::Count::get() {
+inline ::System::Int32 playerFrame::skin_tableDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::skin_tableRow^  skillFrame::skin_tableDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::skin_tableRow^  >(this->Rows[index]));
+inline playerFrame::skin_tableRow^  playerFrame::skin_tableDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::skin_tableRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::skin_tableDataTable::Addskin_tableRow(skillFrame::skin_tableRow^  row) {
+inline ::System::Void playerFrame::skin_tableDataTable::Addskin_tableRow(playerFrame::skin_tableRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::skin_tableRow^  skillFrame::skin_tableDataTable::Addskin_tableRow(skillFrame::player_infoRow^  parentplayer_infoRowByplayer_info_skin_table) {
-    skillFrame::skin_tableRow^  rowskin_tableRow = (cli::safe_cast<skillFrame::skin_tableRow^  >(this->NewRow()));
+inline playerFrame::skin_tableRow^  playerFrame::skin_tableDataTable::Addskin_tableRow(playerFrame::player_infoRow^  parentplayer_infoRowByplayer_info_skin_table) {
+    playerFrame::skin_tableRow^  rowskin_tableRow = (cli::safe_cast<playerFrame::skin_tableRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(2) {nullptr, nullptr};
     if (parentplayer_infoRowByplayer_info_skin_table != nullptr) {
         columnValuesArray[1] = parentplayer_infoRowByplayer_info_skin_table[0];
@@ -3932,26 +3933,26 @@ inline skillFrame::skin_tableRow^  skillFrame::skin_tableDataTable::Addskin_tabl
     return rowskin_tableRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::skin_tableDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::skin_tableDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::skin_tableDataTable::Clone() {
-    skillFrame::skin_tableDataTable^  cln = (cli::safe_cast<skillFrame::skin_tableDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::skin_tableDataTable::Clone() {
+    playerFrame::skin_tableDataTable^  cln = (cli::safe_cast<playerFrame::skin_tableDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::skin_tableDataTable::CreateInstance() {
-    return (gcnew skillFrame::skin_tableDataTable());
+inline ::System::Data::DataTable^  playerFrame::skin_tableDataTable::CreateInstance() {
+    return (gcnew playerFrame::skin_tableDataTable());
 }
 
-inline ::System::Void skillFrame::skin_tableDataTable::InitVars() {
+inline ::System::Void playerFrame::skin_tableDataTable::InitVars() {
     this->columnskin_table_Id = __super::Columns[L"skin_table_Id"];
     this->columnplayer_info_Id = __super::Columns[L"player_info_Id"];
 }
 
-inline ::System::Void skillFrame::skin_tableDataTable::InitClass() {
+inline ::System::Void playerFrame::skin_tableDataTable::InitClass() {
     this->columnskin_table_Id = (gcnew ::System::Data::DataColumn(L"skin_table_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
     __super::Columns->Add(this->columnskin_table_Id);
     this->columnplayer_info_Id = (gcnew ::System::Data::DataColumn(L"player_info_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
@@ -3963,58 +3964,58 @@ inline ::System::Void skillFrame::skin_tableDataTable::InitClass() {
     this->columnskin_table_Id->Unique = true;
 }
 
-inline skillFrame::skin_tableRow^  skillFrame::skin_tableDataTable::Newskin_tableRow() {
-    return (cli::safe_cast<skillFrame::skin_tableRow^  >(this->NewRow()));
+inline playerFrame::skin_tableRow^  playerFrame::skin_tableDataTable::Newskin_tableRow() {
+    return (cli::safe_cast<playerFrame::skin_tableRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::skin_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::skin_tableRow(builder));
+inline ::System::Data::DataRow^  playerFrame::skin_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::skin_tableRow(builder));
 }
 
-inline ::System::Type^  skillFrame::skin_tableDataTable::GetRowType() {
-    return skillFrame::skin_tableRow::typeid;
+inline ::System::Type^  playerFrame::skin_tableDataTable::GetRowType() {
+    return playerFrame::skin_tableRow::typeid;
 }
 
-inline ::System::Void skillFrame::skin_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skin_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->skin_tableRowChanged(this, (gcnew skillFrame::skin_tableRowChangeEvent((cli::safe_cast<skillFrame::skin_tableRow^  >(e->Row)), 
+        this->skin_tableRowChanged(this, (gcnew playerFrame::skin_tableRowChangeEvent((cli::safe_cast<playerFrame::skin_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skin_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skin_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->skin_tableRowChanging(this, (gcnew skillFrame::skin_tableRowChangeEvent((cli::safe_cast<skillFrame::skin_tableRow^  >(e->Row)), 
+        this->skin_tableRowChanging(this, (gcnew playerFrame::skin_tableRowChangeEvent((cli::safe_cast<playerFrame::skin_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skin_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skin_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->skin_tableRowDeleted(this, (gcnew skillFrame::skin_tableRowChangeEvent((cli::safe_cast<skillFrame::skin_tableRow^  >(e->Row)), 
+        this->skin_tableRowDeleted(this, (gcnew playerFrame::skin_tableRowChangeEvent((cli::safe_cast<playerFrame::skin_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skin_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skin_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->skin_tableRowDeleting(this, (gcnew skillFrame::skin_tableRowChangeEvent((cli::safe_cast<skillFrame::skin_tableRow^  >(e->Row)), 
+        this->skin_tableRowDeleting(this, (gcnew playerFrame::skin_tableRowChangeEvent((cli::safe_cast<playerFrame::skin_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skin_tableDataTable::Removeskin_tableRow(skillFrame::skin_tableRow^  row) {
+inline ::System::Void playerFrame::skin_tableDataTable::Removeskin_tableRow(playerFrame::skin_tableRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::skin_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::skin_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -4073,14 +4074,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::skin_tableDataT
 }
 
 
-inline skillFrame::skinDataTable::skinDataTable() {
+inline playerFrame::skinDataTable::skinDataTable() {
     this->TableName = L"skin";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::skinDataTable::skinDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::skinDataTable::skinDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -4095,33 +4096,33 @@ inline skillFrame::skinDataTable::skinDataTable(::System::Data::DataTable^  tabl
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::skinDataTable::skinDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::skinDataTable::skinDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skinDataTable::nameColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skinDataTable::nameColumn::get() {
     return this->columnname;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skinDataTable::skin_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skinDataTable::skin_table_IdColumn::get() {
     return this->columnskin_table_Id;
 }
 
-inline ::System::Int32 skillFrame::skinDataTable::Count::get() {
+inline ::System::Int32 playerFrame::skinDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::skinRow^  skillFrame::skinDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::skinRow^  >(this->Rows[index]));
+inline playerFrame::skinRow^  playerFrame::skinDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::skinRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::skinDataTable::AddskinRow(skillFrame::skinRow^  row) {
+inline ::System::Void playerFrame::skinDataTable::AddskinRow(playerFrame::skinRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::skinRow^  skillFrame::skinDataTable::AddskinRow(System::String^  name, skillFrame::skin_tableRow^  parentskin_tableRowByskin_table_skin) {
-    skillFrame::skinRow^  rowskinRow = (cli::safe_cast<skillFrame::skinRow^  >(this->NewRow()));
+inline playerFrame::skinRow^  playerFrame::skinDataTable::AddskinRow(System::String^  name, playerFrame::skin_tableRow^  parentskin_tableRowByskin_table_skin) {
+    playerFrame::skinRow^  rowskinRow = (cli::safe_cast<playerFrame::skinRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(2) {name, nullptr};
     if (parentskin_tableRowByskin_table_skin != nullptr) {
         columnValuesArray[1] = parentskin_tableRowByskin_table_skin[0];
@@ -4131,26 +4132,26 @@ inline skillFrame::skinRow^  skillFrame::skinDataTable::AddskinRow(System::Strin
     return rowskinRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::skinDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::skinDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::skinDataTable::Clone() {
-    skillFrame::skinDataTable^  cln = (cli::safe_cast<skillFrame::skinDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::skinDataTable::Clone() {
+    playerFrame::skinDataTable^  cln = (cli::safe_cast<playerFrame::skinDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::skinDataTable::CreateInstance() {
-    return (gcnew skillFrame::skinDataTable());
+inline ::System::Data::DataTable^  playerFrame::skinDataTable::CreateInstance() {
+    return (gcnew playerFrame::skinDataTable());
 }
 
-inline ::System::Void skillFrame::skinDataTable::InitVars() {
+inline ::System::Void playerFrame::skinDataTable::InitVars() {
     this->columnname = __super::Columns[L"name"];
     this->columnskin_table_Id = __super::Columns[L"skin_table_Id"];
 }
 
-inline ::System::Void skillFrame::skinDataTable::InitClass() {
+inline ::System::Void playerFrame::skinDataTable::InitClass() {
     this->columnname = (gcnew ::System::Data::DataColumn(L"name", ::System::String::typeid, nullptr, ::System::Data::MappingType::Attribute));
     __super::Columns->Add(this->columnname);
     this->columnskin_table_Id = (gcnew ::System::Data::DataColumn(L"skin_table_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
@@ -4159,54 +4160,58 @@ inline ::System::Void skillFrame::skinDataTable::InitClass() {
     this->columnname->Namespace = L"";
 }
 
-inline skillFrame::skinRow^  skillFrame::skinDataTable::NewskinRow() {
-    return (cli::safe_cast<skillFrame::skinRow^  >(this->NewRow()));
+inline playerFrame::skinRow^  playerFrame::skinDataTable::NewskinRow() {
+    return (cli::safe_cast<playerFrame::skinRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::skinDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::skinRow(builder));
+inline ::System::Data::DataRow^  playerFrame::skinDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::skinRow(builder));
 }
 
-inline ::System::Type^  skillFrame::skinDataTable::GetRowType() {
-    return skillFrame::skinRow::typeid;
+inline ::System::Type^  playerFrame::skinDataTable::GetRowType() {
+    return playerFrame::skinRow::typeid;
 }
 
-inline ::System::Void skillFrame::skinDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skinDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->skinRowChanged(this, (gcnew skillFrame::skinRowChangeEvent((cli::safe_cast<skillFrame::skinRow^  >(e->Row)), e->Action)));
+        this->skinRowChanged(this, (gcnew playerFrame::skinRowChangeEvent((cli::safe_cast<playerFrame::skinRow^  >(e->Row)), 
+                e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skinDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skinDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->skinRowChanging(this, (gcnew skillFrame::skinRowChangeEvent((cli::safe_cast<skillFrame::skinRow^  >(e->Row)), e->Action)));
+        this->skinRowChanging(this, (gcnew playerFrame::skinRowChangeEvent((cli::safe_cast<playerFrame::skinRow^  >(e->Row)), 
+                e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skinDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skinDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->skinRowDeleted(this, (gcnew skillFrame::skinRowChangeEvent((cli::safe_cast<skillFrame::skinRow^  >(e->Row)), e->Action)));
+        this->skinRowDeleted(this, (gcnew playerFrame::skinRowChangeEvent((cli::safe_cast<playerFrame::skinRow^  >(e->Row)), 
+                e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skinDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skinDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->skinRowDeleting(this, (gcnew skillFrame::skinRowChangeEvent((cli::safe_cast<skillFrame::skinRow^  >(e->Row)), e->Action)));
+        this->skinRowDeleting(this, (gcnew playerFrame::skinRowChangeEvent((cli::safe_cast<playerFrame::skinRow^  >(e->Row)), 
+                e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skinDataTable::RemoveskinRow(skillFrame::skinRow^  row) {
+inline ::System::Void playerFrame::skinDataTable::RemoveskinRow(playerFrame::skinRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::skinDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::skinDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -4265,14 +4270,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::skinDataTable::
 }
 
 
-inline skillFrame::skill_tableDataTable::skill_tableDataTable() {
+inline playerFrame::skill_tableDataTable::skill_tableDataTable() {
     this->TableName = L"skill_table";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::skill_tableDataTable::skill_tableDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::skill_tableDataTable::skill_tableDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -4287,34 +4292,34 @@ inline skillFrame::skill_tableDataTable::skill_tableDataTable(::System::Data::Da
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::skill_tableDataTable::skill_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, 
+inline playerFrame::skill_tableDataTable::skill_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, 
             ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skill_tableDataTable::skill_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skill_tableDataTable::skill_table_IdColumn::get() {
     return this->columnskill_table_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skill_tableDataTable::player_info_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skill_tableDataTable::player_info_IdColumn::get() {
     return this->columnplayer_info_Id;
 }
 
-inline ::System::Int32 skillFrame::skill_tableDataTable::Count::get() {
+inline ::System::Int32 playerFrame::skill_tableDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::skill_tableRow^  skillFrame::skill_tableDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::skill_tableRow^  >(this->Rows[index]));
+inline playerFrame::skill_tableRow^  playerFrame::skill_tableDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::skill_tableRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::skill_tableDataTable::Addskill_tableRow(skillFrame::skill_tableRow^  row) {
+inline ::System::Void playerFrame::skill_tableDataTable::Addskill_tableRow(playerFrame::skill_tableRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::skill_tableRow^  skillFrame::skill_tableDataTable::Addskill_tableRow(skillFrame::player_infoRow^  parentplayer_infoRowByplayer_info_skill_table) {
-    skillFrame::skill_tableRow^  rowskill_tableRow = (cli::safe_cast<skillFrame::skill_tableRow^  >(this->NewRow()));
+inline playerFrame::skill_tableRow^  playerFrame::skill_tableDataTable::Addskill_tableRow(playerFrame::player_infoRow^  parentplayer_infoRowByplayer_info_skill_table) {
+    playerFrame::skill_tableRow^  rowskill_tableRow = (cli::safe_cast<playerFrame::skill_tableRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(2) {nullptr, nullptr};
     if (parentplayer_infoRowByplayer_info_skill_table != nullptr) {
         columnValuesArray[1] = parentplayer_infoRowByplayer_info_skill_table[0];
@@ -4324,26 +4329,26 @@ inline skillFrame::skill_tableRow^  skillFrame::skill_tableDataTable::Addskill_t
     return rowskill_tableRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::skill_tableDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::skill_tableDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::skill_tableDataTable::Clone() {
-    skillFrame::skill_tableDataTable^  cln = (cli::safe_cast<skillFrame::skill_tableDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::skill_tableDataTable::Clone() {
+    playerFrame::skill_tableDataTable^  cln = (cli::safe_cast<playerFrame::skill_tableDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::skill_tableDataTable::CreateInstance() {
-    return (gcnew skillFrame::skill_tableDataTable());
+inline ::System::Data::DataTable^  playerFrame::skill_tableDataTable::CreateInstance() {
+    return (gcnew playerFrame::skill_tableDataTable());
 }
 
-inline ::System::Void skillFrame::skill_tableDataTable::InitVars() {
+inline ::System::Void playerFrame::skill_tableDataTable::InitVars() {
     this->columnskill_table_Id = __super::Columns[L"skill_table_Id"];
     this->columnplayer_info_Id = __super::Columns[L"player_info_Id"];
 }
 
-inline ::System::Void skillFrame::skill_tableDataTable::InitClass() {
+inline ::System::Void playerFrame::skill_tableDataTable::InitClass() {
     this->columnskill_table_Id = (gcnew ::System::Data::DataColumn(L"skill_table_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
     __super::Columns->Add(this->columnskill_table_Id);
     this->columnplayer_info_Id = (gcnew ::System::Data::DataColumn(L"player_info_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
@@ -4355,58 +4360,58 @@ inline ::System::Void skillFrame::skill_tableDataTable::InitClass() {
     this->columnskill_table_Id->Unique = true;
 }
 
-inline skillFrame::skill_tableRow^  skillFrame::skill_tableDataTable::Newskill_tableRow() {
-    return (cli::safe_cast<skillFrame::skill_tableRow^  >(this->NewRow()));
+inline playerFrame::skill_tableRow^  playerFrame::skill_tableDataTable::Newskill_tableRow() {
+    return (cli::safe_cast<playerFrame::skill_tableRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::skill_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::skill_tableRow(builder));
+inline ::System::Data::DataRow^  playerFrame::skill_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::skill_tableRow(builder));
 }
 
-inline ::System::Type^  skillFrame::skill_tableDataTable::GetRowType() {
-    return skillFrame::skill_tableRow::typeid;
+inline ::System::Type^  playerFrame::skill_tableDataTable::GetRowType() {
+    return playerFrame::skill_tableRow::typeid;
 }
 
-inline ::System::Void skillFrame::skill_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skill_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->skill_tableRowChanged(this, (gcnew skillFrame::skill_tableRowChangeEvent((cli::safe_cast<skillFrame::skill_tableRow^  >(e->Row)), 
+        this->skill_tableRowChanged(this, (gcnew playerFrame::skill_tableRowChangeEvent((cli::safe_cast<playerFrame::skill_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skill_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skill_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->skill_tableRowChanging(this, (gcnew skillFrame::skill_tableRowChangeEvent((cli::safe_cast<skillFrame::skill_tableRow^  >(e->Row)), 
+        this->skill_tableRowChanging(this, (gcnew playerFrame::skill_tableRowChangeEvent((cli::safe_cast<playerFrame::skill_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skill_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skill_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->skill_tableRowDeleted(this, (gcnew skillFrame::skill_tableRowChangeEvent((cli::safe_cast<skillFrame::skill_tableRow^  >(e->Row)), 
+        this->skill_tableRowDeleted(this, (gcnew playerFrame::skill_tableRowChangeEvent((cli::safe_cast<playerFrame::skill_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skill_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skill_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->skill_tableRowDeleting(this, (gcnew skillFrame::skill_tableRowChangeEvent((cli::safe_cast<skillFrame::skill_tableRow^  >(e->Row)), 
+        this->skill_tableRowDeleting(this, (gcnew playerFrame::skill_tableRowChangeEvent((cli::safe_cast<playerFrame::skill_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skill_tableDataTable::Removeskill_tableRow(skillFrame::skill_tableRow^  row) {
+inline ::System::Void playerFrame::skill_tableDataTable::Removeskill_tableRow(playerFrame::skill_tableRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::skill_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::skill_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -4465,14 +4470,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::skill_tableData
 }
 
 
-inline skillFrame::skillDataTable::skillDataTable() {
+inline playerFrame::skillDataTable::skillDataTable() {
     this->TableName = L"skill";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::skillDataTable::skillDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::skillDataTable::skillDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -4487,50 +4492,50 @@ inline skillFrame::skillDataTable::skillDataTable(::System::Data::DataTable^  ta
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::skillDataTable::skillDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::skillDataTable::skillDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skillDataTable::ekaColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skillDataTable::ekaColumn::get() {
     return this->columneka;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skillDataTable::asColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skillDataTable::asColumn::get() {
     return this->columnas;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skillDataTable::ssseColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skillDataTable::ssseColumn::get() {
     return this->columnssse;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skillDataTable::savableColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skillDataTable::savableColumn::get() {
     return this->columnsavable;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skillDataTable::skill_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skillDataTable::skill_IdColumn::get() {
     return this->columnskill_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::skillDataTable::skill_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::skillDataTable::skill_table_IdColumn::get() {
     return this->columnskill_table_Id;
 }
 
-inline ::System::Int32 skillFrame::skillDataTable::Count::get() {
+inline ::System::Int32 playerFrame::skillDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::skillRow^  skillFrame::skillDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::skillRow^  >(this->Rows[index]));
+inline playerFrame::skillRow^  playerFrame::skillDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::skillRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::skillDataTable::AddskillRow(skillFrame::skillRow^  row) {
+inline ::System::Void playerFrame::skillDataTable::AddskillRow(playerFrame::skillRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::skillRow^  skillFrame::skillDataTable::AddskillRow(System::String^  eka, System::String^  as, System::String^  ssse, 
-            System::Boolean savable, skillFrame::skill_tableRow^  parentskill_tableRowByskill_table_skill) {
-    skillFrame::skillRow^  rowskillRow = (cli::safe_cast<skillFrame::skillRow^  >(this->NewRow()));
+inline playerFrame::skillRow^  playerFrame::skillDataTable::AddskillRow(System::String^  eka, System::String^  as, System::String^  ssse, 
+            System::Boolean savable, playerFrame::skill_tableRow^  parentskill_tableRowByskill_table_skill) {
+    playerFrame::skillRow^  rowskillRow = (cli::safe_cast<playerFrame::skillRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(6) {eka, as, ssse, savable, 
         nullptr, nullptr};
     if (parentskill_tableRowByskill_table_skill != nullptr) {
@@ -4541,21 +4546,21 @@ inline skillFrame::skillRow^  skillFrame::skillDataTable::AddskillRow(System::St
     return rowskillRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::skillDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::skillDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::skillDataTable::Clone() {
-    skillFrame::skillDataTable^  cln = (cli::safe_cast<skillFrame::skillDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::skillDataTable::Clone() {
+    playerFrame::skillDataTable^  cln = (cli::safe_cast<playerFrame::skillDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::skillDataTable::CreateInstance() {
-    return (gcnew skillFrame::skillDataTable());
+inline ::System::Data::DataTable^  playerFrame::skillDataTable::CreateInstance() {
+    return (gcnew playerFrame::skillDataTable());
 }
 
-inline ::System::Void skillFrame::skillDataTable::InitVars() {
+inline ::System::Void playerFrame::skillDataTable::InitVars() {
     this->columneka = __super::Columns[L"eka"];
     this->columnas = __super::Columns[L"as"];
     this->columnssse = __super::Columns[L"ssse"];
@@ -4564,7 +4569,7 @@ inline ::System::Void skillFrame::skillDataTable::InitVars() {
     this->columnskill_table_Id = __super::Columns[L"skill_table_Id"];
 }
 
-inline ::System::Void skillFrame::skillDataTable::InitClass() {
+inline ::System::Void playerFrame::skillDataTable::InitClass() {
     this->columneka = (gcnew ::System::Data::DataColumn(L"eka", ::System::String::typeid, nullptr, ::System::Data::MappingType::Attribute));
     __super::Columns->Add(this->columneka);
     this->columnas = (gcnew ::System::Data::DataColumn(L"as", ::System::String::typeid, nullptr, ::System::Data::MappingType::Attribute));
@@ -4592,58 +4597,58 @@ inline ::System::Void skillFrame::skillDataTable::InitClass() {
     this->columnskill_Id->Unique = true;
 }
 
-inline skillFrame::skillRow^  skillFrame::skillDataTable::NewskillRow() {
-    return (cli::safe_cast<skillFrame::skillRow^  >(this->NewRow()));
+inline playerFrame::skillRow^  playerFrame::skillDataTable::NewskillRow() {
+    return (cli::safe_cast<playerFrame::skillRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::skillDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::skillRow(builder));
+inline ::System::Data::DataRow^  playerFrame::skillDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::skillRow(builder));
 }
 
-inline ::System::Type^  skillFrame::skillDataTable::GetRowType() {
-    return skillFrame::skillRow::typeid;
+inline ::System::Type^  playerFrame::skillDataTable::GetRowType() {
+    return playerFrame::skillRow::typeid;
 }
 
-inline ::System::Void skillFrame::skillDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skillDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->skillRowChanged(this, (gcnew skillFrame::skillRowChangeEvent((cli::safe_cast<skillFrame::skillRow^  >(e->Row)), 
+        this->skillRowChanged(this, (gcnew playerFrame::skillRowChangeEvent((cli::safe_cast<playerFrame::skillRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skillDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skillDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->skillRowChanging(this, (gcnew skillFrame::skillRowChangeEvent((cli::safe_cast<skillFrame::skillRow^  >(e->Row)), 
+        this->skillRowChanging(this, (gcnew playerFrame::skillRowChangeEvent((cli::safe_cast<playerFrame::skillRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skillDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skillDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->skillRowDeleted(this, (gcnew skillFrame::skillRowChangeEvent((cli::safe_cast<skillFrame::skillRow^  >(e->Row)), 
+        this->skillRowDeleted(this, (gcnew playerFrame::skillRowChangeEvent((cli::safe_cast<playerFrame::skillRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skillDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::skillDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->skillRowDeleting(this, (gcnew skillFrame::skillRowChangeEvent((cli::safe_cast<skillFrame::skillRow^  >(e->Row)), 
+        this->skillRowDeleting(this, (gcnew playerFrame::skillRowChangeEvent((cli::safe_cast<playerFrame::skillRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::skillDataTable::RemoveskillRow(skillFrame::skillRow^  row) {
+inline ::System::Void playerFrame::skillDataTable::RemoveskillRow(playerFrame::skillRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::skillDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::skillDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -4702,14 +4707,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::skillDataTable:
 }
 
 
-inline skillFrame::object_tableDataTable::object_tableDataTable() {
+inline playerFrame::object_tableDataTable::object_tableDataTable() {
     this->TableName = L"object_table";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::object_tableDataTable::object_tableDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::object_tableDataTable::object_tableDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -4724,34 +4729,34 @@ inline skillFrame::object_tableDataTable::object_tableDataTable(::System::Data::
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::object_tableDataTable::object_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, 
+inline playerFrame::object_tableDataTable::object_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, 
             ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::object_tableDataTable::object_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::object_tableDataTable::object_table_IdColumn::get() {
     return this->columnobject_table_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::object_tableDataTable::skill_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::object_tableDataTable::skill_IdColumn::get() {
     return this->columnskill_Id;
 }
 
-inline ::System::Int32 skillFrame::object_tableDataTable::Count::get() {
+inline ::System::Int32 playerFrame::object_tableDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::object_tableRow^  skillFrame::object_tableDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::object_tableRow^  >(this->Rows[index]));
+inline playerFrame::object_tableRow^  playerFrame::object_tableDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::object_tableRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::object_tableDataTable::Addobject_tableRow(skillFrame::object_tableRow^  row) {
+inline ::System::Void playerFrame::object_tableDataTable::Addobject_tableRow(playerFrame::object_tableRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::object_tableRow^  skillFrame::object_tableDataTable::Addobject_tableRow(skillFrame::skillRow^  parentskillRowByskill_object_table) {
-    skillFrame::object_tableRow^  rowobject_tableRow = (cli::safe_cast<skillFrame::object_tableRow^  >(this->NewRow()));
+inline playerFrame::object_tableRow^  playerFrame::object_tableDataTable::Addobject_tableRow(playerFrame::skillRow^  parentskillRowByskill_object_table) {
+    playerFrame::object_tableRow^  rowobject_tableRow = (cli::safe_cast<playerFrame::object_tableRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(2) {nullptr, nullptr};
     if (parentskillRowByskill_object_table != nullptr) {
         columnValuesArray[1] = parentskillRowByskill_object_table[4];
@@ -4761,26 +4766,26 @@ inline skillFrame::object_tableRow^  skillFrame::object_tableDataTable::Addobjec
     return rowobject_tableRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::object_tableDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::object_tableDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::object_tableDataTable::Clone() {
-    skillFrame::object_tableDataTable^  cln = (cli::safe_cast<skillFrame::object_tableDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::object_tableDataTable::Clone() {
+    playerFrame::object_tableDataTable^  cln = (cli::safe_cast<playerFrame::object_tableDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::object_tableDataTable::CreateInstance() {
-    return (gcnew skillFrame::object_tableDataTable());
+inline ::System::Data::DataTable^  playerFrame::object_tableDataTable::CreateInstance() {
+    return (gcnew playerFrame::object_tableDataTable());
 }
 
-inline ::System::Void skillFrame::object_tableDataTable::InitVars() {
+inline ::System::Void playerFrame::object_tableDataTable::InitVars() {
     this->columnobject_table_Id = __super::Columns[L"object_table_Id"];
     this->columnskill_Id = __super::Columns[L"skill_Id"];
 }
 
-inline ::System::Void skillFrame::object_tableDataTable::InitClass() {
+inline ::System::Void playerFrame::object_tableDataTable::InitClass() {
     this->columnobject_table_Id = (gcnew ::System::Data::DataColumn(L"object_table_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
     __super::Columns->Add(this->columnobject_table_Id);
     this->columnskill_Id = (gcnew ::System::Data::DataColumn(L"skill_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
@@ -4792,58 +4797,58 @@ inline ::System::Void skillFrame::object_tableDataTable::InitClass() {
     this->columnobject_table_Id->Unique = true;
 }
 
-inline skillFrame::object_tableRow^  skillFrame::object_tableDataTable::Newobject_tableRow() {
-    return (cli::safe_cast<skillFrame::object_tableRow^  >(this->NewRow()));
+inline playerFrame::object_tableRow^  playerFrame::object_tableDataTable::Newobject_tableRow() {
+    return (cli::safe_cast<playerFrame::object_tableRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::object_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::object_tableRow(builder));
+inline ::System::Data::DataRow^  playerFrame::object_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::object_tableRow(builder));
 }
 
-inline ::System::Type^  skillFrame::object_tableDataTable::GetRowType() {
-    return skillFrame::object_tableRow::typeid;
+inline ::System::Type^  playerFrame::object_tableDataTable::GetRowType() {
+    return playerFrame::object_tableRow::typeid;
 }
 
-inline ::System::Void skillFrame::object_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::object_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->object_tableRowChanged(this, (gcnew skillFrame::object_tableRowChangeEvent((cli::safe_cast<skillFrame::object_tableRow^  >(e->Row)), 
+        this->object_tableRowChanged(this, (gcnew playerFrame::object_tableRowChangeEvent((cli::safe_cast<playerFrame::object_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::object_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::object_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->object_tableRowChanging(this, (gcnew skillFrame::object_tableRowChangeEvent((cli::safe_cast<skillFrame::object_tableRow^  >(e->Row)), 
+        this->object_tableRowChanging(this, (gcnew playerFrame::object_tableRowChangeEvent((cli::safe_cast<playerFrame::object_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::object_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::object_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->object_tableRowDeleted(this, (gcnew skillFrame::object_tableRowChangeEvent((cli::safe_cast<skillFrame::object_tableRow^  >(e->Row)), 
+        this->object_tableRowDeleted(this, (gcnew playerFrame::object_tableRowChangeEvent((cli::safe_cast<playerFrame::object_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::object_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::object_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->object_tableRowDeleting(this, (gcnew skillFrame::object_tableRowChangeEvent((cli::safe_cast<skillFrame::object_tableRow^  >(e->Row)), 
+        this->object_tableRowDeleting(this, (gcnew playerFrame::object_tableRowChangeEvent((cli::safe_cast<playerFrame::object_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::object_tableDataTable::Removeobject_tableRow(skillFrame::object_tableRow^  row) {
+inline ::System::Void playerFrame::object_tableDataTable::Removeobject_tableRow(playerFrame::object_tableRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::object_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::object_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -4902,14 +4907,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::object_tableDat
 }
 
 
-inline skillFrame::objectDataTable::objectDataTable() {
+inline playerFrame::objectDataTable::objectDataTable() {
     this->TableName = L"object";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::objectDataTable::objectDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::objectDataTable::objectDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -4924,37 +4929,37 @@ inline skillFrame::objectDataTable::objectDataTable(::System::Data::DataTable^  
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::objectDataTable::objectDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::objectDataTable::objectDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::objectDataTable::idColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::objectDataTable::idColumn::get() {
     return this->columnid;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::objectDataTable::object_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::objectDataTable::object_IdColumn::get() {
     return this->columnobject_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::objectDataTable::object_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::objectDataTable::object_table_IdColumn::get() {
     return this->columnobject_table_Id;
 }
 
-inline ::System::Int32 skillFrame::objectDataTable::Count::get() {
+inline ::System::Int32 playerFrame::objectDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::objectRow^  skillFrame::objectDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::objectRow^  >(this->Rows[index]));
+inline playerFrame::objectRow^  playerFrame::objectDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::objectRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::objectDataTable::AddobjectRow(skillFrame::objectRow^  row) {
+inline ::System::Void playerFrame::objectDataTable::AddobjectRow(playerFrame::objectRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::objectRow^  skillFrame::objectDataTable::AddobjectRow(System::Int32 id, skillFrame::object_tableRow^  parentobject_tableRowByobject_table_object) {
-    skillFrame::objectRow^  rowobjectRow = (cli::safe_cast<skillFrame::objectRow^  >(this->NewRow()));
+inline playerFrame::objectRow^  playerFrame::objectDataTable::AddobjectRow(System::Int32 id, playerFrame::object_tableRow^  parentobject_tableRowByobject_table_object) {
+    playerFrame::objectRow^  rowobjectRow = (cli::safe_cast<playerFrame::objectRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(3) {id, nullptr, nullptr};
     if (parentobject_tableRowByobject_table_object != nullptr) {
         columnValuesArray[2] = parentobject_tableRowByobject_table_object[0];
@@ -4964,27 +4969,27 @@ inline skillFrame::objectRow^  skillFrame::objectDataTable::AddobjectRow(System:
     return rowobjectRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::objectDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::objectDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::objectDataTable::Clone() {
-    skillFrame::objectDataTable^  cln = (cli::safe_cast<skillFrame::objectDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::objectDataTable::Clone() {
+    playerFrame::objectDataTable^  cln = (cli::safe_cast<playerFrame::objectDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::objectDataTable::CreateInstance() {
-    return (gcnew skillFrame::objectDataTable());
+inline ::System::Data::DataTable^  playerFrame::objectDataTable::CreateInstance() {
+    return (gcnew playerFrame::objectDataTable());
 }
 
-inline ::System::Void skillFrame::objectDataTable::InitVars() {
+inline ::System::Void playerFrame::objectDataTable::InitVars() {
     this->columnid = __super::Columns[L"id"];
     this->columnobject_Id = __super::Columns[L"object_Id"];
     this->columnobject_table_Id = __super::Columns[L"object_table_Id"];
 }
 
-inline ::System::Void skillFrame::objectDataTable::InitClass() {
+inline ::System::Void playerFrame::objectDataTable::InitClass() {
     this->columnid = (gcnew ::System::Data::DataColumn(L"id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Attribute));
     __super::Columns->Add(this->columnid);
     this->columnobject_Id = (gcnew ::System::Data::DataColumn(L"object_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
@@ -5000,58 +5005,58 @@ inline ::System::Void skillFrame::objectDataTable::InitClass() {
     this->columnobject_Id->Unique = true;
 }
 
-inline skillFrame::objectRow^  skillFrame::objectDataTable::NewobjectRow() {
-    return (cli::safe_cast<skillFrame::objectRow^  >(this->NewRow()));
+inline playerFrame::objectRow^  playerFrame::objectDataTable::NewobjectRow() {
+    return (cli::safe_cast<playerFrame::objectRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::objectDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::objectRow(builder));
+inline ::System::Data::DataRow^  playerFrame::objectDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::objectRow(builder));
 }
 
-inline ::System::Type^  skillFrame::objectDataTable::GetRowType() {
-    return skillFrame::objectRow::typeid;
+inline ::System::Type^  playerFrame::objectDataTable::GetRowType() {
+    return playerFrame::objectRow::typeid;
 }
 
-inline ::System::Void skillFrame::objectDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::objectDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->objectRowChanged(this, (gcnew skillFrame::objectRowChangeEvent((cli::safe_cast<skillFrame::objectRow^  >(e->Row)), 
+        this->objectRowChanged(this, (gcnew playerFrame::objectRowChangeEvent((cli::safe_cast<playerFrame::objectRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::objectDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::objectDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->objectRowChanging(this, (gcnew skillFrame::objectRowChangeEvent((cli::safe_cast<skillFrame::objectRow^  >(e->Row)), 
+        this->objectRowChanging(this, (gcnew playerFrame::objectRowChangeEvent((cli::safe_cast<playerFrame::objectRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::objectDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::objectDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->objectRowDeleted(this, (gcnew skillFrame::objectRowChangeEvent((cli::safe_cast<skillFrame::objectRow^  >(e->Row)), 
+        this->objectRowDeleted(this, (gcnew playerFrame::objectRowChangeEvent((cli::safe_cast<playerFrame::objectRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::objectDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::objectDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->objectRowDeleting(this, (gcnew skillFrame::objectRowChangeEvent((cli::safe_cast<skillFrame::objectRow^  >(e->Row)), 
+        this->objectRowDeleting(this, (gcnew playerFrame::objectRowChangeEvent((cli::safe_cast<playerFrame::objectRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::objectDataTable::RemoveobjectRow(skillFrame::objectRow^  row) {
+inline ::System::Void playerFrame::objectDataTable::RemoveobjectRow(playerFrame::objectRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::objectDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::objectDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -5110,14 +5115,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::objectDataTable
 }
 
 
-inline skillFrame::frame_tableDataTable::frame_tableDataTable() {
+inline playerFrame::frame_tableDataTable::frame_tableDataTable() {
     this->TableName = L"frame_table";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::frame_tableDataTable::frame_tableDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::frame_tableDataTable::frame_tableDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -5132,34 +5137,34 @@ inline skillFrame::frame_tableDataTable::frame_tableDataTable(::System::Data::Da
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::frame_tableDataTable::frame_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, 
+inline playerFrame::frame_tableDataTable::frame_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, 
             ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::frame_tableDataTable::frame_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::frame_tableDataTable::frame_table_IdColumn::get() {
     return this->columnframe_table_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::frame_tableDataTable::object_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::frame_tableDataTable::object_IdColumn::get() {
     return this->columnobject_Id;
 }
 
-inline ::System::Int32 skillFrame::frame_tableDataTable::Count::get() {
+inline ::System::Int32 playerFrame::frame_tableDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::frame_tableRow^  skillFrame::frame_tableDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::frame_tableRow^  >(this->Rows[index]));
+inline playerFrame::frame_tableRow^  playerFrame::frame_tableDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::frame_tableRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::frame_tableDataTable::Addframe_tableRow(skillFrame::frame_tableRow^  row) {
+inline ::System::Void playerFrame::frame_tableDataTable::Addframe_tableRow(playerFrame::frame_tableRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::frame_tableRow^  skillFrame::frame_tableDataTable::Addframe_tableRow(skillFrame::objectRow^  parentobjectRowByobject_frame_table) {
-    skillFrame::frame_tableRow^  rowframe_tableRow = (cli::safe_cast<skillFrame::frame_tableRow^  >(this->NewRow()));
+inline playerFrame::frame_tableRow^  playerFrame::frame_tableDataTable::Addframe_tableRow(playerFrame::objectRow^  parentobjectRowByobject_frame_table) {
+    playerFrame::frame_tableRow^  rowframe_tableRow = (cli::safe_cast<playerFrame::frame_tableRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(2) {nullptr, nullptr};
     if (parentobjectRowByobject_frame_table != nullptr) {
         columnValuesArray[1] = parentobjectRowByobject_frame_table[1];
@@ -5169,26 +5174,26 @@ inline skillFrame::frame_tableRow^  skillFrame::frame_tableDataTable::Addframe_t
     return rowframe_tableRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::frame_tableDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::frame_tableDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::frame_tableDataTable::Clone() {
-    skillFrame::frame_tableDataTable^  cln = (cli::safe_cast<skillFrame::frame_tableDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::frame_tableDataTable::Clone() {
+    playerFrame::frame_tableDataTable^  cln = (cli::safe_cast<playerFrame::frame_tableDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::frame_tableDataTable::CreateInstance() {
-    return (gcnew skillFrame::frame_tableDataTable());
+inline ::System::Data::DataTable^  playerFrame::frame_tableDataTable::CreateInstance() {
+    return (gcnew playerFrame::frame_tableDataTable());
 }
 
-inline ::System::Void skillFrame::frame_tableDataTable::InitVars() {
+inline ::System::Void playerFrame::frame_tableDataTable::InitVars() {
     this->columnframe_table_Id = __super::Columns[L"frame_table_Id"];
     this->columnobject_Id = __super::Columns[L"object_Id"];
 }
 
-inline ::System::Void skillFrame::frame_tableDataTable::InitClass() {
+inline ::System::Void playerFrame::frame_tableDataTable::InitClass() {
     this->columnframe_table_Id = (gcnew ::System::Data::DataColumn(L"frame_table_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
     __super::Columns->Add(this->columnframe_table_Id);
     this->columnobject_Id = (gcnew ::System::Data::DataColumn(L"object_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
@@ -5200,58 +5205,58 @@ inline ::System::Void skillFrame::frame_tableDataTable::InitClass() {
     this->columnframe_table_Id->Unique = true;
 }
 
-inline skillFrame::frame_tableRow^  skillFrame::frame_tableDataTable::Newframe_tableRow() {
-    return (cli::safe_cast<skillFrame::frame_tableRow^  >(this->NewRow()));
+inline playerFrame::frame_tableRow^  playerFrame::frame_tableDataTable::Newframe_tableRow() {
+    return (cli::safe_cast<playerFrame::frame_tableRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::frame_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::frame_tableRow(builder));
+inline ::System::Data::DataRow^  playerFrame::frame_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::frame_tableRow(builder));
 }
 
-inline ::System::Type^  skillFrame::frame_tableDataTable::GetRowType() {
-    return skillFrame::frame_tableRow::typeid;
+inline ::System::Type^  playerFrame::frame_tableDataTable::GetRowType() {
+    return playerFrame::frame_tableRow::typeid;
 }
 
-inline ::System::Void skillFrame::frame_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::frame_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->frame_tableRowChanged(this, (gcnew skillFrame::frame_tableRowChangeEvent((cli::safe_cast<skillFrame::frame_tableRow^  >(e->Row)), 
+        this->frame_tableRowChanged(this, (gcnew playerFrame::frame_tableRowChangeEvent((cli::safe_cast<playerFrame::frame_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::frame_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::frame_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->frame_tableRowChanging(this, (gcnew skillFrame::frame_tableRowChangeEvent((cli::safe_cast<skillFrame::frame_tableRow^  >(e->Row)), 
+        this->frame_tableRowChanging(this, (gcnew playerFrame::frame_tableRowChangeEvent((cli::safe_cast<playerFrame::frame_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::frame_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::frame_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->frame_tableRowDeleted(this, (gcnew skillFrame::frame_tableRowChangeEvent((cli::safe_cast<skillFrame::frame_tableRow^  >(e->Row)), 
+        this->frame_tableRowDeleted(this, (gcnew playerFrame::frame_tableRowChangeEvent((cli::safe_cast<playerFrame::frame_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::frame_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::frame_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->frame_tableRowDeleting(this, (gcnew skillFrame::frame_tableRowChangeEvent((cli::safe_cast<skillFrame::frame_tableRow^  >(e->Row)), 
+        this->frame_tableRowDeleting(this, (gcnew playerFrame::frame_tableRowChangeEvent((cli::safe_cast<playerFrame::frame_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::frame_tableDataTable::Removeframe_tableRow(skillFrame::frame_tableRow^  row) {
+inline ::System::Void playerFrame::frame_tableDataTable::Removeframe_tableRow(playerFrame::frame_tableRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::frame_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::frame_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -5310,14 +5315,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::frame_tableData
 }
 
 
-inline skillFrame::frameDataTable::frameDataTable() {
+inline playerFrame::frameDataTable::frameDataTable() {
     this->TableName = L"frame";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::frameDataTable::frameDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::frameDataTable::frameDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -5332,37 +5337,37 @@ inline skillFrame::frameDataTable::frameDataTable(::System::Data::DataTable^  ta
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::frameDataTable::frameDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::frameDataTable::frameDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::frameDataTable::idColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::frameDataTable::idColumn::get() {
     return this->columnid;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::frameDataTable::frame_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::frameDataTable::frame_IdColumn::get() {
     return this->columnframe_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::frameDataTable::frame_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::frameDataTable::frame_table_IdColumn::get() {
     return this->columnframe_table_Id;
 }
 
-inline ::System::Int32 skillFrame::frameDataTable::Count::get() {
+inline ::System::Int32 playerFrame::frameDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::frameRow^  skillFrame::frameDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::frameRow^  >(this->Rows[index]));
+inline playerFrame::frameRow^  playerFrame::frameDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::frameRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::frameDataTable::AddframeRow(skillFrame::frameRow^  row) {
+inline ::System::Void playerFrame::frameDataTable::AddframeRow(playerFrame::frameRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::frameRow^  skillFrame::frameDataTable::AddframeRow(System::Int32 id, skillFrame::frame_tableRow^  parentframe_tableRowByframe_table_frame) {
-    skillFrame::frameRow^  rowframeRow = (cli::safe_cast<skillFrame::frameRow^  >(this->NewRow()));
+inline playerFrame::frameRow^  playerFrame::frameDataTable::AddframeRow(System::Int32 id, playerFrame::frame_tableRow^  parentframe_tableRowByframe_table_frame) {
+    playerFrame::frameRow^  rowframeRow = (cli::safe_cast<playerFrame::frameRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(3) {id, nullptr, nullptr};
     if (parentframe_tableRowByframe_table_frame != nullptr) {
         columnValuesArray[2] = parentframe_tableRowByframe_table_frame[0];
@@ -5372,27 +5377,27 @@ inline skillFrame::frameRow^  skillFrame::frameDataTable::AddframeRow(System::In
     return rowframeRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::frameDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::frameDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::frameDataTable::Clone() {
-    skillFrame::frameDataTable^  cln = (cli::safe_cast<skillFrame::frameDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::frameDataTable::Clone() {
+    playerFrame::frameDataTable^  cln = (cli::safe_cast<playerFrame::frameDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::frameDataTable::CreateInstance() {
-    return (gcnew skillFrame::frameDataTable());
+inline ::System::Data::DataTable^  playerFrame::frameDataTable::CreateInstance() {
+    return (gcnew playerFrame::frameDataTable());
 }
 
-inline ::System::Void skillFrame::frameDataTable::InitVars() {
+inline ::System::Void playerFrame::frameDataTable::InitVars() {
     this->columnid = __super::Columns[L"id"];
     this->columnframe_Id = __super::Columns[L"frame_Id"];
     this->columnframe_table_Id = __super::Columns[L"frame_table_Id"];
 }
 
-inline ::System::Void skillFrame::frameDataTable::InitClass() {
+inline ::System::Void playerFrame::frameDataTable::InitClass() {
     this->columnid = (gcnew ::System::Data::DataColumn(L"id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Attribute));
     __super::Columns->Add(this->columnid);
     this->columnframe_Id = (gcnew ::System::Data::DataColumn(L"frame_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
@@ -5408,58 +5413,58 @@ inline ::System::Void skillFrame::frameDataTable::InitClass() {
     this->columnframe_Id->Unique = true;
 }
 
-inline skillFrame::frameRow^  skillFrame::frameDataTable::NewframeRow() {
-    return (cli::safe_cast<skillFrame::frameRow^  >(this->NewRow()));
+inline playerFrame::frameRow^  playerFrame::frameDataTable::NewframeRow() {
+    return (cli::safe_cast<playerFrame::frameRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::frameDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::frameRow(builder));
+inline ::System::Data::DataRow^  playerFrame::frameDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::frameRow(builder));
 }
 
-inline ::System::Type^  skillFrame::frameDataTable::GetRowType() {
-    return skillFrame::frameRow::typeid;
+inline ::System::Type^  playerFrame::frameDataTable::GetRowType() {
+    return playerFrame::frameRow::typeid;
 }
 
-inline ::System::Void skillFrame::frameDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::frameDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->frameRowChanged(this, (gcnew skillFrame::frameRowChangeEvent((cli::safe_cast<skillFrame::frameRow^  >(e->Row)), 
+        this->frameRowChanged(this, (gcnew playerFrame::frameRowChangeEvent((cli::safe_cast<playerFrame::frameRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::frameDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::frameDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->frameRowChanging(this, (gcnew skillFrame::frameRowChangeEvent((cli::safe_cast<skillFrame::frameRow^  >(e->Row)), 
+        this->frameRowChanging(this, (gcnew playerFrame::frameRowChangeEvent((cli::safe_cast<playerFrame::frameRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::frameDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::frameDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->frameRowDeleted(this, (gcnew skillFrame::frameRowChangeEvent((cli::safe_cast<skillFrame::frameRow^  >(e->Row)), 
+        this->frameRowDeleted(this, (gcnew playerFrame::frameRowChangeEvent((cli::safe_cast<playerFrame::frameRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::frameDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::frameDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->frameRowDeleting(this, (gcnew skillFrame::frameRowChangeEvent((cli::safe_cast<skillFrame::frameRow^  >(e->Row)), 
+        this->frameRowDeleting(this, (gcnew playerFrame::frameRowChangeEvent((cli::safe_cast<playerFrame::frameRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::frameDataTable::RemoveframeRow(skillFrame::frameRow^  row) {
+inline ::System::Void playerFrame::frameDataTable::RemoveframeRow(playerFrame::frameRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::frameDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::frameDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -5518,14 +5523,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::frameDataTable:
 }
 
 
-inline skillFrame::pointDataTable::pointDataTable() {
+inline playerFrame::pointDataTable::pointDataTable() {
     this->TableName = L"point";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::pointDataTable::pointDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::pointDataTable::pointDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -5540,37 +5545,37 @@ inline skillFrame::pointDataTable::pointDataTable(::System::Data::DataTable^  ta
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::pointDataTable::pointDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::pointDataTable::pointDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::pointDataTable::xColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::pointDataTable::xColumn::get() {
     return this->columnx;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::pointDataTable::yColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::pointDataTable::yColumn::get() {
     return this->columny;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::pointDataTable::frame_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::pointDataTable::frame_IdColumn::get() {
     return this->columnframe_Id;
 }
 
-inline ::System::Int32 skillFrame::pointDataTable::Count::get() {
+inline ::System::Int32 playerFrame::pointDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::pointRow^  skillFrame::pointDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::pointRow^  >(this->Rows[index]));
+inline playerFrame::pointRow^  playerFrame::pointDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::pointRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::pointDataTable::AddpointRow(skillFrame::pointRow^  row) {
+inline ::System::Void playerFrame::pointDataTable::AddpointRow(playerFrame::pointRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::pointRow^  skillFrame::pointDataTable::AddpointRow(System::Single x, System::Single y, skillFrame::frameRow^  parentframeRowByframe_point) {
-    skillFrame::pointRow^  rowpointRow = (cli::safe_cast<skillFrame::pointRow^  >(this->NewRow()));
+inline playerFrame::pointRow^  playerFrame::pointDataTable::AddpointRow(System::Single x, System::Single y, playerFrame::frameRow^  parentframeRowByframe_point) {
+    playerFrame::pointRow^  rowpointRow = (cli::safe_cast<playerFrame::pointRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(3) {x, y, nullptr};
     if (parentframeRowByframe_point != nullptr) {
         columnValuesArray[2] = parentframeRowByframe_point[1];
@@ -5580,27 +5585,27 @@ inline skillFrame::pointRow^  skillFrame::pointDataTable::AddpointRow(System::Si
     return rowpointRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::pointDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::pointDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::pointDataTable::Clone() {
-    skillFrame::pointDataTable^  cln = (cli::safe_cast<skillFrame::pointDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::pointDataTable::Clone() {
+    playerFrame::pointDataTable^  cln = (cli::safe_cast<playerFrame::pointDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::pointDataTable::CreateInstance() {
-    return (gcnew skillFrame::pointDataTable());
+inline ::System::Data::DataTable^  playerFrame::pointDataTable::CreateInstance() {
+    return (gcnew playerFrame::pointDataTable());
 }
 
-inline ::System::Void skillFrame::pointDataTable::InitVars() {
+inline ::System::Void playerFrame::pointDataTable::InitVars() {
     this->columnx = __super::Columns[L"x"];
     this->columny = __super::Columns[L"y"];
     this->columnframe_Id = __super::Columns[L"frame_Id"];
 }
 
-inline ::System::Void skillFrame::pointDataTable::InitClass() {
+inline ::System::Void playerFrame::pointDataTable::InitClass() {
     this->columnx = (gcnew ::System::Data::DataColumn(L"x", ::System::Single::typeid, nullptr, ::System::Data::MappingType::Attribute));
     __super::Columns->Add(this->columnx);
     this->columny = (gcnew ::System::Data::DataColumn(L"y", ::System::Single::typeid, nullptr, ::System::Data::MappingType::Attribute));
@@ -5611,58 +5616,58 @@ inline ::System::Void skillFrame::pointDataTable::InitClass() {
     this->columny->Namespace = L"";
 }
 
-inline skillFrame::pointRow^  skillFrame::pointDataTable::NewpointRow() {
-    return (cli::safe_cast<skillFrame::pointRow^  >(this->NewRow()));
+inline playerFrame::pointRow^  playerFrame::pointDataTable::NewpointRow() {
+    return (cli::safe_cast<playerFrame::pointRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::pointDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::pointRow(builder));
+inline ::System::Data::DataRow^  playerFrame::pointDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::pointRow(builder));
 }
 
-inline ::System::Type^  skillFrame::pointDataTable::GetRowType() {
-    return skillFrame::pointRow::typeid;
+inline ::System::Type^  playerFrame::pointDataTable::GetRowType() {
+    return playerFrame::pointRow::typeid;
 }
 
-inline ::System::Void skillFrame::pointDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::pointDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->pointRowChanged(this, (gcnew skillFrame::pointRowChangeEvent((cli::safe_cast<skillFrame::pointRow^  >(e->Row)), 
+        this->pointRowChanged(this, (gcnew playerFrame::pointRowChangeEvent((cli::safe_cast<playerFrame::pointRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::pointDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::pointDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->pointRowChanging(this, (gcnew skillFrame::pointRowChangeEvent((cli::safe_cast<skillFrame::pointRow^  >(e->Row)), 
+        this->pointRowChanging(this, (gcnew playerFrame::pointRowChangeEvent((cli::safe_cast<playerFrame::pointRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::pointDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::pointDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->pointRowDeleted(this, (gcnew skillFrame::pointRowChangeEvent((cli::safe_cast<skillFrame::pointRow^  >(e->Row)), 
+        this->pointRowDeleted(this, (gcnew playerFrame::pointRowChangeEvent((cli::safe_cast<playerFrame::pointRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::pointDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::pointDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->pointRowDeleting(this, (gcnew skillFrame::pointRowChangeEvent((cli::safe_cast<skillFrame::pointRow^  >(e->Row)), 
+        this->pointRowDeleting(this, (gcnew playerFrame::pointRowChangeEvent((cli::safe_cast<playerFrame::pointRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::pointDataTable::RemovepointRow(skillFrame::pointRow^  row) {
+inline ::System::Void playerFrame::pointDataTable::RemovepointRow(playerFrame::pointRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::pointDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::pointDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -5721,14 +5726,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::pointDataTable:
 }
 
 
-inline skillFrame::box_tableDataTable::box_tableDataTable() {
+inline playerFrame::box_tableDataTable::box_tableDataTable() {
     this->TableName = L"box_table";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::box_tableDataTable::box_tableDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::box_tableDataTable::box_tableDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -5743,33 +5748,33 @@ inline skillFrame::box_tableDataTable::box_tableDataTable(::System::Data::DataTa
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::box_tableDataTable::box_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::box_tableDataTable::box_tableDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::box_tableDataTable::box_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::box_tableDataTable::box_table_IdColumn::get() {
     return this->columnbox_table_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::box_tableDataTable::frame_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::box_tableDataTable::frame_IdColumn::get() {
     return this->columnframe_Id;
 }
 
-inline ::System::Int32 skillFrame::box_tableDataTable::Count::get() {
+inline ::System::Int32 playerFrame::box_tableDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::box_tableRow^  skillFrame::box_tableDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::box_tableRow^  >(this->Rows[index]));
+inline playerFrame::box_tableRow^  playerFrame::box_tableDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::box_tableRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::box_tableDataTable::Addbox_tableRow(skillFrame::box_tableRow^  row) {
+inline ::System::Void playerFrame::box_tableDataTable::Addbox_tableRow(playerFrame::box_tableRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::box_tableRow^  skillFrame::box_tableDataTable::Addbox_tableRow(skillFrame::frameRow^  parentframeRowByframe_box_table) {
-    skillFrame::box_tableRow^  rowbox_tableRow = (cli::safe_cast<skillFrame::box_tableRow^  >(this->NewRow()));
+inline playerFrame::box_tableRow^  playerFrame::box_tableDataTable::Addbox_tableRow(playerFrame::frameRow^  parentframeRowByframe_box_table) {
+    playerFrame::box_tableRow^  rowbox_tableRow = (cli::safe_cast<playerFrame::box_tableRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(2) {nullptr, nullptr};
     if (parentframeRowByframe_box_table != nullptr) {
         columnValuesArray[1] = parentframeRowByframe_box_table[1];
@@ -5779,26 +5784,26 @@ inline skillFrame::box_tableRow^  skillFrame::box_tableDataTable::Addbox_tableRo
     return rowbox_tableRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::box_tableDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::box_tableDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::box_tableDataTable::Clone() {
-    skillFrame::box_tableDataTable^  cln = (cli::safe_cast<skillFrame::box_tableDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::box_tableDataTable::Clone() {
+    playerFrame::box_tableDataTable^  cln = (cli::safe_cast<playerFrame::box_tableDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::box_tableDataTable::CreateInstance() {
-    return (gcnew skillFrame::box_tableDataTable());
+inline ::System::Data::DataTable^  playerFrame::box_tableDataTable::CreateInstance() {
+    return (gcnew playerFrame::box_tableDataTable());
 }
 
-inline ::System::Void skillFrame::box_tableDataTable::InitVars() {
+inline ::System::Void playerFrame::box_tableDataTable::InitVars() {
     this->columnbox_table_Id = __super::Columns[L"box_table_Id"];
     this->columnframe_Id = __super::Columns[L"frame_Id"];
 }
 
-inline ::System::Void skillFrame::box_tableDataTable::InitClass() {
+inline ::System::Void playerFrame::box_tableDataTable::InitClass() {
     this->columnbox_table_Id = (gcnew ::System::Data::DataColumn(L"box_table_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
     __super::Columns->Add(this->columnbox_table_Id);
     this->columnframe_Id = (gcnew ::System::Data::DataColumn(L"frame_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
@@ -5810,58 +5815,58 @@ inline ::System::Void skillFrame::box_tableDataTable::InitClass() {
     this->columnbox_table_Id->Unique = true;
 }
 
-inline skillFrame::box_tableRow^  skillFrame::box_tableDataTable::Newbox_tableRow() {
-    return (cli::safe_cast<skillFrame::box_tableRow^  >(this->NewRow()));
+inline playerFrame::box_tableRow^  playerFrame::box_tableDataTable::Newbox_tableRow() {
+    return (cli::safe_cast<playerFrame::box_tableRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::box_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::box_tableRow(builder));
+inline ::System::Data::DataRow^  playerFrame::box_tableDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::box_tableRow(builder));
 }
 
-inline ::System::Type^  skillFrame::box_tableDataTable::GetRowType() {
-    return skillFrame::box_tableRow::typeid;
+inline ::System::Type^  playerFrame::box_tableDataTable::GetRowType() {
+    return playerFrame::box_tableRow::typeid;
 }
 
-inline ::System::Void skillFrame::box_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::box_tableDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->box_tableRowChanged(this, (gcnew skillFrame::box_tableRowChangeEvent((cli::safe_cast<skillFrame::box_tableRow^  >(e->Row)), 
+        this->box_tableRowChanged(this, (gcnew playerFrame::box_tableRowChangeEvent((cli::safe_cast<playerFrame::box_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::box_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::box_tableDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->box_tableRowChanging(this, (gcnew skillFrame::box_tableRowChangeEvent((cli::safe_cast<skillFrame::box_tableRow^  >(e->Row)), 
+        this->box_tableRowChanging(this, (gcnew playerFrame::box_tableRowChangeEvent((cli::safe_cast<playerFrame::box_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::box_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::box_tableDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->box_tableRowDeleted(this, (gcnew skillFrame::box_tableRowChangeEvent((cli::safe_cast<skillFrame::box_tableRow^  >(e->Row)), 
+        this->box_tableRowDeleted(this, (gcnew playerFrame::box_tableRowChangeEvent((cli::safe_cast<playerFrame::box_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::box_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::box_tableDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->box_tableRowDeleting(this, (gcnew skillFrame::box_tableRowChangeEvent((cli::safe_cast<skillFrame::box_tableRow^  >(e->Row)), 
+        this->box_tableRowDeleting(this, (gcnew playerFrame::box_tableRowChangeEvent((cli::safe_cast<playerFrame::box_tableRow^  >(e->Row)), 
                 e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::box_tableDataTable::Removebox_tableRow(skillFrame::box_tableRow^  row) {
+inline ::System::Void playerFrame::box_tableDataTable::Removebox_tableRow(playerFrame::box_tableRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::box_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::box_tableDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -5920,14 +5925,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::box_tableDataTa
 }
 
 
-inline skillFrame::boxDataTable::boxDataTable() {
+inline playerFrame::boxDataTable::boxDataTable() {
     this->TableName = L"box";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::boxDataTable::boxDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::boxDataTable::boxDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -5942,37 +5947,37 @@ inline skillFrame::boxDataTable::boxDataTable(::System::Data::DataTable^  table)
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::boxDataTable::boxDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::boxDataTable::boxDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::boxDataTable::typeColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::boxDataTable::typeColumn::get() {
     return this->columntype;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::boxDataTable::box_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::boxDataTable::box_IdColumn::get() {
     return this->columnbox_Id;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::boxDataTable::box_table_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::boxDataTable::box_table_IdColumn::get() {
     return this->columnbox_table_Id;
 }
 
-inline ::System::Int32 skillFrame::boxDataTable::Count::get() {
+inline ::System::Int32 playerFrame::boxDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::boxRow^  skillFrame::boxDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::boxRow^  >(this->Rows[index]));
+inline playerFrame::boxRow^  playerFrame::boxDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::boxRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::boxDataTable::AddboxRow(skillFrame::boxRow^  row) {
+inline ::System::Void playerFrame::boxDataTable::AddboxRow(playerFrame::boxRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::boxRow^  skillFrame::boxDataTable::AddboxRow(System::Int32 type, skillFrame::box_tableRow^  parentbox_tableRowBybox_table_box) {
-    skillFrame::boxRow^  rowboxRow = (cli::safe_cast<skillFrame::boxRow^  >(this->NewRow()));
+inline playerFrame::boxRow^  playerFrame::boxDataTable::AddboxRow(System::Int32 type, playerFrame::box_tableRow^  parentbox_tableRowBybox_table_box) {
+    playerFrame::boxRow^  rowboxRow = (cli::safe_cast<playerFrame::boxRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(3) {type, nullptr, nullptr};
     if (parentbox_tableRowBybox_table_box != nullptr) {
         columnValuesArray[2] = parentbox_tableRowBybox_table_box[0];
@@ -5982,27 +5987,27 @@ inline skillFrame::boxRow^  skillFrame::boxDataTable::AddboxRow(System::Int32 ty
     return rowboxRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::boxDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::boxDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::boxDataTable::Clone() {
-    skillFrame::boxDataTable^  cln = (cli::safe_cast<skillFrame::boxDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::boxDataTable::Clone() {
+    playerFrame::boxDataTable^  cln = (cli::safe_cast<playerFrame::boxDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::boxDataTable::CreateInstance() {
-    return (gcnew skillFrame::boxDataTable());
+inline ::System::Data::DataTable^  playerFrame::boxDataTable::CreateInstance() {
+    return (gcnew playerFrame::boxDataTable());
 }
 
-inline ::System::Void skillFrame::boxDataTable::InitVars() {
+inline ::System::Void playerFrame::boxDataTable::InitVars() {
     this->columntype = __super::Columns[L"type"];
     this->columnbox_Id = __super::Columns[L"box_Id"];
     this->columnbox_table_Id = __super::Columns[L"box_table_Id"];
 }
 
-inline ::System::Void skillFrame::boxDataTable::InitClass() {
+inline ::System::Void playerFrame::boxDataTable::InitClass() {
     this->columntype = (gcnew ::System::Data::DataColumn(L"type", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Attribute));
     __super::Columns->Add(this->columntype);
     this->columnbox_Id = (gcnew ::System::Data::DataColumn(L"box_Id", ::System::Int32::typeid, nullptr, ::System::Data::MappingType::Hidden));
@@ -6018,54 +6023,54 @@ inline ::System::Void skillFrame::boxDataTable::InitClass() {
     this->columnbox_Id->Unique = true;
 }
 
-inline skillFrame::boxRow^  skillFrame::boxDataTable::NewboxRow() {
-    return (cli::safe_cast<skillFrame::boxRow^  >(this->NewRow()));
+inline playerFrame::boxRow^  playerFrame::boxDataTable::NewboxRow() {
+    return (cli::safe_cast<playerFrame::boxRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::boxDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::boxRow(builder));
+inline ::System::Data::DataRow^  playerFrame::boxDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::boxRow(builder));
 }
 
-inline ::System::Type^  skillFrame::boxDataTable::GetRowType() {
-    return skillFrame::boxRow::typeid;
+inline ::System::Type^  playerFrame::boxDataTable::GetRowType() {
+    return playerFrame::boxRow::typeid;
 }
 
-inline ::System::Void skillFrame::boxDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::boxDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->boxRowChanged(this, (gcnew skillFrame::boxRowChangeEvent((cli::safe_cast<skillFrame::boxRow^  >(e->Row)), e->Action)));
+        this->boxRowChanged(this, (gcnew playerFrame::boxRowChangeEvent((cli::safe_cast<playerFrame::boxRow^  >(e->Row)), e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::boxDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::boxDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->boxRowChanging(this, (gcnew skillFrame::boxRowChangeEvent((cli::safe_cast<skillFrame::boxRow^  >(e->Row)), e->Action)));
+        this->boxRowChanging(this, (gcnew playerFrame::boxRowChangeEvent((cli::safe_cast<playerFrame::boxRow^  >(e->Row)), e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::boxDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::boxDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->boxRowDeleted(this, (gcnew skillFrame::boxRowChangeEvent((cli::safe_cast<skillFrame::boxRow^  >(e->Row)), e->Action)));
+        this->boxRowDeleted(this, (gcnew playerFrame::boxRowChangeEvent((cli::safe_cast<playerFrame::boxRow^  >(e->Row)), e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::boxDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::boxDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->boxRowDeleting(this, (gcnew skillFrame::boxRowChangeEvent((cli::safe_cast<skillFrame::boxRow^  >(e->Row)), e->Action)));
+        this->boxRowDeleting(this, (gcnew playerFrame::boxRowChangeEvent((cli::safe_cast<playerFrame::boxRow^  >(e->Row)), e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::boxDataTable::RemoveboxRow(skillFrame::boxRow^  row) {
+inline ::System::Void playerFrame::boxDataTable::RemoveboxRow(playerFrame::boxRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::boxDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::boxDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -6124,14 +6129,14 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::boxDataTable::G
 }
 
 
-inline skillFrame::rectDataTable::rectDataTable() {
+inline playerFrame::rectDataTable::rectDataTable() {
     this->TableName = L"rect";
     this->BeginInit();
     this->InitClass();
     this->EndInit();
 }
 
-inline skillFrame::rectDataTable::rectDataTable(::System::Data::DataTable^  table) {
+inline playerFrame::rectDataTable::rectDataTable(::System::Data::DataTable^  table) {
     this->TableName = table->TableName;
     if (table->CaseSensitive != table->DataSet->CaseSensitive) {
         this->CaseSensitive = table->CaseSensitive;
@@ -6146,46 +6151,46 @@ inline skillFrame::rectDataTable::rectDataTable(::System::Data::DataTable^  tabl
     this->MinimumCapacity = table->MinimumCapacity;
 }
 
-inline skillFrame::rectDataTable::rectDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
+inline playerFrame::rectDataTable::rectDataTable(::System::Runtime::Serialization::SerializationInfo^  info, ::System::Runtime::Serialization::StreamingContext context) : 
         ::System::Data::DataTable(info, context) {
     this->InitVars();
 }
 
-inline ::System::Data::DataColumn^  skillFrame::rectDataTable::tColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::rectDataTable::tColumn::get() {
     return this->columnt;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::rectDataTable::lColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::rectDataTable::lColumn::get() {
     return this->columnl;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::rectDataTable::bColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::rectDataTable::bColumn::get() {
     return this->columnb;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::rectDataTable::rColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::rectDataTable::rColumn::get() {
     return this->columnr;
 }
 
-inline ::System::Data::DataColumn^  skillFrame::rectDataTable::box_IdColumn::get() {
+inline ::System::Data::DataColumn^  playerFrame::rectDataTable::box_IdColumn::get() {
     return this->columnbox_Id;
 }
 
-inline ::System::Int32 skillFrame::rectDataTable::Count::get() {
+inline ::System::Int32 playerFrame::rectDataTable::Count::get() {
     return this->Rows->Count;
 }
 
-inline skillFrame::rectRow^  skillFrame::rectDataTable::default::get(::System::Int32 index) {
-    return (cli::safe_cast<skillFrame::rectRow^  >(this->Rows[index]));
+inline playerFrame::rectRow^  playerFrame::rectDataTable::default::get(::System::Int32 index) {
+    return (cli::safe_cast<playerFrame::rectRow^  >(this->Rows[index]));
 }
 
-inline ::System::Void skillFrame::rectDataTable::AddrectRow(skillFrame::rectRow^  row) {
+inline ::System::Void playerFrame::rectDataTable::AddrectRow(playerFrame::rectRow^  row) {
     this->Rows->Add(row);
 }
 
-inline skillFrame::rectRow^  skillFrame::rectDataTable::AddrectRow(System::Single t, System::Single l, System::Single b, 
-            System::Single r, skillFrame::boxRow^  parentboxRowBybox_rect) {
-    skillFrame::rectRow^  rowrectRow = (cli::safe_cast<skillFrame::rectRow^  >(this->NewRow()));
+inline playerFrame::rectRow^  playerFrame::rectDataTable::AddrectRow(System::Single t, System::Single l, System::Single b, 
+            System::Single r, playerFrame::boxRow^  parentboxRowBybox_rect) {
+    playerFrame::rectRow^  rowrectRow = (cli::safe_cast<playerFrame::rectRow^  >(this->NewRow()));
     cli::array< ::System::Object^  >^  columnValuesArray = gcnew cli::array< ::System::Object^  >(5) {t, l, b, r, nullptr};
     if (parentboxRowBybox_rect != nullptr) {
         columnValuesArray[4] = parentboxRowBybox_rect[1];
@@ -6195,21 +6200,21 @@ inline skillFrame::rectRow^  skillFrame::rectDataTable::AddrectRow(System::Singl
     return rowrectRow;
 }
 
-inline ::System::Collections::IEnumerator^  skillFrame::rectDataTable::GetEnumerator() {
+inline ::System::Collections::IEnumerator^  playerFrame::rectDataTable::GetEnumerator() {
     return this->Rows->GetEnumerator();
 }
 
-inline ::System::Data::DataTable^  skillFrame::rectDataTable::Clone() {
-    skillFrame::rectDataTable^  cln = (cli::safe_cast<skillFrame::rectDataTable^  >(__super::Clone()));
+inline ::System::Data::DataTable^  playerFrame::rectDataTable::Clone() {
+    playerFrame::rectDataTable^  cln = (cli::safe_cast<playerFrame::rectDataTable^  >(__super::Clone()));
     cln->InitVars();
     return cln;
 }
 
-inline ::System::Data::DataTable^  skillFrame::rectDataTable::CreateInstance() {
-    return (gcnew skillFrame::rectDataTable());
+inline ::System::Data::DataTable^  playerFrame::rectDataTable::CreateInstance() {
+    return (gcnew playerFrame::rectDataTable());
 }
 
-inline ::System::Void skillFrame::rectDataTable::InitVars() {
+inline ::System::Void playerFrame::rectDataTable::InitVars() {
     this->columnt = __super::Columns[L"t"];
     this->columnl = __super::Columns[L"l"];
     this->columnb = __super::Columns[L"b"];
@@ -6217,7 +6222,7 @@ inline ::System::Void skillFrame::rectDataTable::InitVars() {
     this->columnbox_Id = __super::Columns[L"box_Id"];
 }
 
-inline ::System::Void skillFrame::rectDataTable::InitClass() {
+inline ::System::Void playerFrame::rectDataTable::InitClass() {
     this->columnt = (gcnew ::System::Data::DataColumn(L"t", ::System::Single::typeid, nullptr, ::System::Data::MappingType::Attribute));
     __super::Columns->Add(this->columnt);
     this->columnl = (gcnew ::System::Data::DataColumn(L"l", ::System::Single::typeid, nullptr, ::System::Data::MappingType::Attribute));
@@ -6234,54 +6239,58 @@ inline ::System::Void skillFrame::rectDataTable::InitClass() {
     this->columnr->Namespace = L"";
 }
 
-inline skillFrame::rectRow^  skillFrame::rectDataTable::NewrectRow() {
-    return (cli::safe_cast<skillFrame::rectRow^  >(this->NewRow()));
+inline playerFrame::rectRow^  playerFrame::rectDataTable::NewrectRow() {
+    return (cli::safe_cast<playerFrame::rectRow^  >(this->NewRow()));
 }
 
-inline ::System::Data::DataRow^  skillFrame::rectDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
-    return (gcnew skillFrame::rectRow(builder));
+inline ::System::Data::DataRow^  playerFrame::rectDataTable::NewRowFromBuilder(::System::Data::DataRowBuilder^  builder) {
+    return (gcnew playerFrame::rectRow(builder));
 }
 
-inline ::System::Type^  skillFrame::rectDataTable::GetRowType() {
-    return skillFrame::rectRow::typeid;
+inline ::System::Type^  playerFrame::rectDataTable::GetRowType() {
+    return playerFrame::rectRow::typeid;
 }
 
-inline ::System::Void skillFrame::rectDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::rectDataTable::OnRowChanged(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanged(e);
     {
-        this->rectRowChanged(this, (gcnew skillFrame::rectRowChangeEvent((cli::safe_cast<skillFrame::rectRow^  >(e->Row)), e->Action)));
+        this->rectRowChanged(this, (gcnew playerFrame::rectRowChangeEvent((cli::safe_cast<playerFrame::rectRow^  >(e->Row)), 
+                e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::rectDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::rectDataTable::OnRowChanging(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowChanging(e);
     {
-        this->rectRowChanging(this, (gcnew skillFrame::rectRowChangeEvent((cli::safe_cast<skillFrame::rectRow^  >(e->Row)), e->Action)));
+        this->rectRowChanging(this, (gcnew playerFrame::rectRowChangeEvent((cli::safe_cast<playerFrame::rectRow^  >(e->Row)), 
+                e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::rectDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::rectDataTable::OnRowDeleted(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleted(e);
     {
-        this->rectRowDeleted(this, (gcnew skillFrame::rectRowChangeEvent((cli::safe_cast<skillFrame::rectRow^  >(e->Row)), e->Action)));
+        this->rectRowDeleted(this, (gcnew playerFrame::rectRowChangeEvent((cli::safe_cast<playerFrame::rectRow^  >(e->Row)), 
+                e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::rectDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
+inline ::System::Void playerFrame::rectDataTable::OnRowDeleting(::System::Data::DataRowChangeEventArgs^  e) {
     __super::OnRowDeleting(e);
     {
-        this->rectRowDeleting(this, (gcnew skillFrame::rectRowChangeEvent((cli::safe_cast<skillFrame::rectRow^  >(e->Row)), e->Action)));
+        this->rectRowDeleting(this, (gcnew playerFrame::rectRowChangeEvent((cli::safe_cast<playerFrame::rectRow^  >(e->Row)), 
+                e->Action)));
     }
 }
 
-inline ::System::Void skillFrame::rectDataTable::RemoverectRow(skillFrame::rectRow^  row) {
+inline ::System::Void playerFrame::rectDataTable::RemoverectRow(playerFrame::rectRow^  row) {
     this->Rows->Remove(row);
 }
 
-inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::rectDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
+inline ::System::Xml::Schema::XmlSchemaComplexType^  playerFrame::rectDataTable::GetTypedTableSchema(::System::Xml::Schema::XmlSchemaSet^  xs) {
     ::System::Xml::Schema::XmlSchemaComplexType^  type = (gcnew ::System::Xml::Schema::XmlSchemaComplexType());
     ::System::Xml::Schema::XmlSchemaSequence^  sequence = (gcnew ::System::Xml::Schema::XmlSchemaSequence());
-    skillFrame^  ds = (gcnew skillFrame());
+    playerFrame^  ds = (gcnew playerFrame());
     ::System::Xml::Schema::XmlSchemaAny^  any1 = (gcnew ::System::Xml::Schema::XmlSchemaAny());
     any1->Namespace = L"http://www.w3.org/2001/XMLSchema";
     any1->MinOccurs = ::System::Decimal(0);
@@ -6340,50 +6349,50 @@ inline ::System::Xml::Schema::XmlSchemaComplexType^  skillFrame::rectDataTable::
 }
 
 
-inline skillFrame::player_infoRow::player_infoRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::player_infoRow::player_infoRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tableplayer_info = (cli::safe_cast<skillFrame::player_infoDataTable^  >(this->Table));
+    this->tableplayer_info = (cli::safe_cast<playerFrame::player_infoDataTable^  >(this->Table));
 }
 
-inline System::Int32 skillFrame::player_infoRow::player_info_Id::get() {
+inline System::Int32 playerFrame::player_infoRow::player_info_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableplayer_info->player_info_IdColumn]));
 }
-inline System::Void skillFrame::player_infoRow::player_info_Id::set(System::Int32 value) {
+inline System::Void playerFrame::player_infoRow::player_info_Id::set(System::Int32 value) {
     this[this->tableplayer_info->player_info_IdColumn] = value;
 }
 
-inline cli::array< skillFrame::skin_tableRow^  >^  skillFrame::player_infoRow::Getskin_tableRows() {
+inline cli::array< playerFrame::skin_tableRow^  >^  playerFrame::player_infoRow::Getskin_tableRows() {
     if (this->Table->ChildRelations[L"player_info_skin_table"] == nullptr) {
-        return gcnew cli::array< skillFrame::skin_tableRow^  >(0);
+        return gcnew cli::array< playerFrame::skin_tableRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::skin_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"player_info_skin_table"])));
+        return (cli::safe_cast<cli::array< playerFrame::skin_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"player_info_skin_table"])));
     }
 }
 
-inline cli::array< skillFrame::skill_tableRow^  >^  skillFrame::player_infoRow::Getskill_tableRows() {
+inline cli::array< playerFrame::skill_tableRow^  >^  playerFrame::player_infoRow::Getskill_tableRows() {
     if (this->Table->ChildRelations[L"player_info_skill_table"] == nullptr) {
-        return gcnew cli::array< skillFrame::skill_tableRow^  >(0);
+        return gcnew cli::array< playerFrame::skill_tableRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::skill_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"player_info_skill_table"])));
+        return (cli::safe_cast<cli::array< playerFrame::skill_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"player_info_skill_table"])));
     }
 }
 
 
-inline skillFrame::skin_tableRow::skin_tableRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::skin_tableRow::skin_tableRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tableskin_table = (cli::safe_cast<skillFrame::skin_tableDataTable^  >(this->Table));
+    this->tableskin_table = (cli::safe_cast<playerFrame::skin_tableDataTable^  >(this->Table));
 }
 
-inline System::Int32 skillFrame::skin_tableRow::skin_table_Id::get() {
+inline System::Int32 playerFrame::skin_tableRow::skin_table_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableskin_table->skin_table_IdColumn]));
 }
-inline System::Void skillFrame::skin_tableRow::skin_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::skin_tableRow::skin_table_Id::set(System::Int32 value) {
     this[this->tableskin_table->skin_table_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::skin_tableRow::player_info_Id::get() {
+inline System::Int32 playerFrame::skin_tableRow::player_info_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tableskin_table->player_info_IdColumn]));
     }
@@ -6391,48 +6400,48 @@ inline System::Int32 skillFrame::skin_tableRow::player_info_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“skin_table”中列“player_info_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::skin_tableRow::player_info_Id::set(System::Int32 value) {
+inline System::Void playerFrame::skin_tableRow::player_info_Id::set(System::Int32 value) {
     this[this->tableskin_table->player_info_IdColumn] = value;
 }
 
-inline skillFrame::player_infoRow^  skillFrame::skin_tableRow::player_infoRow::get() {
-    return (cli::safe_cast<skillFrame::player_infoRow^  >(this->GetParentRow(this->Table->ParentRelations[L"player_info_skin_table"])));
+inline playerFrame::player_infoRow^  playerFrame::skin_tableRow::player_infoRow::get() {
+    return (cli::safe_cast<playerFrame::player_infoRow^  >(this->GetParentRow(this->Table->ParentRelations[L"player_info_skin_table"])));
 }
-inline System::Void skillFrame::skin_tableRow::player_infoRow::set(skillFrame::player_infoRow^  value) {
+inline System::Void playerFrame::skin_tableRow::player_infoRow::set(playerFrame::player_infoRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"player_info_skin_table"]);
 }
 
-inline ::System::Boolean skillFrame::skin_tableRow::Isplayer_info_IdNull() {
+inline ::System::Boolean playerFrame::skin_tableRow::Isplayer_info_IdNull() {
     return this->IsNull(this->tableskin_table->player_info_IdColumn);
 }
 
-inline ::System::Void skillFrame::skin_tableRow::Setplayer_info_IdNull() {
+inline ::System::Void playerFrame::skin_tableRow::Setplayer_info_IdNull() {
     this[this->tableskin_table->player_info_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::skinRow^  >^  skillFrame::skin_tableRow::GetskinRows() {
+inline cli::array< playerFrame::skinRow^  >^  playerFrame::skin_tableRow::GetskinRows() {
     if (this->Table->ChildRelations[L"skin_table_skin"] == nullptr) {
-        return gcnew cli::array< skillFrame::skinRow^  >(0);
+        return gcnew cli::array< playerFrame::skinRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::skinRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"skin_table_skin"])));
+        return (cli::safe_cast<cli::array< playerFrame::skinRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"skin_table_skin"])));
     }
 }
 
 
-inline skillFrame::skinRow::skinRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::skinRow::skinRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tableskin = (cli::safe_cast<skillFrame::skinDataTable^  >(this->Table));
+    this->tableskin = (cli::safe_cast<playerFrame::skinDataTable^  >(this->Table));
 }
 
-inline System::String^  skillFrame::skinRow::name::get() {
+inline System::String^  playerFrame::skinRow::name::get() {
     return (cli::safe_cast<::System::String^  >(this[this->tableskin->nameColumn]));
 }
-inline System::Void skillFrame::skinRow::name::set(System::String^  value) {
+inline System::Void playerFrame::skinRow::name::set(System::String^  value) {
     this[this->tableskin->nameColumn] = value;
 }
 
-inline System::Int32 skillFrame::skinRow::skin_table_Id::get() {
+inline System::Int32 playerFrame::skinRow::skin_table_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tableskin->skin_table_IdColumn]));
     }
@@ -6440,39 +6449,39 @@ inline System::Int32 skillFrame::skinRow::skin_table_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“skin”中列“skin_table_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::skinRow::skin_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::skinRow::skin_table_Id::set(System::Int32 value) {
     this[this->tableskin->skin_table_IdColumn] = value;
 }
 
-inline skillFrame::skin_tableRow^  skillFrame::skinRow::skin_tableRow::get() {
-    return (cli::safe_cast<skillFrame::skin_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"skin_table_skin"])));
+inline playerFrame::skin_tableRow^  playerFrame::skinRow::skin_tableRow::get() {
+    return (cli::safe_cast<playerFrame::skin_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"skin_table_skin"])));
 }
-inline System::Void skillFrame::skinRow::skin_tableRow::set(skillFrame::skin_tableRow^  value) {
+inline System::Void playerFrame::skinRow::skin_tableRow::set(playerFrame::skin_tableRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"skin_table_skin"]);
 }
 
-inline ::System::Boolean skillFrame::skinRow::Isskin_table_IdNull() {
+inline ::System::Boolean playerFrame::skinRow::Isskin_table_IdNull() {
     return this->IsNull(this->tableskin->skin_table_IdColumn);
 }
 
-inline ::System::Void skillFrame::skinRow::Setskin_table_IdNull() {
+inline ::System::Void playerFrame::skinRow::Setskin_table_IdNull() {
     this[this->tableskin->skin_table_IdColumn] = ::System::Convert::DBNull;
 }
 
 
-inline skillFrame::skill_tableRow::skill_tableRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::skill_tableRow::skill_tableRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tableskill_table = (cli::safe_cast<skillFrame::skill_tableDataTable^  >(this->Table));
+    this->tableskill_table = (cli::safe_cast<playerFrame::skill_tableDataTable^  >(this->Table));
 }
 
-inline System::Int32 skillFrame::skill_tableRow::skill_table_Id::get() {
+inline System::Int32 playerFrame::skill_tableRow::skill_table_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableskill_table->skill_table_IdColumn]));
 }
-inline System::Void skillFrame::skill_tableRow::skill_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::skill_tableRow::skill_table_Id::set(System::Int32 value) {
     this[this->tableskill_table->skill_table_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::skill_tableRow::player_info_Id::get() {
+inline System::Int32 playerFrame::skill_tableRow::player_info_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tableskill_table->player_info_IdColumn]));
     }
@@ -6480,48 +6489,48 @@ inline System::Int32 skillFrame::skill_tableRow::player_info_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“skill_table”中列“player_info_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::skill_tableRow::player_info_Id::set(System::Int32 value) {
+inline System::Void playerFrame::skill_tableRow::player_info_Id::set(System::Int32 value) {
     this[this->tableskill_table->player_info_IdColumn] = value;
 }
 
-inline skillFrame::player_infoRow^  skillFrame::skill_tableRow::player_infoRow::get() {
-    return (cli::safe_cast<skillFrame::player_infoRow^  >(this->GetParentRow(this->Table->ParentRelations[L"player_info_skill_table"])));
+inline playerFrame::player_infoRow^  playerFrame::skill_tableRow::player_infoRow::get() {
+    return (cli::safe_cast<playerFrame::player_infoRow^  >(this->GetParentRow(this->Table->ParentRelations[L"player_info_skill_table"])));
 }
-inline System::Void skillFrame::skill_tableRow::player_infoRow::set(skillFrame::player_infoRow^  value) {
+inline System::Void playerFrame::skill_tableRow::player_infoRow::set(playerFrame::player_infoRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"player_info_skill_table"]);
 }
 
-inline ::System::Boolean skillFrame::skill_tableRow::Isplayer_info_IdNull() {
+inline ::System::Boolean playerFrame::skill_tableRow::Isplayer_info_IdNull() {
     return this->IsNull(this->tableskill_table->player_info_IdColumn);
 }
 
-inline ::System::Void skillFrame::skill_tableRow::Setplayer_info_IdNull() {
+inline ::System::Void playerFrame::skill_tableRow::Setplayer_info_IdNull() {
     this[this->tableskill_table->player_info_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::skillRow^  >^  skillFrame::skill_tableRow::GetskillRows() {
+inline cli::array< playerFrame::skillRow^  >^  playerFrame::skill_tableRow::GetskillRows() {
     if (this->Table->ChildRelations[L"skill_table_skill"] == nullptr) {
-        return gcnew cli::array< skillFrame::skillRow^  >(0);
+        return gcnew cli::array< playerFrame::skillRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::skillRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"skill_table_skill"])));
+        return (cli::safe_cast<cli::array< playerFrame::skillRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"skill_table_skill"])));
     }
 }
 
 
-inline skillFrame::skillRow::skillRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::skillRow::skillRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tableskill = (cli::safe_cast<skillFrame::skillDataTable^  >(this->Table));
+    this->tableskill = (cli::safe_cast<playerFrame::skillDataTable^  >(this->Table));
 }
 
-inline System::String^  skillFrame::skillRow::eka::get() {
+inline System::String^  playerFrame::skillRow::eka::get() {
     return (cli::safe_cast<::System::String^  >(this[this->tableskill->ekaColumn]));
 }
-inline System::Void skillFrame::skillRow::eka::set(System::String^  value) {
+inline System::Void playerFrame::skillRow::eka::set(System::String^  value) {
     this[this->tableskill->ekaColumn] = value;
 }
 
-inline System::String^  skillFrame::skillRow::as::get() {
+inline System::String^  playerFrame::skillRow::as::get() {
     try {
         return (cli::safe_cast<::System::String^  >(this[this->tableskill->asColumn]));
     }
@@ -6529,11 +6538,11 @@ inline System::String^  skillFrame::skillRow::as::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“skill”中列“as”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::skillRow::as::set(System::String^  value) {
+inline System::Void playerFrame::skillRow::as::set(System::String^  value) {
     this[this->tableskill->asColumn] = value;
 }
 
-inline System::String^  skillFrame::skillRow::ssse::get() {
+inline System::String^  playerFrame::skillRow::ssse::get() {
     try {
         return (cli::safe_cast<::System::String^  >(this[this->tableskill->ssseColumn]));
     }
@@ -6541,11 +6550,11 @@ inline System::String^  skillFrame::skillRow::ssse::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“skill”中列“ssse”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::skillRow::ssse::set(System::String^  value) {
+inline System::Void playerFrame::skillRow::ssse::set(System::String^  value) {
     this[this->tableskill->ssseColumn] = value;
 }
 
-inline System::Boolean skillFrame::skillRow::savable::get() {
+inline System::Boolean playerFrame::skillRow::savable::get() {
     try {
         return (cli::safe_cast<::System::Boolean >(this[this->tableskill->savableColumn]));
     }
@@ -6553,18 +6562,18 @@ inline System::Boolean skillFrame::skillRow::savable::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“skill”中列“savable”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::skillRow::savable::set(System::Boolean value) {
+inline System::Void playerFrame::skillRow::savable::set(System::Boolean value) {
     this[this->tableskill->savableColumn] = value;
 }
 
-inline System::Int32 skillFrame::skillRow::skill_Id::get() {
+inline System::Int32 playerFrame::skillRow::skill_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableskill->skill_IdColumn]));
 }
-inline System::Void skillFrame::skillRow::skill_Id::set(System::Int32 value) {
+inline System::Void playerFrame::skillRow::skill_Id::set(System::Int32 value) {
     this[this->tableskill->skill_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::skillRow::skill_table_Id::get() {
+inline System::Int32 playerFrame::skillRow::skill_table_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tableskill->skill_table_IdColumn]));
     }
@@ -6572,72 +6581,72 @@ inline System::Int32 skillFrame::skillRow::skill_table_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“skill”中列“skill_table_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::skillRow::skill_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::skillRow::skill_table_Id::set(System::Int32 value) {
     this[this->tableskill->skill_table_IdColumn] = value;
 }
 
-inline skillFrame::skill_tableRow^  skillFrame::skillRow::skill_tableRow::get() {
-    return (cli::safe_cast<skillFrame::skill_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"skill_table_skill"])));
+inline playerFrame::skill_tableRow^  playerFrame::skillRow::skill_tableRow::get() {
+    return (cli::safe_cast<playerFrame::skill_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"skill_table_skill"])));
 }
-inline System::Void skillFrame::skillRow::skill_tableRow::set(skillFrame::skill_tableRow^  value) {
+inline System::Void playerFrame::skillRow::skill_tableRow::set(playerFrame::skill_tableRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"skill_table_skill"]);
 }
 
-inline ::System::Boolean skillFrame::skillRow::IsasNull() {
+inline ::System::Boolean playerFrame::skillRow::IsasNull() {
     return this->IsNull(this->tableskill->asColumn);
 }
 
-inline ::System::Void skillFrame::skillRow::SetasNull() {
+inline ::System::Void playerFrame::skillRow::SetasNull() {
     this[this->tableskill->asColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::skillRow::IsssseNull() {
+inline ::System::Boolean playerFrame::skillRow::IsssseNull() {
     return this->IsNull(this->tableskill->ssseColumn);
 }
 
-inline ::System::Void skillFrame::skillRow::SetssseNull() {
+inline ::System::Void playerFrame::skillRow::SetssseNull() {
     this[this->tableskill->ssseColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::skillRow::IssavableNull() {
+inline ::System::Boolean playerFrame::skillRow::IssavableNull() {
     return this->IsNull(this->tableskill->savableColumn);
 }
 
-inline ::System::Void skillFrame::skillRow::SetsavableNull() {
+inline ::System::Void playerFrame::skillRow::SetsavableNull() {
     this[this->tableskill->savableColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::skillRow::Isskill_table_IdNull() {
+inline ::System::Boolean playerFrame::skillRow::Isskill_table_IdNull() {
     return this->IsNull(this->tableskill->skill_table_IdColumn);
 }
 
-inline ::System::Void skillFrame::skillRow::Setskill_table_IdNull() {
+inline ::System::Void playerFrame::skillRow::Setskill_table_IdNull() {
     this[this->tableskill->skill_table_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::object_tableRow^  >^  skillFrame::skillRow::Getobject_tableRows() {
+inline cli::array< playerFrame::object_tableRow^  >^  playerFrame::skillRow::Getobject_tableRows() {
     if (this->Table->ChildRelations[L"skill_object_table"] == nullptr) {
-        return gcnew cli::array< skillFrame::object_tableRow^  >(0);
+        return gcnew cli::array< playerFrame::object_tableRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::object_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"skill_object_table"])));
+        return (cli::safe_cast<cli::array< playerFrame::object_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"skill_object_table"])));
     }
 }
 
 
-inline skillFrame::object_tableRow::object_tableRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::object_tableRow::object_tableRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tableobject_table = (cli::safe_cast<skillFrame::object_tableDataTable^  >(this->Table));
+    this->tableobject_table = (cli::safe_cast<playerFrame::object_tableDataTable^  >(this->Table));
 }
 
-inline System::Int32 skillFrame::object_tableRow::object_table_Id::get() {
+inline System::Int32 playerFrame::object_tableRow::object_table_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableobject_table->object_table_IdColumn]));
 }
-inline System::Void skillFrame::object_tableRow::object_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::object_tableRow::object_table_Id::set(System::Int32 value) {
     this[this->tableobject_table->object_table_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::object_tableRow::skill_Id::get() {
+inline System::Int32 playerFrame::object_tableRow::skill_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tableobject_table->skill_IdColumn]));
     }
@@ -6645,55 +6654,55 @@ inline System::Int32 skillFrame::object_tableRow::skill_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“object_table”中列“skill_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::object_tableRow::skill_Id::set(System::Int32 value) {
+inline System::Void playerFrame::object_tableRow::skill_Id::set(System::Int32 value) {
     this[this->tableobject_table->skill_IdColumn] = value;
 }
 
-inline skillFrame::skillRow^  skillFrame::object_tableRow::skillRow::get() {
-    return (cli::safe_cast<skillFrame::skillRow^  >(this->GetParentRow(this->Table->ParentRelations[L"skill_object_table"])));
+inline playerFrame::skillRow^  playerFrame::object_tableRow::skillRow::get() {
+    return (cli::safe_cast<playerFrame::skillRow^  >(this->GetParentRow(this->Table->ParentRelations[L"skill_object_table"])));
 }
-inline System::Void skillFrame::object_tableRow::skillRow::set(skillFrame::skillRow^  value) {
+inline System::Void playerFrame::object_tableRow::skillRow::set(playerFrame::skillRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"skill_object_table"]);
 }
 
-inline ::System::Boolean skillFrame::object_tableRow::Isskill_IdNull() {
+inline ::System::Boolean playerFrame::object_tableRow::Isskill_IdNull() {
     return this->IsNull(this->tableobject_table->skill_IdColumn);
 }
 
-inline ::System::Void skillFrame::object_tableRow::Setskill_IdNull() {
+inline ::System::Void playerFrame::object_tableRow::Setskill_IdNull() {
     this[this->tableobject_table->skill_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::objectRow^  >^  skillFrame::object_tableRow::GetobjectRows() {
+inline cli::array< playerFrame::objectRow^  >^  playerFrame::object_tableRow::GetobjectRows() {
     if (this->Table->ChildRelations[L"object_table_object"] == nullptr) {
-        return gcnew cli::array< skillFrame::objectRow^  >(0);
+        return gcnew cli::array< playerFrame::objectRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::objectRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"object_table_object"])));
+        return (cli::safe_cast<cli::array< playerFrame::objectRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"object_table_object"])));
     }
 }
 
 
-inline skillFrame::objectRow::objectRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::objectRow::objectRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tableobject = (cli::safe_cast<skillFrame::objectDataTable^  >(this->Table));
+    this->tableobject = (cli::safe_cast<playerFrame::objectDataTable^  >(this->Table));
 }
 
-inline System::Int32 skillFrame::objectRow::id::get() {
+inline System::Int32 playerFrame::objectRow::id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableobject->idColumn]));
 }
-inline System::Void skillFrame::objectRow::id::set(System::Int32 value) {
+inline System::Void playerFrame::objectRow::id::set(System::Int32 value) {
     this[this->tableobject->idColumn] = value;
 }
 
-inline System::Int32 skillFrame::objectRow::object_Id::get() {
+inline System::Int32 playerFrame::objectRow::object_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableobject->object_IdColumn]));
 }
-inline System::Void skillFrame::objectRow::object_Id::set(System::Int32 value) {
+inline System::Void playerFrame::objectRow::object_Id::set(System::Int32 value) {
     this[this->tableobject->object_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::objectRow::object_table_Id::get() {
+inline System::Int32 playerFrame::objectRow::object_table_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tableobject->object_table_IdColumn]));
     }
@@ -6701,48 +6710,48 @@ inline System::Int32 skillFrame::objectRow::object_table_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“object”中列“object_table_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::objectRow::object_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::objectRow::object_table_Id::set(System::Int32 value) {
     this[this->tableobject->object_table_IdColumn] = value;
 }
 
-inline skillFrame::object_tableRow^  skillFrame::objectRow::object_tableRow::get() {
-    return (cli::safe_cast<skillFrame::object_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"object_table_object"])));
+inline playerFrame::object_tableRow^  playerFrame::objectRow::object_tableRow::get() {
+    return (cli::safe_cast<playerFrame::object_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"object_table_object"])));
 }
-inline System::Void skillFrame::objectRow::object_tableRow::set(skillFrame::object_tableRow^  value) {
+inline System::Void playerFrame::objectRow::object_tableRow::set(playerFrame::object_tableRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"object_table_object"]);
 }
 
-inline ::System::Boolean skillFrame::objectRow::Isobject_table_IdNull() {
+inline ::System::Boolean playerFrame::objectRow::Isobject_table_IdNull() {
     return this->IsNull(this->tableobject->object_table_IdColumn);
 }
 
-inline ::System::Void skillFrame::objectRow::Setobject_table_IdNull() {
+inline ::System::Void playerFrame::objectRow::Setobject_table_IdNull() {
     this[this->tableobject->object_table_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::frame_tableRow^  >^  skillFrame::objectRow::Getframe_tableRows() {
+inline cli::array< playerFrame::frame_tableRow^  >^  playerFrame::objectRow::Getframe_tableRows() {
     if (this->Table->ChildRelations[L"object_frame_table"] == nullptr) {
-        return gcnew cli::array< skillFrame::frame_tableRow^  >(0);
+        return gcnew cli::array< playerFrame::frame_tableRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::frame_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"object_frame_table"])));
+        return (cli::safe_cast<cli::array< playerFrame::frame_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"object_frame_table"])));
     }
 }
 
 
-inline skillFrame::frame_tableRow::frame_tableRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::frame_tableRow::frame_tableRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tableframe_table = (cli::safe_cast<skillFrame::frame_tableDataTable^  >(this->Table));
+    this->tableframe_table = (cli::safe_cast<playerFrame::frame_tableDataTable^  >(this->Table));
 }
 
-inline System::Int32 skillFrame::frame_tableRow::frame_table_Id::get() {
+inline System::Int32 playerFrame::frame_tableRow::frame_table_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableframe_table->frame_table_IdColumn]));
 }
-inline System::Void skillFrame::frame_tableRow::frame_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::frame_tableRow::frame_table_Id::set(System::Int32 value) {
     this[this->tableframe_table->frame_table_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::frame_tableRow::object_Id::get() {
+inline System::Int32 playerFrame::frame_tableRow::object_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tableframe_table->object_IdColumn]));
     }
@@ -6750,55 +6759,55 @@ inline System::Int32 skillFrame::frame_tableRow::object_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“frame_table”中列“object_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::frame_tableRow::object_Id::set(System::Int32 value) {
+inline System::Void playerFrame::frame_tableRow::object_Id::set(System::Int32 value) {
     this[this->tableframe_table->object_IdColumn] = value;
 }
 
-inline skillFrame::objectRow^  skillFrame::frame_tableRow::objectRow::get() {
-    return (cli::safe_cast<skillFrame::objectRow^  >(this->GetParentRow(this->Table->ParentRelations[L"object_frame_table"])));
+inline playerFrame::objectRow^  playerFrame::frame_tableRow::objectRow::get() {
+    return (cli::safe_cast<playerFrame::objectRow^  >(this->GetParentRow(this->Table->ParentRelations[L"object_frame_table"])));
 }
-inline System::Void skillFrame::frame_tableRow::objectRow::set(skillFrame::objectRow^  value) {
+inline System::Void playerFrame::frame_tableRow::objectRow::set(playerFrame::objectRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"object_frame_table"]);
 }
 
-inline ::System::Boolean skillFrame::frame_tableRow::Isobject_IdNull() {
+inline ::System::Boolean playerFrame::frame_tableRow::Isobject_IdNull() {
     return this->IsNull(this->tableframe_table->object_IdColumn);
 }
 
-inline ::System::Void skillFrame::frame_tableRow::Setobject_IdNull() {
+inline ::System::Void playerFrame::frame_tableRow::Setobject_IdNull() {
     this[this->tableframe_table->object_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::frameRow^  >^  skillFrame::frame_tableRow::GetframeRows() {
+inline cli::array< playerFrame::frameRow^  >^  playerFrame::frame_tableRow::GetframeRows() {
     if (this->Table->ChildRelations[L"frame_table_frame"] == nullptr) {
-        return gcnew cli::array< skillFrame::frameRow^  >(0);
+        return gcnew cli::array< playerFrame::frameRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::frameRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"frame_table_frame"])));
+        return (cli::safe_cast<cli::array< playerFrame::frameRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"frame_table_frame"])));
     }
 }
 
 
-inline skillFrame::frameRow::frameRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::frameRow::frameRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tableframe = (cli::safe_cast<skillFrame::frameDataTable^  >(this->Table));
+    this->tableframe = (cli::safe_cast<playerFrame::frameDataTable^  >(this->Table));
 }
 
-inline System::Int32 skillFrame::frameRow::id::get() {
+inline System::Int32 playerFrame::frameRow::id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableframe->idColumn]));
 }
-inline System::Void skillFrame::frameRow::id::set(System::Int32 value) {
+inline System::Void playerFrame::frameRow::id::set(System::Int32 value) {
     this[this->tableframe->idColumn] = value;
 }
 
-inline System::Int32 skillFrame::frameRow::frame_Id::get() {
+inline System::Int32 playerFrame::frameRow::frame_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tableframe->frame_IdColumn]));
 }
-inline System::Void skillFrame::frameRow::frame_Id::set(System::Int32 value) {
+inline System::Void playerFrame::frameRow::frame_Id::set(System::Int32 value) {
     this[this->tableframe->frame_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::frameRow::frame_table_Id::get() {
+inline System::Int32 playerFrame::frameRow::frame_table_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tableframe->frame_table_IdColumn]));
     }
@@ -6806,50 +6815,50 @@ inline System::Int32 skillFrame::frameRow::frame_table_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“frame”中列“frame_table_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::frameRow::frame_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::frameRow::frame_table_Id::set(System::Int32 value) {
     this[this->tableframe->frame_table_IdColumn] = value;
 }
 
-inline skillFrame::frame_tableRow^  skillFrame::frameRow::frame_tableRow::get() {
-    return (cli::safe_cast<skillFrame::frame_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"frame_table_frame"])));
+inline playerFrame::frame_tableRow^  playerFrame::frameRow::frame_tableRow::get() {
+    return (cli::safe_cast<playerFrame::frame_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"frame_table_frame"])));
 }
-inline System::Void skillFrame::frameRow::frame_tableRow::set(skillFrame::frame_tableRow^  value) {
+inline System::Void playerFrame::frameRow::frame_tableRow::set(playerFrame::frame_tableRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"frame_table_frame"]);
 }
 
-inline ::System::Boolean skillFrame::frameRow::Isframe_table_IdNull() {
+inline ::System::Boolean playerFrame::frameRow::Isframe_table_IdNull() {
     return this->IsNull(this->tableframe->frame_table_IdColumn);
 }
 
-inline ::System::Void skillFrame::frameRow::Setframe_table_IdNull() {
+inline ::System::Void playerFrame::frameRow::Setframe_table_IdNull() {
     this[this->tableframe->frame_table_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::pointRow^  >^  skillFrame::frameRow::GetpointRows() {
+inline cli::array< playerFrame::pointRow^  >^  playerFrame::frameRow::GetpointRows() {
     if (this->Table->ChildRelations[L"frame_point"] == nullptr) {
-        return gcnew cli::array< skillFrame::pointRow^  >(0);
+        return gcnew cli::array< playerFrame::pointRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::pointRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"frame_point"])));
+        return (cli::safe_cast<cli::array< playerFrame::pointRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"frame_point"])));
     }
 }
 
-inline cli::array< skillFrame::box_tableRow^  >^  skillFrame::frameRow::Getbox_tableRows() {
+inline cli::array< playerFrame::box_tableRow^  >^  playerFrame::frameRow::Getbox_tableRows() {
     if (this->Table->ChildRelations[L"frame_box_table"] == nullptr) {
-        return gcnew cli::array< skillFrame::box_tableRow^  >(0);
+        return gcnew cli::array< playerFrame::box_tableRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::box_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"frame_box_table"])));
+        return (cli::safe_cast<cli::array< playerFrame::box_tableRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"frame_box_table"])));
     }
 }
 
 
-inline skillFrame::pointRow::pointRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::pointRow::pointRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tablepoint = (cli::safe_cast<skillFrame::pointDataTable^  >(this->Table));
+    this->tablepoint = (cli::safe_cast<playerFrame::pointDataTable^  >(this->Table));
 }
 
-inline System::Single skillFrame::pointRow::x::get() {
+inline System::Single playerFrame::pointRow::x::get() {
     try {
         return (cli::safe_cast<::System::Single >(this[this->tablepoint->xColumn]));
     }
@@ -6857,11 +6866,11 @@ inline System::Single skillFrame::pointRow::x::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“point”中列“x”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::pointRow::x::set(System::Single value) {
+inline System::Void playerFrame::pointRow::x::set(System::Single value) {
     this[this->tablepoint->xColumn] = value;
 }
 
-inline System::Single skillFrame::pointRow::y::get() {
+inline System::Single playerFrame::pointRow::y::get() {
     try {
         return (cli::safe_cast<::System::Single >(this[this->tablepoint->yColumn]));
     }
@@ -6869,11 +6878,11 @@ inline System::Single skillFrame::pointRow::y::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“point”中列“y”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::pointRow::y::set(System::Single value) {
+inline System::Void playerFrame::pointRow::y::set(System::Single value) {
     this[this->tablepoint->yColumn] = value;
 }
 
-inline System::Int32 skillFrame::pointRow::frame_Id::get() {
+inline System::Int32 playerFrame::pointRow::frame_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tablepoint->frame_IdColumn]));
     }
@@ -6881,55 +6890,55 @@ inline System::Int32 skillFrame::pointRow::frame_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“point”中列“frame_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::pointRow::frame_Id::set(System::Int32 value) {
+inline System::Void playerFrame::pointRow::frame_Id::set(System::Int32 value) {
     this[this->tablepoint->frame_IdColumn] = value;
 }
 
-inline skillFrame::frameRow^  skillFrame::pointRow::frameRow::get() {
-    return (cli::safe_cast<skillFrame::frameRow^  >(this->GetParentRow(this->Table->ParentRelations[L"frame_point"])));
+inline playerFrame::frameRow^  playerFrame::pointRow::frameRow::get() {
+    return (cli::safe_cast<playerFrame::frameRow^  >(this->GetParentRow(this->Table->ParentRelations[L"frame_point"])));
 }
-inline System::Void skillFrame::pointRow::frameRow::set(skillFrame::frameRow^  value) {
+inline System::Void playerFrame::pointRow::frameRow::set(playerFrame::frameRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"frame_point"]);
 }
 
-inline ::System::Boolean skillFrame::pointRow::IsxNull() {
+inline ::System::Boolean playerFrame::pointRow::IsxNull() {
     return this->IsNull(this->tablepoint->xColumn);
 }
 
-inline ::System::Void skillFrame::pointRow::SetxNull() {
+inline ::System::Void playerFrame::pointRow::SetxNull() {
     this[this->tablepoint->xColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::pointRow::IsyNull() {
+inline ::System::Boolean playerFrame::pointRow::IsyNull() {
     return this->IsNull(this->tablepoint->yColumn);
 }
 
-inline ::System::Void skillFrame::pointRow::SetyNull() {
+inline ::System::Void playerFrame::pointRow::SetyNull() {
     this[this->tablepoint->yColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::pointRow::Isframe_IdNull() {
+inline ::System::Boolean playerFrame::pointRow::Isframe_IdNull() {
     return this->IsNull(this->tablepoint->frame_IdColumn);
 }
 
-inline ::System::Void skillFrame::pointRow::Setframe_IdNull() {
+inline ::System::Void playerFrame::pointRow::Setframe_IdNull() {
     this[this->tablepoint->frame_IdColumn] = ::System::Convert::DBNull;
 }
 
 
-inline skillFrame::box_tableRow::box_tableRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::box_tableRow::box_tableRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tablebox_table = (cli::safe_cast<skillFrame::box_tableDataTable^  >(this->Table));
+    this->tablebox_table = (cli::safe_cast<playerFrame::box_tableDataTable^  >(this->Table));
 }
 
-inline System::Int32 skillFrame::box_tableRow::box_table_Id::get() {
+inline System::Int32 playerFrame::box_tableRow::box_table_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tablebox_table->box_table_IdColumn]));
 }
-inline System::Void skillFrame::box_tableRow::box_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::box_tableRow::box_table_Id::set(System::Int32 value) {
     this[this->tablebox_table->box_table_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::box_tableRow::frame_Id::get() {
+inline System::Int32 playerFrame::box_tableRow::frame_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tablebox_table->frame_IdColumn]));
     }
@@ -6937,41 +6946,41 @@ inline System::Int32 skillFrame::box_tableRow::frame_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“box_table”中列“frame_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::box_tableRow::frame_Id::set(System::Int32 value) {
+inline System::Void playerFrame::box_tableRow::frame_Id::set(System::Int32 value) {
     this[this->tablebox_table->frame_IdColumn] = value;
 }
 
-inline skillFrame::frameRow^  skillFrame::box_tableRow::frameRow::get() {
-    return (cli::safe_cast<skillFrame::frameRow^  >(this->GetParentRow(this->Table->ParentRelations[L"frame_box_table"])));
+inline playerFrame::frameRow^  playerFrame::box_tableRow::frameRow::get() {
+    return (cli::safe_cast<playerFrame::frameRow^  >(this->GetParentRow(this->Table->ParentRelations[L"frame_box_table"])));
 }
-inline System::Void skillFrame::box_tableRow::frameRow::set(skillFrame::frameRow^  value) {
+inline System::Void playerFrame::box_tableRow::frameRow::set(playerFrame::frameRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"frame_box_table"]);
 }
 
-inline ::System::Boolean skillFrame::box_tableRow::Isframe_IdNull() {
+inline ::System::Boolean playerFrame::box_tableRow::Isframe_IdNull() {
     return this->IsNull(this->tablebox_table->frame_IdColumn);
 }
 
-inline ::System::Void skillFrame::box_tableRow::Setframe_IdNull() {
+inline ::System::Void playerFrame::box_tableRow::Setframe_IdNull() {
     this[this->tablebox_table->frame_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::boxRow^  >^  skillFrame::box_tableRow::GetboxRows() {
+inline cli::array< playerFrame::boxRow^  >^  playerFrame::box_tableRow::GetboxRows() {
     if (this->Table->ChildRelations[L"box_table_box"] == nullptr) {
-        return gcnew cli::array< skillFrame::boxRow^  >(0);
+        return gcnew cli::array< playerFrame::boxRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::boxRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"box_table_box"])));
+        return (cli::safe_cast<cli::array< playerFrame::boxRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"box_table_box"])));
     }
 }
 
 
-inline skillFrame::boxRow::boxRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::boxRow::boxRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tablebox = (cli::safe_cast<skillFrame::boxDataTable^  >(this->Table));
+    this->tablebox = (cli::safe_cast<playerFrame::boxDataTable^  >(this->Table));
 }
 
-inline System::Int32 skillFrame::boxRow::type::get() {
+inline System::Int32 playerFrame::boxRow::type::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tablebox->typeColumn]));
     }
@@ -6979,18 +6988,18 @@ inline System::Int32 skillFrame::boxRow::type::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“box”中列“type”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::boxRow::type::set(System::Int32 value) {
+inline System::Void playerFrame::boxRow::type::set(System::Int32 value) {
     this[this->tablebox->typeColumn] = value;
 }
 
-inline System::Int32 skillFrame::boxRow::box_Id::get() {
+inline System::Int32 playerFrame::boxRow::box_Id::get() {
     return (cli::safe_cast<::System::Int32 >(this[this->tablebox->box_IdColumn]));
 }
-inline System::Void skillFrame::boxRow::box_Id::set(System::Int32 value) {
+inline System::Void playerFrame::boxRow::box_Id::set(System::Int32 value) {
     this[this->tablebox->box_IdColumn] = value;
 }
 
-inline System::Int32 skillFrame::boxRow::box_table_Id::get() {
+inline System::Int32 playerFrame::boxRow::box_table_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tablebox->box_table_IdColumn]));
     }
@@ -6998,49 +7007,49 @@ inline System::Int32 skillFrame::boxRow::box_table_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“box”中列“box_table_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::boxRow::box_table_Id::set(System::Int32 value) {
+inline System::Void playerFrame::boxRow::box_table_Id::set(System::Int32 value) {
     this[this->tablebox->box_table_IdColumn] = value;
 }
 
-inline skillFrame::box_tableRow^  skillFrame::boxRow::box_tableRow::get() {
-    return (cli::safe_cast<skillFrame::box_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"box_table_box"])));
+inline playerFrame::box_tableRow^  playerFrame::boxRow::box_tableRow::get() {
+    return (cli::safe_cast<playerFrame::box_tableRow^  >(this->GetParentRow(this->Table->ParentRelations[L"box_table_box"])));
 }
-inline System::Void skillFrame::boxRow::box_tableRow::set(skillFrame::box_tableRow^  value) {
+inline System::Void playerFrame::boxRow::box_tableRow::set(playerFrame::box_tableRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"box_table_box"]);
 }
 
-inline ::System::Boolean skillFrame::boxRow::IstypeNull() {
+inline ::System::Boolean playerFrame::boxRow::IstypeNull() {
     return this->IsNull(this->tablebox->typeColumn);
 }
 
-inline ::System::Void skillFrame::boxRow::SettypeNull() {
+inline ::System::Void playerFrame::boxRow::SettypeNull() {
     this[this->tablebox->typeColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::boxRow::Isbox_table_IdNull() {
+inline ::System::Boolean playerFrame::boxRow::Isbox_table_IdNull() {
     return this->IsNull(this->tablebox->box_table_IdColumn);
 }
 
-inline ::System::Void skillFrame::boxRow::Setbox_table_IdNull() {
+inline ::System::Void playerFrame::boxRow::Setbox_table_IdNull() {
     this[this->tablebox->box_table_IdColumn] = ::System::Convert::DBNull;
 }
 
-inline cli::array< skillFrame::rectRow^  >^  skillFrame::boxRow::GetrectRows() {
+inline cli::array< playerFrame::rectRow^  >^  playerFrame::boxRow::GetrectRows() {
     if (this->Table->ChildRelations[L"box_rect"] == nullptr) {
-        return gcnew cli::array< skillFrame::rectRow^  >(0);
+        return gcnew cli::array< playerFrame::rectRow^  >(0);
     }
     else {
-        return (cli::safe_cast<cli::array< skillFrame::rectRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"box_rect"])));
+        return (cli::safe_cast<cli::array< playerFrame::rectRow^  >^  >(__super::GetChildRows(this->Table->ChildRelations[L"box_rect"])));
     }
 }
 
 
-inline skillFrame::rectRow::rectRow(::System::Data::DataRowBuilder^  rb) : 
+inline playerFrame::rectRow::rectRow(::System::Data::DataRowBuilder^  rb) : 
         ::System::Data::DataRow(rb) {
-    this->tablerect = (cli::safe_cast<skillFrame::rectDataTable^  >(this->Table));
+    this->tablerect = (cli::safe_cast<playerFrame::rectDataTable^  >(this->Table));
 }
 
-inline System::Single skillFrame::rectRow::t::get() {
+inline System::Single playerFrame::rectRow::t::get() {
     try {
         return (cli::safe_cast<::System::Single >(this[this->tablerect->tColumn]));
     }
@@ -7048,11 +7057,11 @@ inline System::Single skillFrame::rectRow::t::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“rect”中列“t”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::rectRow::t::set(System::Single value) {
+inline System::Void playerFrame::rectRow::t::set(System::Single value) {
     this[this->tablerect->tColumn] = value;
 }
 
-inline System::Single skillFrame::rectRow::l::get() {
+inline System::Single playerFrame::rectRow::l::get() {
     try {
         return (cli::safe_cast<::System::Single >(this[this->tablerect->lColumn]));
     }
@@ -7060,11 +7069,11 @@ inline System::Single skillFrame::rectRow::l::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“rect”中列“l”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::rectRow::l::set(System::Single value) {
+inline System::Void playerFrame::rectRow::l::set(System::Single value) {
     this[this->tablerect->lColumn] = value;
 }
 
-inline System::Single skillFrame::rectRow::b::get() {
+inline System::Single playerFrame::rectRow::b::get() {
     try {
         return (cli::safe_cast<::System::Single >(this[this->tablerect->bColumn]));
     }
@@ -7072,11 +7081,11 @@ inline System::Single skillFrame::rectRow::b::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“rect”中列“b”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::rectRow::b::set(System::Single value) {
+inline System::Void playerFrame::rectRow::b::set(System::Single value) {
     this[this->tablerect->bColumn] = value;
 }
 
-inline System::Single skillFrame::rectRow::r::get() {
+inline System::Single playerFrame::rectRow::r::get() {
     try {
         return (cli::safe_cast<::System::Single >(this[this->tablerect->rColumn]));
     }
@@ -7084,11 +7093,11 @@ inline System::Single skillFrame::rectRow::r::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“rect”中列“r”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::rectRow::r::set(System::Single value) {
+inline System::Void playerFrame::rectRow::r::set(System::Single value) {
     this[this->tablerect->rColumn] = value;
 }
 
-inline System::Int32 skillFrame::rectRow::box_Id::get() {
+inline System::Int32 playerFrame::rectRow::box_Id::get() {
     try {
         return (cli::safe_cast<::System::Int32 >(this[this->tablerect->box_IdColumn]));
     }
@@ -7096,235 +7105,235 @@ inline System::Int32 skillFrame::rectRow::box_Id::get() {
         throw (gcnew ::System::Data::StrongTypingException(L"表“rect”中列“box_Id”的值为 DBNull。", e));
     }
 }
-inline System::Void skillFrame::rectRow::box_Id::set(System::Int32 value) {
+inline System::Void playerFrame::rectRow::box_Id::set(System::Int32 value) {
     this[this->tablerect->box_IdColumn] = value;
 }
 
-inline skillFrame::boxRow^  skillFrame::rectRow::boxRow::get() {
-    return (cli::safe_cast<skillFrame::boxRow^  >(this->GetParentRow(this->Table->ParentRelations[L"box_rect"])));
+inline playerFrame::boxRow^  playerFrame::rectRow::boxRow::get() {
+    return (cli::safe_cast<playerFrame::boxRow^  >(this->GetParentRow(this->Table->ParentRelations[L"box_rect"])));
 }
-inline System::Void skillFrame::rectRow::boxRow::set(skillFrame::boxRow^  value) {
+inline System::Void playerFrame::rectRow::boxRow::set(playerFrame::boxRow^  value) {
     this->SetParentRow(value, this->Table->ParentRelations[L"box_rect"]);
 }
 
-inline ::System::Boolean skillFrame::rectRow::IstNull() {
+inline ::System::Boolean playerFrame::rectRow::IstNull() {
     return this->IsNull(this->tablerect->tColumn);
 }
 
-inline ::System::Void skillFrame::rectRow::SettNull() {
+inline ::System::Void playerFrame::rectRow::SettNull() {
     this[this->tablerect->tColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::rectRow::IslNull() {
+inline ::System::Boolean playerFrame::rectRow::IslNull() {
     return this->IsNull(this->tablerect->lColumn);
 }
 
-inline ::System::Void skillFrame::rectRow::SetlNull() {
+inline ::System::Void playerFrame::rectRow::SetlNull() {
     this[this->tablerect->lColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::rectRow::IsbNull() {
+inline ::System::Boolean playerFrame::rectRow::IsbNull() {
     return this->IsNull(this->tablerect->bColumn);
 }
 
-inline ::System::Void skillFrame::rectRow::SetbNull() {
+inline ::System::Void playerFrame::rectRow::SetbNull() {
     this[this->tablerect->bColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::rectRow::IsrNull() {
+inline ::System::Boolean playerFrame::rectRow::IsrNull() {
     return this->IsNull(this->tablerect->rColumn);
 }
 
-inline ::System::Void skillFrame::rectRow::SetrNull() {
+inline ::System::Void playerFrame::rectRow::SetrNull() {
     this[this->tablerect->rColumn] = ::System::Convert::DBNull;
 }
 
-inline ::System::Boolean skillFrame::rectRow::Isbox_IdNull() {
+inline ::System::Boolean playerFrame::rectRow::Isbox_IdNull() {
     return this->IsNull(this->tablerect->box_IdColumn);
 }
 
-inline ::System::Void skillFrame::rectRow::Setbox_IdNull() {
+inline ::System::Void playerFrame::rectRow::Setbox_IdNull() {
     this[this->tablerect->box_IdColumn] = ::System::Convert::DBNull;
 }
 
 
-inline skillFrame::player_infoRowChangeEvent::player_infoRowChangeEvent(skillFrame::player_infoRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::player_infoRowChangeEvent::player_infoRowChangeEvent(playerFrame::player_infoRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::player_infoRow^  skillFrame::player_infoRowChangeEvent::Row::get() {
+inline playerFrame::player_infoRow^  playerFrame::player_infoRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::player_infoRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::player_infoRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::skin_tableRowChangeEvent::skin_tableRowChangeEvent(skillFrame::skin_tableRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::skin_tableRowChangeEvent::skin_tableRowChangeEvent(playerFrame::skin_tableRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::skin_tableRow^  skillFrame::skin_tableRowChangeEvent::Row::get() {
+inline playerFrame::skin_tableRow^  playerFrame::skin_tableRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::skin_tableRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::skin_tableRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::skinRowChangeEvent::skinRowChangeEvent(skillFrame::skinRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::skinRowChangeEvent::skinRowChangeEvent(playerFrame::skinRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::skinRow^  skillFrame::skinRowChangeEvent::Row::get() {
+inline playerFrame::skinRow^  playerFrame::skinRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::skinRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::skinRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::skill_tableRowChangeEvent::skill_tableRowChangeEvent(skillFrame::skill_tableRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::skill_tableRowChangeEvent::skill_tableRowChangeEvent(playerFrame::skill_tableRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::skill_tableRow^  skillFrame::skill_tableRowChangeEvent::Row::get() {
+inline playerFrame::skill_tableRow^  playerFrame::skill_tableRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::skill_tableRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::skill_tableRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::skillRowChangeEvent::skillRowChangeEvent(skillFrame::skillRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::skillRowChangeEvent::skillRowChangeEvent(playerFrame::skillRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::skillRow^  skillFrame::skillRowChangeEvent::Row::get() {
+inline playerFrame::skillRow^  playerFrame::skillRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::skillRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::skillRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::object_tableRowChangeEvent::object_tableRowChangeEvent(skillFrame::object_tableRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::object_tableRowChangeEvent::object_tableRowChangeEvent(playerFrame::object_tableRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::object_tableRow^  skillFrame::object_tableRowChangeEvent::Row::get() {
+inline playerFrame::object_tableRow^  playerFrame::object_tableRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::object_tableRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::object_tableRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::objectRowChangeEvent::objectRowChangeEvent(skillFrame::objectRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::objectRowChangeEvent::objectRowChangeEvent(playerFrame::objectRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::objectRow^  skillFrame::objectRowChangeEvent::Row::get() {
+inline playerFrame::objectRow^  playerFrame::objectRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::objectRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::objectRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::frame_tableRowChangeEvent::frame_tableRowChangeEvent(skillFrame::frame_tableRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::frame_tableRowChangeEvent::frame_tableRowChangeEvent(playerFrame::frame_tableRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::frame_tableRow^  skillFrame::frame_tableRowChangeEvent::Row::get() {
+inline playerFrame::frame_tableRow^  playerFrame::frame_tableRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::frame_tableRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::frame_tableRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::frameRowChangeEvent::frameRowChangeEvent(skillFrame::frameRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::frameRowChangeEvent::frameRowChangeEvent(playerFrame::frameRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::frameRow^  skillFrame::frameRowChangeEvent::Row::get() {
+inline playerFrame::frameRow^  playerFrame::frameRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::frameRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::frameRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::pointRowChangeEvent::pointRowChangeEvent(skillFrame::pointRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::pointRowChangeEvent::pointRowChangeEvent(playerFrame::pointRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::pointRow^  skillFrame::pointRowChangeEvent::Row::get() {
+inline playerFrame::pointRow^  playerFrame::pointRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::pointRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::pointRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::box_tableRowChangeEvent::box_tableRowChangeEvent(skillFrame::box_tableRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::box_tableRowChangeEvent::box_tableRowChangeEvent(playerFrame::box_tableRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::box_tableRow^  skillFrame::box_tableRowChangeEvent::Row::get() {
+inline playerFrame::box_tableRow^  playerFrame::box_tableRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::box_tableRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::box_tableRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::boxRowChangeEvent::boxRowChangeEvent(skillFrame::boxRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::boxRowChangeEvent::boxRowChangeEvent(playerFrame::boxRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::boxRow^  skillFrame::boxRowChangeEvent::Row::get() {
+inline playerFrame::boxRow^  playerFrame::boxRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::boxRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::boxRowChangeEvent::Action::get() {
     return this->eventAction;
 }
 
 
-inline skillFrame::rectRowChangeEvent::rectRowChangeEvent(skillFrame::rectRow^  row, ::System::Data::DataRowAction action) {
+inline playerFrame::rectRowChangeEvent::rectRowChangeEvent(playerFrame::rectRow^  row, ::System::Data::DataRowAction action) {
     this->eventRow = row;
     this->eventAction = action;
 }
 
-inline skillFrame::rectRow^  skillFrame::rectRowChangeEvent::Row::get() {
+inline playerFrame::rectRow^  playerFrame::rectRowChangeEvent::Row::get() {
     return this->eventRow;
 }
 
-inline ::System::Data::DataRowAction skillFrame::rectRowChangeEvent::Action::get() {
+inline ::System::Data::DataRowAction playerFrame::rectRowChangeEvent::Action::get() {
     return this->eventAction;
 }

@@ -400,15 +400,17 @@ namespace SFResConfigReader
 
 }
 
-SFXmlReader::SFXmlReader(string xsdPath)
+SFXmlReader::SFXmlReader(string xsdPath) :m_pRootNode(NULL)
 {
 	HRESULT hr = S_OK;
 	CComPtr<IStream> pFileStream;
 	CComPtr<IXmlReader> pReader;
 	XmlNodeType nodeType = XmlNodeType_None;
+	LPCWSTR nodeName;
 	LPCWSTR name;
 	LPCWSTR value;
 	bool ret;
+	bool havGetRoot = false;
 
 	//Open read-only input stream
 	hr = SHCreateStreamOnFileA(xsdPath.c_str(), STGM_READ, &pFileStream);
@@ -424,24 +426,86 @@ SFXmlReader::SFXmlReader(string xsdPath)
 	hr = pReader->Read(NULL);
 
 	UINT tabs = 0;
-	UINT tabsO = 0;
+	vector<string> arrNodeBuffer;
 	for (; S_OK == hr; hr = pReader->Read(NULL))
 	{
-		pReader->GetLocalName(&name, NULL);
-		if (name[0] > L' ')
+		pReader->GetLocalName(&nodeName, NULL);
+		if (nodeName[0] > L' ')
 		{
-			pReader->GetNodeType(&nodeType);
-			if (nodeType == XmlNodeType_Element)
+			if (wcscmp(nodeName, L"element") == 0 || wcscmp(nodeName, L"attribute") == 0)
 			{
-				pReader->GetDepth(&tabs);
-				sf_wcout(DEBUG_COM, endl);
-				for (UINT i = 0; i < tabs; i++)
+				pReader->GetNodeType(&nodeType);
+				if (nodeType == XmlNodeType_Element)
 				{
-					sf_wcout(DEBUG_COM, L"\t");
+					sf_wcout(DEBUG_COM, endl);
+					for (UINT i = 0; i < tabs; i++)
+					{
+						sf_wcout(DEBUG_COM, L"\t");
+					}
+					sf_wcout(DEBUG_COM, nodeName << L" ");
+
+					POLL_XML_ATTR_BEGIN
+						if (wcscmp(nodeName, L"element") == 0)
+						{
+							if (tabs >= arrNodeBuffer.size())
+							{
+								arrNodeBuffer.insert(arrNodeBuffer.end(), utfValue);
+							}
+							if (utfName == "name" || utfName == "ref")
+							{
+								arrNodeBuffer[tabs] = utfValue;
+								if (m_data.find(utfValue) == m_data.end())
+								{
+									m_data[utfValue] = { utfValue, true, NULL, {}, {} };
+								}
+								if (utfName == "name" || utfName == "ref")
+								{
+									if (havGetRoot == false)
+									{
+										m_pRootNode = &m_data[utfValue];
+										havGetRoot = true;
+									}
+									if (tabs > 0)
+									{
+										string parent = arrNodeBuffer[tabs - 1];
+
+										m_data[utfValue].m_parent = &m_data[parent];
+										m_data[parent].m_nodeData.insert(m_data[parent].m_nodeData.end(), &m_data[utfValue]);
+									}
+								}
+							}
+							else if (utfName == "minOccurs")
+							{
+
+							}
+							else if (utfName == "maxOccurs")
+							{
+								if (utfValue == "unbounded")
+								{
+									m_data[arrNodeBuffer[tabs]].m_isOnly = false;
+								}
+							}
+						}
+						else if (wcscmp(nodeName, L"attribute") == 0)
+						{
+							if (utfName == "name")
+							{
+								m_data[arrNodeBuffer[tabs - 1]].m_attrData.insert(m_data[arrNodeBuffer[tabs - 1]].m_attrData.end(), utfValue);
+							}
+							else if (utfName == "type")
+							{
+							}
+						}
+					POLL_XML_ATTR_END
+					if (!(pReader->IsEmptyElement()) && wcscmp(nodeName, L"element") == 0)
+					{
+						tabs++;
+					}
 				}
-				sf_wcout(DEBUG_COM, name << L" ");
-				POLL_XML_ATTR_BEGIN
-				POLL_XML_ATTR_END
+				else if (nodeType == XmlNodeType_EndElement)
+				{
+					tabs--;
+				}
 			}
 		}
 	}
