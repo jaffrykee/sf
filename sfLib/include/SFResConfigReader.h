@@ -119,6 +119,7 @@ public:
 	struct XsdNodeData
 	{
 		string m_name;
+		UINT m_depth;
 		bool m_isOnly;
 
 		XsdNodeData* m_parent;
@@ -140,5 +141,6 @@ public:
 	SFXmlReader(string xsdPath, PtrFuncXmlNode_T, PtrFuncXmlAttr_T);
 
 	bool initFrameByXsd(string xsdPath);
-	bool getDataFromXml(string xmlPath);
+	void setSonNodeDepth(XsdNodeData* pRootNode);
+	bool getDataByXml(string xmlPath);
 };
