@@ -400,13 +400,7 @@ namespace SFResConfigReader
 
 }
 
-SFXmlReader::SFXmlReader(string xsdPath):m_pRootNode(NULL)
-{
-	initFrameByXsd(xsdPath);
-}
-
-SFXmlReader::SFXmlReader(string xsdPath, PtrFuncXmlNode_T pFuncNode, PtrFuncXmlAttr_T pFuncAttr):
-	m_pRootNode(NULL), m_pFuncXmlNode(pFuncNode), m_pFuncXmlAttr(pFuncAttr)
+SFXmlReader::SFXmlReader(string xsdPath) :m_pRootNode(NULL), m_maxDepth(0)
 {
 	initFrameByXsd(xsdPath);
 }
@@ -529,6 +523,10 @@ void SFXmlReader::setSonNodeDepth(XsdNodeData* pRootNode)
 		pRootNode->m_nodeData[i]->m_depth = pRootNode->m_depth + 1;
 		sf_cout(DEBUG_RES_LOAD, endl << pRootNode->m_nodeData[i]->m_name << 
 			((pRootNode->m_nodeData[i]->m_name.length()>=8)?"\t":"\t\t") << "depth:" << pRootNode->m_nodeData[i]->m_depth);
+		if (pRootNode->m_nodeData[i]->m_depth > m_maxDepth)
+		{
+			m_maxDepth = pRootNode->m_nodeData[i]->m_depth;
+		}
 		setSonNodeDepth(pRootNode->m_nodeData[i]);
 	}
 
@@ -562,86 +560,22 @@ bool SFXmlReader::getDataByXml(string xmlPath)
 	pReader->SetInput(pFileStream);
 	hr = pReader->Read(NULL);
 
-	UINT tabs = 0;
-	vector<string> arrNodeBuffer;
 	for (; S_OK == hr; hr = pReader->Read(NULL))
 	{
 		pReader->GetLocalName(&nodeName, NULL);
 		if (nodeName[0] > L' ')
 		{
-			if (wcscmp(nodeName, L"element") == 0 || wcscmp(nodeName, L"attribute") == 0)
+			pReader->GetNodeType(&nodeType);
+			if (nodeType == XmlNodeType_Element)
 			{
-				pReader->GetNodeType(&nodeType);
-				if (nodeType == XmlNodeType_Element)
-				{
-					sf_wcout(DEBUG_RES_LOAD, endl);
-					for (UINT i = 0; i < tabs; i++)
-					{
-						sf_wcout(DEBUG_RES_LOAD, L"\t");
-					}
-					sf_wcout(DEBUG_RES_LOAD, nodeName << L" ");
+				StringA utfNodeName = TStrTrans::UnicodeToUtf8(nodeName);
 
+				if (m_data.find(utfNodeName) != m_data.end())
+				{
+					parseXmlNode(utfNodeName);
 					POLL_XML_ATTR_BEGIN
-						if (wcscmp(nodeName, L"element") == 0)
-						{
-							if (tabs >= arrNodeBuffer.size())
-							{
-								arrNodeBuffer.insert(arrNodeBuffer.end(), utfValue);
-							}
-							if (utfName == "name" || utfName == "ref")
-							{
-								arrNodeBuffer[tabs] = utfValue;
-								if (m_data.find(utfValue) == m_data.end())
-								{
-									m_data[utfValue] = { utfValue, true, NULL, {}, {} };
-								}
-								if (utfName == "name" || utfName == "ref")
-								{
-									if (havGetRoot == false)
-									{
-										m_pRootNode = &m_data[utfValue];
-										havGetRoot = true;
-									}
-									if (tabs > 0)
-									{
-										string parent = arrNodeBuffer[tabs - 1];
-
-										m_data[utfValue].m_parent = &m_data[parent];
-										m_data[parent].m_nodeData.insert(m_data[parent].m_nodeData.end(), &m_data[utfValue]);
-									}
-								}
-							}
-							else if (utfName == "minOccurs")
-							{
-
-							}
-							else if (utfName == "maxOccurs")
-							{
-								if (utfValue == "unbounded")
-								{
-									m_data[arrNodeBuffer[tabs]].m_isOnly = false;
-								}
-							}
-						}
-						else if (wcscmp(nodeName, L"attribute") == 0)
-						{
-							if (utfName == "name")
-							{
-								m_data[arrNodeBuffer[tabs - 1]].m_attrData.insert(m_data[arrNodeBuffer[tabs - 1]].m_attrData.end(), utfValue);
-							}
-							else if (utfName == "type")
-							{
-							}
-						}
+						parseXmlAttr(utfName, utfValue);
 					POLL_XML_ATTR_END
-					if (!(pReader->IsEmptyElement()) && wcscmp(nodeName, L"element") == 0)
-					{
-						tabs++;
-					}
-				}
-				else if (nodeType == XmlNodeType_EndElement)
-				{
-					tabs--;
 				}
 			}
 		}

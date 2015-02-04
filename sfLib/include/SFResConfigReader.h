@@ -126,21 +126,30 @@ public:
 		vector<string> m_attrData;
 		vector<XsdNodeData*> m_nodeData;
 	};
-	typedef UINT(*PtrFuncXmlNode_T)(string& nodeName);
-	typedef UINT(*PtrFuncXmlAttr_T)(string& attrName, string& attrValue);
 
 	string m_path;
 	string m_name;
 	XsdNodeData* m_pRootNode;
 	map<string, XsdNodeData> m_data;
-
-	PtrFuncXmlNode_T m_pFuncXmlNode;
-	PtrFuncXmlAttr_T m_pFuncXmlAttr;
+	UINT m_maxDepth;
 
 	SFXmlReader(string xsdPath);
-	SFXmlReader(string xsdPath, PtrFuncXmlNode_T, PtrFuncXmlAttr_T);
 
 	bool initFrameByXsd(string xsdPath);
 	void setSonNodeDepth(XsdNodeData* pRootNode);
 	bool getDataByXml(string xmlPath);
+
+protected:
+	virtual void parseXmlNode(string nodeName) = 0;
+	virtual void parseXmlAttr(string attrName, string attrValue) = 0;
+};
+
+class __declspec(dllexport) SFXmlPlayer :public SFXmlReader
+{
+	SFResPlayer* m_pResPlayer;
+};
+
+class __declspec(dllexport) SFXmlScene :public SFXmlReader
+{
+	SFResScene* m_pResScene;
 };

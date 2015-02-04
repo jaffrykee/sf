@@ -158,3 +158,12 @@ public:
 	}
 };
 #endif
+
+//场景资源
+class __declspec(dllexport) SFResScene
+{
+public:
+	SFResScene();
+	~SFResScene();
+	// SFResSkill* operator[](SF_EKA skillIndex);
+};
