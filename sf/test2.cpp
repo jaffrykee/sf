@@ -4,6 +4,7 @@ using namespace std;
 
 //string path = "./data/p001/playerInfo.xml";
 string path = "./data/playerFrame.xsd";
+string path2 = "./data/p001/playerInfo.xml";
 
 void main()
 {
@@ -21,8 +22,10 @@ void main()
 			cout << g_pConf->m_pDiEka->m_str[i];
 		}
 	}*/
+	SFResPlayer* pRes = NULL;
 
-	SFXmlReader a(path);
+	SFXmlPlayer a(path);
+	a.getDataByXml(path2, pRes);
 
 	getchar();
 }

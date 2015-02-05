@@ -400,6 +400,8 @@ namespace SFResConfigReader
 
 }
 
+vector<void*> SFXmlReader::s_parseCount = {};
+
 SFXmlReader::SFXmlReader(string xsdPath) :m_pRootNode(NULL), m_maxDepth(0)
 {
 	initFrameByXsd(xsdPath);
@@ -462,7 +464,13 @@ bool SFXmlReader::initFrameByXsd(string xsdPath)
 								arrNodeBuffer[tabs] = utfValue;
 								if (m_data.find(utfValue) == m_data.end())
 								{
-									m_data[utfValue] = { utfValue, 0, true, NULL, {}, {} };
+									m_data[utfValue].m_name = utfValue;
+									m_data[utfValue].m_index = 0;
+									m_data[utfValue].m_depth = 0;
+									m_data[utfValue].m_isOnly = true;
+									m_data[utfValue].m_parent = NULL;
+									m_data[utfValue].m_attrData = map<string, XsdAttrData>{};
+									m_data[utfValue].m_nodeData = {};
 								}
 								if (tabs > 0)
 								{
@@ -476,10 +484,6 @@ bool SFXmlReader::initFrameByXsd(string xsdPath)
 									m_pRootNode = &m_data[utfValue];
 								}
 							}
-							else if (utfName == "minOccurs")
-							{
-
-							}
 							else if (utfName == "maxOccurs")
 							{
 								if (utfValue == "unbounded")
@@ -492,10 +496,10 @@ bool SFXmlReader::initFrameByXsd(string xsdPath)
 						{
 							if (utfName == "name")
 							{
-								m_data[arrNodeBuffer[tabs - 1]].m_attrData.insert(m_data[arrNodeBuffer[tabs - 1]].m_attrData.end(), utfValue);
-							}
-							else if (utfName == "type")
-							{
+								map<string, XsdAttrData>& mapAttr = m_data[arrNodeBuffer[tabs - 1]].m_attrData;
+
+								mapAttr[utfName].m_name = utfValue;
+								mapAttr[utfName].m_index = mapAttr.size();
 							}
 						}
 					POLL_XML_ATTR_END
@@ -518,22 +522,34 @@ bool SFXmlReader::initFrameByXsd(string xsdPath)
 
 void SFXmlReader::setSonNodeDepth(XsdNodeData* pRootNode)
 {
+	static UINT iCount = 0;
+
+	if (pRootNode == m_pRootNode)
+	{
+		iCount = 0;
+	}
+	else
+	{
+		iCount++;
+	}
 	for (UINT i = 0; i < pRootNode->m_nodeData.size(); i++)
 	{
 		pRootNode->m_nodeData[i]->m_depth = pRootNode->m_depth + 1;
-		sf_cout(DEBUG_RES_LOAD, endl << pRootNode->m_nodeData[i]->m_name << 
-			((pRootNode->m_nodeData[i]->m_name.length()>=8)?"\t":"\t\t") << "depth:" << pRootNode->m_nodeData[i]->m_depth);
 		if (pRootNode->m_nodeData[i]->m_depth > m_maxDepth)
 		{
 			m_maxDepth = pRootNode->m_nodeData[i]->m_depth;
 		}
+		pRootNode->m_nodeData[i]->m_index = iCount + 1;
+		sf_cout(DEBUG_RES_LOAD, endl << pRootNode->m_nodeData[i]->m_name <<
+			((pRootNode->m_nodeData[i]->m_name.length() >= 8) ? "\t" : "\t\t") << "depth:" << pRootNode->m_nodeData[i]->m_depth <<
+			"\t" << "index:" << pRootNode->m_nodeData[i]->m_index);
 		setSonNodeDepth(pRootNode->m_nodeData[i]);
 	}
 
 	return;
 }
 
-bool SFXmlReader::getDataByXml(string xmlPath)
+bool SFXmlReader::getDataByXml(string xmlPath, void* pRes)
 {
 	HRESULT hr = S_OK;
 	CComPtr<IStream> pFileStream;
@@ -545,6 +561,7 @@ bool SFXmlReader::getDataByXml(string xmlPath)
 	bool ret;
 	bool havGetRoot = false;
 
+	s_parseCount.clear();
 	//Open read-only input stream
 	hr = SHCreateStreamOnFileA(xmlPath.c_str(), STGM_READ, &pFileStream);
 	if (SUCCEEDED(hr))
@@ -572,13 +589,195 @@ bool SFXmlReader::getDataByXml(string xmlPath)
 
 				if (m_data.find(utfNodeName) != m_data.end())
 				{
-					parseXmlNode(utfNodeName);
+					parseXmlNode(utfNodeName, pRes);
 					POLL_XML_ATTR_BEGIN
-						parseXmlAttr(utfName, utfValue);
+						parseXmlAttr(utfNodeName, utfName, utfValue, pRes);
 					POLL_XML_ATTR_END
 				}
 			}
 		}
+	}
+	s_parseCount.clear();
+
+	return true;
+}
+
+typedef enum SF_ResParseNodeForPlayer
+{
+	RNP_player_info, RNP_skin_table, RNP_skin, RNP_skill_table, RNP_skill,
+	RNP_object_table, RNP_object, RNP_frame_table, RNP_frame, RNP_point,
+	RNP_box_table, RNP_box, RNP_rect,
+	RNP_MAX
+}SF_RNP;
+
+typedef enum SF_ResParsePtrBufferForPlayer
+{
+	RPP_SKL, RPP_OBJ, RPP_FRM,
+	RPP_MAX
+}SF_RPP;
+
+bool SFXmlPlayer::parseXmlNode(string nodeName, void* pRes)
+{
+	if (pRes == NULL)
+	{
+		return false;
+	}
+
+	sf_cout(DEBUG_RES_LOAD, endl);
+	for (UINT i = 0; i < m_data[nodeName].m_index; i++)
+	{
+		sf_cout(DEBUG_RES_LOAD, "  ");
+	}
+	sf_cout(DEBUG_RES_LOAD, "<" << nodeName << ">");
+	switch (m_data[nodeName].m_index)
+	{
+	case RNP_player_info:
+		break;
+	case RNP_skin_table:
+		break;
+	case RNP_skin:
+		break;
+	case RNP_skill_table:
+		break;
+	case RNP_skill:
+		break;
+
+	case RNP_object_table:
+		break;
+	case RNP_object:
+		break;
+	case RNP_frame_table:
+		break;
+	case RNP_frame:
+		break;
+	case RNP_point:
+		break;
+
+	case RNP_box_table:
+		break;
+	case RNP_box:
+		break;
+	case RNP_rect:
+		break;
+	}
+
+	return true;
+}
+
+bool SFXmlPlayer::parseXmlAttr(string nodeName, string attrName, string attrValue, void* pRes)
+{
+	if (pRes == NULL)
+	{
+		return false;
+	}
+
+	switch (m_data[nodeName].m_index)
+	{
+	case RNP_player_info:
+		break;
+	case RNP_skin_table:
+		break;
+	case RNP_skin:
+		if (attrName == "name")
+		{
+
+		}
+		break;
+	case RNP_skill_table:
+		break;
+	case RNP_skill:
+		if (attrName == "eka")
+		{
+		}
+		else if (attrName == "as")
+		{
+		}
+		else if (attrName == "ssse")
+		{
+		}
+		else if (attrName == "savable")
+		{
+		}
+		break;
+
+	case RNP_object_table:
+		break;
+	case RNP_object:
+		break;
+	case RNP_frame_table:
+		break;
+	case RNP_frame:
+		break;
+	case RNP_point:
+		break;
+
+	case RNP_box_table:
+		break;
+	case RNP_box:
+		break;
+	case RNP_rect:
+		break;
+	}
+
+	return true;
+}
+
+typedef enum SF_ResParseNodeForScene
+{
+	RNS_scene_info, RNS_scene_table, RNS_scene, RNS_camera_info, RNS_sprite_table,
+	RNS_sprite,
+	RNS_MAX
+}SF_RNS;
+
+bool SFXmlScene::parseXmlNode(string nodeName, void* pRes)
+{
+	if (pRes == NULL)
+	{
+		return false;
+	}
+
+	switch (m_data[nodeName].m_index)
+	{
+	case RNS_scene_info:
+		break;
+	case RNS_scene_table:
+		break;
+	case RNS_scene:
+		break;
+	case RNS_camera_info:
+		break;
+	case RNS_sprite_table:
+		break;
+
+	case RNS_sprite:
+		break;
+	}
+
+	return true;
+}
+
+bool SFXmlScene::parseXmlAttr(string nodeName, string attrName, string attrValue, void* pRes)
+{
+	if (pRes == NULL)
+	{
+		return false;
+	}
+
+	switch (m_data[nodeName].m_index)
+	{
+	case RNS_scene_info:
+		break;
+	case RNS_scene_table:
+		break;
+	case RNS_scene:
+		break;
+	case RNS_camera_info:
+		break;
+	case RNS_sprite_table:
+		break;
+
+	case RNS_sprite:
+		break;
 	}
 
 	return true;

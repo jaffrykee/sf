@@ -235,16 +235,19 @@ bool SFActScene::doEvent(SF_TEV event)
 		{
 			return true;
 		}
-		else if (getFightP1() != NULL && getFightP2() != NULL)
-		{
-			getFightP1()->doTimer(event);
-			getFightP2()->doTimer(event);
-
-			return true;
-		}
 		else
 		{
-			return false;
+			if (getFightP1() != NULL && getFightP2() != NULL)
+			{
+				getFightP1()->doTimer(event);
+				getFightP2()->doTimer(event);
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 

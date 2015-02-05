@@ -116,15 +116,32 @@ namespace SFResConfigReader
 class __declspec(dllexport) SFXmlReader
 {
 public:
+	struct XsdAttrData
+	{
+		string m_name;
+		UINT m_index;
+	};
 	struct XsdNodeData
 	{
 		string m_name;
+		UINT m_index;
 		UINT m_depth;
 		bool m_isOnly;
 
 		XsdNodeData* m_parent;
-		vector<string> m_attrData;
+		map<string, XsdAttrData> m_attrData;
 		vector<XsdNodeData*> m_nodeData;
+	};
+	struct XmlAttrData
+	{
+		XsdAttrData* m_pAttrType;
+	};
+	struct XmlNodeData
+	{
+		XmlNodeData* m_pParent;
+		XsdNodeData* m_pNodeType;
+		vector<XmlNodeData> m_son;
+		vector<XmlAttrData> m_attr;
 	};
 
 	string m_path;
@@ -132,24 +149,34 @@ public:
 	XsdNodeData* m_pRootNode;
 	map<string, XsdNodeData> m_data;
 	UINT m_maxDepth;
+	static vector<void*> s_parseCount;
 
 	SFXmlReader(string xsdPath);
 
 	bool initFrameByXsd(string xsdPath);
 	void setSonNodeDepth(XsdNodeData* pRootNode);
-	bool getDataByXml(string xmlPath);
+	bool getDataByXml(string xmlPath, void* pRes);
 
-protected:
-	virtual void parseXmlNode(string nodeName) = 0;
-	virtual void parseXmlAttr(string attrName, string attrValue) = 0;
+	virtual bool parseXmlNode(string nodeName, void* pRes) = 0;
+	virtual bool parseXmlAttr(string nodeName, string attrName, string attrValue, void* pRes) = 0;
 };
 
 class __declspec(dllexport) SFXmlPlayer :public SFXmlReader
 {
+public:
 	SFResPlayer* m_pResPlayer;
+
+	SFXmlPlayer(string xsdPath) :SFXmlReader(xsdPath){}
+	bool parseXmlNode(string nodeName, void* pRes);
+	bool parseXmlAttr(string nodeName, string attrName, string attrValue, void* pRes);
 };
 
 class __declspec(dllexport) SFXmlScene :public SFXmlReader
 {
+public:
 	SFResScene* m_pResScene;
+
+	SFXmlScene(string xsdPath) :SFXmlReader(xsdPath){}
+	bool parseXmlNode(string nodeName, void* pRes);
+	bool parseXmlAttr(string nodeName, string attrName, string attrValue, void* pRes);
 };

@@ -6,6 +6,14 @@
     xmlns:mstns="http://tkmgame.com/shark/sceneFrame.xsd"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
+	<xs:element name="scene_info">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="scene_table" minOccurs="1"></xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
 	<xs:simpleType name="sceneType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="fight"/>
@@ -32,9 +40,6 @@
 			<xs:sequence>
 				<xs:element name="sprite" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
-						<xs:sequence>
-							<xs:element ref="sprite_table" minOccurs="1"></xs:element>
-						</xs:sequence>
 						<xs:attribute name="id" type="mstns:spriteId" use="required"/>
 						<xs:attribute name="x" type="xs:float" default="0"/>
 						<xs:attribute name="y" type="xs:float" default="0"/>
@@ -58,14 +63,6 @@
 						<xs:attribute name="type" type="mstns:sceneType" use="required"/>
 					</xs:complexType>
 				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-	
-	<xs:element name="scene_info">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="scene_table" minOccurs="1"></xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
