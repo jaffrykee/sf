@@ -34,11 +34,13 @@ public:
 	UINT m_index;
 	string m_strId;
 	SFResSkill* m_parent;
-	vector<SFResFrame*> m_arrFrame;
+	vector<SFResFrame> m_arrFrame;
 
 	SFResObject(SFResSkill* pParent);
 	~SFResObject();
-	SFResFrame* operator[](UINT frameIndex);
+
+	SFResFrame& operator[](UINT frameIndex);
+	SFResFrame& addObject();
 };
 
 //技能资源
@@ -50,12 +52,14 @@ public:
 	SF_EKA m_eka;
 	SF_AS m_as;
 	SF_SSSE m_ssse;
-	vector<SFResObject*> m_arrObject;
+	vector<SFResObject> m_arrObject;
 	bool m_savable;
 
-	SFResSkill(SF_EKA m_eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent, bool savable = false);
+	SFResSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent, bool savable = false);
 	~SFResSkill();
-	SFResObject* operator[](UINT intObjIndex);
+
+	SFResObject& operator[](UINT intObjIndex);
+	SFResObject& addObject();
 	bool getEnableSpecialEvent(SF_SSSE ssse);
 };
 
@@ -84,6 +88,8 @@ public:
 	SFResPlayer(string pid, SF_SKN skin);
 	~SFResPlayer();
 //	SFResSkill* operator[](SF_EKA skillIndex);
+
+	SFResSkill* addSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, bool savable = false);
 };
 
 #if 0

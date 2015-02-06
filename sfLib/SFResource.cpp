@@ -34,6 +34,13 @@ SFResPlayer::~SFResPlayer()
 	}
 }
 
+SFResSkill* SFResPlayer::addSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, bool savable)
+{
+	SFResSkill(eka, as, ssse, this, savable);
+
+	return m_arrSkill[eka][as][ssse];
+}
+
 /*
 SFResSkill* SFResPlayer::operator[](SF_EKA skillIndex)
 {
@@ -88,18 +95,17 @@ SFResSkill::SFResSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent,
 
 SFResSkill::~SFResSkill()
 {
-	for (UINT i = 0; i < m_arrObject.size(); i++)
-	{
-		if (m_arrObject[i] != NULL)
-		{
-			delete m_arrObject[i];
-			m_arrObject[i] = NULL;
-		}
-	}
 	if (m_parent != NULL)
 	{
 		m_parent->m_arrSkill[m_eka][m_as][m_ssse] = NULL;
 	}
+}
+
+SFResObject& SFResSkill::addObject()
+{
+	m_arrObject.insert(m_arrObject.end(), SFResObject(this));
+
+	return m_arrObject[m_arrObject.size() - 1];
 }
 
 bool SFResSkill::getEnableSpecialEvent(SF_SSSE ssse)
@@ -112,7 +118,7 @@ bool SFResSkill::getEnableSpecialEvent(SF_SSSE ssse)
 	return false;
 }
 
-SFResObject* SFResSkill::operator[](UINT intObjIndex)
+SFResObject& SFResSkill::operator[](UINT intObjIndex)
 {
 	return m_arrObject[intObjIndex];
 }
@@ -122,32 +128,23 @@ SFResObject::SFResObject(SFResSkill* pParent) :m_parent(pParent)
 	if (pParent != NULL)
 	{
 		m_index = pParent->m_arrObject.size();
-		pParent->m_arrObject.insert(pParent->m_arrObject.end(), this);
 	}
 }
 
 SFResObject::~SFResObject()
 {
-	for (UINT i = 0; i < m_arrFrame.size(); i++)
-	{
-		if (m_arrFrame[i] != NULL)
-		{
-			delete m_arrFrame[i];
-			m_arrFrame[i] = NULL;
-		}
-	}
-	if (m_parent != NULL)
-	{
-		if (m_index < m_parent->m_arrObject.size())
-		{
-			m_parent->m_arrObject[m_index] = NULL;
-		}
-	}
 }
 
-SFResFrame* SFResObject::operator[](UINT frameIndex)
+SFResFrame& SFResObject::operator[](UINT frameIndex)
 {
 	return m_arrFrame[frameIndex];
+}
+
+SFResFrame& SFResObject::addObject()
+{
+	m_arrFrame.insert(m_arrFrame.end(), SFResFrame(this));
+
+	return m_arrFrame[m_arrFrame.size() - 1];
 }
 
 SFResFrame::SFResFrame(SFResObject* pParent) :m_parent(pParent)
@@ -155,17 +152,9 @@ SFResFrame::SFResFrame(SFResObject* pParent) :m_parent(pParent)
 	if (pParent != NULL)
 	{
 		m_index = pParent->m_arrFrame.size();
-		pParent->m_arrFrame.insert(pParent->m_arrFrame.end(), this);
 	}
 }
 
 SFResFrame::~SFResFrame()
 {
-	if (m_parent != NULL)
-	{
-		if (m_index < m_parent->m_arrFrame.size())
-		{
-			m_parent->m_arrFrame[m_index] = NULL;
-		}
-	}
 }

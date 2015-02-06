@@ -402,7 +402,7 @@ namespace SFResConfigReader
 
 vector<void*> SFXmlReader::s_parseCount = {};
 
-SFXmlReader::SFXmlReader(string xsdPath) :m_pRootNode(NULL), m_maxDepth(0)
+SFXmlReader::SFXmlReader(string xsdPath) :m_pFrameRootNode(NULL), m_maxDepth(0)
 {
 	initFrameByXsd(xsdPath);
 }
@@ -462,33 +462,33 @@ bool SFXmlReader::initFrameByXsd(string xsdPath)
 							if (utfName == "name" || utfName == "ref")
 							{
 								arrNodeBuffer[tabs] = utfValue;
-								if (m_data.find(utfValue) == m_data.end())
+								if (m_frame.find(utfValue) == m_frame.end())
 								{
-									m_data[utfValue].m_name = utfValue;
-									m_data[utfValue].m_index = 0;
-									m_data[utfValue].m_depth = 0;
-									m_data[utfValue].m_isOnly = true;
-									m_data[utfValue].m_parent = NULL;
-									m_data[utfValue].m_attrData = map<string, XsdAttrData>{};
-									m_data[utfValue].m_nodeData = {};
+									m_frame[utfValue].m_name = utfValue;
+									m_frame[utfValue].m_index = 0;
+									m_frame[utfValue].m_depth = 0;
+									m_frame[utfValue].m_isOnly = true;
+									m_frame[utfValue].m_parent = NULL;
+									m_frame[utfValue].m_attrData = map<string, XsdAttrData>{};
+									m_frame[utfValue].m_nodeData = {};
 								}
 								if (tabs > 0)
 								{
 									string parent = arrNodeBuffer[tabs - 1];
 
-									m_data[utfValue].m_parent = &m_data[parent];
-									m_data[parent].m_nodeData.insert(m_data[parent].m_nodeData.end(), &m_data[utfValue]);
+									m_frame[utfValue].m_parent = &m_frame[parent];
+									m_frame[parent].m_nodeData.insert(m_frame[parent].m_nodeData.end(), &m_frame[utfValue]);
 								}
-								if (m_pRootNode == NULL)
+								if (m_pFrameRootNode == NULL)
 								{
-									m_pRootNode = &m_data[utfValue];
+									m_pFrameRootNode = &m_frame[utfValue];
 								}
 							}
 							else if (utfName == "maxOccurs")
 							{
 								if (utfValue == "unbounded")
 								{
-									m_data[arrNodeBuffer[tabs]].m_isOnly = false;
+									m_frame[arrNodeBuffer[tabs]].m_isOnly = false;
 								}
 							}
 						}
@@ -496,7 +496,7 @@ bool SFXmlReader::initFrameByXsd(string xsdPath)
 						{
 							if (utfName == "name")
 							{
-								map<string, XsdAttrData>& mapAttr = m_data[arrNodeBuffer[tabs - 1]].m_attrData;
+								map<string, XsdAttrData>& mapAttr = m_frame[arrNodeBuffer[tabs - 1]].m_attrData;
 
 								mapAttr[utfName].m_name = utfValue;
 								mapAttr[utfName].m_index = mapAttr.size();
@@ -516,7 +516,7 @@ bool SFXmlReader::initFrameByXsd(string xsdPath)
 		}
 	}
 
-	setSonNodeDepth(m_pRootNode);
+	setSonNodeDepth(m_pFrameRootNode);
 	return true;
 }
 
@@ -524,7 +524,7 @@ void SFXmlReader::setSonNodeDepth(XsdNodeData* pRootNode)
 {
 	static UINT iCount = 0;
 
-	if (pRootNode == m_pRootNode)
+	if (pRootNode == m_pFrameRootNode)
 	{
 		iCount = 0;
 	}
@@ -587,7 +587,7 @@ bool SFXmlReader::getDataByXml(string xmlPath, void* pRes)
 			{
 				StringA utfNodeName = TStrTrans::UnicodeToUtf8(nodeName);
 
-				if (m_data.find(utfNodeName) != m_data.end())
+				if (m_frame.find(utfNodeName) != m_frame.end())
 				{
 					parseXmlNode(utfNodeName, pRes);
 					POLL_XML_ATTR_BEGIN
@@ -618,22 +618,24 @@ typedef enum SF_ResParsePtrBufferForPlayer
 
 bool SFXmlPlayer::parseXmlNode(string nodeName, void* pRes)
 {
-	if (pRes == NULL)
-	{
-		return false;
-	}
+	static vector<XmlNodeData*> pParentNodeBuffer = {};
 
 	sf_cout(DEBUG_RES_LOAD, endl);
-	for (UINT i = 0; i < m_data[nodeName].m_index; i++)
+	for (UINT i = 0; i < m_frame[nodeName].m_index; i++)
 	{
 		sf_cout(DEBUG_RES_LOAD, "  ");
 	}
 	sf_cout(DEBUG_RES_LOAD, "<" << nodeName << ">");
-	switch (m_data[nodeName].m_index)
+	switch (m_frame[nodeName].m_index)
 	{
 	case RNP_player_info:
+		m_rootNode.m_pParent = NULL;
+		m_rootNode.m_pNodeType = &m_frame[nodeName];
+		pLastNode = &m_rootNode;
 		break;
 	case RNP_skin_table:
+		pLastNode->m_son.insert(m_rootNode.m_son.end(), XmlNodeData());
+		pLastNode->m_son[pLastNode->m_son.size() - 1].m_pParent = pLastNode;
 		break;
 	case RNP_skin:
 		break;
@@ -671,7 +673,7 @@ bool SFXmlPlayer::parseXmlAttr(string nodeName, string attrName, string attrValu
 		return false;
 	}
 
-	switch (m_data[nodeName].m_index)
+	switch (m_frame[nodeName].m_index)
 	{
 	case RNP_player_info:
 		break;
@@ -736,7 +738,7 @@ bool SFXmlScene::parseXmlNode(string nodeName, void* pRes)
 		return false;
 	}
 
-	switch (m_data[nodeName].m_index)
+	switch (m_frame[nodeName].m_index)
 	{
 	case RNS_scene_info:
 		break;
@@ -763,7 +765,7 @@ bool SFXmlScene::parseXmlAttr(string nodeName, string attrName, string attrValue
 		return false;
 	}
 
-	switch (m_data[nodeName].m_index)
+	switch (m_frame[nodeName].m_index)
 	{
 	case RNS_scene_info:
 		break;

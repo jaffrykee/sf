@@ -146,9 +146,12 @@ public:
 
 	string m_path;
 	string m_name;
-	XsdNodeData* m_pRootNode;
-	map<string, XsdNodeData> m_data;
+	XsdNodeData* m_pFrameRootNode;
+	map<string, XsdNodeData> m_frame;
+	XmlNodeData m_rootNode;
 	UINT m_maxDepth;
+	vector<XmlNodeData*> m_pParentNodeBuffer;
+
 	static vector<void*> s_parseCount;
 
 	SFXmlReader(string xsdPath);
