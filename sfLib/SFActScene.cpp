@@ -97,6 +97,7 @@ m_poiInitP2({1200,920})
 {
 	SFPlayer* pPlayer1 = new SFPlayer(resId1, skin1, 1);
 	SFPlayer* pPlayer2 = new SFPlayer(resId2, skin2, 2);
+	m_pResScene = new SFResScene();
 
 	addFightP1(pPlayer1);
 	addFightP2(pPlayer2);
@@ -293,7 +294,7 @@ bool SFActScene::setPositionFightP1(D2D1_POINT_2F point)
 
 bool SFActScene::initPositionFightP1()
 {
-	FLOAT dy = getFightP1()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0]->m_arrFrame[0]->m_lBodyBox.begin()->bottom;
+	FLOAT dy = getFightP1()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0].m_arrFrame[0].m_lBodyBox.begin()->bottom;
 	m_poiInitP1.y -= dy;
 
 	return setPositionFightP1(m_poiInitP1);
@@ -313,7 +314,7 @@ bool SFActScene::setPositionFightP2(D2D1_POINT_2F point)
 
 bool SFActScene::initPositionFightP2()
 {
-	FLOAT dy = getFightP2()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0]->m_arrFrame[0]->m_lBodyBox.begin()->bottom;
+	FLOAT dy = getFightP2()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0].m_arrFrame[0].m_lBodyBox.begin()->bottom;
 	m_poiInitP2.y -= dy;
 
 	return setPositionFightP1(m_poiInitP2);

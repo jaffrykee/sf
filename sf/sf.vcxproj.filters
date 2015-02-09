@@ -47,7 +47,7 @@
     </Xsd>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test2.cpp">
+    <ClCompile Include="sf.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

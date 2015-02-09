@@ -6,6 +6,14 @@ using namespace std;
 string path = "./data/playerFrame.xsd";
 string path2 = "./data/p001/playerInfo.xml";
 
+SFPlayer* g_pP1 = NULL;
+SFPlayer* g_pP2 = NULL;
+
+string g_strEkf1 = "";
+string g_strEkf2 = "";
+
+SFActScene* g_scn = NULL;
+
 void main()
 {
 /*
@@ -21,11 +29,13 @@ void main()
 			cout << endl << i << " : ";
 			cout << g_pConf->m_pDiEka->m_str[i];
 		}
-	}*/
-	SFResPlayer* pRes = NULL;
+		}*/
 
-	SFXmlPlayer a(path);
-	a.getDataByXml(path2, pRes);
+	g_pEventManager = new SFEventManager();
+	g_scn = new SFActScene(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
+	g_pP1 = g_scn->getFightP1();
+	g_pP2 = g_scn->getFightP2();
+	g_pEventManager->setActiveScene(g_scn);
 
 	getchar();
 }

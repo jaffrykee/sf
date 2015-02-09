@@ -93,4 +93,28 @@ namespace TStrTrans
 		substring = str.substr(start);
 		dest.push_back(substring);
 	}
+
+	/*从src中得到第一个以split这个字符为分割的字符串，放到dst中*/
+	UINT getFirstSplit(char* dst, int max, const char* src, char split)
+	{
+		UINT lenSrc = strlen(src);
+		UINT minEnd = (max < lenSrc) ? max : lenSrc;
+
+		if (NULL == src || NULL == dst)
+		{
+			return 0;
+		}
+		for (UINT i = 0; i < minEnd; i++)
+		{
+			if (src[i] == split)
+			{
+				strncpy_s(dst, max, src, i);
+
+				return i;
+			}
+		}
+		strncpy_s(dst, max, src, minEnd);
+
+		return 0;
+	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene_info xmlns="http://tkmgame.com/shark/sceneFrame.xsd">
 	<scene_table>
-		<scene width="2000" height="800" type="fight">
+		<scene type="fight" width="2000" height="800">
 			<camera_info x="1000" y="400"></camera_info>
 			<sprite_table>
 				<sprite id="player1" x="800" y="920"></sprite>

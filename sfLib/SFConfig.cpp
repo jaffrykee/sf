@@ -10,6 +10,7 @@ SFConfig::SFConfig():
 	m_enDebug(new bool[DEBUG_MAX]{
 		true, true, true, true
 	}),
+	m_resPlayerFramePath("./data/playerFrame.xsd"),
 	m_resPath("./data/"),
 	m_resPlayerInfoPrefix("p"),
 	m_resPlayerInfoFileName("playerInfo.xml"),

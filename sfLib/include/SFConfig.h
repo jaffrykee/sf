@@ -106,55 +106,42 @@ const vector<string> conf_aStrAsh = {
 #pragma endregion
 
 #pragma region SF_AS,SF_SSSE,SF_SAST:技能分支
-#pragma region SF_AS:技能所归属的位置状态(1级分支)
-enum SF_AS
-{
-	AS_STAND, AS_JUMP,
-	AS_MAX
-};
-const vector<string> conf_aStrAs = {
-	"def", "jump"
-};
-#pragma endregion
+	#pragma region SF_AS:技能所归属的位置状态(1级分支)
+	enum SF_AS
+	{
+		AS_STAND, AS_JUMP,
+		AS_MAX
+	};
+	const vector<string> conf_aStrAs = {
+		"def", "jump"
+	};
+	#pragma endregion
 
-#pragma region SF_SSSE:技能所归属的次级分支(2级分支)
-typedef enum SF_SkillSwitchSpecialEvent
-{
-	SSSE_BASIC, SSSE_UP,
-	SSSE_MAX
-}SF_SSSE;
-const vector<string> conf_aStrSsse = {
-	"basic", "up"
-};
-#pragma endregion
+	#pragma region SF_SSSE:技能所归属的次级分支(2级分支)
+	typedef enum SF_SkillSwitchSpecialEvent
+	{
+		SSSE_BASIC, SSSE_UP,
+		SSSE_MAX
+	}SF_SSSE;
+	const vector<string> conf_aStrSsse = {
+		"basic", "up"
+	};
+	#pragma endregion
 
-#pragma region SF_SAST:技能分支类型以及相关处理用define
-typedef enum SF_SkillAsSplitType
-{
-	SAST_NAME, SAST_AS, SAST_SSSE,
-	SAST_MAX
-}SF_SAST;
-//通过as得到它的基准as
-#define SF_SSSE_BASICAS(as) ((SF_AS)((as)%AS_MAX))
-//通过as得到对应的ssse下的as
-#define SF_SSSE_GETAS(as, ssse) ((SF_SSSE_BASICAS(as) + ((UINT)(ssse))*AS_MAX))
-#define AS_DEF AS_STAND
-#define SSSE_DEF SSSE_BASIC
+	#pragma region SF_SAST:技能分支类型以及相关处理用define
+	typedef enum SF_SkillAsSplitType
+	{
+		SAST_NAME, SAST_AS, SAST_SSSE,
+		SAST_MAX
+	}SF_SAST;
+	//通过as得到它的基准as
+	#define SF_SSSE_BASICAS(as) ((SF_AS)((as)%AS_MAX))
+	//通过as得到对应的ssse下的as
+	#define SF_SSSE_GETAS(as, ssse) ((SF_SSSE_BASICAS(as) + ((UINT)(ssse))*AS_MAX))
+	#define AS_DEF AS_STAND
+	#define SSSE_DEF SSSE_BASIC
+	#pragma endregion
 #pragma endregion
-#pragma endregion
-
-/*
-记录目前xml解析到哪里，数组存放的是指针。PRS是parse的意思。
-PRS_SKL:SFResSkill*
-PRS_SKLSW:SFResSkillSwitch*
-PRS_OBJ:SFResObject*
-PRS_FRM:SFResFrame*
-*/
-enum SF_PRS
-{
-	PRS_SKL, PRS_OBJ, PRS_FRM,
-	PRS_MAX
-};
 
 typedef struct SFSelectedPlayer
 {
@@ -358,6 +345,7 @@ public:
 */
 	bool* m_enDebug;
 
+	string m_resPlayerFramePath;
 	string m_resPath;
 	string m_resPlayerInfoPrefix;
 	string m_resPlayerInfoFileName;

@@ -25,6 +25,13 @@ public:
 
 	SFResFrame(SFResObject* pParent);
 	~SFResFrame();
+
+	void addBox(UINT boxType, D2D1_RECT_F box);
+	void addBox(UINT boxType, FLOAT top, FLOAT left, FLOAT bottom, FLOAT right);
+	void addBodyBox(D2D1_RECT_F box);
+	void addBodyBox(FLOAT top, FLOAT left, FLOAT bottom, FLOAT right);
+	void addAttackBox(D2D1_RECT_F box);
+	void addAttackBox(FLOAT top, FLOAT left, FLOAT bottom, FLOAT right);
 };
 
 //技能对象
@@ -40,7 +47,7 @@ public:
 	~SFResObject();
 
 	SFResFrame& operator[](UINT frameIndex);
-	SFResFrame& addObject();
+	SFResFrame& addFrame();
 };
 
 //技能资源
@@ -165,10 +172,24 @@ public:
 };
 #endif
 
+typedef enum SF_ResSceneType
+{
+	RST_FIGHT,
+	RST_MAX
+}SF_RST;
+
 //场景资源
 class __declspec(dllexport) SFResScene
 {
 public:
+	FLOAT m_width;
+	FLOAT m_height;
+	string m_type;
+	D2D1_POINT_2F m_camera;
+	D2D1_POINT_2F m_poiP1;
+	D2D1_POINT_2F m_poiP2;
+	FLOAT m_fGround;
+
 	SFResScene();
 	~SFResScene();
 	// SFResSkill* operator[](SF_EKA skillIndex);

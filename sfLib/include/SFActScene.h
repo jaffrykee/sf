@@ -45,6 +45,7 @@ class __declspec(dllexport) SFActScene
 {
 public:
 	map<string, SFSpriteGroup*> m_mapSpriteGroup;
+	SFResScene* m_pResScene;
 	SF_SCN_MAP m_mapType;
 	SF_SCN_STAGE m_stage;
 
