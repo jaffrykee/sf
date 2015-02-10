@@ -68,6 +68,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SFCamera.cpp" />
     <ClCompile Include="SFEventManager.cpp" />
     <ClCompile Include="SFActScene.cpp" />
     <ClCompile Include="SFConfig.cpp" />

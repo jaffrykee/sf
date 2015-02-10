@@ -76,6 +76,8 @@ string g_strEkf1 = "";
 string g_strEkf2 = "";
 
 SFActScene* g_scn = NULL;
+
+SFCamera* g_cmr = NULL;
 #pragma endregion
 
 #pragma region 入口以及初始配置
@@ -236,6 +238,7 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 	g_scn = new SFActScene(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
 	g_pP1 = g_scn->getFightP1();
 	g_pP2 = g_scn->getFightP2();
+	g_cmr = new SFCamera();
 	g_pEventManager->setActiveScene(g_scn);
 	sf_cout(DEBUG_COM, endl << "Load resource finished.");
 
