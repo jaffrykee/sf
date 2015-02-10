@@ -330,7 +330,7 @@ bool SFXmlPlayer::parseXmlNode(XmlNodeData& nodeData)
 		#pragma region point
 		{
 			stringstream ss;
-			float fValue;
+			FLOAT fValue;
 
 			ss << nodeData.m_attr["x"];
 			ss >> fValue;
@@ -350,7 +350,7 @@ bool SFXmlPlayer::parseXmlNode(XmlNodeData& nodeData)
 		{
 			stringstream ss;
 			UINT iValue;
-			float fValue;
+			FLOAT fValue;
 			D2D1_RECT_F box;
 
 			ss << nodeData.m_son[0].m_attr["t"];
@@ -392,6 +392,10 @@ typedef enum SF_ResParseNodeForScene
 
 bool SFXmlScene::parseXmlNode(XmlNodeData& nodeData)
 {
+	if (m_pResScene == NULL)
+	{
+		return false;
+	}
 	switch (nodeData.m_pNodeType->m_index)
 	{
 	case RNS_scene_info:
@@ -399,13 +403,82 @@ bool SFXmlScene::parseXmlNode(XmlNodeData& nodeData)
 	case RNS_scene_table:
 		break;
 	case RNS_scene:
+		{
+			stringstream ss;
+			FLOAT fValue;
+
+			ss << nodeData.m_attr["width"];
+			ss >> fValue;
+			m_pResScene->m_width = fValue;
+			ss.clear();
+			ss << nodeData.m_attr["height"];
+			ss >> fValue;
+			m_pResScene->m_height = fValue;
+			ss.clear();
+		}
 		break;
 	case RNS_camera_info:
+		{
+			stringstream ss;
+			FLOAT fValue;
+
+			ss << nodeData.m_attr["x"];
+			ss >> fValue;
+			m_pResScene->m_camera.x = fValue;
+			ss.clear();
+			ss << nodeData.m_attr["y"];
+			ss >> fValue;
+			m_pResScene->m_camera.y = fValue;
+			ss.clear();
+		}
 		break;
 	case RNS_sprite_table:
 		break;
 
 	case RNS_sprite:
+		{
+			stringstream ss;
+			FLOAT fValue;
+			FLOAT tx, ty;
+			D2D1_POINT_2F tPoi;
+
+			if (nodeData.m_attr.find("x") != nodeData.m_attr.end())
+			{
+				ss << nodeData.m_attr["x"];
+				ss >> fValue;
+				tx = fValue;
+				ss.clear();
+			}
+			else
+			{
+				tx = 0;
+			}
+			if (nodeData.m_attr.find("y") != nodeData.m_attr.end())
+			{
+				ss << nodeData.m_attr["y"];
+				ss >> fValue;
+				ty = fValue;
+				ss.clear();
+			}
+			else
+			{
+				ty = 0;
+			}
+			tPoi = { tx, ty };
+
+			if (nodeData.m_attr["id"] == "player1")
+			{
+				m_pResScene->m_poiP1 = tPoi;
+			}
+			else if (nodeData.m_attr["id"] == "player2")
+			{
+				m_pResScene->m_poiP2 = tPoi;
+			}
+			else if (nodeData.m_attr["id"] == "ground")
+			{
+				m_pResScene->m_fGround = ty;
+			}
+		}
 		break;
 	}
 

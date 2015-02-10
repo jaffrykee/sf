@@ -90,6 +90,7 @@ class __declspec(dllexport) SFResPlayer
 {
 public:
 	SFResSkill* m_arrSkill[EKA_MAX][AS_MAX][SSSE_MAX];
+	SFXmlPlayer* m_pXmlReader;
 
 	SFResPlayer(SF_SKN skin);
 	SFResPlayer(string pid, SF_SKN skin);
@@ -182,6 +183,8 @@ typedef enum SF_ResSceneType
 class __declspec(dllexport) SFResScene
 {
 public:
+	SFXmlScene* m_pXmlReader;
+
 	FLOAT m_width;
 	FLOAT m_height;
 	string m_type;

@@ -87,18 +87,18 @@ m_mapTevEk({
 	pair<SF_TEV, SF_EK>(TEV_KU_P2FF, EK_F),
 	pair<SF_TEV, SF_EK>(TEV_KU_P2ST, EK_S1),
 	pair<SF_TEV, SF_EK>(TEV_KU_P2MN, EK_S2)
-}),
-m_width(2000),
-m_height(1000),
-m_ground(80),
-m_poiInitP1({800,920}),
-m_poiInitP2({1200,920})
+})
 #pragma endregion
 {
 	SFPlayer* pPlayer1 = new SFPlayer(resId1, skin1, 1);
 	SFPlayer* pPlayer2 = new SFPlayer(resId2, skin2, 2);
 	m_pResScene = new SFResScene();
 
+	m_width = m_pResScene->m_width;
+	m_height = m_pResScene->m_height;
+	m_poiInitP1 = m_pResScene->m_poiP1;
+	m_poiInitP2 = m_pResScene->m_poiP2;
+	m_ground = m_pResScene->m_fGround;
 	addFightP1(pPlayer1);
 	addFightP2(pPlayer2);
 	m_stage = SCN_STG_FREE;

@@ -11,6 +11,8 @@ SFConfig::SFConfig():
 		true, true, true, true
 	}),
 	m_resPlayerFramePath("./data/playerFrame.xsd"),
+	m_resSceneFramePath("./data/sceneFrame.xsd"),
+	m_resSceneDataPath("./data/sceneInfo.xml"),
 	m_resPath("./data/"),
 	m_resPlayerInfoPrefix("p"),
 	m_resPlayerInfoFileName("playerInfo.xml"),

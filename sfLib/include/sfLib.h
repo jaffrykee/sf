@@ -38,6 +38,10 @@
 
 class SFConfig;
 
+class SFXmlReader;
+class SFXmlPlayer;
+class SFXmlScene;
+
 class SFResPlayerMap;
 class SFResPlayer;
 class SFResSkill;

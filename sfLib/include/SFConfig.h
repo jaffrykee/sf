@@ -346,6 +346,8 @@ public:
 	bool* m_enDebug;
 
 	string m_resPlayerFramePath;
+	string m_resSceneFramePath;
+	string m_resSceneDataPath;
 	string m_resPath;
 	string m_resPlayerInfoPrefix;
 	string m_resPlayerInfoFileName;

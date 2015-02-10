@@ -4,7 +4,13 @@
 
 SFResScene::SFResScene()
 {
+	string confXsdPath;
+	string confXmlPath;
 
+	confXsdPath = g_pConf->m_resSceneFramePath;
+	confXmlPath = g_pConf->m_resSceneDataPath;
+	m_pXmlReader = new SFXmlScene(confXsdPath, this);
+	m_pXmlReader->getDataByXml(confXmlPath);
 }
 
 SFResScene::~SFResScene()
@@ -25,8 +31,8 @@ SFResPlayer::SFResPlayer(string pid, SF_SKN skin)
 	confXsdPath = g_pConf->m_resPlayerFramePath;
 	confXmlPath = g_pConf->m_resPath + g_pConf->m_resPlayerInfoPrefix + pid + "/" + g_pConf->m_resPlayerInfoFileName;
 	memset(m_arrSkill, 0, sizeof(SFResSkill*)*EKA_MAX*AS_MAX*SSSE_MAX);
-	SFXmlPlayer a(confXsdPath, this);
-	a.getDataByXml(confXmlPath);
+	m_pXmlReader = new SFXmlPlayer(confXsdPath, this);
+	m_pXmlReader->getDataByXml(confXmlPath);
 }
 
 SFResPlayer::~SFResPlayer()
