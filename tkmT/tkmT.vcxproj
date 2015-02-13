@@ -71,6 +71,7 @@
     <ClInclude Include="include\TBitMap.h" />
     <ClInclude Include="include\TDIndexData.h" />
     <ClInclude Include="include\TDIndexDataEx.h" />
+    <ClInclude Include="include\TFile.h" />
     <ClInclude Include="include\TInit.h" />
     <ClInclude Include="include\tkmT.h" />
     <ClInclude Include="include\TStrTrans.h" />
@@ -80,6 +81,7 @@
     <ClCompile Include="TBitArray.cpp" />
     <ClCompile Include="TBitMap.cpp" />
     <ClCompile Include="TDIndexData.cpp" />
+    <ClCompile Include="TFile.cpp" />
     <ClCompile Include="TStrTrans.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

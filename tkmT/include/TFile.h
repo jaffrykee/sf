@@ -1,7 +1,7 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
 
-class TFile
+class _declspec(dllexport) TFile
 {
 public:
 	string m_strPath;

@@ -16,5 +16,7 @@ bool SFCamera::setCurrentScene(SFActScene* pCurScene)
 {
 	m_pCurScene = pCurScene;
 
-	m_width = pCurScene->m_pResScene
+	//<inc>
+//	m_width = pCurScene->m_pResScene
+	return false;
 }

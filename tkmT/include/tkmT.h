@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <direct.h>
+#include <io.h>
 
 using namespace std;
 
@@ -14,3 +16,4 @@ using namespace std;
 #include <TInit.h>
 #include <TStrTrans.h>
 #include <TDIndexDataEx.h>
+#include <TFile.h>
