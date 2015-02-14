@@ -4,10 +4,15 @@
 	<Color x:Key="ThemeColorKey">#FF2D2D30</Color>
 	<SolidColorBrush x:Key="ThemeBrushKey"
 		Color="#FF2D2D30" />
+    
+    <Color x:Key="ActiveForegroundColorKey">White</Color>
+    <SolidColorBrush x:Key="ActiveForegroundBrushKey"
+		Color="White" />
+
+    
 
 
-
-	<Color x:Key="BackgroundColorKey">#FF1B1B1C</Color>
+    <Color x:Key="BackgroundColorKey">#FF1B1B1C</Color>
 	<SolidColorBrush x:Key="BackgroundBrushKey"
 		Color="#FF1B1B1C" />
 
@@ -43,9 +48,6 @@
 	<SolidColorBrush x:Key="ActiveBorderBrushKey"
 		Color="#FF3F3F46" />
 
-	<Color x:Key="ActiveForegroundColorKey">White</Color>
-	<SolidColorBrush x:Key="ActiveForegroundBrushKey"
-		Color="White" />
 
 
 

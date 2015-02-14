@@ -2,25 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="800" Width="1280"
-		Background="{DynamicResource ThemeBrushKey}"
-		Foreground="{DynamicResource ActiveForegroundBrushKey}"
 		>
-	<Window.Resources>
-		<Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
-			<Style.Resources>
-				<SolidColorBrush x:Key="brush" Color="Yellow"/>
-			</Style.Resources>
-			<Setter Property="Height" Value="22"/>
-			<Setter Property="Width" Value="60"/>
-			<EventSetter Event="Loaded" Handler="Button_Loaded"/>
-		</Style>
-	</Window.Resources>
     <Grid>
     	<DockPanel>
     		<DockPanel LastChildFill="False" VerticalAlignment="Top">
-    			<Menu HorizontalAlignment="Left" VerticalAlignment="Top" Background="{DynamicResource ThemeBrushKey}" Foreground="{DynamicResource ActiveForegroundBrushKey}">
-    				<MenuItem Header="文件" Background="{DynamicResource ThemeBrushKey}" Foreground="{DynamicResource ActiveForegroundBrushKey}"></MenuItem>
-    				<MenuItem Header="编辑" Background="{DynamicResource ThemeBrushKey}" Foreground="{DynamicResource ActiveForegroundBrushKey}"></MenuItem>
+    			<Menu HorizontalAlignment="Left" VerticalAlignment="Top">
+    				<MenuItem Header="文件">
+    					<MenuItem Header="MenuItem"/>
+    					<MenuItem Header="MenuItem"/>
+    					<MenuItem Header="MenuItem"/>
+					</MenuItem>
+    				<MenuItem Header="编辑">
+    					<MenuItem Header="MenuItem"/>
+    					<MenuItem Header="MenuItem"/>
+    					<MenuItem Header="MenuItem"/>
+					</MenuItem>
     			</Menu>
 			</DockPanel>
     	</DockPanel>
