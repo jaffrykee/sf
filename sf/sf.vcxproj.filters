@@ -34,16 +34,21 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="data\p001\playerInfo.xml" />
+    <Xml Include="data\sceneInfo.xml" />
+    <Xml Include="data\ground\playerInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xsd Include="data\playerFrame.xsd">
+      <Filter>头文件</Filter>
+    </Xsd>
+    <Xsd Include="data\sceneFrame.xsd">
+      <Filter>头文件</Filter>
+    </Xsd>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="sf.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="data\p001\playerInfo.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xsd Include="data\skillFrame.xsd">
-      <Filter>头文件</Filter>
-    </Xsd>
   </ItemGroup>
 </Project>

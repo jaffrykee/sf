@@ -92,10 +92,19 @@ m_mapTevEk({
 {
 	SFPlayer* pPlayer1 = new SFPlayer(resId1, skin1, 1);
 	SFPlayer* pPlayer2 = new SFPlayer(resId2, skin2, 2);
+	m_pResScene = new SFResScene();
 
-	addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1], pPlayer1);
-	addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2], pPlayer2);
+	m_width = m_pResScene->m_width;
+	m_height = m_pResScene->m_height;
+	m_poiInitP1 = m_pResScene->m_poiP1;
+	m_poiInitP2 = m_pResScene->m_poiP2;
+	m_ground = m_pResScene->m_fGround;
+	addFightP1(pPlayer1);
+	addFightP2(pPlayer2);
 	m_stage = SCN_STG_FREE;
+	initPositionFightP1();
+	initPositionFightP2();
+	doCollision();
 	setDirection(true);
 }
 
@@ -223,20 +232,42 @@ bool SFActScene::doEvent(SF_TEV event)
 	{
 		bool ret1, ret2;
 
-		if (getFightP1() != NULL && getFightP2() != NULL)
+		if (event == TEV_TMR_PAINT)
 		{
-			getFightP1()->doTimer(event);
-			getFightP2()->doTimer(event);
-
 			return true;
 		}
 		else
 		{
-			return false;
+			if (getFightP1() != NULL && getFightP2() != NULL)
+			{
+				getFightP1()->doTimer(event);
+				getFightP2()->doTimer(event);
+
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 
 	return false;
+}
+
+bool SFActScene::doCollision()
+{
+	return true;
+}
+
+bool SFActScene::addFightP1(SFSprite* pSprite)
+{
+	return addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1], pSprite);
+}
+
+bool SFActScene::addFightP2(SFSprite* pSprite)
+{
+	return addSprite(g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2], pSprite);
 }
 
 SFPlayer* SFActScene::getFightP1()
@@ -247,6 +278,46 @@ SFPlayer* SFActScene::getFightP1()
 SFPlayer* SFActScene::getFightP2()
 {
 	return m_mapSpriteGroup[g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2]]->m_aSprite[0];
+}
+
+bool SFActScene::setPositionFightP1(D2D1_POINT_2F point)
+{
+	if (getFightP1() != NULL)
+	{
+		getFightP1()->m_position = point;
+
+		return true;
+	}
+
+	return false;
+}
+
+bool SFActScene::initPositionFightP1()
+{
+	FLOAT dy = getFightP1()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0].m_arrFrame[0].m_lBodyBox.begin()->bottom;
+	m_poiInitP1.y -= dy;
+
+	return setPositionFightP1(m_poiInitP1);
+}
+
+bool SFActScene::setPositionFightP2(D2D1_POINT_2F point)
+{
+	if (getFightP2() != NULL)
+	{
+		getFightP2()->m_position = point;
+
+		return true;
+	}
+
+	return false;
+}
+
+bool SFActScene::initPositionFightP2()
+{
+	FLOAT dy = getFightP2()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0].m_arrFrame[0].m_lBodyBox.begin()->bottom;
+	m_poiInitP2.y -= dy;
+
+	return setPositionFightP1(m_poiInitP2);
 }
 
 void SFActScene::setDirection(bool isP1Left)
@@ -264,5 +335,17 @@ void SFActScene::setDirection(bool isP1Left)
 		m_mapTevEk[TEV_KU_P1RG] = EK_4;
 		m_mapTevEk[TEV_KU_P2LF] = EK_4;
 		m_mapTevEk[TEV_KU_P2RG] = EK_6;
+	}
+}
+
+void SFActScene::refreshDirection()
+{
+	if (getFightP1()->m_position.x < getFightP2()->m_position.x)
+	{
+		setDirection(true);
+	}
+	else
+	{
+		setDirection(false);
 	}
 }

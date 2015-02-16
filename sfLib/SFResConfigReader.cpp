@@ -2,421 +2,485 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
-namespace SFResConfigReader
+vector<SFXmlReader::XmlNodeData*> SFXmlReader::s_parseCount;
+
+SFXmlReader::SFXmlReader(string xsdPath) :m_pFrameRootNode(NULL), m_maxDepth(0)
 {
-	/*从src中得到第一个以split这个字符为分割的字符串，放到dst中*/
-	UINT getFirstSplit(char* dst, int max, const char* src, char split)
+	initFrameByXsd(xsdPath);
+}
+
+bool SFXmlReader::initFrameByXsd(string xsdPath)
+{
+	HRESULT hr = S_OK;
+	CComPtr<IStream> pFileStream;
+	CComPtr<IXmlReader> pReader;
+	XmlNodeType nodeType = XmlNodeType_None;
+	LPCWSTR nodeName;
+	LPCWSTR name;
+	LPCWSTR value;
+	bool ret;
+
+	//Open read-only input stream
+	hr = SHCreateStreamOnFileA(xsdPath.c_str(), STGM_READ, &pFileStream);
+	if (SUCCEEDED(hr))
 	{
-		UINT lenSrc = strlen(src);
-		UINT minEnd = (max < lenSrc) ? max:lenSrc;
-
-		if (NULL==src || NULL==dst)
-		{
-			return 0;
-		}
-		for (UINT i = 0; i < minEnd; i++)
-		{
-			if (src[i] == split)
-			{
-				strncpy_s(dst, max, src, i);
-
-				return i;
-			}
-		}
-		strncpy_s(dst, max, src, minEnd);
-
-		return 0;
+		hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);
 	}
-
-	/*XML单个节点解析主逻辑*/
-	bool readXMLNode(CComPtr<IXmlReader> pReader, UINT tabCount[], SFResPlayer* resPlayer)
+	else
 	{
-		HRESULT hr = S_OK;
-		LPCWSTR name;
-		LPCWSTR value;
-		bool ret = false;
-		static void* parseCount[PRS_MAX] = {NULL};
-		static SF_EKA s_skillEka;
-		static SF_AS s_skillAs;
-		static SF_SSSE s_skillSsse;
-		static bool s_skillSavable;
-		static UINT boxType = 0;
+		sf_cout(DEBUG_COM, "Error: Can't find the XSD file. (\"" << xsdPath << "\")" << endl);
 
-		if (resPlayer == NULL)
+		return false;
+	}
+	pReader->SetInput(pFileStream);
+	hr = pReader->Read(NULL);
+
+	UINT tabs = 0;
+	vector<string> arrNodeBuffer;
+	for (; S_OK == hr; hr = pReader->Read(NULL))
+	{
+		pReader->GetLocalName(&nodeName, NULL);
+		if (nodeName[0] > L' ')
 		{
-			return false;
-		}
-		if (tabCount[1] == 1)//11
-		{
-			if (tabCount[2] == 0)//110
+			if (wcscmp(nodeName, L"element") == 0 || wcscmp(nodeName, L"attribute") == 0)
 			{
-				#pragma region skin_table
-				#pragma endregion
-			}
-			else if (tabCount[2] > 0)//11x
-			{
-				if (tabCount[3] == 0)//11x0
+				pReader->GetNodeType(&nodeType);
+				if (nodeType == XmlNodeType_Element)
 				{
-					#pragma region skin
-					#pragma endregion
-				}
-			}
-		}
-		else if (tabCount[1] == 2)//12
-		{
-			if (tabCount[2] == 0)//120
-			{
-				#pragma region skill_table
-				#pragma endregion
-			}
-			else if (tabCount[2] > 0)//12x
-			{
-				if (tabCount[3] == 0)//12x0
-				{
-					#pragma region skill
+					sf_wcout(DEBUG_RES_LOAD, endl);
+					for (UINT i = 0; i < tabs; i++)
+					{
+						sf_wcout(DEBUG_RES_LOAD, L"\t");
+					}
+					sf_wcout(DEBUG_RES_LOAD, nodeName << L" ");
+
 					POLL_XML_ATTR_BEGIN
-						if (utfName == "eka")
+						if (wcscmp(nodeName, L"element") == 0)
 						{
-							map<string, UINT>::iterator itEka = g_pConf->m_pDiEka->m_map.find(utfValue);
-							if (itEka != g_pConf->m_pDiEka->m_map.end())
+							if (tabs >= arrNodeBuffer.size())
 							{
-								s_skillEka = (SF_EKA)itEka->second;
+								arrNodeBuffer.insert(arrNodeBuffer.end(), utfValue);
 							}
-							else
+							if (utfName == "name" || utfName == "ref")
 							{
-								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << utfValue << "\" " << utfName << " Attr.");
-								return false;
+								arrNodeBuffer[tabs] = utfValue;
+								if (m_frame.find(utfValue) == m_frame.end())
+								{
+									m_frame[utfValue].m_name = utfValue;
+									m_frame[utfValue].m_index = 0;
+									m_frame[utfValue].m_depth = 0;
+									m_frame[utfValue].m_isOnly = true;
+									m_frame[utfValue].m_parent = NULL;
+									m_frame[utfValue].m_attrData = map<string, XsdAttrData>{};
+									m_frame[utfValue].m_nodeData = {};
+								}
+								if (tabs > 0)
+								{
+									string parent = arrNodeBuffer[tabs - 1];
+
+									m_frame[utfValue].m_parent = &m_frame[parent];
+									m_frame[parent].m_nodeData.insert(m_frame[parent].m_nodeData.end(), &m_frame[utfValue]);
+								}
+								if (m_pFrameRootNode == NULL)
+								{
+									m_pFrameRootNode = &m_frame[utfValue];
+								}
+							}
+							else if (utfName == "maxOccurs")
+							{
+								if (utfValue == "unbounded")
+								{
+									m_frame[arrNodeBuffer[tabs]].m_isOnly = false;
+								}
 							}
 						}
-						else if (utfName == "as")
+						else if (wcscmp(nodeName, L"attribute") == 0)
 						{
-							map<string, UINT>::iterator itAs = g_pConf->m_pDiAs->m_map.find(utfValue);
-							if (itAs != g_pConf->m_pDiAs->m_map.end())
+							if (utfName == "name")
 							{
-								s_skillAs = (SF_AS)itAs->second;
-							}
-							else
-							{
-								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << utfValue << "\" " << utfName << " Attr.");
-								return false;
-							}
-						}
-						else if (utfName == "ssse")
-						{
-							map<string, UINT>::const_iterator itSsse = g_pConf->m_pDiSsse->m_map.find(utfValue);
-							if (itSsse != g_pConf->m_pDiSsse->m_map.end())
-							{
-								s_skillSsse = (SF_SSSE)itSsse->second;
-							}
-							else
-							{
-								sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << utfValue << "\" " << utfName << " Attr.");
-								return false;
-							}
-						}
-						else if (utfName == "savable")
-						{
-							if (utfValue == "true")
-							{
-								s_skillSavable = true;
-							}
-							else
-							{
-								s_skillSavable = false;
+								map<string, XsdAttrData>& mapAttr = m_frame[arrNodeBuffer[tabs - 1]].m_attrData;
+
+								mapAttr[utfName].m_name = utfValue;
+								mapAttr[utfName].m_index = mapAttr.size();
 							}
 						}
 					POLL_XML_ATTR_END
-					#pragma endregion
+					if (!(pReader->IsEmptyElement()) && wcscmp(nodeName, L"element") == 0)
+					{
+						tabs++;
+					}
 				}
-				else if (tabCount[3] == 1)//12x1
+				else if (nodeType == XmlNodeType_EndElement)
 				{
-					if (tabCount[4] == 0)//12x10
-					{
-						#pragma region object_table & skill节点头结束
-						parseCount[PRS_SKL] = new SFResSkill(s_skillEka, s_skillAs, s_skillSsse, resPlayer, s_skillSavable);
-						#pragma endregion
-					}
-					else if (tabCount[4] > 0)//12x1x
-					{
-						if (tabCount[5] == 0)//12x1x 0
-						{
-							#pragma region object
-							parseCount[PRS_OBJ] = new SFResObject((SFResSkill*)parseCount[PRS_SKL]);
-							POLL_XML_ATTR_BEGIN
-								if (utfName == "id")
-								{
-									stringstream ss;
-									UINT iValue;
-
-									ss << utfValue;
-									ss >> iValue;
-								}
-							POLL_XML_ATTR_END
-							#pragma endregion
-						}
-						else if (tabCount[5] == 1)//12x1x 1
-						{
-							if (tabCount[6] == 0)//12x1x 10
-							{
-								#pragma region frame_table
-								#pragma endregion
-							}
-							else if (tabCount[6] > 0)//12x1x 1x
-							{
-								if (tabCount[7] == 0)//12x1x 1x0
-								{
-									#pragma region frame
-									parseCount[PRS_FRM] = new SFResFrame((SFResObject*)parseCount[PRS_OBJ]);
-									((SFResFrame*)parseCount[PRS_FRM])->m_parent = (SFResObject*)parseCount[PRS_OBJ];
-									POLL_XML_ATTR_BEGIN
-										if (utfName == "id")
-										{
-											stringstream ss;
-											UINT iValue;
-
-											ss << utfValue;
-											ss >> iValue;
-										}
-									POLL_XML_ATTR_END
-									#pragma endregion
-								}
-								else if (tabCount[7] == 1)//12x1x 1x1x
-								{
-									if (tabCount[8] == 0)//12x1x 1x10
-									{
-										#pragma region rect(frame)
-										D2D1_RECT_F box;
-
-										POLL_XML_ATTR_BEGIN
-											if (utfName == "t")
-											{
-												stringstream ss;
-												float fValue;
-
-												ss << utfValue;
-												ss >> fValue;
-												box.top = fValue;
-											}
-											else if (utfName == "l")
-											{
-												stringstream ss;
-												float fValue;
-
-												ss << utfValue;
-												ss >> fValue;
-												box.left = fValue;
-											}
-											else if (utfName == "b")
-											{
-												stringstream ss;
-												float fValue;
-
-												ss << utfValue;
-												ss >> fValue;
-												box.bottom = fValue;
-											}
-											else if (utfName == "r")
-											{
-												stringstream ss;
-												float fValue;
-
-												ss << utfValue;
-												ss >> fValue;
-												box.right = fValue;
-											}
-										POLL_XML_ATTR_END
-
-										((SFResFrame*)parseCount[PRS_FRM])->m_drawBox = box;
-										#pragma endregion
-									}
-								}
-								else if (tabCount[7] == 2)//12x1x 1x2x
-								{
-									if (tabCount[8] == 0)//12x1x 1x20
-									{
-										#pragma region box_table
-										#pragma endregion
-									}
-									else if (tabCount[8] > 0)//12x1x 1x2x
-									{
-										if (tabCount[9] == 0)//12x1x 1x2x0
-										{
-											#pragma region box
-											POLL_XML_ATTR_BEGIN
-												if (utfName == "type")
-												{
-													stringstream ss;
-													UINT iValue;
-
-													ss << utfValue;
-													ss >> iValue;
-													boxType = iValue;
-												}
-											POLL_XML_ATTR_END
-											#pragma endregion
-										}
-										else if (tabCount[9] == 1)//12x1x 1x2x1
-										{
-											if (tabCount[10] == 0)//12x1x 1x2x1 0
-											{
-												#pragma region rect(box)
-												D2D1_RECT_F box;
-												POLL_XML_ATTR_BEGIN
-													if (utfName == "t")
-													{
-														stringstream ss;
-														float fValue;
-
-														ss << utfValue;
-														ss >> fValue;
-														box.top = fValue;
-													}
-													else if (utfName == "l")
-													{
-														stringstream ss;
-														float fValue;
-
-														ss << utfValue;
-														ss >> fValue;
-														box.left = fValue;
-													}
-													else if (utfName == "b")
-													{
-														stringstream ss;
-														float fValue;
-
-														ss << utfValue;
-														ss >> fValue;
-														box.bottom = fValue;
-													}
-													else if (utfName == "r")
-													{
-														stringstream ss;
-														float fValue;
-
-														ss << utfValue;
-														ss >> fValue;
-														box.right = fValue;
-													}
-												POLL_XML_ATTR_END
-
-												if (boxType & 0x1)
-												{
-													((SFResFrame*)parseCount[PRS_FRM])->m_lBodyBox.insert(
-														((SFResFrame*)parseCount[PRS_FRM])->m_lBodyBox.end(),
-														box);
-												}
-												if (boxType & 0x2)
-												{
-													((SFResFrame*)parseCount[PRS_FRM])->m_lAttackBox.insert(
-														((SFResFrame*)parseCount[PRS_FRM])->m_lAttackBox.end(),
-														box);
-												}
-												#pragma endregion
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+					tabs--;
 				}
 			}
 		}
+	}
 
-		if (g_pConf->m_enDebug[DEBUG_RES_LOAD])
+	setSonNodeDepth(m_pFrameRootNode);
+	return true;
+}
+
+void SFXmlReader::setSonNodeDepth(XsdNodeData* pRootNode)
+{
+	static UINT iCount = 0;
+
+	if (pRootNode == m_pFrameRootNode)
+	{
+		iCount = 0;
+	}
+	else
+	{
+		iCount++;
+	}
+	for (UINT i = 0; i < pRootNode->m_nodeData.size(); i++)
+	{
+		pRootNode->m_nodeData[i]->m_depth = pRootNode->m_depth + 1;
+		if (pRootNode->m_nodeData[i]->m_depth > m_maxDepth)
 		{
-			wcout << L"\n";
-			for (int i = 1; i < SF_XML_TABS_MAX; i++)
+			m_maxDepth = pRootNode->m_nodeData[i]->m_depth;
+		}
+		pRootNode->m_nodeData[i]->m_index = iCount + 1;
+		sf_cout(DEBUG_RES_LOAD, endl << pRootNode->m_nodeData[i]->m_name <<
+			((pRootNode->m_nodeData[i]->m_name.length() >= 8) ? "\t" : "\t\t") << "depth:" << pRootNode->m_nodeData[i]->m_depth <<
+			"\t" << "index:" << pRootNode->m_nodeData[i]->m_index);
+		setSonNodeDepth(pRootNode->m_nodeData[i]);
+	}
+
+	return;
+}
+
+bool SFXmlReader::getDataByXml(string xmlPath)
+{
+	HRESULT hr = S_OK;
+	CComPtr<IStream> pFileStream;
+	CComPtr<IXmlReader> pReader;
+	XmlNodeType nodeType = XmlNodeType_None;
+	LPCWSTR nodeName;
+	LPCWSTR name;
+	LPCWSTR value;
+	bool ret;
+	bool havGetRoot = false;
+
+	vector<XmlNodeData*> pNodeBuffer;
+	XmlNodeData* pNode = NULL;
+
+	pNodeBuffer.resize(m_maxDepth + 1, NULL);
+
+	//Open read-only input stream
+	hr = SHCreateStreamOnFileA(xmlPath.c_str(), STGM_READ, &pFileStream);
+	if (SUCCEEDED(hr))
+	{
+		hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);
+	}
+	else
+	{
+		sf_cout(DEBUG_COM, "Error: Can't find the XML file. (\"" << xmlPath << "\")" << endl);
+
+		return false;
+	}
+	pReader->SetInput(pFileStream);
+	hr = pReader->Read(NULL);
+
+	for (; S_OK == hr; hr = pReader->Read(NULL))
+	{
+		pReader->GetLocalName(&nodeName, NULL);
+		if (nodeName[0] > L' ')
+		{
+			pReader->GetNodeType(&nodeType);
+			if (nodeType == XmlNodeType_Element)
 			{
-				if (tabCount[i] != 0)
+				StringA utfNodeName = TStrTrans::UnicodeToUtf8(nodeName);
+
+				if (m_frame.find(utfNodeName) != m_frame.end())
 				{
-					wcout << L"    ";
+					XmlNodeData* pParent = NULL;
+					if (m_frame[utfNodeName].m_depth == 0)
+					{
+						pNodeBuffer[0] = &m_rootNode;
+						m_rootNode.m_pParent = NULL;
+						m_rootNode.m_pNodeType = &m_frame[utfNodeName];
+					}
+					else
+					{
+						pParent = pNodeBuffer[m_frame[utfNodeName].m_depth - 1];
+						pParent->m_son.insert(pParent->m_son.end(), XmlNodeData());
+						pParent->m_son[pParent->m_son.size() - 1].m_pParent = pParent;
+						pParent->m_son[pParent->m_son.size() - 1].m_pNodeType = &m_frame[utfNodeName];
+						pNodeBuffer[m_frame[utfNodeName].m_depth] = &pParent->m_son[pParent->m_son.size() - 1];
+					}
+					pParent = pNodeBuffer[m_frame[utfNodeName].m_depth];
+					sf_cout(DEBUG_RES_LOAD, endl);
+					for (UINT i = 0; i < m_frame[utfNodeName].m_depth; i++)
+					{
+						sf_cout(DEBUG_RES_LOAD, "  ");
+					}
+					sf_cout(DEBUG_RES_LOAD, "<" << utfNodeName << ">");
+					POLL_XML_ATTR_BEGIN
+						pParent->m_attr.insert(pair<string, string>(utfName, utfValue));
+					POLL_XML_ATTR_END
+				}
+			}
+		}
+	}
+	parseXml(m_rootNode);
+
+	return true;
+}
+
+bool SFXmlReader::parseXml(XmlNodeData& nodeData)
+{
+	if (nodeData.m_pParent == NULL)
+	{
+		s_parseCount.clear();
+		s_parseCount.resize(m_maxDepth + 1, NULL);
+	}
+
+	s_parseCount[nodeData.m_pNodeType->m_depth] = &nodeData;
+	parseXmlNode(nodeData);
+	for (UINT i = 0; i < nodeData.m_son.size(); i++)
+	{
+		parseXml(nodeData.m_son[i]);
+	}
+
+	return true;
+}
+
+typedef enum SF_ResParseNodeForPlayer
+{
+	RNP_player_info, RNP_skin_table, RNP_skin, RNP_skill_table, RNP_skill,
+	RNP_object_table, RNP_object, RNP_frame_table, RNP_frame, RNP_point,
+	RNP_box_table, RNP_box, RNP_rect,
+	RNP_MAX
+}SF_RNP;
+
+typedef enum SF_ResParsePtrBufferForPlayer
+{
+	RPP_SKL, RPP_OBJ, RPP_FRM,
+	RPP_MAX
+}SF_RPP;
+
+bool SFXmlPlayer::parseXmlNode(XmlNodeData& nodeData)
+{
+	static void* pBuffer[RPP_MAX] = {NULL};
+
+	if (m_pResPlayer == NULL)
+	{
+		return false;
+	}
+	switch (nodeData.m_pNodeType->m_index)
+	{
+	case RNP_player_info:
+		memset(pBuffer, NULL, sizeof(void*)*RPP_MAX);
+		break;
+	case RNP_skin_table:
+		break;
+	case RNP_skin:
+		break;
+	case RNP_skill_table:
+		break;
+	case RNP_skill:
+		#pragma region skill
+		if (g_pConf->m_pDiEka->m_map.find(nodeData.m_attr["eka"]) != g_pConf->m_pDiEka->m_map.end())
+		{
+			if (g_pConf->m_pDiAs->m_map.find(nodeData.m_attr["as"]) != g_pConf->m_pDiAs->m_map.end())
+			{
+				if (g_pConf->m_pDiSsse->m_map.find(nodeData.m_attr["ssse"]) != g_pConf->m_pDiSsse->m_map.end())
+				{
+					bool saveble = (nodeData.m_attr["savable"] == "true");
+
+					pBuffer[RPP_SKL] = m_pResPlayer->addSkill(
+						(SF_EKA)g_pConf->m_pDiEka->m_map[nodeData.m_attr["eka"]],
+						(SF_AS)g_pConf->m_pDiAs->m_map[nodeData.m_attr["as"]],
+						(SF_SSSE)g_pConf->m_pDiSsse->m_map[nodeData.m_attr["ssse"]],
+						saveble
+					);
 				}
 				else
 				{
-					break;
+					sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << nodeData.m_attr["ssse"] << "\" " << "ssse" << " Attr.");
+					return false;
 				}
 			}
-			for (int i = 0; i < SF_XML_TABS_MAX; i++)
+			else
 			{
-				wcout << tabCount[i];
-				if (i % 5 == 4)
-				{
-					wcout << " ";
-				}
+				sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << nodeData.m_attr["as"] << "\" " << "as" << " Attr.");
+				return false;
 			}
-		}
-
-		return ret;
-	}
-
-	/*XML解析主逻辑入口*/
-	bool readFromXML(string xmlPath, SFResPlayer* resPlayer)
-	{
-		HRESULT hr = S_OK;
-		CComPtr<IStream> pFileStream;
-		CComPtr<IXmlReader> pReader;
-		XmlNodeType nodeType = XmlNodeType_None;
-		WCHAR trueName[NODE_NAME_MAX] = {0};
-		LPCWSTR name;
-		bool nodeSw[ND_MAX] = {false};
-		bool nodeIsOnly[ND_MAX] = {false};
-		bool nodeHad[ND_MAX] = {false};
-		UINT nodeCount[ND_MAX] = { 0 };
-
-		UINT tabCount[SF_XML_TABS_MAX] = { 0 };
-		UINT tabs = 0;
-
-		if (resPlayer == NULL)
-		{
-			return false;
-		}
-
-		memset(tabCount, 0, SF_XML_TABS_MAX*sizeof(UINT));
-		tabs = 0;
-
-		//Open read-only input stream
-		hr = SHCreateStreamOnFileA(xmlPath.c_str(), STGM_READ, &pFileStream);
-		if (SUCCEEDED(hr))
-		{
-			hr = CreateXmlReader(__uuidof(IXmlReader), (void**)&pReader, NULL);
 		}
 		else
 		{
-			sf_cout(DEBUG_COM, "Error: Can't find the XML file. (\"" << xmlPath << "\")" << endl);
+			sf_cout(DEBUG_COM, endl << "readXMLNode error: This is not \"" << nodeData.m_attr["eka"] << "\" " << "eka" << " Attr.");
 			return false;
 		}
-		pReader->SetInput(pFileStream);
-		hr = pReader->Read(NULL);
+		#pragma endregion
+		break;
+	case RNP_object_table:
+		break;
+	case RNP_object:
+		pBuffer[RPP_OBJ] = &((SFResSkill*)(pBuffer[RPP_SKL]))->addObject();
+		break;
+	case RNP_frame_table:
+		break;
+	case RNP_frame:
+		pBuffer[RPP_FRM] = &((SFResObject*)(pBuffer[RPP_OBJ]))->addFrame();
+		break;
+	case RNP_point:
+		#pragma region point
+		{
+			stringstream ss;
+			FLOAT fValue;
 
-		POLL_XML_NODE_BEGIN(ND_PLY_INF)
-			POLL_XML_NODE_BEGIN(ND_SKN_TBL)
-				POLL_XML_NODE_BEGIN(ND_SKN)
-				POLL_XML_NODE_END(ND_SKN)
-			POLL_XML_NODE_END(ND_SKN_TBL)
-			POLL_XML_NODE_BEGIN(ND_SKL_TBL)
-				POLL_XML_NODE_BEGIN(ND_SKL)
-					POLL_XML_NODE_BEGIN(ND_OBJ_TBL)
-						POLL_XML_NODE_BEGIN(ND_OBJ)
-							POLL_XML_NODE_BEGIN(ND_FRM_TBL)
-								POLL_XML_NODE_BEGIN(ND_FRM)
-									POLL_XML_NODE_BEGIN(ND_FRM_RCT)
-									POLL_XML_NODE_END(ND_FRM_RCT)
-									POLL_XML_NODE_BEGIN(ND_BOX_TBL)
-										POLL_XML_NODE_BEGIN(ND_BOX)
-											POLL_XML_NODE_BEGIN(ND_BOX_RCT)
-											POLL_XML_NODE_END(ND_BOX_RCT)
-										POLL_XML_NODE_END(ND_BOX)
-									POLL_XML_NODE_END(ND_BOX_TBL)
-								POLL_XML_NODE_END(ND_FRM)
-							POLL_XML_NODE_END(ND_FRM_TBL)
-						POLL_XML_NODE_END(ND_OBJ)
-					POLL_XML_NODE_END(ND_OBJ_TBL)
-				POLL_XML_NODE_END(ND_SKL)
-			POLL_XML_NODE_END(ND_SKL_TBL)
-		POLL_XML_NODE_END(ND_PLY_INF)
+			ss << nodeData.m_attr["x"];
+			ss >> fValue;
+			((SFResFrame*)pBuffer[RPP_FRM])->m_poiMove.x = fValue;
+			ss.clear();
+			ss << nodeData.m_attr["y"];
+			ss >> fValue;
+			((SFResFrame*)pBuffer[RPP_FRM])->m_poiMove.y = fValue;
+			ss.clear();
+		}
+		#pragma endregion
+		break;
+	case RNP_box_table:
+		break;
+	case RNP_box:
+		#pragma region box
+		{
+			stringstream ss;
+			UINT iValue;
+			FLOAT fValue;
+			D2D1_RECT_F box;
 
-		return true;
+			ss << nodeData.m_son[0].m_attr["t"];
+			ss >> fValue;
+			box.top = fValue;
+			ss.clear();
+			ss << nodeData.m_son[0].m_attr["l"];
+			ss >> fValue;
+			box.left = fValue;
+			ss.clear();
+			ss << nodeData.m_son[0].m_attr["b"];
+			ss >> fValue;
+			box.bottom = fValue;
+			ss.clear();
+			ss << nodeData.m_son[0].m_attr["r"];
+			ss >> fValue;
+			box.right = fValue;
+			ss.clear();
+			ss << nodeData.m_attr["type"];
+			ss >> iValue;
+			((SFResFrame*)pBuffer[RPP_FRM])->addBox(iValue, box);
+			ss.clear();
+		}
+		#pragma endregion
+		break;
+	case RNP_rect:
+		break;
 	}
+
+	return true;
+}
+
+typedef enum SF_ResParseNodeForScene
+{
+	RNS_scene_info, RNS_scene_table, RNS_scene, RNS_camera_info, RNS_sprite_table,
+	RNS_sprite,
+	RNS_MAX
+}SF_RNS;
+
+bool SFXmlScene::parseXmlNode(XmlNodeData& nodeData)
+{
+	if (m_pResScene == NULL)
+	{
+		return false;
+	}
+	switch (nodeData.m_pNodeType->m_index)
+	{
+	case RNS_scene_info:
+		break;
+	case RNS_scene_table:
+		break;
+	case RNS_scene:
+		{
+			stringstream ss;
+			FLOAT fValue;
+
+			ss << nodeData.m_attr["width"];
+			ss >> fValue;
+			m_pResScene->m_width = fValue;
+			ss.clear();
+			ss << nodeData.m_attr["height"];
+			ss >> fValue;
+			m_pResScene->m_height = fValue;
+			ss.clear();
+		}
+		break;
+	case RNS_camera_info:
+		{
+			stringstream ss;
+			FLOAT fValue;
+
+			ss << nodeData.m_attr["x"];
+			ss >> fValue;
+			m_pResScene->m_camera.x = fValue;
+			ss.clear();
+			ss << nodeData.m_attr["y"];
+			ss >> fValue;
+			m_pResScene->m_camera.y = fValue;
+			ss.clear();
+		}
+		break;
+	case RNS_sprite_table:
+		break;
+
+	case RNS_sprite:
+		{
+			stringstream ss;
+			FLOAT fValue;
+			FLOAT tx, ty;
+			D2D1_POINT_2F tPoi;
+
+			if (nodeData.m_attr.find("x") != nodeData.m_attr.end())
+			{
+				ss << nodeData.m_attr["x"];
+				ss >> fValue;
+				tx = fValue;
+				ss.clear();
+			}
+			else
+			{
+				tx = 0;
+			}
+			if (nodeData.m_attr.find("y") != nodeData.m_attr.end())
+			{
+				ss << nodeData.m_attr["y"];
+				ss >> fValue;
+				ty = fValue;
+				ss.clear();
+			}
+			else
+			{
+				ty = 0;
+			}
+			tPoi = { tx, ty };
+
+			if (nodeData.m_attr["id"] == "player1")
+			{
+				m_pResScene->m_poiP1 = tPoi;
+			}
+			else if (nodeData.m_attr["id"] == "player2")
+			{
+				m_pResScene->m_poiP2 = tPoi;
+			}
+			else if (nodeData.m_attr["id"] == "ground")
+			{
+				m_pResScene->m_fGround = ty;
+			}
+		}
+		break;
+	}
+
+	return true;
 }

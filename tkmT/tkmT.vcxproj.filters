@@ -36,6 +36,9 @@
     <ClInclude Include="include\TType.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\TDIndexDataEx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TStrTrans.cpp">

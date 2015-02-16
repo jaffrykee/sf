@@ -25,6 +25,9 @@ typedef enum SF_FIGHT_PlayerGroupName
 	FIGHT_PGN_P1, FIGHT_PGN_P2,
 	FIGHT_PGN_MAX
 }SF_FIGHT_PGN;
+const vector <string> conf_aStrFightPGN = {
+	"p1", "p2"
+};
 
 class __declspec(dllexport) SFSpriteGroup
 {
@@ -42,10 +45,20 @@ class __declspec(dllexport) SFActScene
 {
 public:
 	map<string, SFSpriteGroup*> m_mapSpriteGroup;
+	SFResScene* m_pResScene;
 	SF_SCN_MAP m_mapType;
 	SF_SCN_STAGE m_stage;
 
 	map<SF_TEV, SF_EK> m_mapTevEk;
+	//静摩擦系数
+	FLOAT m_fMoveFs;
+	//动摩擦系数
+	FLOAT m_fMoveFk;
+	FLOAT m_width;
+	FLOAT m_height;
+	FLOAT m_ground;
+	D2D1_POINT_2F m_poiInitP1;
+	D2D1_POINT_2F m_poiInitP2;
 
 	SFActScene(SF_SCN_MAP mapType = SCN_MAP_DEF);
 	SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType = SCN_MAP_DEF);
@@ -54,9 +67,17 @@ public:
 	bool addSprite(string groupName, SFSprite* pSprite);
 	SFPlayer* getPlayerInSceneByPGN(string groupName);
 	bool doEvent(SF_TEV event);
+	bool doCollision();
 
 	//将来可能会将Fight类型的Scene以继承类的方式提出来。
+	bool addFightP1(SFSprite* pSprite);
+	bool addFightP2(SFSprite* pSprite);
 	SFPlayer* getFightP1();
 	SFPlayer* getFightP2();
+	bool setPositionFightP1(D2D1_POINT_2F point);
+	bool initPositionFightP1();
+	bool setPositionFightP2(D2D1_POINT_2F point);
+	bool initPositionFightP2();
 	void setDirection(bool isP1Left);
+	void refreshDirection();
 };

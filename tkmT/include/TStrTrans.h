@@ -16,4 +16,5 @@ namespace TStrTrans
 	StringA _declspec(dllexport) UnicodeToUtf8(const wchar_t* buf);
 	StringA _declspec(dllexport) intIdToStrId(UINT id);
 	void _declspec(dllexport) split(const string& src, const string& separator, vector<string>& dest);
+	UINT _declspec(dllexport) getFirstSplit(char* dst, int max, const char* src, char split);
 }

@@ -2,6 +2,22 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
+SFResScene::SFResScene()
+{
+	string confXsdPath;
+	string confXmlPath;
+
+	confXsdPath = g_pConf->m_resSceneFramePath;
+	confXmlPath = g_pConf->m_resSceneDataPath;
+	m_pXmlReader = new SFXmlScene(confXsdPath, this);
+	m_pXmlReader->getDataByXml(confXmlPath);
+}
+
+SFResScene::~SFResScene()
+{
+
+}
+
 SFResPlayer::SFResPlayer(SF_SKN skin)
 {
 	memset(m_arrSkill, 0, sizeof(SFResSkill*)*EKA_MAX*AS_MAX*SSSE_MAX);
@@ -9,11 +25,14 @@ SFResPlayer::SFResPlayer(SF_SKN skin)
 
 SFResPlayer::SFResPlayer(string pid, SF_SKN skin)
 {
-	string confPath;
+	string confXsdPath;
+	string confXmlPath;
 
-	confPath = g_pConf->m_resPath + g_pConf->m_resPlayerInfoPrefix + pid + "/" + g_pConf->m_resPlayerInfoFileName;
+	confXsdPath = g_pConf->m_resPlayerFramePath;
+	confXmlPath = g_pConf->m_resPath + g_pConf->m_resPlayerInfoPrefix + pid + "/" + g_pConf->m_resPlayerInfoFileName;
 	memset(m_arrSkill, 0, sizeof(SFResSkill*)*EKA_MAX*AS_MAX*SSSE_MAX);
-	SFResConfigReader::readFromXML(confPath, this);
+	m_pXmlReader = new SFXmlPlayer(confXsdPath, this);
+	m_pXmlReader->getDataByXml(confXmlPath);
 }
 
 SFResPlayer::~SFResPlayer()
@@ -32,6 +51,13 @@ SFResPlayer::~SFResPlayer()
 			}
 		}
 	}
+}
+
+SFResSkill* SFResPlayer::addSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, bool savable)
+{
+	m_arrSkill[eka][as][ssse] = new SFResSkill(eka, as, ssse, this, savable);
+
+	return m_arrSkill[eka][as][ssse];
 }
 
 /*
@@ -80,26 +106,21 @@ bool SFResSkill::getEnableSpecialEvent(SF_AS as, SF_SSSE ssse)
 SFResSkill::SFResSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent,bool savable)
 	:m_id(eka*as*ssse), m_eka(eka), m_as(as), m_ssse(ssse), m_parent(pParent), m_savable(savable)
 {
-	if (pParent != NULL)
-	{
-		pParent->m_arrSkill[eka][as][ssse] = this;
-	}
 }
 
 SFResSkill::~SFResSkill()
 {
-	for (UINT i = 0; i < m_arrObject.size(); i++)
-	{
-		if (m_arrObject[i] != NULL)
-		{
-			delete m_arrObject[i];
-			m_arrObject[i] = NULL;
-		}
-	}
 	if (m_parent != NULL)
 	{
 		m_parent->m_arrSkill[m_eka][m_as][m_ssse] = NULL;
 	}
+}
+
+SFResObject& SFResSkill::addObject()
+{
+	m_arrObject.insert(m_arrObject.end(), SFResObject(this));
+
+	return m_arrObject[m_arrObject.size() - 1];
 }
 
 bool SFResSkill::getEnableSpecialEvent(SF_SSSE ssse)
@@ -112,7 +133,7 @@ bool SFResSkill::getEnableSpecialEvent(SF_SSSE ssse)
 	return false;
 }
 
-SFResObject* SFResSkill::operator[](UINT intObjIndex)
+SFResObject& SFResSkill::operator[](UINT intObjIndex)
 {
 	return m_arrObject[intObjIndex];
 }
@@ -122,32 +143,23 @@ SFResObject::SFResObject(SFResSkill* pParent) :m_parent(pParent)
 	if (pParent != NULL)
 	{
 		m_index = pParent->m_arrObject.size();
-		pParent->m_arrObject.insert(pParent->m_arrObject.end(), this);
 	}
 }
 
 SFResObject::~SFResObject()
 {
-	for (UINT i = 0; i < m_arrFrame.size(); i++)
-	{
-		if (m_arrFrame[i] != NULL)
-		{
-			delete m_arrFrame[i];
-			m_arrFrame[i] = NULL;
-		}
-	}
-	if (m_parent != NULL)
-	{
-		if (m_index < m_parent->m_arrObject.size())
-		{
-			m_parent->m_arrObject[m_index] = NULL;
-		}
-	}
 }
 
-SFResFrame* SFResObject::operator[](UINT frameIndex)
+SFResFrame& SFResObject::operator[](UINT frameIndex)
 {
 	return m_arrFrame[frameIndex];
+}
+
+SFResFrame& SFResObject::addFrame()
+{
+	m_arrFrame.insert(m_arrFrame.end(), SFResFrame(this));
+
+	return m_arrFrame[m_arrFrame.size() - 1];
 }
 
 SFResFrame::SFResFrame(SFResObject* pParent) :m_parent(pParent)
@@ -155,17 +167,53 @@ SFResFrame::SFResFrame(SFResObject* pParent) :m_parent(pParent)
 	if (pParent != NULL)
 	{
 		m_index = pParent->m_arrFrame.size();
-		pParent->m_arrFrame.insert(pParent->m_arrFrame.end(), this);
 	}
 }
 
 SFResFrame::~SFResFrame()
 {
-	if (m_parent != NULL)
+}
+
+void SFResFrame::addBox(UINT boxType, D2D1_RECT_F box)
+{
+	if (boxType & 0x1)
 	{
-		if (m_index < m_parent->m_arrFrame.size())
-		{
-			m_parent->m_arrFrame[m_index] = NULL;
-		}
+		addBodyBox(box);
 	}
+	if (boxType & 0x2)
+	{
+		addAttackBox(box);
+	}
+}
+
+void SFResFrame::addBox(UINT boxType, FLOAT top, FLOAT left, FLOAT bottom, FLOAT right)
+{
+	if (boxType & 0x1)
+	{
+		addBodyBox(top, left, bottom, right);
+	}
+	if (boxType & 0x2)
+	{
+		addAttackBox(top, left, bottom, right);
+	}
+}
+
+void SFResFrame::addBodyBox(D2D1_RECT_F box)
+{
+	m_lBodyBox.insert(m_lBodyBox.end(), box);
+}
+
+void SFResFrame::addBodyBox(FLOAT top, FLOAT left, FLOAT bottom, FLOAT right)
+{
+	m_lBodyBox.insert(m_lBodyBox.end(), {top, left, bottom, right});
+}
+
+void SFResFrame::addAttackBox(D2D1_RECT_F box)
+{
+	m_lAttackBox.insert(m_lAttackBox.end(), box);
+}
+
+void SFResFrame::addAttackBox(FLOAT top, FLOAT left, FLOAT bottom, FLOAT right)
+{
+	m_lAttackBox.insert(m_lAttackBox.end(), {top, left, bottom, right});
 }

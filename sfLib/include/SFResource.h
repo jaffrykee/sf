@@ -11,8 +11,12 @@ class __declspec(dllexport) SFResFrame
 public:
 	UINT m_index;
 	SFResObject* m_parent;
+/*已失效
 	//渲染矩形
 	D2D1_RECT_F m_drawBox;
+*/
+	//Object 位移
+	D2D1_POINT_2F m_poiMove;
 	//位图资源
 	ID2D1Bitmap* m_mBmp;
 
@@ -21,6 +25,13 @@ public:
 
 	SFResFrame(SFResObject* pParent);
 	~SFResFrame();
+
+	void addBox(UINT boxType, D2D1_RECT_F box);
+	void addBox(UINT boxType, FLOAT top, FLOAT left, FLOAT bottom, FLOAT right);
+	void addBodyBox(D2D1_RECT_F box);
+	void addBodyBox(FLOAT top, FLOAT left, FLOAT bottom, FLOAT right);
+	void addAttackBox(D2D1_RECT_F box);
+	void addAttackBox(FLOAT top, FLOAT left, FLOAT bottom, FLOAT right);
 };
 
 //技能对象
@@ -30,11 +41,13 @@ public:
 	UINT m_index;
 	string m_strId;
 	SFResSkill* m_parent;
-	vector<SFResFrame*> m_arrFrame;
+	vector<SFResFrame> m_arrFrame;
 
 	SFResObject(SFResSkill* pParent);
 	~SFResObject();
-	SFResFrame* operator[](UINT frameIndex);
+
+	SFResFrame& operator[](UINT frameIndex);
+	SFResFrame& addFrame();
 };
 
 //技能资源
@@ -46,12 +59,14 @@ public:
 	SF_EKA m_eka;
 	SF_AS m_as;
 	SF_SSSE m_ssse;
-	vector<SFResObject*> m_arrObject;
+	vector<SFResObject> m_arrObject;
 	bool m_savable;
 
-	SFResSkill(SF_EKA m_eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent, bool savable = false);
+	SFResSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, SFResPlayer* pParent, bool savable = false);
 	~SFResSkill();
-	SFResObject* operator[](UINT intObjIndex);
+
+	SFResObject& operator[](UINT intObjIndex);
+	SFResObject& addObject();
 	bool getEnableSpecialEvent(SF_SSSE ssse);
 };
 
@@ -75,11 +90,14 @@ class __declspec(dllexport) SFResPlayer
 {
 public:
 	SFResSkill* m_arrSkill[EKA_MAX][AS_MAX][SSSE_MAX];
+	SFXmlPlayer* m_pXmlReader;
 
 	SFResPlayer(SF_SKN skin);
 	SFResPlayer(string pid, SF_SKN skin);
 	~SFResPlayer();
 //	SFResSkill* operator[](SF_EKA skillIndex);
+
+	SFResSkill* addSkill(SF_EKA eka, SF_AS as, SF_SSSE ssse, bool savable = false);
 };
 
 #if 0
@@ -154,3 +172,28 @@ public:
 	}
 };
 #endif
+
+typedef enum SF_ResSceneType
+{
+	RST_FIGHT,
+	RST_MAX
+}SF_RST;
+
+//场景资源
+class __declspec(dllexport) SFResScene
+{
+public:
+	SFXmlScene* m_pXmlReader;
+
+	FLOAT m_width;
+	FLOAT m_height;
+	string m_type;
+	D2D1_POINT_2F m_camera;
+	D2D1_POINT_2F m_poiP1;
+	D2D1_POINT_2F m_poiP2;
+	FLOAT m_fGround;
+
+	SFResScene();
+	~SFResScene();
+	// SFResSkill* operator[](SF_EKA skillIndex);
+};

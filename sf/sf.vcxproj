@@ -83,7 +83,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -140,9 +140,6 @@
     <ClInclude Include="include\xml.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sf.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\sfLib\sfLib.vcxproj">
       <Project>{634161c5-46e1-4ad1-9518-c9aca3223ed1}</Project>
     </ProjectReference>
@@ -151,10 +148,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="data\ground\playerInfo.xml" />
     <Xml Include="data\p001\playerInfo.xml" />
+    <Xml Include="data\sceneInfo.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Xsd Include="data\skillFrame.xsd" />
+    <Xsd Include="data\playerFrame.xsd" />
+    <Xsd Include="data\sceneFrame.xsd">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sf.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

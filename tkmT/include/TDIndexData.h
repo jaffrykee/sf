@@ -11,6 +11,6 @@ public:
 	vector<string> m_str;
 	map<string, UINT> m_map;
 
-	TDIndexData(vector<string> strData, UINT max);
+	TDIndexData(vector<string> strData);
 	~TDIndexData();
 };

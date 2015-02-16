@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\SFActScene.h" />
+    <ClInclude Include="include\SFCamera.h" />
     <ClInclude Include="include\SFConfig.h" />
     <ClInclude Include="include\SFDebug.h" />
     <ClInclude Include="include\SFEventKey.h" />

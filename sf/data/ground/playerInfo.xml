@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<player_info xmlns="http://tkmgame.com/shark/playerFrame.xsd">
+	<skin_table>
+		<skin name="学校"></skin>
+		<skin name="草地"></skin>
+	</skin_table>
+	<skill_table>
+		<skill eka="DEF" as="def" ssse="basic" savable="false">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="0" y="0"></point>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"></rect>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+	</skill_table>
+</player_info>

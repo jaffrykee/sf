@@ -2,9 +2,10 @@
 #include <TInit.h>
 #include <tkmT.h>
 
-TDIndexData::TDIndexData(vector<string> strData, UINT max) :m_str(strData)
+//string不可重复，否则mapIndex后一个会把前一个覆盖
+TDIndexData::TDIndexData(vector<string> strData) :m_str(strData)
 {
-	for (UINT i = 0; i < max; i++)
+	for (UINT i = 0; i < strData.size(); i++)
 	{
 		m_map.insert(pair<string, UINT>(m_str[i], i));
 	}
