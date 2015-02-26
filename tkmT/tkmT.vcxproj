@@ -68,6 +68,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\TConfig.h" />
+    <ClInclude Include="include\TDebug.h" />
     <ClInclude Include="include\TBitArray.h" />
     <ClInclude Include="include\TBitMap.h" />
     <ClInclude Include="include\TDIndexData.h" />
@@ -77,13 +79,16 @@
     <ClInclude Include="include\tkmT.h" />
     <ClInclude Include="include\TStrTrans.h" />
     <ClInclude Include="include\TType.h" />
+    <ClInclude Include="include\TXmlParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TConfig.cpp" />
     <ClCompile Include="TBitArray.cpp" />
     <ClCompile Include="TBitMap.cpp" />
     <ClCompile Include="TDIndexData.cpp" />
     <ClCompile Include="TFile.cpp" />
     <ClCompile Include="TStrTrans.cpp" />
+    <ClCompile Include="TXmlParser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

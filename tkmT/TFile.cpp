@@ -1,4 +1,5 @@
 ﻿#pragma execution_character_set("utf-8")
+#include <TInit.h>
 #include <tkmT.h>
 
 TFile::TFile(string filter) :m_filter(filter)

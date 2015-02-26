@@ -1,5 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
-#include <bpt.h>
+#include <TInit.h>
+#include <tkmT.h>
 
 TXmlReader::TXmlReader(string path) :m_path(path)
 {
@@ -30,7 +31,7 @@ bool TXmlReader::refreshReader(string xmlPath)
 	}
 	else
 	{
-		sf_cout(DEBUG_COM, "Error: Can't find the XML file. (\"" << xmlPath << "\")" << endl);
+		t_cout(TDEBUG_ERR, "Error: Can't find the XML file. (\"" << xmlPath << "\")" << endl);
 
 		return false;
 	}
@@ -69,10 +70,19 @@ bool TXmlReader::refreshReader(string xmlPath)
 				pCurNode->m_name = utfNodeName;
 				pCurNode->m_pParent = m_pParentNodeBuffer[tabs - 1];
 			}
-			sf_cout(DEBUG_RES_LOAD, "<" << utfNodeName << ">");
-			POLL_XML_ATTR_BEGIN
+			t_cout(TDEBUG_RES_LOAD, "<" << utfNodeName << ">");
+			for (hr = pReader->MoveToFirstAttribute(); S_OK == hr; hr = pReader->MoveToNextAttribute())
+			{
+				pReader->GetLocalName(&name, NULL);
+				pReader->GetValue(&value, NULL);
+				StringA utfName = TStrTrans::UnicodeToUtf8(name);
+				StringA utfValue = TStrTrans::UnicodeToUtf8(value);
+
+				t_cout(TDEBUG_RES_LOAD, utfName << ":" << utfValue << " ");
+				ret = true;
 				pCurNode->m_attr.insert(pair<string, string>(utfName, utfValue));
-			POLL_XML_ATTR_END
+			}
+
 			if (!isEmpty)
 			{
 				tabs++;
@@ -82,7 +92,7 @@ bool TXmlReader::refreshReader(string xmlPath)
 		{
 			pReader->GetValue(&value, NULL);
 			StringA utfValue = TStrTrans::UnicodeToUtf8(value);
-			sf_cout(DEBUG_RES_LOAD, endl << "    " << utfValue);
+			t_cout(TDEBUG_RES_LOAD, endl << "    " << utfValue);
 			pCurNode->m_string = utfValue;
 		}
 		else if (nodeType == XmlNodeType_EndElement)
@@ -121,7 +131,7 @@ bool TXmlWriter::refreshWriter(string proPath, TXmlReader xmlNodes)
 	}
 	else
 	{
-		sf_cout(DEBUG_COM, "Error: Can't find the Xml file. (\"" << proPath << "\")" << endl);
+		t_cout(TDEBUG_ERR, "Error: Can't find the Xml file. (\"" << proPath << "\")" << endl);
 
 		return false;
 	}
@@ -134,7 +144,7 @@ bool TXmlWriter::refreshWriter(string proPath, TXmlReader xmlNodes)
 	}
 	if (FAILED(hr = pWriter->WriteStartDocument(XmlStandalone_Omit)))
 	{
-		sf_wprintf(DEBUG_COM, L"Error, Method: WriteStartDocument, error is %08.8lx", hr);
+		t_wprintf(TDEBUG_ERR, L"Error, Method: WriteStartDocument, error is %08.8lx", hr);
 		return false;
 	}
 	writerNode(xmlNodes.m_rootNode, pWriter);
