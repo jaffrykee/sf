@@ -51,4 +51,7 @@
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="doc\Text.txt" />
+  </ItemGroup>
 </Project>
