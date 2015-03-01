@@ -8,9 +8,19 @@
     		<DockPanel LastChildFill="False" VerticalAlignment="Top">
     			<Menu HorizontalAlignment="Left" VerticalAlignment="Top">
     				<MenuItem Header="文件">
-    					<MenuItem Header="MenuItem"/>
-    					<MenuItem Header="MenuItem"/>
-    					<MenuItem Header="MenuItem"/>
+    					<MenuItem Header="新建">
+    						<MenuItem Header="工程"></MenuItem>
+    						<MenuItem Header="UI文件"></MenuItem>
+						</MenuItem>
+    					<MenuItem Header="打开">
+    						<MenuItem Header="工程"></MenuItem>
+    						<MenuItem Header="UI文件"></MenuItem>
+						</MenuItem>
+						<Separator/>
+    					<MenuItem Header="保存"></MenuItem>
+    					<MenuItem Header="全部保存"></MenuItem>
+						<Separator/>
+    					<MenuItem Header="退出"></MenuItem>
 					</MenuItem>
     				<MenuItem Header="编辑">
     					<MenuItem Header="MenuItem"/>

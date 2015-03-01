@@ -9,10 +9,24 @@
     <Style TargetType="{x:Type Menu}">
         <Setter Property="Background" Value="{DynamicResource ThemeBrushKey}"/>
         <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrushKey}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ForegroundBrushKey}"/>
     </Style>
     <Style TargetType="{x:Type MenuItem}">
         <Setter Property="Background" Value="{DynamicResource ThemeBrushKey}"/>
         <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrushKey}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ThemeBrushKey}"/>
+    </Style>
+    <Style TargetType="{x:Type Separator}">
+        <Setter Property="Background" Value="{DynamicResource ThemeBrushKey}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrushKey}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ForegroundBrushKey}"/>
     </Style>
+	<Style TargetType="{x:Type Border}">
+		<Setter Property="Background" Value="{DynamicResource ThemeBrushKey}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BorderBrushKey}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+	</Style>
+	<Style TargetType="{x:Type WrapPanel}">
+		<Setter Property="Background" Value="{DynamicResource ThemeBrushKey}"/>
+	</Style>
 </ResourceDictionary>
