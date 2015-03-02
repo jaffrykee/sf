@@ -8,6 +8,7 @@
     		<ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Dark.xaml"/>
                 <ResourceDictionary Source="Themes/Generic.xaml"/>
+                <ResourceDictionary Source="Themes/Generic.Normal.xaml"/>
             </ResourceDictionary.MergedDictionaries>
     	</ResourceDictionary>
          
