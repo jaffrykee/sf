@@ -4,8 +4,19 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <direct.h>
+#include <io.h>
+#include <atlbase.h>
+#include <xmllite.h>
+
+#pragma comment(lib, "comsuppwd.lib")
+#pragma comment(lib, "XmlLite.lib")
+#pragma comment(lib, "Shlwapi.lib")
 
 using namespace std;
+
+#include <TConfig.h>
+#include <TDebug.h>
 
 #include <TType.h>
 #include <TBitArray.h>
@@ -14,3 +25,5 @@ using namespace std;
 #include <TInit.h>
 #include <TStrTrans.h>
 #include <TDIndexDataEx.h>
+#include <TFile.h>
+#include <TXmlParser.h>

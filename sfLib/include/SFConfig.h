@@ -269,66 +269,70 @@ typedef struct SFSelectedPlayer
 	typedef map<WPARAM, SF_TEV> MapEvent_T;
 	typedef map<UINT, MapEvent_T> MapEventGroup_T;
 
+	const MapEvent_T conf_mapEventKeyDown = {
+		MapEvent_T::value_type(VK_A, TEV_KD_P1LF),
+		MapEvent_T::value_type(VK_W, TEV_KD_P1UP),
+		MapEvent_T::value_type(VK_S, TEV_KD_P1DW),
+		MapEvent_T::value_type(VK_D, TEV_KD_P1RG),
+		MapEvent_T::value_type(VK_U, TEV_KD_P1AA),
+		MapEvent_T::value_type(VK_I, TEV_KD_P1BB),
+		MapEvent_T::value_type(VK_O, TEV_KD_P1CC),
+		MapEvent_T::value_type(VK_J, TEV_KD_P1DD),
+		MapEvent_T::value_type(VK_K, TEV_KD_P1EE),
+		MapEvent_T::value_type(VK_L, TEV_KD_P1FF),
+		MapEvent_T::value_type(VK_1, TEV_KD_P1ST),
+		MapEvent_T::value_type(VK_2, TEV_KD_P1MN),
+		MapEvent_T::value_type(VK_UP, TEV_KD_P2UP),
+		MapEvent_T::value_type(VK_LEFT, TEV_KD_P2LF),
+		MapEvent_T::value_type(VK_DOWN, TEV_KD_P2DW),
+		MapEvent_T::value_type(VK_RIGHT, TEV_KD_P2RG),
+		MapEvent_T::value_type(VK_NUMPAD1, TEV_KD_P2AA),
+		MapEvent_T::value_type(VK_NUMPAD2, TEV_KD_P2BB),
+		MapEvent_T::value_type(VK_NUMPAD3, TEV_KD_P2CC),
+		MapEvent_T::value_type(VK_NUMPAD0, TEV_KD_P2DD),
+		MapEvent_T::value_type(VK_NUMPAD5, TEV_KD_P2EE),
+		MapEvent_T::value_type(VK_NUMPAD6, TEV_KD_P2FF),
+		MapEvent_T::value_type(VK_3, TEV_KD_P2ST),
+		MapEvent_T::value_type(VK_4, TEV_KD_P2MN)
+	};
+
+	const MapEvent_T conf_mapEventKeyUp = {
+		MapEvent_T::value_type(VK_A, TEV_KU_P1LF),
+		MapEvent_T::value_type(VK_W, TEV_KU_P1UP),
+		MapEvent_T::value_type(VK_S, TEV_KU_P1DW),
+		MapEvent_T::value_type(VK_D, TEV_KU_P1RG),
+		MapEvent_T::value_type(VK_U, TEV_KU_P1AA),
+		MapEvent_T::value_type(VK_I, TEV_KU_P1BB),
+		MapEvent_T::value_type(VK_O, TEV_KU_P1CC),
+		MapEvent_T::value_type(VK_J, TEV_KU_P1DD),
+		MapEvent_T::value_type(VK_K, TEV_KU_P1EE),
+		MapEvent_T::value_type(VK_L, TEV_KU_P1FF),
+		MapEvent_T::value_type(VK_1, TEV_KU_P1ST),
+		MapEvent_T::value_type(VK_2, TEV_KU_P1MN),
+		MapEvent_T::value_type(VK_UP, TEV_KU_P2UP),
+		MapEvent_T::value_type(VK_LEFT, TEV_KU_P2LF),
+		MapEvent_T::value_type(VK_DOWN, TEV_KU_P2DW),
+		MapEvent_T::value_type(VK_RIGHT, TEV_KU_P2RG),
+		MapEvent_T::value_type(VK_NUMPAD1, TEV_KU_P2AA),
+		MapEvent_T::value_type(VK_NUMPAD2, TEV_KU_P2BB),
+		MapEvent_T::value_type(VK_NUMPAD3, TEV_KU_P2CC),
+		MapEvent_T::value_type(VK_NUMPAD0, TEV_KU_P2DD),
+		MapEvent_T::value_type(VK_NUMPAD5, TEV_KU_P2EE),
+		MapEvent_T::value_type(VK_NUMPAD6, TEV_KU_P2FF),
+		MapEvent_T::value_type(VK_3, TEV_KU_P2ST),
+		MapEvent_T::value_type(VK_4, TEV_KU_P2MN)
+	};
+
+	const MapEvent_T conf_mapEventTimer = {
+		MapEvent_T::value_type(TMR_ACTION, TEV_TMR_ACTION),
+		MapEvent_T::value_type(TMR_SKILL, TEV_TMR_SKILL),
+		MapEvent_T::value_type(TMR_PAINT, TEV_TMR_PAINT)
+	};
+
 	const MapEventGroup_T conf_mapEvent = {
-		pair<UINT, MapEvent_T>(WM_KEYDOWN, {
-			pair<WPARAM, SF_TEV>(VK_A, TEV_KD_P1LF),
-			pair<WPARAM, SF_TEV>(VK_W, TEV_KD_P1UP),
-			pair<WPARAM, SF_TEV>(VK_A, TEV_KD_P1LF),
-			pair<WPARAM, SF_TEV>(VK_S, TEV_KD_P1DW),
-			pair<WPARAM, SF_TEV>(VK_D, TEV_KD_P1RG),
-			pair<WPARAM, SF_TEV>(VK_U, TEV_KD_P1AA),
-			pair<WPARAM, SF_TEV>(VK_I, TEV_KD_P1BB),
-			pair<WPARAM, SF_TEV>(VK_O, TEV_KD_P1CC),
-			pair<WPARAM, SF_TEV>(VK_J, TEV_KD_P1DD),
-			pair<WPARAM, SF_TEV>(VK_K, TEV_KD_P1EE),
-			pair<WPARAM, SF_TEV>(VK_L, TEV_KD_P1FF),
-			pair<WPARAM, SF_TEV>(VK_1, TEV_KD_P1ST),
-			pair<WPARAM, SF_TEV>(VK_2, TEV_KD_P1MN),
-			pair<WPARAM, SF_TEV>(VK_UP, TEV_KD_P2UP),
-			pair<WPARAM, SF_TEV>(VK_LEFT, TEV_KD_P2LF),
-			pair<WPARAM, SF_TEV>(VK_DOWN, TEV_KD_P2DW),
-			pair<WPARAM, SF_TEV>(VK_RIGHT, TEV_KD_P2RG),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD1, TEV_KD_P2AA),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD2, TEV_KD_P2BB),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD3, TEV_KD_P2CC),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD0, TEV_KD_P2DD),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD5, TEV_KD_P2EE),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD6, TEV_KD_P2FF),
-			pair<WPARAM, SF_TEV>(VK_3, TEV_KD_P2ST),
-			pair<WPARAM, SF_TEV>(VK_4, TEV_KD_P2MN)
-		}),
-		pair<UINT, MapEvent_T>(WM_KEYUP, {
-			pair<WPARAM, SF_TEV>(VK_A, TEV_KU_P1LF),
-			pair<WPARAM, SF_TEV>(VK_W, TEV_KU_P1UP),
-			pair<WPARAM, SF_TEV>(VK_A, TEV_KU_P1LF),
-			pair<WPARAM, SF_TEV>(VK_S, TEV_KU_P1DW),
-			pair<WPARAM, SF_TEV>(VK_D, TEV_KU_P1RG),
-			pair<WPARAM, SF_TEV>(VK_U, TEV_KU_P1AA),
-			pair<WPARAM, SF_TEV>(VK_I, TEV_KU_P1BB),
-			pair<WPARAM, SF_TEV>(VK_O, TEV_KU_P1CC),
-			pair<WPARAM, SF_TEV>(VK_J, TEV_KU_P1DD),
-			pair<WPARAM, SF_TEV>(VK_K, TEV_KU_P1EE),
-			pair<WPARAM, SF_TEV>(VK_L, TEV_KU_P1FF),
-			pair<WPARAM, SF_TEV>(VK_1, TEV_KU_P1ST),
-			pair<WPARAM, SF_TEV>(VK_2, TEV_KU_P1MN),
-			pair<WPARAM, SF_TEV>(VK_UP, TEV_KU_P2UP),
-			pair<WPARAM, SF_TEV>(VK_LEFT, TEV_KU_P2LF),
-			pair<WPARAM, SF_TEV>(VK_DOWN, TEV_KU_P2DW),
-			pair<WPARAM, SF_TEV>(VK_RIGHT, TEV_KU_P2RG),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD1, TEV_KU_P2AA),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD2, TEV_KU_P2BB),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD3, TEV_KU_P2CC),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD0, TEV_KU_P2DD),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD5, TEV_KU_P2EE),
-			pair<WPARAM, SF_TEV>(VK_NUMPAD6, TEV_KU_P2FF),
-			pair<WPARAM, SF_TEV>(VK_3, TEV_KU_P2ST),
-			pair<WPARAM, SF_TEV>(VK_4, TEV_KU_P2MN)
-		}),
-		pair<UINT, MapEvent_T>(WM_TIMER, {
-			pair<WPARAM, SF_TEV>(TMR_ACTION, TEV_TMR_ACTION),
-			pair<WPARAM, SF_TEV>(TMR_SKILL, TEV_TMR_SKILL),
-			pair<WPARAM, SF_TEV>(TMR_PAINT, TEV_TMR_PAINT)
-		})
+		MapEventGroup_T::value_type(WM_KEYDOWN, conf_mapEventKeyDown),
+		MapEventGroup_T::value_type(WM_KEYUP, conf_mapEventKeyUp),
+		MapEventGroup_T::value_type(WM_TIMER, conf_mapEventTimer)
 	};
 #pragma endregion
 

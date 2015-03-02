@@ -76,6 +76,8 @@ string g_strEkf1 = "";
 string g_strEkf2 = "";
 
 SFActScene* g_scn = NULL;
+
+SFCamera* g_cmr = NULL;
 #pragma endregion
 
 #pragma region 入口以及初始配置
@@ -236,8 +238,31 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 	g_scn = new SFActScene(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
 	g_pP1 = g_scn->getFightP1();
 	g_pP2 = g_scn->getFightP2();
+	g_cmr = new SFCamera();
 	g_pEventManager->setActiveScene(g_scn);
 	sf_cout(DEBUG_COM, endl << "Load resource finished.");
+
+	/*创建进程
+	STARTUPINFO si;
+	memset(&si, 0, sizeof(STARTUPINFO));//初始化si在内存块中的值（详见memset函数）
+	si.cb = sizeof(STARTUPINFO);
+	si.dwFlags = STARTF_USESHOWWINDOW;
+	si.wShowWindow = SW_SHOW;
+	PROCESS_INFORMATION pi;//必备参数设置结束
+
+	CreateProcess(
+		TEXT("c:/windows/system32/notepad.exe"),
+		NULL,
+		NULL,
+		NULL,
+		FALSE,
+		0,
+		NULL,
+		NULL,
+		&si,
+		&pi
+	);
+	*/
 
 	return hr;
 }
@@ -462,12 +487,31 @@ void WinApp::OnResize(UINT width, UINT height)
 }
 #pragma endregion
 
+typedef struct SFMessage
+{
+	UINT message;
+	WPARAM wParam;
+	LPARAM lParam;
+}SFMessage_T;
+
+DWORD WINAPI ThreadProc(LPVOID lpParam)
+{
+	SFMessage_T tmp = *(SFMessage_T*)lpParam;
+
+	g_pEventManager->doSystemEvent(tmp.message, tmp.wParam, tmp.lParam);
+
+	return 0;
+}
+
 #pragma region 消息处理
 LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = 0;
 	string strTmp = "";
 	int st = 0;
+	DWORD threadID;
+	HANDLE hThread;
+	SFMessage_T tmp = {message, wParam, lParam};
 
 	if (message == WM_CREATE)
 	{
@@ -490,6 +534,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					{
 						UINT width = LOWORD(lParam);
 						UINT height = HIWORD(lParam);
+
 						pWinApp->OnResize(width, height);
 					}
 					result = 0;
@@ -502,10 +547,11 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 							pWinApp->OnRender();
 							ValidateRect(hwnd, NULL);
 							break;
-						case TMR_ACTION:
-							break;
 						case TMR_SKILL:
-							//按键超时处理（清空键盘事件列表等）
+						case TMR_ACTION:
+							hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);
+							WaitForSingleObject(hThread, INFINITE);
+							CloseHandle(hThread);
 							break;
 					}
 					result = 0;
@@ -513,29 +559,6 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					break;
 				case WM_DISPLAYCHANGE:
 					InvalidateRect(hwnd, NULL, FALSE);
-					result = 0;
-					wasHandled = true;
-					break;
-				case WM_KEYDOWN:
-					/*已经不在此处处理，交给SFEventManager
-					switch (wParam)
-					{
-						case KD_P1UP:
-							g_pP1->downEvent(EK_8);
-							break;
-					}
-					*/
-					result = 0;
-					wasHandled = true;
-					break;
-				case WM_KEYUP:
-					/*已经不在此处处理，交给SFEventManager
-					switch (wParam)
-					{
-						case KD_P1UP:
-							g_pP1->upEvent(EK_8);
-							break;
-					}*/
 					result = 0;
 					wasHandled = true;
 					break;
@@ -547,6 +570,12 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					result = 0;
 					wasHandled = true;
 					break;
+				case WM_KEYDOWN:
+				case WM_KEYUP:
+					hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);
+					WaitForSingleObject(hThread, INFINITE);
+					CloseHandle(hThread);
+					break;
 				case WM_DESTROY:
 					{
 						PostQuitMessage(0);
@@ -554,12 +583,6 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					result = 1;
 					wasHandled = true;
 					break;
-			}
-			//SFLib处理阶段
-			if (g_pEventManager->doSystemEvent(message, wParam, lParam))
-			{
-				result = 0;
-				wasHandled = true;
 			}
 		}
 		if (!wasHandled)

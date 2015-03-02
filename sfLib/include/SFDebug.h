@@ -13,7 +13,7 @@ enum SF_DEBUG
 do	\
 {	\
 	if (g_pConf->m_enDebug[enable])	\
-	{	\
+	{
 
 #define SF_OUT_END	\
 	}	\
