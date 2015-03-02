@@ -547,6 +547,12 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 							pWinApp->OnRender();
 							ValidateRect(hwnd, NULL);
 							break;
+						case TMR_SKILL:
+						case TMR_ACTION:
+							hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);
+							WaitForSingleObject(hThread, INFINITE);
+							CloseHandle(hThread);
+							break;
 					}
 					result = 0;
 					wasHandled = true;
@@ -565,8 +571,10 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					wasHandled = true;
 					break;
 				case WM_KEYDOWN:
-					break;
 				case WM_KEYUP:
+					hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);
+					WaitForSingleObject(hThread, INFINITE);
+					CloseHandle(hThread);
 					break;
 				case WM_DESTROY:
 					{
@@ -576,11 +584,6 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					wasHandled = true;
 					break;
 			}
-			//SFLib处理阶段
-			hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);
-			WaitForSingleObject(hThread, INFINITE);
-			CloseHandle(hThread);
-
 		}
 		if (!wasHandled)
 		{
