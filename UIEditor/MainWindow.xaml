@@ -54,21 +54,16 @@
 		<DockPanel Grid.Row="2" Grid.RowSpan="2" Grid.Column="2" Background="#ffdddddd">
 			<Label>工具区域2</Label>
 		</DockPanel>
-		<DockPanel Grid.Row="2" Grid.Column="1" Background="#ffeeeeee">
-            <DockPanel>
-                <Label>绘图区域1</Label>
-            </DockPanel>
-            <DockPanel>
-                <Label>绘图区域2</Label>
-            </DockPanel>
-            <DockPanel>
-                <Label>绘图区域3</Label>
-            </DockPanel>
-            <DockPanel>
-                <Label>绘图区域4</Label>
-            </DockPanel>
-            
-		</DockPanel>
+        <DockPanel Grid.Row="2" Grid.Column="1" Background="#ffeeeeee">
+            <TabControl>
+                <TabItem Header="tab1">
+                </TabItem>
+                <TabItem Header="tab1">
+                </TabItem>
+                <TabItem Header="tab1">
+                </TabItem>
+            </TabControl>
+        </DockPanel>
 		<DockPanel Grid.Row="3" Grid.Column="1">
 			<Label>xml源码</Label>
 		</DockPanel>
