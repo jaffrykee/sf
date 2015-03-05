@@ -55,17 +55,11 @@
 			<Label>工具区域2</Label>
 		</DockPanel>
         <DockPanel Grid.Row="2" Grid.Column="1" Background="#ffeeeeee">
-            <TabControl>
-                <TabItem Header="tab1">
-                </TabItem>
-                <TabItem Header="tab1">
-                </TabItem>
-                <TabItem Header="tab1">
-                </TabItem>
+            <TabControl Name="workTabs">
             </TabControl>
         </DockPanel>
 		<DockPanel Grid.Row="3" Grid.Column="1">
-			<Label>xml源码</Label>
+			<Label Name="debug">xml源码</Label>
 		</DockPanel>
 	</Grid>
 </Window>

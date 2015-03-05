@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Forms;
 using System.IO;
 
 namespace UIEditor
@@ -22,71 +21,133 @@ namespace UIEditor
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		string m_rootPath;
+		Dictionary<string, TabItem> m_mapFileTabs;
+
 		public MainWindow()
 		{
+			m_rootPath = "";
+			m_mapFileTabs = new Dictionary<string, TabItem>();
 			InitializeComponent();
 		}
 
 		private void openProj(object sender, RoutedEventArgs e)
 		{
-//			 OpenFileDialog openFileDialog = new OpenFileDialog();
-//			 openFileDialog.Title = "选择文件";
-//			 openFileDialog.Filter = "ryrp文件|*.ryrp|所有文件|*.*";
-//			 openFileDialog.FileName = string.Empty;
-//			 openFileDialog.FilterIndex = 1;
-//			 openFileDialog.RestoreDirectory = true;
-//			 openFileDialog.DefaultExt = "ryrp";
-//			 DialogResult result = openFileDialog.ShowDialog();
-//			 if (result == System.Windows.Forms.DialogResult.Cancel)
-//			 {
-//				 return;
-//			 }
-//			 string fileName = openFileDialog.FileName;
-//			 this.pro.Content = fileName;
-//			 //this.textBox1.Text = fileName;
-			FolderBrowserDialog openFolderDialog = new FolderBrowserDialog();
+			/*
+			OpenFileDialog openFileDialog = new OpenFileDialog();
+			openFileDialog.Title = "选择文件";
+			openFileDialog.Filter = "ryrp文件|*.ryrp|所有文件|*.*";
+			openFileDialog.FileName = string.Empty;
+			openFileDialog.FilterIndex = 1;
+			openFileDialog.RestoreDirectory = true;
+			openFileDialog.DefaultExt = "ryrp";
+			DialogResult result = openFileDialog.ShowDialog();
+			if (result == System.Windows.Forms.DialogResult.Cancel)
+			{
+				return;
+			}
+			string fileName = openFileDialog.FileName;
+			this.pro.Content = fileName;
+			//this.textBox1.Text = fileName;
+			*/
+			System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			openFolderDialog.Description = "选择UI所在文件夹";
 			openFolderDialog.SelectedPath = "E:\\mmo2013001\\artist\\version_backup\\ResourceDsKr_dev\\ui\\free";
-			DialogResult result = openFolderDialog.ShowDialog();
+			System.Windows.Forms.DialogResult result = openFolderDialog.ShowDialog();
+
 			if (result == System.Windows.Forms.DialogResult.Cancel)
 			{
 				return;
 			}
 			string path = openFolderDialog.SelectedPath;
+
+			m_rootPath = path;
+			refreshProjTree(path, this.treePro, true);
+		}
+
+		private void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
+		{
 			int i = 0;
 			int j = 0;
 
 			DirectoryInfo di = new DirectoryInfo(path);
 			foreach (var dri in di.GetDirectories())
 			{
-				i++;
 				TreeViewItem treeUIChild = new TreeViewItem();
-				treeUIChild.Header = dri.Name;
-				this.treePro.Items.Add(treeUIChild);
+				ToolTip treeTip = new ToolTip();
 
-				DirectoryInfo di2 = new DirectoryInfo(path + "\\" + dri.Name);
-				foreach (var dri2 in di2.GetDirectories())
-				{
-					TreeViewItem treeUIChild2 = new TreeViewItem();
-					treeUIChild2.Header = dri2.Name;
-					treeUIChild.Items.Add(treeUIChild2);
-				}
-				foreach (var dri2 in di2.GetFiles("*"))
-				{
-					TreeViewItem treeUIChild2 = new TreeViewItem();
-					treeUIChild2.Header = dri2.Name;
-					treeUIChild.Items.Add(treeUIChild2);
-				}
+				i++;
+				treeTip.Content = path + "\\" + dri.Name;
+				treeUIChild.ToolTip = treeTip;
+				treeUIChild.Header = dri.Name;
+				rootItem.Items.Add(treeUIChild);
+
+				refreshProjTree(path + "\\" + dri.Name, treeUIChild, false);
 			}
 			foreach (var dri in di.GetFiles("*"))
 			{
-				j++;
 				TreeViewItem treeUIChild = new TreeViewItem();
+				ToolTip treeTip = new ToolTip();
+
+				j++;
+				treeTip.Content = path + "\\" + dri.Name;
+				treeUIChild.ToolTip = treeTip;
 				treeUIChild.Header = dri.Name;
-				this.treePro.Items.Add(treeUIChild);
+				treeUIChild.MouseDoubleClick += new MouseButtonEventHandler(openFileTab);
+				rootItem.Items.Add(treeUIChild);
 			}
-			this.treePro.IsExpanded = true;
-			this.treePro.Header = "UI工程目录(" + i + "个目录和" + j + "个项目)";
+			ToolTip rootTip = new ToolTip();
+
+			if (rootNode == true)
+			{
+				rootTip.Content = path;
+				rootItem.ToolTip = rootTip;
+				rootItem.IsExpanded = false;
+				rootItem.Header = "UI工程目录(" + i + "个目录和" + j + "个项目)";
+			}
+		}
+
+		private void openFileTab(object sender, MouseEventArgs e)
+		{
+			TreeViewItem treeUI = (TreeViewItem)sender;
+			TabItem tabItem;
+			string tabPath = ((ToolTip)treeUI.ToolTip).Content.ToString();
+			string fileType = tabPath.Substring(tabPath.LastIndexOf(".") + 1, (tabPath.Length - tabPath.LastIndexOf(".") - 1));   //扩展名
+
+			if (m_mapFileTabs.TryGetValue(tabPath, out tabItem))
+			{
+				this.workTabs.SelectedItem = tabItem;
+			}
+			else
+			{
+				ToolTip tabTip = new ToolTip();
+				Button close = new Button();
+
+				tabItem = new TabItem();
+				tabTip.Content = tabPath;
+				tabItem.Header = treeUI.Header.ToString();
+				tabItem.ToolTip = tabTip;
+				tabItem.MouseDoubleClick += new MouseButtonEventHandler(closeFileTab);
+				
+				if(fileType == "png")
+				{
+					var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.PngControl")) as UserControl;
+					tabItem.Content = tabContent;
+				}
+
+				this.workTabs.Items.Add(tabItem);
+				m_mapFileTabs[tabPath] = tabItem;
+				this.workTabs.SelectedItem = tabItem;
+			}
+		}
+
+		private void closeFileTab(object sender, MouseEventArgs e)
+		{
+			TabItem tabItem = (TabItem)sender;
+			string tabPath = ((ToolTip)tabItem.ToolTip).Content.ToString();
+
+			m_mapFileTabs.Remove(tabPath);
+			this.workTabs.Items.Remove(tabItem);
 		}
 	}
 }
