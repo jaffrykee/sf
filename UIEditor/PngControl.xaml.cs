@@ -20,17 +20,37 @@ namespace UIEditor
 	/// </summary>
 	public partial class PngControl : UserControl
 	{
-		public PngControl()
+		public FileTabItem m_parent;
+		public BitmapImage m_imgSource;
+		public int m_imgHeight;
+		public int m_imgWidth;
+		public bool m_loaded;
+
+		public PngControl(FileTabItem parent)
 		{
 			InitializeComponent();
+			m_parent = parent;
+			m_loaded = false;
 		}
 
 		private void tabFrameLoaded(object sender, RoutedEventArgs e)
 		{
-			Image frame = (Image)sender;
-			string path = ((ToolTip)((TabItem)this.Parent).ToolTip).Content.ToString();
+			if (m_loaded == false)
+			{
+				string path = this.m_parent.m_filePath;
 
-			frame.Source = new BitmapImage(new Uri(@path, UriKind.Relative));
+				m_imgSource = new BitmapImage();
+				m_imgSource.BeginInit();
+				m_imgSource.StreamSource = new System.IO.FileStream(path, System.IO.FileMode.Open);
+				m_imgSource.EndInit();
+				m_imgHeight = m_imgSource.PixelHeight;
+				m_imgWidth = m_imgSource.PixelWidth;
+				this.imageFrame.Height = m_imgHeight;
+				this.imageFrame.Width = m_imgWidth;
+				this.imageFrame.Source = m_imgSource;
+				this.imageFrame.Stretch = Stretch.Uniform;
+				m_loaded = true;
+			}
 		}
 	}
 }

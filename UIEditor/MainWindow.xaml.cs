@@ -21,8 +21,8 @@ namespace UIEditor
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		string m_rootPath;
-		Dictionary<string, TabItem> m_mapFileTabs;
+		public string m_rootPath;
+		public Dictionary<string, TabItem> m_mapFileTabs;
 
 		public MainWindow()
 		{
@@ -127,27 +127,14 @@ namespace UIEditor
 				tabTip.Content = tabPath;
 				tabItem.Header = treeUI.Header.ToString();
 				tabItem.ToolTip = tabTip;
-				tabItem.MouseDoubleClick += new MouseButtonEventHandler(closeFileTab);
-				
-				if(fileType == "png")
-				{
-					var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.PngControl")) as UserControl;
-					tabItem.Content = tabContent;
-				}
+
+				var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
+				tabItem.Content = tabContent;
 
 				this.workTabs.Items.Add(tabItem);
 				m_mapFileTabs[tabPath] = tabItem;
 				this.workTabs.SelectedItem = tabItem;
 			}
-		}
-
-		private void closeFileTab(object sender, MouseEventArgs e)
-		{
-			TabItem tabItem = (TabItem)sender;
-			string tabPath = ((ToolTip)tabItem.ToolTip).Content.ToString();
-
-			m_mapFileTabs.Remove(tabPath);
-			this.workTabs.Items.Remove(tabItem);
 		}
 	}
 }
