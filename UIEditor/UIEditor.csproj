@@ -62,6 +62,12 @@
     <Compile Include="UnknownControl.xaml.cs">
       <DependentUpon>UnknownControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoloUI\PublicSkin.xaml.cs">
+      <DependentUpon>PublicSkin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XmlControl.xaml.cs">
+      <DependentUpon>XmlControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="ani.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,6 +112,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UnknownControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoloUI\PublicSkin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XmlControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

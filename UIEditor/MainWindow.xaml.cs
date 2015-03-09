@@ -19,15 +19,34 @@ namespace UIEditor
 	/// <summary>
 	/// MainWindow.xaml 的交互逻辑
 	/// </summary>
+
+	public struct OpenedFile
+	{
+		public string m_path;
+		public TabItem m_tab;
+		public UINode m_rootNode;
+		public TreeViewItem m_treeUI;
+	}
+
+	public struct UINode
+	{
+		public Object m_parent;
+		public TabItem m_tab;
+		public Type m_type;
+		public Object m_body;
+		public TreeViewItem m_treeUI;
+		public List<UINode> m_son;
+	}
+
 	public partial class MainWindow : Window
 	{
 		public string m_rootPath;
-		public Dictionary<string, TabItem> m_mapFileTabs;
+		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
 
 		public MainWindow()
 		{
 			m_rootPath = "";
-			m_mapFileTabs = new Dictionary<string, TabItem>();
+			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
 			InitializeComponent();
 		}
 
@@ -110,30 +129,32 @@ namespace UIEditor
 		private void openFileTab(object sender, MouseEventArgs e)
 		{
 			TreeViewItem treeUI = (TreeViewItem)sender;
-			TabItem tabItem;
+			OpenedFile openedFile;
 			string tabPath = ((ToolTip)treeUI.ToolTip).Content.ToString();
 			string fileType = tabPath.Substring(tabPath.LastIndexOf(".") + 1, (tabPath.Length - tabPath.LastIndexOf(".") - 1));   //扩展名
 
-			if (m_mapFileTabs.TryGetValue(tabPath, out tabItem))
+			if (m_mapOpenedFiles.TryGetValue(tabPath, out openedFile))
 			{
-				this.workTabs.SelectedItem = tabItem;
+				this.workTabs.SelectedItem = openedFile.m_tab;
 			}
 			else
 			{
 				ToolTip tabTip = new ToolTip();
 				Button close = new Button();
 
-				tabItem = new TabItem();
+				openedFile.m_tab = new TabItem();
 				tabTip.Content = tabPath;
-				tabItem.Header = treeUI.Header.ToString();
-				tabItem.ToolTip = tabTip;
+				openedFile.m_tab.Header = treeUI.Header.ToString();
+				openedFile.m_tab.ToolTip = tabTip;
 
 				var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
-				tabItem.Content = tabContent;
+				openedFile.m_tab.Content = tabContent;
+				openedFile.m_path = tabPath;
+				openedFile.m_treeUI = treeUI;
 
-				this.workTabs.Items.Add(tabItem);
-				m_mapFileTabs[tabPath] = tabItem;
-				this.workTabs.SelectedItem = tabItem;
+				this.workTabs.Items.Add(openedFile.m_tab);
+				m_mapOpenedFiles[tabPath] = openedFile;
+				this.workTabs.SelectedItem = openedFile.m_tab;
 			}
 		}
 	}

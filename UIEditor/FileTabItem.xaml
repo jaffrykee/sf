@@ -17,7 +17,8 @@
 		<TextBox Grid.Row="0" Grid.Column="0" Name="filePath" IsReadOnly="True"/>
 		<Button Grid.Row="0" Grid.Column="1" Width="25" HorizontalAlignment="Right" Click="closeFileTab">x</Button>
 		<Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-			<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+			<Border Name="itemFrame"></Border>
+<!--			<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
@@ -31,7 +32,7 @@
 						<Border Name="itemFrame"></Border>
 					</DockPanel>
 				</Grid>
-			</ScrollViewer>
+			</ScrollViewer>-->
 		</Grid>
 	</Grid>
 </UserControl>

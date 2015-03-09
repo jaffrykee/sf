@@ -44,6 +44,10 @@ namespace UIEditor
 				{
 					tabContent = Activator.CreateInstance(Type.GetType("UIEditor.PngControl"), this) as UserControl;
 				}
+				else if (m_fileType == "xml")
+				{
+					tabContent = Activator.CreateInstance(Type.GetType("UIEditor.XmlControl"), this) as UserControl;
+				}
 				else
 				{
 					tabContent = Activator.CreateInstance(Type.GetType("UIEditor.UnknownControl"), this) as UserControl;
@@ -63,7 +67,7 @@ namespace UIEditor
 			{
 				((PngControl)this.m_child).m_imgSource.StreamSource.Dispose();
 			}
-			parentWindow.m_mapFileTabs.Remove(tabPath);
+			parentWindow.m_mapOpenedFiles.Remove(tabPath);
 			parentWindow.workTabs.Items.Remove(tabItem);
 		}
 	}
