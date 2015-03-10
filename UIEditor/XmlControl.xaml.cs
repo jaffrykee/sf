@@ -210,29 +210,5 @@ namespace UIEditor
 				m_loaded = true;
 			}
 		}
-
-		private void boloUIParser(XmlElement xe, TreeViewItem parentNode)
-		{
-			switch(xe.Name)
-			{
-				case "panel":
-					#region
-					{
-						var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Panel"), xe) as UserControl;
-						parentNode.Items.Add(treeChild);
-
-						XmlNodeList xnl1 = xe.ChildNodes;
-						foreach (XmlNode xnf1 in xnl1)
-						{
-							XmlElement xe1 = (XmlElement)xnf1;
-					//		boloUIParser(xe, (TreeViewItem)treeChild);
-						}
-					}
-					#endregion
-					break;
-				default:
-					break;
-			}
-		}
 	}
 }

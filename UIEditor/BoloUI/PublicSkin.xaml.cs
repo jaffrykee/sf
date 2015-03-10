@@ -35,6 +35,30 @@ namespace UIEditor.BoloUI
 		private void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.Header = m_xe.GetAttribute("Name");
+
+			XmlNodeList xnl = m_xe.ChildNodes;
+			foreach (XmlNode xnf in xnl)
+			{
+				if (xnf.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xe = (XmlElement)xnf;
+
+					switch (xe.Name)
+					{
+						case "apperance":
+							{
+
+							}
+							break;
+						default:
+							{
+								m_rootControl.textContent.Text += (xe.Name + ":" + xe.GetAttribute("Name") + "\r\n");
+							}
+							break;
+					}
+				}
+			}
+// 			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawSkin"), m_xe, this) as UserControl;
 		}
 	}
 }
