@@ -20,12 +20,12 @@ namespace UIEditor.BoloUI
 	/// <summary>
 	/// PublicSkin.xaml 的交互逻辑
 	/// </summary>
-	public partial class PublicSkin : TreeViewItem
+	public partial class Skin : TreeViewItem
 	{
 		XmlControl m_rootControl;
 		XmlElement m_xe;
 
-		public PublicSkin(XmlElement xe, XmlControl rootControl)
+		public Skin(XmlElement xe, XmlControl rootControl)
 		{
 			InitializeComponent();
 			m_rootControl = rootControl;

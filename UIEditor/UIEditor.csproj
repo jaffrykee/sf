@@ -38,6 +38,7 @@
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,6 +57,50 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoloUI\Basic.xaml.cs">
+      <DependentUpon>Basic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BoloUI\check.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BoloUI\radio.cs" />
+    <Compile Include="BoloUI\richText.cs" />
+    <Compile Include="BoloUI\Resource.xaml.cs">
+      <DependentUpon>Resource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BoloUI\Skin.xaml.cs">
+      <DependentUpon>Skin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BoloUI\SkinGroup.xaml.cs">
+      <DependentUpon>SkinGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BoloUI\scriptPanel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BoloUI\countDown.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BoloUI\button.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BoloUI\skillbutton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BoloUI\virtualpad.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BoloUI\progress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BoloUI\listPanel.cs" />
+    <Compile Include="BoloUI\label.cs" />
+    <Compile Include="BoloUI\panel.cs" />
+    <Compile Include="BoloUI\Event.xaml.cs">
+      <DependentUpon>Event.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BoloUI\PublicResource.xaml.cs">
+      <DependentUpon>PublicResource.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileTabItem.xaml.cs">
       <DependentUpon>FileTabItem.xaml</DependentUpon>
     </Compile>
@@ -69,6 +114,30 @@
       <DependentUpon>XmlControl.xaml</DependentUpon>
     </Compile>
     <Page Include="ani.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BoloUI\Basic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BoloUI\Event.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoloUI\PublicResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BoloUI\Resource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BoloUI\Skin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BoloUI\SkinGroup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

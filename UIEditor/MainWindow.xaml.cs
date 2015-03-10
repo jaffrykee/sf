@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Xml;
 
 namespace UIEditor
 {
@@ -24,18 +25,8 @@ namespace UIEditor
 	{
 		public string m_path;
 		public TabItem m_tab;
-		public UINode m_rootNode;
 		public TreeViewItem m_treeUI;
-	}
-
-	public struct UINode
-	{
-		public Object m_parent;
-		public TabItem m_tab;
-		public Type m_type;
-		public Object m_body;
-		public TreeViewItem m_treeUI;
-		public List<UINode> m_son;
+		public XmlDocument m_xmlDoc;
 	}
 
 	public partial class MainWindow : Window

@@ -12,20 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
 using System.Xml;
 
 namespace UIEditor.BoloUI
 {
 	/// <summary>
-	/// PublicSkin.xaml 的交互逻辑
+	/// Event.xaml 的交互逻辑
 	/// </summary>
-	public partial class PublicSkin : TreeViewItem
+	public partial class Event : TreeViewItem
 	{
 		XmlControl m_rootControl;
 		XmlElement m_xe;
 
-		public PublicSkin(XmlElement xe, XmlControl rootControl)
+		public Event(XmlElement xe, XmlControl rootControl)
 		{
 			InitializeComponent();
 			m_rootControl = rootControl;
@@ -34,7 +33,8 @@ namespace UIEditor.BoloUI
 
 		private void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Header = m_xe.GetAttribute("Name");
+			this.Header = m_xe.GetAttribute("type");
+			this.Header += ":" + m_xe.GetAttribute("function");
 		}
 	}
 }

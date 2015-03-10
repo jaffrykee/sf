@@ -20,12 +20,12 @@ namespace UIEditor.BoloUI
 	/// <summary>
 	/// PublicSkin.xaml 的交互逻辑
 	/// </summary>
-	public partial class PublicSkin : TreeViewItem
+	public partial class Resource : TreeViewItem
 	{
 		XmlControl m_rootControl;
 		XmlElement m_xe;
 
-		public PublicSkin(XmlElement xe, XmlControl rootControl)
+		public Resource(XmlElement xe, XmlControl rootControl)
 		{
 			InitializeComponent();
 			m_rootControl = rootControl;
@@ -34,7 +34,7 @@ namespace UIEditor.BoloUI
 
 		private void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Header = m_xe.GetAttribute("Name");
+			this.Header = m_xe.GetAttribute("name");
 		}
 	}
 }

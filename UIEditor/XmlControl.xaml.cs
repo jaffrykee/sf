@@ -39,9 +39,9 @@ namespace UIEditor
 			if (m_loaded == false)
 			{
 				string path = this.m_parent.m_filePath;
-				XmlDocument xmlDoc = new XmlDocument();
-				xmlDoc.Load(path);
-				XmlNode xn = xmlDoc.SelectSingleNode("BoloUI");
+				m_openedFile.m_xmlDoc = new XmlDocument();
+				m_openedFile.m_xmlDoc.Load(path);
+				XmlNode xn = m_openedFile.m_xmlDoc.SelectSingleNode("BoloUI");
 
 				m_parentWindow = Window.GetWindow(this) as MainWindow;
 				m_openedFile = m_parentWindow.m_mapOpenedFiles[m_parent.m_filePath];
@@ -55,14 +55,15 @@ namespace UIEditor
 					TreeViewItem resFolder = new TreeViewItem();
 					TreeViewItem skinFolder = new TreeViewItem();
 					TreeViewItem BoloUIEventFolder = new TreeViewItem();
-					TreeViewItem panelFolder = new TreeViewItem();
+					TreeViewItem skingroupFolder = new TreeViewItem();
 					bool had_publicresource = false;
 					bool had_publicskin = false;
 					bool had_resource = false;
 					bool had_skin = false;
 					bool had_BoloUIEvent = false;
-					bool had_panel = false;
+					bool had_skingroup = false;
 
+					this.textContent.Text += ("未被解析的项目：" + "\r\n");
 					foreach (XmlNode xnf in xnl)
 					{
 						if (xnf.NodeType == XmlNodeType.Element)
@@ -80,9 +81,8 @@ namespace UIEditor
 											this.m_openedFile.m_treeUI.Items.Add(publicresFolder);
 											had_publicresource = true;
 										}
-										TreeViewItem node = new TreeViewItem();
-										node.Header = xe.GetAttribute("name");
-										publicresFolder.Items.Add(node);
+										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.PublicResource"), xe, this) as TreeViewItem;
+										publicresFolder.Items.Add(treeChild);
 									}
 									#endregion
 									break;
@@ -95,9 +95,8 @@ namespace UIEditor
 											this.m_openedFile.m_treeUI.Items.Add(publicskinFolder);
 											had_publicskin = true;
 										}
-										TreeViewItem node = new TreeViewItem();
-										node.Header = xe.GetAttribute("Name");
-										publicskinFolder.Items.Add(node);
+										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.PublicSkin"), xe, this) as TreeViewItem;
+										publicskinFolder.Items.Add(treeChild);
 									}
 									#endregion
 									break;
@@ -110,9 +109,8 @@ namespace UIEditor
 											this.m_openedFile.m_treeUI.Items.Add(resFolder);
 											had_resource = true;
 										}
-										TreeViewItem node = new TreeViewItem();
-										node.Header = xe.GetAttribute("name");
-										resFolder.Items.Add(node);
+										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Resource"), xe, this) as TreeViewItem;
+										resFolder.Items.Add(treeChild);
 									}
 									#endregion
 									break;
@@ -125,9 +123,22 @@ namespace UIEditor
 											this.m_openedFile.m_treeUI.Items.Add(skinFolder);
 											had_skin = true;
 										}
-										TreeViewItem node = new TreeViewItem();
-										node.Header = xe.GetAttribute("Name");
-										skinFolder.Items.Add(node);
+										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Skin"), xe, this) as TreeViewItem;
+										skinFolder.Items.Add(treeChild);
+									}
+									#endregion
+									break;
+								case "skingroup":
+									#region
+									{
+										if (had_skingroup == false)
+										{
+											skingroupFolder.Header = "skingroup";
+											this.m_openedFile.m_treeUI.Items.Add(skingroupFolder);
+											had_skingroup = true;
+										}
+										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.SkinGroup"), xe, this) as TreeViewItem;
+										skingroupFolder.Items.Add(treeChild);
 									}
 									#endregion
 									break;
@@ -140,33 +151,42 @@ namespace UIEditor
 											this.m_openedFile.m_treeUI.Items.Add(BoloUIEventFolder);
 											had_BoloUIEvent = true;
 										}
-										TreeViewItem node = new TreeViewItem();
-										node.Header = xe.GetAttribute("function");
-										BoloUIEventFolder.Items.Add(node);
+										XmlNodeList xnl1 = xe.ChildNodes;
+										foreach (XmlNode xnf1 in xnl1)
+										{
+											XmlElement xe1 = (XmlElement)xnf1;
+											switch(xe1.Name)
+											{
+												case "event":
+													#region
+													{
+														var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Event"), xe1, this) as TreeViewItem;
+														BoloUIEventFolder.Items.Add(treeChild);
+													}
+													#endregion
+													break;
+												default:
+													this.textContent.Text += (xe1.Name + ":" + xe1.GetAttribute("Name") + "\r\n");
+													break;
+											}
+										}
 									}
 									#endregion
 									break;
 								case "panel":
 									#region
 									{
-										if (had_panel == false)
-										{
-											panelFolder.Header = "panel";
-											this.m_openedFile.m_treeUI.Items.Add(panelFolder);
-											had_panel = true;
-										}
-										TreeViewItem node = new TreeViewItem();
-										node.Header = xe.GetAttribute("name");
-										panelFolder.Items.Add(node);
+										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.panel"), xe, this) as TreeViewItem;
+										this.m_openedFile.m_treeUI.Items.Add(treeChild);
 									}
 									#endregion
 									break;
 								default:
 									{
+										this.textContent.Text += (xe.Name + ":" + xe.GetAttribute("Name") + "\r\n");
 									}
 									break;
 							}
-							this.textContent.Text += (xe.Name + ":" + xe.GetAttribute("Name") + "\r\n");
 						}
 					}
 				}
@@ -188,6 +208,30 @@ namespace UIEditor
 				 */
 
 				m_loaded = true;
+			}
+		}
+
+		private void boloUIParser(XmlElement xe, TreeViewItem parentNode)
+		{
+			switch(xe.Name)
+			{
+				case "panel":
+					#region
+					{
+						var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Panel"), xe) as UserControl;
+						parentNode.Items.Add(treeChild);
+
+						XmlNodeList xnl1 = xe.ChildNodes;
+						foreach (XmlNode xnf1 in xnl1)
+						{
+							XmlElement xe1 = (XmlElement)xnf1;
+					//		boloUIParser(xe, (TreeViewItem)treeChild);
+						}
+					}
+					#endregion
+					break;
+				default:
+					break;
 			}
 		}
 	}
