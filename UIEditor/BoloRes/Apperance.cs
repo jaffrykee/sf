@@ -16,17 +16,17 @@ using System.Xml;
 
 namespace UIEditor.BoloUI
 {
-	public class skillbutton : Basic
+	public class Apperance : resBasic
 	{
-		public skillbutton(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public Apperance(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
 		{
+			m_mapNode.Add("imageShape", "ImageShape");
+			m_mapNode.Add("textShape", "TextShape");
 		}
 
 		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Header = this.GetType().Name;
-			this.Header += ":" + m_xe.GetAttribute("name");
-			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
+			this.Header = "id:" + m_xe.GetAttribute("id");
 
 			addChild();
 		}

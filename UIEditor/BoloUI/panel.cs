@@ -16,16 +16,13 @@ using System.Xml;
 
 namespace UIEditor.BoloUI
 {
-	/// <summary>
-	/// panel.xaml 的交互逻辑
-	/// </summary>
 	public class panel : Basic
 	{
 		public panel(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
 		{
 		}
 
-		private void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
+		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.Header = this.GetType().Name;
 			this.Header += ":" + m_xe.GetAttribute("name");

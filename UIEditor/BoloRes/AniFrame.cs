@@ -16,17 +16,15 @@ using System.Xml;
 
 namespace UIEditor.BoloUI
 {
-	public class skillbutton : Basic
+	public class AniFrame : resBasic
 	{
-		public skillbutton(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public AniFrame(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
 		{
 		}
 
 		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Header = this.GetType().Name;
-			this.Header += ":" + m_xe.GetAttribute("name");
-			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
+			this.Header = "frame";
 
 			addChild();
 		}
