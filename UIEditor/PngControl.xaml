@@ -7,7 +7,7 @@
 			 >
 	<Grid>
 		<ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
-			<Image Loaded="tabFrameLoaded" Name="imageFrame"></Image>
+			<Image Loaded="tabFrameLoaded" Unloaded="imageFrame_Unloaded" Name="imageFrame" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
 		</ScrollViewer>
 	</Grid>
 </UserControl>

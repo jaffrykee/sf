@@ -63,10 +63,6 @@ namespace UIEditor
 			string tabPath = ((ToolTip)tabItem.ToolTip).Content.ToString();
 			MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
 
-			if(m_fileType == "png")
-			{
-				((PngControl)this.m_child).m_imgSource.StreamSource.Dispose();
-			}
 			parentWindow.m_mapOpenedFiles.Remove(tabPath);
 			parentWindow.workTabs.Items.Remove(tabItem);
 		}

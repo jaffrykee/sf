@@ -12,32 +12,48 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
-namespace UIEditor
+namespace UIEditor.BoloUI
 {
 	/// <summary>
-	/// PngControl.xaml 的交互逻辑
+	/// DrawImg.xaml 的交互逻辑
 	/// </summary>
-	public partial class PngControl : UserControl
+	public partial class DrawImg : UserControl
 	{
-		public FileTabItem m_parent;
 		public BitmapImage m_imgSource;
 		public int m_imgHeight;
 		public int m_imgWidth;
 		public bool m_loaded;
 
-		public PngControl(FileTabItem parent)
+		public XmlElement m_xe;
+		public TreeViewItem m_treeItem;
+		public string m_path;
+
+		public DrawImg(XmlElement xe, TreeViewItem treeItem)
 		{
 			InitializeComponent();
-			m_parent = parent;
+			m_xe = xe;
+			m_treeItem = treeItem;
 			m_loaded = false;
+			m_path = "";
+
+
 		}
 
 		private void tabFrameLoaded(object sender, RoutedEventArgs e)
 		{
 			if (m_loaded == false)
 			{
-				string path = this.m_parent.m_filePath;
+				MainWindow pW = Window.GetWindow(this) as MainWindow;
+				string ImageName = m_xe.GetAttribute("ImageName");
+				string fileName = ImageName.Substring(ImageName.LastIndexOf(".") + 1, (ImageName.Length - ImageName.LastIndexOf(".") - 1));
+				string folderName = ImageName.Substring(ImageName.LastIndexOf("\\") + 1, (ImageName.LastIndexOf(".") - ImageName.LastIndexOf("\\") - 1));
+
+				fileName += ".png";
+				m_path = pW.m_rootPath + "\\" + "images" + "\\" + folderName + "\\" + fileName;
+
+				string path = m_path;
 
 				m_imgSource = new BitmapImage();
 				m_imgSource.BeginInit();
