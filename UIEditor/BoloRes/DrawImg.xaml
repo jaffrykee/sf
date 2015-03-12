@@ -1,82 +1,131 @@
 ﻿<UserControl x:Class="UIEditor.BoloUI.DrawImg"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d">
-	<Grid Width="500" Height="200">
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			xmlns:sys="clr-namespace:System;assembly=mscorlib"
+            mc:Ignorable="d"
+			Loaded="tabFrameLoaded" Unloaded="imageFrame_Unloaded">
+	<Grid Width="500" Height="200" Name="mx_imgFrame" ToolTip="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png">
+		<!-- *96/72 = *4/3 -->
 		<Grid.RowDefinitions>
-			<RowDefinition Height="70"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="30"/>
+			<RowDefinition Name="mx_ngr0" Height="70"/>
+			<RowDefinition Name="mx_ngr1" Height="*"/>
+			<RowDefinition Name="mx_ngr2" Height="30"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="370"/>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="30"/>
+			<!-- *96/72 = *4/3 -->
+			<ColumnDefinition Name="mx_ngc0" Width="370"/>
+			<ColumnDefinition Name="mx_ngc1" Width="*"/>
+			<ColumnDefinition Name="mx_ngc2" Width="30"/>
 		</Grid.ColumnDefinitions>
 		<!--<Image Loaded="tabFrameLoaded" Unloaded="imageFrame_Unloaded"  Name="imageFrame" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>-->
+		<!-- ImageSource="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png" -->
 		<Rectangle Grid.Row="0" Grid.Column="0">
 			<Rectangle.Fill>
-				<ImageBrush ImageSource="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png"
-					Viewport="0,0,1,1"
-					TileMode="None"
-					Stretch="None"
-					AlignmentX="Left"
-					AlignmentY="Top"
+				<ImageBrush
+					x:Name="mx_ngBrush00"
+					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
+					Viewbox="0,0,0.925,0.7"
 				/>
+			</Rectangle.Fill>
+		</Rectangle>
+		<!--Viewbox="nx/w, 0/h, px/w, ny/h"-->
+		<!--Viewbox="370/400, 0/100, 1/400, 70/100"-->
+		<Rectangle Grid.Row="0" Grid.Column="1">
+			<Rectangle.Fill>
+				<ImageBrush
+					x:Name="mx_ngBrush01"
+					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
+					Viewbox="0.925,0,0.0025,0.7"
+					Stretch="Fill"
+				>
+				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
 		<Rectangle Grid.Row="0" Grid.Column="2">
 			<Rectangle.Fill>
-				<ImageBrush ImageSource="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png"
-					Viewport="0,0,1,1"
-					TileMode="None"
-					Stretch="None"
-					AlignmentX="Right"
-					AlignmentY="Top"
+				<ImageBrush
+					x:Name="mx_ngBrush02"
+					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
+					Viewbox="0.925,0,0.075,0.7"
 				/>
 			</Rectangle.Fill>
 		</Rectangle>
-		<Rectangle Grid.Row="2" Grid.Column="0">
+		<!--Viewbox="0/w, ny/h, nx/h, py/h"-->
+		<!--Viewbox="0/400, 70/100, 370/400, 1/100"-->
+		<Rectangle Grid.Row="1" Grid.Column="0">
 			<Rectangle.Fill>
-				<ImageBrush ImageSource="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png"
+				<ImageBrush
+					x:Name="mx_ngBrush10"
+					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewport="0,0,1,1"
-					TileMode="None"
-					Stretch="None"
-					AlignmentX="Left"
-					AlignmentY="Bottom"
-				/>
+					Viewbox="0,0.7,0.925,0.01"
+					Stretch="Fill"
+				>
+				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
-		<Rectangle Grid.Row="2" Grid.Column="2">
+		<!--Viewbox="nx/w, ny/h, px/w, py/h"-->
+		<!--Viewbox="370/400, 70/100, 1/400, 1/100"-->
+		<Rectangle Grid.Row="1" Grid.Column="1">
 			<Rectangle.Fill>
-				<ImageBrush ImageSource="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png"
-					Viewport="0,0,1,1"
-					TileMode="None"
-					Stretch="None"
-					AlignmentX="Right"
-					AlignmentY="Bottom"
-				/>
+				<ImageBrush
+					x:Name="mx_ngBrush11"
+					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
+					Viewbox="0.925,0.7,0.0025,0.01"
+					Stretch="Fill"
+				>
+				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
-		<Rectangle Grid.Row="0" Grid.Column="1">
+		<!--Viewbox="nx/w, ny/h, (w-nx)/w, py/h"-->
+		<!--Viewbox="370/400, 70/100, 30/400, 1/100"-->
+		<Rectangle Grid.Row="1" Grid.Column="2">
 			<Rectangle.Fill>
-				<ImageBrush ImageSource="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png"
-							Viewbox="0.5,0,0,0"
-					Viewport="0,0,1,1"
-					TileMode="None"
-					Stretch="None"
+				<ImageBrush
+					x:Name="mx_ngBrush12"
+					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
+					Viewbox="0.925,0.7,0.075,0.01"
+					Stretch="Fill"
 					AlignmentX="Left"
 					AlignmentY="Top"
 				>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
-		<Image Grid.Row="1" Grid.Column="0" Source="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png">
-			<Image.Clip>
-				<RectangleGeometry Rect="0,70,370,71"></RectangleGeometry>
-			</Image.Clip>
-		</Image>
+		<Rectangle Grid.Row="2" Grid.Column="0">
+			<Rectangle.Fill>
+				<ImageBrush
+					x:Name="mx_ngBrush20"
+					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
+					Viewbox="0,0.7,0.925,0.3"
+				/>
+			</Rectangle.Fill>
+		</Rectangle>
+		<!--Viewbox="nx/w, ny/h, px/w, (h-ny)/h"-->
+		<!--Viewbox="370/400, 70/100, 1/400, 30/100"-->
+		<Rectangle Name="mx_imgWidth" Grid.Row="2" Grid.Column="1" ToolTip="{Binding ElementName=mx_ngBrush00, Path=ImageSource.Width}">
+			<Rectangle.Fill>
+				<ImageBrush
+					x:Name="mx_ngBrush21"
+					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
+					Viewbox="0.925,0.7,0.0025,0.3"
+					Stretch="Fill"
+					AlignmentX="Left"
+					AlignmentY="Top"
+				>
+				</ImageBrush>
+			</Rectangle.Fill>
+		</Rectangle>
+		<Rectangle Name="mx_imgHeight" Grid.Row="2" Grid.Column="2" ToolTip="{Binding ElementName=mx_ngBrush00, Path=ImageSource.Height}">
+			<Rectangle.Fill>
+				<ImageBrush
+					x:Name="mx_ngBrush22"
+					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
+					Viewbox="0.925,0.7,0.075,0.3"
+				/>
+			</Rectangle.Fill>
+		</Rectangle>
 	</Grid>
 </UserControl>
