@@ -6,84 +6,92 @@
 			xmlns:sys="clr-namespace:System;assembly=mscorlib"
             mc:Ignorable="d"
 			Loaded="tabFrameLoaded" Unloaded="imageFrame_Unloaded">
-	<Grid Width="500" Height="200" Name="mx_imgFrame" ToolTip="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png">
-		<!-- *96/72 = *4/3 -->
-		<Grid.RowDefinitions>
-			<RowDefinition Name="mx_ngr0" Height="70"/>
-			<RowDefinition Name="mx_ngr1" Height="*"/>
-			<RowDefinition Name="mx_ngr2" Height="30"/>
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
+	<Grid SnapsToDevicePixels="True">
+		<Grid
+		Name="mx_imgFrame"
+		Width="{Binding ElementName=mx_ctrC0, Path=Width.Value}"
+		Height="{Binding ElementName=mx_ctrR0, Path=Height.Value}"
+		ToolTip="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png"
+		VerticalAlignment="Top"
+		HorizontalAlignment="Left"
+		>
 			<!-- *96/72 = *4/3 -->
-			<ColumnDefinition Name="mx_ngc0" Width="370"/>
-			<ColumnDefinition Name="mx_ngc1" Width="*"/>
-			<ColumnDefinition Name="mx_ngc2" Width="30"/>
-		</Grid.ColumnDefinitions>
-		<!--<Image Loaded="tabFrameLoaded" Unloaded="imageFrame_Unloaded"  Name="imageFrame" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>-->
-		<!-- ImageSource="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png" -->
-		<Rectangle Grid.Row="0" Grid.Column="0">
-			<Rectangle.Fill>
-				<ImageBrush
+			<Grid.RowDefinitions>
+				<RowDefinition Name="mx_ngr0" Height="70"/>
+				<RowDefinition Name="mx_ngr1" Height="*"/>
+				<RowDefinition Name="mx_ngr2" Height="30"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<!-- *96/72 = *4/3 -->
+				<ColumnDefinition Name="mx_ngc0" Width="370"/>
+				<ColumnDefinition Name="mx_ngc1" Width="*"/>
+				<ColumnDefinition Name="mx_ngc2" Width="30"/>
+			</Grid.ColumnDefinitions>
+			<!--<Image Loaded="tabFrameLoaded" Unloaded="imageFrame_Unloaded"  Name="imageFrame" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>-->
+			<!-- ImageSource="E:\mmo2013001\artist\clinet_onDev\ui\free\images\MainFrame\MainFrame.png" -->
+			<Rectangle Grid.Row="0" Grid.Column="0">
+				<Rectangle.Fill>
+					<ImageBrush
 					x:Name="mx_ngBrush00"
 					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewbox="0,0,0.925,0.7"
 				/>
-			</Rectangle.Fill>
-		</Rectangle>
-		<!--Viewbox="nx/w, 0/h, px/w, ny/h"-->
-		<!--Viewbox="370/400, 0/100, 1/400, 70/100"-->
-		<Rectangle Grid.Row="0" Grid.Column="1">
-			<Rectangle.Fill>
-				<ImageBrush
+				</Rectangle.Fill>
+			</Rectangle>
+			<!--Viewbox="nx/w, 0/h, px/w, ny/h"-->
+			<!--Viewbox="370/400, 0/100, 1/400, 70/100"-->
+			<Rectangle Grid.Row="0" Grid.Column="1">
+				<Rectangle.Fill>
+					<ImageBrush
 					x:Name="mx_ngBrush01"
 					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewbox="0.925,0,0.0025,0.7"
 					Stretch="Fill"
 				>
-				</ImageBrush>
-			</Rectangle.Fill>
-		</Rectangle>
-		<Rectangle Grid.Row="0" Grid.Column="2">
-			<Rectangle.Fill>
-				<ImageBrush
+					</ImageBrush>
+				</Rectangle.Fill>
+			</Rectangle>
+			<Rectangle Grid.Row="0" Grid.Column="2">
+				<Rectangle.Fill>
+					<ImageBrush
 					x:Name="mx_ngBrush02"
 					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewbox="0.925,0,0.075,0.7"
 				/>
-			</Rectangle.Fill>
-		</Rectangle>
-		<!--Viewbox="0/w, ny/h, nx/h, py/h"-->
-		<!--Viewbox="0/400, 70/100, 370/400, 1/100"-->
-		<Rectangle Grid.Row="1" Grid.Column="0">
-			<Rectangle.Fill>
-				<ImageBrush
+				</Rectangle.Fill>
+			</Rectangle>
+			<!--Viewbox="0/w, ny/h, nx/h, py/h"-->
+			<!--Viewbox="0/400, 70/100, 370/400, 1/100"-->
+			<Rectangle Grid.Row="1" Grid.Column="0">
+				<Rectangle.Fill>
+					<ImageBrush
 					x:Name="mx_ngBrush10"
 					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewport="0,0,1,1"
 					Viewbox="0,0.7,0.925,0.01"
 					Stretch="Fill"
 				>
-				</ImageBrush>
-			</Rectangle.Fill>
-		</Rectangle>
-		<!--Viewbox="nx/w, ny/h, px/w, py/h"-->
-		<!--Viewbox="370/400, 70/100, 1/400, 1/100"-->
-		<Rectangle Grid.Row="1" Grid.Column="1">
-			<Rectangle.Fill>
-				<ImageBrush
+					</ImageBrush>
+				</Rectangle.Fill>
+			</Rectangle>
+			<!--Viewbox="nx/w, ny/h, px/w, py/h"-->
+			<!--Viewbox="370/400, 70/100, 1/400, 1/100"-->
+			<Rectangle Grid.Row="1" Grid.Column="1">
+				<Rectangle.Fill>
+					<ImageBrush
 					x:Name="mx_ngBrush11"
 					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewbox="0.925,0.7,0.0025,0.01"
 					Stretch="Fill"
 				>
-				</ImageBrush>
-			</Rectangle.Fill>
-		</Rectangle>
-		<!--Viewbox="nx/w, ny/h, (w-nx)/w, py/h"-->
-		<!--Viewbox="370/400, 70/100, 30/400, 1/100"-->
-		<Rectangle Grid.Row="1" Grid.Column="2">
-			<Rectangle.Fill>
-				<ImageBrush
+					</ImageBrush>
+				</Rectangle.Fill>
+			</Rectangle>
+			<!--Viewbox="nx/w, ny/h, (w-nx)/w, py/h"-->
+			<!--Viewbox="370/400, 70/100, 30/400, 1/100"-->
+			<Rectangle Grid.Row="1" Grid.Column="2">
+				<Rectangle.Fill>
+					<ImageBrush
 					x:Name="mx_ngBrush12"
 					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewbox="0.925,0.7,0.075,0.01"
@@ -91,23 +99,23 @@
 					AlignmentX="Left"
 					AlignmentY="Top"
 				>
-				</ImageBrush>
-			</Rectangle.Fill>
-		</Rectangle>
-		<Rectangle Grid.Row="2" Grid.Column="0">
-			<Rectangle.Fill>
-				<ImageBrush
+					</ImageBrush>
+				</Rectangle.Fill>
+			</Rectangle>
+			<Rectangle Grid.Row="2" Grid.Column="0">
+				<Rectangle.Fill>
+					<ImageBrush
 					x:Name="mx_ngBrush20"
 					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewbox="0,0.7,0.925,0.3"
 				/>
-			</Rectangle.Fill>
-		</Rectangle>
-		<!--Viewbox="nx/w, ny/h, px/w, (h-ny)/h"-->
-		<!--Viewbox="370/400, 70/100, 1/400, 30/100"-->
-		<Rectangle Name="mx_imgWidth" Grid.Row="2" Grid.Column="1" ToolTip="{Binding ElementName=mx_ngBrush00, Path=ImageSource.Width}">
-			<Rectangle.Fill>
-				<ImageBrush
+				</Rectangle.Fill>
+			</Rectangle>
+			<!--Viewbox="nx/w, ny/h, px/w, (h-ny)/h"-->
+			<!--Viewbox="370/400, 70/100, 1/400, 30/100"-->
+			<Rectangle Name="mx_imgWidth" Grid.Row="2" Grid.Column="1" ToolTip="{Binding ElementName=mx_ngBrush00, Path=ImageSource.Width}">
+				<Rectangle.Fill>
+					<ImageBrush
 					x:Name="mx_ngBrush21"
 					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewbox="0.925,0.7,0.0025,0.3"
@@ -115,17 +123,35 @@
 					AlignmentX="Left"
 					AlignmentY="Top"
 				>
-				</ImageBrush>
-			</Rectangle.Fill>
-		</Rectangle>
-		<Rectangle Name="mx_imgHeight" Grid.Row="2" Grid.Column="2" ToolTip="{Binding ElementName=mx_ngBrush00, Path=ImageSource.Height}">
-			<Rectangle.Fill>
-				<ImageBrush
+					</ImageBrush>
+				</Rectangle.Fill>
+			</Rectangle>
+			<Rectangle Name="mx_imgHeight" Grid.Row="2" Grid.Column="2" ToolTip="{Binding ElementName=mx_ngBrush00, Path=ImageSource.Height}">
+				<Rectangle.Fill>
+					<ImageBrush
 					x:Name="mx_ngBrush22"
 					ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 					Viewbox="0.925,0.7,0.075,0.3"
 				/>
-			</Rectangle.Fill>
-		</Rectangle>
+				</Rectangle.Fill>
+			</Rectangle>
+<!-- 			<GridSplitter Name="mx_gsChangeHeight" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#66cccccc"></GridSplitter> -->
+			<!-- <GridSplitter Name="mx_gsChangeWidth" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Width="5" HorizontalAlignment="Right" Background="#66cccccc"></GridSplitter> -->
+		</Grid>
+		<Grid
+			Name="mx_ctr"
+			VerticalAlignment="Top"
+			HorizontalAlignment="Left">
+			<Grid.RowDefinitions>
+				<RowDefinition Name="mx_ctrR0" Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Name="mx_ctrC0" Width="auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<GridSplitter Name="mx_gsChangeHeight" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#00000000"></GridSplitter>
+			<GridSplitter Name="mx_gsChangeWidth" Width="5" HorizontalAlignment="Right" Background="#00000000"></GridSplitter>
+		</Grid>
 	</Grid>
 </UserControl>
