@@ -27,14 +27,12 @@ namespace UIEditor.BoloUI
 		public bool m_loaded;
 
 		public XmlElement m_xe;
-		public TreeViewItem m_treeItem;
 		public string m_path;
 
-		public DrawImg(XmlElement xe, TreeViewItem treeItem, string rootPath)
+		public DrawImg(XmlElement xe, string rootPath)
 		{
 			InitializeComponent();
 			m_xe = xe;
-			m_treeItem = treeItem;
 			m_loaded = false;
 			m_path = "";
 
@@ -53,10 +51,30 @@ namespace UIEditor.BoloUI
 
 				MainWindow pW = Window.GetWindow(this) as MainWindow;
 				double iH, iW;
+				double iX, iY;
 
 				m_imgHeight = double.Parse(mx_imgHeight.ToolTip.ToString())*3/4;
 				m_imgWidth = double.Parse(mx_imgWidth.ToolTip.ToString())*3/4;
 				double perX = 1.0d, perY = 1.0d, perDx = 0.0d, perDy = 0.0d;
+
+				if (m_xe.GetAttribute("X") != null && m_xe.GetAttribute("X") != "")
+				{
+					iX = double.Parse(m_xe.GetAttribute("X"));
+				}
+				else
+				{
+					iX = 0;
+				}
+				if (m_xe.GetAttribute("Y") != null && m_xe.GetAttribute("Y") != "")
+				{
+					iY = double.Parse(m_xe.GetAttribute("Y"));
+				}
+				else
+				{
+					iY = 0;
+				}
+				this.mx_posX.Width = new GridLength(iX);
+				this.mx_posY.Height = new GridLength(iY);
 
 				if (m_xe.GetAttribute("Height") != null && m_xe.GetAttribute("Height") != "")
 				{
@@ -128,6 +146,8 @@ namespace UIEditor.BoloUI
 					}
 					else
 					{
+						this.mx_ngc0.Width = new GridLength(iW);
+						this.mx_ngr0.Height = new GridLength(iH);
 						this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
 						this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
 					}

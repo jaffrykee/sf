@@ -60,6 +60,30 @@ namespace UIEditor.BoloUI
 			}
 		}
 
+		public void eventDrawImg(object sender, MouseEventArgs e)
+		{
+			this.Header = "img:" + m_xe.GetAttribute("ImageName");
+			MainWindow pW = (MainWindow)Window.GetWindow(this);
+
+			drawImg(m_rootControl.workSpace.Content,);
+
+			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), m_xe, pW.m_rootPath) as UserControl;
+			m_rootControl.workSpace.Content = tabContent;
+
+			addChild();
+		}
+
+		public void drawImg(System.Windows.Controls.ContentControl frame, XmlElement xe, string path)
+		{
+			this.Header = "img:" + m_xe.GetAttribute("ImageName");
+			MainWindow pW = (MainWindow)Window.GetWindow(this);
+
+			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), m_xe, (TreeViewItem)this, pW.m_rootPath) as UserControl;
+			m_rootControl.workSpace.Content = tabContent;
+
+			addChild();
+		}
+
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.Header = this.GetType().Name;

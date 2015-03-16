@@ -27,18 +27,7 @@ namespace UIEditor.BoloUI
 		{
 			this.Header = "img:" + m_xe.GetAttribute("ImageName");
 
-			this.MouseDoubleClick += new MouseButtonEventHandler(drawImg);
-
-			addChild();
-		}
-
-		void drawImg(object sender, MouseEventArgs e)
-		{
-			this.Header = "img:" + m_xe.GetAttribute("ImageName");
-			MainWindow pW = (MainWindow)Window.GetWindow(this);
-
-			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), m_xe, (TreeViewItem)this, pW.m_rootPath) as UserControl;
-			m_rootControl.workSpace.Content = tabContent;
+			this.MouseDoubleClick += new MouseButtonEventHandler(eventDrawImg);
 
 			addChild();
 		}
