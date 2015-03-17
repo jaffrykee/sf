@@ -28,6 +28,8 @@ namespace UIEditor.BoloUI
 		{
 			this.Header = "id:" + m_xe.GetAttribute("id");
 
+			this.MouseDoubleClick += new MouseButtonEventHandler(eventDrawApperance);
+
 			addChild();
 		}
 	}

@@ -62,26 +62,64 @@ namespace UIEditor.BoloUI
 
 		public void eventDrawImg(object sender, MouseEventArgs e)
 		{
-			this.Header = "img:" + m_xe.GetAttribute("ImageName");
 			MainWindow pW = (MainWindow)Window.GetWindow(this);
 
-			drawImg(m_rootControl.workSpace.Content,);
-
-			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), m_xe, pW.m_rootPath) as UserControl;
-			m_rootControl.workSpace.Content = tabContent;
-
-			addChild();
+			m_rootControl.workSpace.Children.Clear();
+			drawImg(m_rootControl.workSpace, m_xe, pW.m_rootPath);
 		}
 
-		public void drawImg(System.Windows.Controls.ContentControl frame, XmlElement xe, string path)
+		public void eventDrawApperance(object sender, MouseEventArgs e)
 		{
-			this.Header = "img:" + m_xe.GetAttribute("ImageName");
 			MainWindow pW = (MainWindow)Window.GetWindow(this);
 
-			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), m_xe, (TreeViewItem)this, pW.m_rootPath) as UserControl;
-			m_rootControl.workSpace.Content = tabContent;
+			m_rootControl.workSpace.Children.Clear();
+			drawApperance(m_rootControl.workSpace, m_xe, pW.m_rootPath);
+		}
 
-			addChild();
+		public void drawImg(ContentControl frame, XmlElement xe, string path)
+		{
+			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), xe, path) as Grid;
+			frame.Content = tabContent;
+		}
+
+		public void drawImg(Grid frame, XmlElement xe, string path)
+		{
+			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), xe, path) as Grid;
+			frame.Children.Add(tabContent);
+		}
+
+		public void drawApperance(ContentControl frame, XmlElement xe, string path)
+		{
+			XmlNodeList xnl = m_xe.ChildNodes;
+			foreach (XmlNode xnf in xnl)
+			{
+				if (xnf.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xeImg = (XmlElement)xnf;
+
+					if (xeImg.Name == "imageShape")
+					{
+						drawImg(frame, xeImg, path);
+					}
+				}
+			}
+		}
+
+		public void drawApperance(Grid frame, XmlElement xe, string path)
+		{
+			XmlNodeList xnl = m_xe.ChildNodes;
+			foreach (XmlNode xnf in xnl)
+			{
+				if (xnf.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xeImg = (XmlElement)xnf;
+
+					if (xeImg.Name == "imageShape")
+					{
+						drawImg(frame, xeImg, path);
+					}
+				}
+			}
 		}
 
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)

@@ -20,7 +20,7 @@ namespace UIEditor.BoloUI
 	/// <summary>
 	/// DrawImg.xaml 的交互逻辑
 	/// </summary>
-	public partial class DrawImg : UserControl
+	public partial class DrawImg : Grid
 	{
 		public double m_imgHeight;
 		public double m_imgWidth;
