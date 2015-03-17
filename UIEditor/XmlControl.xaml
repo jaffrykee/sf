@@ -14,8 +14,7 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Margin="0,0,0,5">
-			<Grid Name="workSpace">
-			</Grid>
+			<Canvas Name="workSpace" Width="960" Height="480" Background="#ffffffff"></Canvas>
 		</ScrollViewer>
 		<GridSplitter Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="5"></GridSplitter>
 		<TextBox

@@ -82,7 +82,7 @@ namespace UIEditor.BoloUI
 			frame.Content = tabContent;
 		}
 
-		public void drawImg(Grid frame, XmlElement xe, string path)
+		public void drawImg(Panel frame, XmlElement xe, string path)
 		{
 			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), xe, path) as Grid;
 			frame.Children.Add(tabContent);
@@ -105,7 +105,7 @@ namespace UIEditor.BoloUI
 			}
 		}
 
-		public void drawApperance(Grid frame, XmlElement xe, string path)
+		public void drawApperance(Panel frame, XmlElement xe, string path)
 		{
 			XmlNodeList xnl = m_xe.ChildNodes;
 			foreach (XmlNode xnf in xnl)

@@ -73,8 +73,9 @@ namespace UIEditor.BoloUI
 				{
 					iY = 0;
 				}
-				this.mx_posX.Width = new GridLength(iX);
-				this.mx_posY.Height = new GridLength(iY);
+
+				Canvas.SetLeft(mx_rootFrame, iX);
+				Canvas.SetTop(mx_rootFrame, iY);
 
 				if (m_xe.GetAttribute("Height") != null && m_xe.GetAttribute("Height") != "")
 				{
@@ -101,59 +102,51 @@ namespace UIEditor.BoloUI
 					this.mx_ctrC0.Width = new GridLength(iW);
 					this.mx_ctrC0.MinWidth = iW;
 				}
-				if (m_xe.GetAttribute("NineGrid") != null)
+				if (m_xe.GetAttribute("NineGrid") == "true")
 				{
-					if (m_xe.GetAttribute("NineGrid") == "true")
+					if (m_xe.GetAttribute("NGX") != "")
 					{
-						if (m_xe.GetAttribute("NGX") != null)
-						{
-							this.mx_ngc0.Width = new GridLength(double.Parse(m_xe.GetAttribute("NGX")));
-							this.mx_ngc2.Width = new GridLength((double)m_imgWidth - double.Parse(m_xe.GetAttribute("NGX")));
-							perX = double.Parse(m_xe.GetAttribute("NGX")) / (double)m_imgWidth;
-							this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Visible;
-						}
-						else
-						{
-							this.mx_ngc0.Width = new GridLength((double)m_imgWidth);
-							this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
-						}
-						if (m_xe.GetAttribute("NGY") != null)
-						{
-							this.mx_ngr0.Height = new GridLength(double.Parse(m_xe.GetAttribute("NGY")));
-							this.mx_ngr2.Height = new GridLength((double)m_imgHeight - double.Parse(m_xe.GetAttribute("NGY")));
-							perY = double.Parse(m_xe.GetAttribute("NGY")) / (double)m_imgHeight;
-							this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Visible;
-						}
-						else
-						{
-							this.mx_ngr0.Height = new GridLength((double)m_imgHeight);
-							this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
-						}
-						if (m_xe.GetAttribute("NGWidth") != null)
-						{
-							perDx = double.Parse(m_xe.GetAttribute("NGWidth")) / (double)m_imgWidth;
-						}
-						else
-						{
-						}
-						if (m_xe.GetAttribute("NGHeight") != null)
-						{
-							perDy = double.Parse(m_xe.GetAttribute("NGHeight")) / (double)m_imgHeight;
-						}
-						else
-						{
-						}
+						this.mx_ngc0.Width = new GridLength(double.Parse(m_xe.GetAttribute("NGX")));
+						this.mx_ngc2.Width = new GridLength((double)m_imgWidth - double.Parse(m_xe.GetAttribute("NGX")));
+						perX = double.Parse(m_xe.GetAttribute("NGX")) / (double)m_imgWidth;
+						this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Visible;
 					}
 					else
 					{
-						this.mx_ngc0.Width = new GridLength(iW);
-						this.mx_ngr0.Height = new GridLength(iH);
+						this.mx_ngc0.Width = new GridLength((double)m_imgWidth);
 						this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
+					}
+					if (m_xe.GetAttribute("NGY") != "")
+					{
+						this.mx_ngr0.Height = new GridLength(double.Parse(m_xe.GetAttribute("NGY")));
+						this.mx_ngr2.Height = new GridLength((double)m_imgHeight - double.Parse(m_xe.GetAttribute("NGY")));
+						perY = double.Parse(m_xe.GetAttribute("NGY")) / (double)m_imgHeight;
+						this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Visible;
+					}
+					else
+					{
+						this.mx_ngr0.Height = new GridLength((double)m_imgHeight);
 						this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
+					}
+					if (m_xe.GetAttribute("NGWidth") != "")
+					{
+						perDx = double.Parse(m_xe.GetAttribute("NGWidth")) / (double)m_imgWidth;
+					}
+					else
+					{
+					}
+					if (m_xe.GetAttribute("NGHeight") != "")
+					{
+						perDy = double.Parse(m_xe.GetAttribute("NGHeight")) / (double)m_imgHeight;
+					}
+					else
+					{
 					}
 				}
 				else
 				{
+					this.mx_ngc0.Width = new GridLength(iW);
+					this.mx_ngr0.Height = new GridLength(iH);
 					this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
 					this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
 				}
