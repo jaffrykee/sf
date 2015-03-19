@@ -9,6 +9,22 @@
 	SnapsToDevicePixels="True"
 	Name="mx_rootFrame"
 	  >
+	<Grid.Triggers>
+		<EventTrigger RoutedEvent="Grid.Loaded">
+			<BeginStoryboard>
+				<Storyboard>
+					<StringAnimationUsingKeyFrames 
+						Storyboard.TargetName="mx_imgFrame" Storyboard.TargetProperty="(Grid.ToolTip)"
+						Duration="0:0:8" FillBehavior="HoldEnd">
+						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE1.png" KeyTime="0:0:0" />
+						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE2.png" KeyTime="0:0:2" />
+						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE3.png" KeyTime="0:0:4" />
+						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE4.png" KeyTime="0:0:6" />
+					</StringAnimationUsingKeyFrames>
+				</Storyboard>
+			</BeginStoryboard>
+		</EventTrigger>
+	</Grid.Triggers>
 	<Grid
 		Name="mx_imgFrame"
 		Width="{Binding ElementName=mx_ctrC0, Path=Width.Value}"
@@ -38,14 +54,6 @@
 				ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 				Viewbox="0,0,0.925,0.7"
 				>
-					<ImageBrush.Transform>
-						<ScaleTransform
-							x:Name="mx_ngBrushScale"
-							ScaleX="1" ScaleY="1"
-							CenterX="{Binding ElementName=mx_scaleX, Path=ActualWidth}"
-							CenterY="{Binding ElementName=mx_scaleY, Path=ActualHeight}">
-						</ScaleTransform>
-					</ImageBrush.Transform>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
@@ -59,14 +67,6 @@
 				Viewbox="0.925,0,0.0025,0.7"
 				Stretch="Fill"
 				>
-					<ImageBrush.Transform>
-						<ScaleTransform
-							ScaleX="{Binding ElementName=mx_ngBrushScale, Path=ScaleX}"
-							ScaleY="{Binding ElementName=mx_ngBrushScale, Path=ScaleY}"
-							CenterX="{Binding ElementName=mx_scaleX, Path=ActualWidth}"
-							CenterY="{Binding ElementName=mx_scaleY, Path=ActualHeight}">
-						</ScaleTransform>
-					</ImageBrush.Transform>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
@@ -77,14 +77,6 @@
 				ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 				Viewbox="0.925,0,0.075,0.7"
 				>
-					<ImageBrush.Transform>
-						<ScaleTransform
-							ScaleX="{Binding ElementName=mx_ngBrushScale, Path=ScaleX}"
-							ScaleY="{Binding ElementName=mx_ngBrushScale, Path=ScaleY}"
-							CenterX="{Binding ElementName=mx_scaleX, Path=ActualWidth}"
-							CenterY="{Binding ElementName=mx_scaleY, Path=ActualHeight}">
-						</ScaleTransform>
-					</ImageBrush.Transform>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
@@ -99,14 +91,6 @@
 				Viewbox="0,0.7,0.925,0.01"
 				Stretch="Fill"
 				>
-					<ImageBrush.Transform>
-						<ScaleTransform
-							ScaleX="{Binding ElementName=mx_ngBrushScale, Path=ScaleX}"
-							ScaleY="{Binding ElementName=mx_ngBrushScale, Path=ScaleY}"
-							CenterX="{Binding ElementName=mx_scaleX, Path=ActualWidth}"
-							CenterY="{Binding ElementName=mx_scaleY, Path=ActualHeight}">
-						</ScaleTransform>
-					</ImageBrush.Transform>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
@@ -120,14 +104,6 @@
 				Viewbox="0.925,0.7,0.0025,0.01"
 				Stretch="Fill"
 				>
-					<ImageBrush.Transform>
-						<ScaleTransform
-							ScaleX="{Binding ElementName=mx_ngBrushScale, Path=ScaleX}"
-							ScaleY="{Binding ElementName=mx_ngBrushScale, Path=ScaleY}"
-							CenterX="{Binding ElementName=mx_scaleX, Path=ActualWidth}"
-							CenterY="{Binding ElementName=mx_scaleY, Path=ActualHeight}">
-						</ScaleTransform>
-					</ImageBrush.Transform>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
@@ -143,14 +119,6 @@
 				AlignmentX="Left"
 				AlignmentY="Top"
 				>
-					<ImageBrush.Transform>
-						<ScaleTransform
-							ScaleX="{Binding ElementName=mx_ngBrushScale, Path=ScaleX}"
-							ScaleY="{Binding ElementName=mx_ngBrushScale, Path=ScaleY}"
-							CenterX="{Binding ElementName=mx_scaleX, Path=ActualWidth}"
-							CenterY="{Binding ElementName=mx_scaleY, Path=ActualHeight}">
-						</ScaleTransform>
-					</ImageBrush.Transform>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
@@ -161,14 +129,6 @@
 				ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 				Viewbox="0,0.7,0.925,0.3"
 				>
-					<ImageBrush.Transform>
-						<ScaleTransform
-							ScaleX="{Binding ElementName=mx_ngBrushScale, Path=ScaleX}"
-							ScaleY="{Binding ElementName=mx_ngBrushScale, Path=ScaleY}"
-							CenterX="{Binding ElementName=mx_scaleX, Path=ActualWidth}"
-							CenterY="{Binding ElementName=mx_scaleY, Path=ActualHeight}">
-						</ScaleTransform>
-					</ImageBrush.Transform>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
@@ -184,14 +144,6 @@
 				AlignmentX="Left"
 				AlignmentY="Top"
 				>
-					<ImageBrush.Transform>
-						<ScaleTransform
-							ScaleX="{Binding ElementName=mx_ngBrushScale, Path=ScaleX}"
-							ScaleY="{Binding ElementName=mx_ngBrushScale, Path=ScaleY}"
-							CenterX="{Binding ElementName=mx_scaleX, Path=ActualWidth}"
-							CenterY="{Binding ElementName=mx_scaleY, Path=ActualHeight}">
-						</ScaleTransform>
-					</ImageBrush.Transform>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>
@@ -202,14 +154,6 @@
 				ImageSource="{Binding ElementName=mx_imgFrame, Path=ToolTip}"
 				Viewbox="0.925,0.7,0.075,0.3"
 				>
-					<ImageBrush.Transform>
-						<ScaleTransform
-							ScaleX="{Binding ElementName=mx_ngBrushScale, Path=ScaleX}"
-							ScaleY="{Binding ElementName=mx_ngBrushScale, Path=ScaleY}"
-							CenterX="{Binding ElementName=mx_scaleX, Path=ActualWidth}"
-							CenterY="{Binding ElementName=mx_scaleY, Path=ActualHeight}">
-						</ScaleTransform>
-					</ImageBrush.Transform>
 				</ImageBrush>
 			</Rectangle.Fill>
 		</Rectangle>

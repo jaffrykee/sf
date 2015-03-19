@@ -164,17 +164,41 @@ namespace UIEditor.BoloUI
 					{
 						case 1:
 							{
-								mx_ngBrush00.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc0.ActualWidth, mx_ngr0.ActualHeight);
+								mx_ngBrush00.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc0.ActualWidth/2, mx_ngr0.ActualHeight/2);
+								mx_ngBrush01.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc1.ActualWidth/2, mx_ngr0.ActualHeight/2);
+								mx_ngBrush02.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc2.ActualWidth/2, mx_ngr0.ActualHeight/2);
+								mx_ngBrush10.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc0.ActualWidth/2, mx_ngr1.ActualHeight/2);
+								mx_ngBrush11.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc1.ActualWidth/2, mx_ngr1.ActualHeight/2);
+								mx_ngBrush12.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc2.ActualWidth/2, mx_ngr1.ActualHeight/2);
+								mx_ngBrush20.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc0.ActualWidth/2, mx_ngr2.ActualHeight/2);
+								mx_ngBrush21.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc1.ActualWidth/2, mx_ngr2.ActualHeight/2);
+								mx_ngBrush22.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc2.ActualWidth/2, mx_ngr2.ActualHeight/2);
 							}
 							break;
 						case 2:
 							{
-								mode = new ScaleTransform(1.0f, -1.0f);
+								mx_ngBrush00.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr0.ActualHeight/2);
+								mx_ngBrush01.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr0.ActualHeight/2);
+								mx_ngBrush02.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr0.ActualHeight/2);
+								mx_ngBrush10.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr1.ActualHeight/2);
+								mx_ngBrush11.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr1.ActualHeight/2);
+								mx_ngBrush12.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr1.ActualHeight/2);
+								mx_ngBrush20.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr2.ActualHeight/2);
+								mx_ngBrush21.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr2.ActualHeight/2);
+								mx_ngBrush22.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr2.ActualHeight/2);
 							}
 							break;
 						case 3:
 							{
-								mode = new ScaleTransform(-1.0f, -1.0f);
+								mx_ngBrush00.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr0.ActualHeight/2);
+								mx_ngBrush01.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr0.ActualHeight/2);
+								mx_ngBrush02.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr0.ActualHeight/2);
+								mx_ngBrush10.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr1.ActualHeight/2);
+								mx_ngBrush11.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr1.ActualHeight/2);
+								mx_ngBrush12.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr1.ActualHeight/2);
+								mx_ngBrush20.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr2.ActualHeight/2);
+								mx_ngBrush21.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr2.ActualHeight/2);
+								mx_ngBrush22.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr2.ActualHeight/2);
 							}
 							break;
 						default:
@@ -205,11 +229,31 @@ namespace UIEditor.BoloUI
 
 					if ((anchor & 0x01) > 0)
 					{
+						//水平居中
 						iX = iX + (((Canvas)this.Parent).Width - iW) / 2;
 					}
 					if ((anchor & 0x02) > 0)
 					{
+						//垂直居中
 						iY = iY + (((Canvas)this.Parent).Height - iH) / 2;
+					}
+					if ((anchor & 0x04) > 0)
+					{
+						//左对齐
+					}
+					if ((anchor & 0x08) > 0)
+					{
+						//右对齐
+						iX = iX + (((Canvas)this.Parent).Width - iW);
+					}
+					if ((anchor & 0x10) > 0)
+					{
+						//上对齐
+					}
+					if ((anchor & 0x20) > 0)
+					{
+						//底部对齐
+						iY = iY + (((Canvas)this.Parent).Height - iH);
 					}
 				}
 				Canvas.SetLeft(mx_rootFrame, iX);

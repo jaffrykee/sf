@@ -26,6 +26,7 @@ namespace UIEditor.BoloUI
 		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.Header = "动画";
+			this.MouseDoubleClick += new MouseButtonEventHandler(eventDrawAnimation);
 
 			addChild();
 		}

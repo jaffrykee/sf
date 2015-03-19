@@ -75,48 +75,66 @@ namespace UIEditor.BoloUI
 			m_rootControl.workSpace.Children.Clear();
 			drawApperance(m_rootControl.workSpace, m_xe, pW.m_rootPath);
 		}
-
-		public void drawImg(ContentControl frame, XmlElement xe, string path)
+		public void eventDrawAnimation(object sender, MouseEventArgs e)
 		{
-			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), xe, path) as Grid;
-			frame.Content = tabContent;
+			MainWindow pW = (MainWindow)Window.GetWindow(this);
+
+			m_rootControl.workSpace.Children.Clear();
+			drawAnimation(m_rootControl.workSpace, m_xe, pW.m_rootPath);
 		}
 
-		public void drawImg(Panel frame, XmlElement xe, string path)
+		public void drawImg(object frame, XmlElement xe, string path)
 		{
 			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), xe, path) as Grid;
-			frame.Children.Add(tabContent);
+			if (frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl")
+			{
+				(frame as ContentControl).Content = tabContent;
+			}
+			else if (frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel")
+			{
+				(frame as Panel).Children.Add(tabContent);
+			}
 		}
 
-		public void drawApperance(ContentControl frame, XmlElement xe, string path)
+		public void drawApperance(object frame, XmlElement xe, string path)
 		{
 			XmlNodeList xnl = m_xe.ChildNodes;
-			foreach (XmlNode xnf in xnl)
-			{
-				if (xnf.NodeType == XmlNodeType.Element)
-				{
-					XmlElement xeImg = (XmlElement)xnf;
 
-					if (xeImg.Name == "imageShape")
+			if (frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl" ||
+				frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel")
+			{
+				foreach (XmlNode xnf in xnl)
+				{
+					if (xnf.NodeType == XmlNodeType.Element)
 					{
-						drawImg(frame, xeImg, path);
+						XmlElement xeImg = (XmlElement)xnf;
+
+						if (xeImg.Name == "imageShape")
+						{
+							drawImg(frame, xeImg, path);
+						}
 					}
 				}
 			}
 		}
 
-		public void drawApperance(Panel frame, XmlElement xe, string path)
+		public void drawAnimation(object frame, XmlElement xe, string path)
 		{
 			XmlNodeList xnl = m_xe.ChildNodes;
-			foreach (XmlNode xnf in xnl)
-			{
-				if (xnf.NodeType == XmlNodeType.Element)
-				{
-					XmlElement xeImg = (XmlElement)xnf;
 
-					if (xeImg.Name == "imageShape")
+			if (frame.GetType() == Type.GetType("System.Windows.Controls.ContentControl") ||
+				frame.GetType() == Type.GetType("System.Windows.Controls.Panel"))
+			{
+				foreach (XmlNode xnf in xnl)
+				{
+					if (xnf.NodeType == XmlNodeType.Element)
 					{
-						drawImg(frame, xeImg, path);
+						XmlElement xeImg = (XmlElement)xnf;
+
+						if (xeImg.Name == "imageShape")
+						{
+							drawImg(frame, xeImg, path);
+						}
 					}
 				}
 			}
