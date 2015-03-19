@@ -57,26 +57,6 @@ namespace UIEditor.BoloUI
 				m_imgWidth = double.Parse(mx_imgWidth.ToolTip.ToString())*3/4;
 				double perX = 1.0d, perY = 1.0d, perDx = 0.0d, perDy = 0.0d;
 
-				if (m_xe.GetAttribute("X") != null && m_xe.GetAttribute("X") != "")
-				{
-					iX = double.Parse(m_xe.GetAttribute("X"));
-				}
-				else
-				{
-					iX = 0;
-				}
-				if (m_xe.GetAttribute("Y") != null && m_xe.GetAttribute("Y") != "")
-				{
-					iY = double.Parse(m_xe.GetAttribute("Y"));
-				}
-				else
-				{
-					iY = 0;
-				}
-
-				Canvas.SetLeft(mx_rootFrame, iX);
-				Canvas.SetTop(mx_rootFrame, iY);
-
 				if (m_xe.GetAttribute("Height") != null && m_xe.GetAttribute("Height") != "")
 				{
 					iH = double.Parse(m_xe.GetAttribute("Height"));
@@ -175,6 +155,65 @@ namespace UIEditor.BoloUI
 				this.mx_ngBrush20.Viewbox = viewRect[2][0];
 				this.mx_ngBrush21.Viewbox = viewRect[2][1];
 				this.mx_ngBrush22.Viewbox = viewRect[2][2];
+
+				if (m_xe.GetAttribute("mirrorType") != "")
+				{
+					int mirrorType = int.Parse(m_xe.GetAttribute("mirrorType"));
+
+					switch(mirrorType)
+					{
+						case 1:
+							{
+								mx_ngBrush00.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc0.ActualWidth, mx_ngr0.ActualHeight);
+							}
+							break;
+						case 2:
+							{
+								mode = new ScaleTransform(1.0f, -1.0f);
+							}
+							break;
+						case 3:
+							{
+								mode = new ScaleTransform(-1.0f, -1.0f);
+							}
+							break;
+						default:
+							break;
+					}
+				}
+
+				if (m_xe.GetAttribute("X") != "")
+				{
+					iX = double.Parse(m_xe.GetAttribute("X"));
+				}
+				else
+				{
+					iX = 0;
+				}
+				if (m_xe.GetAttribute("Y") != "")
+				{
+					iY = double.Parse(m_xe.GetAttribute("Y"));
+				}
+				else
+				{
+					iY = 0;
+				}
+
+				if(m_xe.GetAttribute("Anchor") != "")
+				{
+					int anchor = int.Parse(m_xe.GetAttribute("Anchor"));
+
+					if ((anchor & 0x01) > 0)
+					{
+						iX = iX + (((Canvas)this.Parent).Width - iW) / 2;
+					}
+					if ((anchor & 0x02) > 0)
+					{
+						iY = iY + (((Canvas)this.Parent).Height - iH) / 2;
+					}
+				}
+				Canvas.SetLeft(mx_rootFrame, iX);
+				Canvas.SetTop(mx_rootFrame, iY);
 
 				m_loaded = true;
 			}

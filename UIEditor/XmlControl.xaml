@@ -5,21 +5,27 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             mc:Ignorable="d"
 			Loaded="tabFrameLoaded">
-	<Grid>
+	<Grid Background="#ffcccccc">
 		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="200"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
+		<!-- 960 640         720 480 -->
+		<Canvas Name="workSpace" Grid.Row="0" Grid.Column="0" Width="960" Height="640" Background="#ffffffff">
+		</Canvas>
+		<!--
 		<ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Margin="0,0,0,5">
-			<Canvas Name="workSpace" Width="960" Height="480" Background="#ffffffff"></Canvas>
-		</ScrollViewer>
-		<GridSplitter Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="5"></GridSplitter>
+		</ScrollViewer>-->
+		<GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="5"></GridSplitter>
 		<TextBox
-			Grid.Row="1"
+			Grid.Row="2"
 			Grid.Column="0"
+			Grid.ColumnSpan="2"
 			Name="textContent"
 			TextWrapping="Wrap"
 			AcceptsReturn="True"

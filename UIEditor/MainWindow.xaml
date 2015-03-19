@@ -53,7 +53,11 @@
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Width="5"></GridSplitter>
 		<DockPanel Grid.Row="2" Grid.RowSpan="2" Grid.Column="2" Background="#ffdddddd" Margin="5,0,0,0">
-			<Label>工具区域2</Label>
+			<Label Name="aaa">工具区域2
+				<Label.RenderTransform>
+					<ScaleTransform ScaleX="-1" CenterX="122.5"></ScaleTransform>
+				</Label.RenderTransform>
+			</Label>
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Width="5" HorizontalAlignment="Left"></GridSplitter>
 		<DockPanel Grid.Row="2" Grid.Column="1" Background="#ffeeeeee" Margin="0,0,0,5">
