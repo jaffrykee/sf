@@ -16,17 +16,17 @@ using System.Xml;
 
 namespace UIEditor.BoloUI
 {
-	public class skillbutton : Basic
+	public class Animation : resBasic
 	{
-		public skillbutton(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public Animation(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
 		{
+			m_mapNode.Add("frame", "AniFrame");
 		}
 
 		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Header = this.GetType().Name;
-			this.Header += ":" + m_xe.GetAttribute("name");
-			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
+			this.Header = "动画";
+			this.MouseDoubleClick += new MouseButtonEventHandler(eventDrawAnimation);
 
 			addChild();
 		}

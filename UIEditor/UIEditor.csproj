@@ -57,6 +57,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoloRes\Animation.cs" />
+    <Compile Include="BoloRes\DrawImg.xaml.cs">
+      <DependentUpon>DrawImg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BoloRes\SkinGroup.cs" />
+    <Compile Include="BoloRes\TextShape.cs" />
+    <Compile Include="BoloRes\Skin.cs" />
+    <Compile Include="BoloRes\Resource.cs" />
+    <Compile Include="BoloRes\PublicSkin.cs" />
+    <Compile Include="BoloRes\PublicResource.cs" />
+    <Compile Include="BoloRes\ImageShape.cs" />
+    <Compile Include="BoloRes\Apperance.cs" />
+    <Compile Include="BoloRes\AniFrame.cs" />
+    <Compile Include="BoloRes\resBasic.xaml.cs">
+      <DependentUpon>resBasic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BoloUI\Basic.xaml.cs">
       <DependentUpon>Basic.xaml</DependentUpon>
     </Compile>
@@ -65,15 +81,6 @@
     </Compile>
     <Compile Include="BoloUI\radio.cs" />
     <Compile Include="BoloUI\richText.cs" />
-    <Compile Include="BoloUI\Resource.xaml.cs">
-      <DependentUpon>Resource.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BoloUI\Skin.xaml.cs">
-      <DependentUpon>Skin.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BoloUI\SkinGroup.xaml.cs">
-      <DependentUpon>SkinGroup.xaml</DependentUpon>
-    </Compile>
     <Compile Include="BoloUI\scriptPanel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -98,22 +105,24 @@
     <Compile Include="BoloUI\Event.xaml.cs">
       <DependentUpon>Event.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BoloUI\PublicResource.xaml.cs">
-      <DependentUpon>PublicResource.xaml</DependentUpon>
-    </Compile>
     <Compile Include="FileTabItem.xaml.cs">
       <DependentUpon>FileTabItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="UnknownControl.xaml.cs">
       <DependentUpon>UnknownControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BoloUI\PublicSkin.xaml.cs">
-      <DependentUpon>PublicSkin.xaml</DependentUpon>
-    </Compile>
     <Compile Include="XmlControl.xaml.cs">
       <DependentUpon>XmlControl.xaml</DependentUpon>
     </Compile>
     <Page Include="ani.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BoloRes\DrawImg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoloRes\resBasic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -124,22 +133,6 @@
     <Page Include="BoloUI\Event.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="BoloUI\PublicResource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="BoloUI\Resource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="BoloUI\Skin.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="BoloUI\SkinGroup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Dark.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -181,10 +174,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UnknownControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="BoloUI\PublicSkin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

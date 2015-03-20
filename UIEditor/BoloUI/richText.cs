@@ -22,7 +22,7 @@ namespace UIEditor.BoloUI
 		{
 		}
 
-		private void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
+		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.Header = this.GetType().Name;
 			this.Header += ":" + m_xe.GetAttribute("name");

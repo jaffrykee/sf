@@ -12,29 +12,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
 using System.Xml;
 
 namespace UIEditor.BoloUI
 {
-	/// <summary>
-	/// PublicSkin.xaml 的交互逻辑
-	/// </summary>
-	public partial class Skin : TreeViewItem
+	public class Apperance : resBasic
 	{
-		XmlControl m_rootControl;
-		XmlElement m_xe;
-
-		public Skin(XmlElement xe, XmlControl rootControl)
+		public Apperance(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
 		{
-			InitializeComponent();
-			m_rootControl = rootControl;
-			m_xe = xe;
+			m_mapNode.Add("imageShape", "ImageShape");
+			m_mapNode.Add("textShape", "TextShape");
 		}
 
-		private void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
+		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Header = m_xe.GetAttribute("Name");
+			this.Header = "id:" + m_xe.GetAttribute("id");
+
+			this.MouseDoubleClick += new MouseButtonEventHandler(eventDrawApperance);
+
+			addChild();
 		}
 	}
 }

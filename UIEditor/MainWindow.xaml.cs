@@ -20,25 +20,35 @@ namespace UIEditor
 	/// <summary>
 	/// MainWindow.xaml 的交互逻辑
 	/// </summary>
-
 	public struct OpenedFile
 	{
 		public string m_path;
 		public TabItem m_tab;
 		public TreeViewItem m_treeUI;
 		public XmlDocument m_xmlDoc;
+
 	}
 
 	public partial class MainWindow : Window
 	{
 		public string m_rootPath;
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
+		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
+		public Dictionary<string, XmlElement> m_mapStrSkin;
+		public float m_dpiSysX;
+		public float m_dpiSysY;
+
+		private int m_dep;
 
 		public MainWindow()
 		{
 			m_rootPath = "";
 			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
 			InitializeComponent();
+			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
+			m_mapStrSkin = new Dictionary<string, XmlElement>();
+			m_dpiSysX = 96.0f;
+			m_dpiSysY = 96.0f;
 		}
 
 		private void openProj(object sender, RoutedEventArgs e)
@@ -62,7 +72,7 @@ namespace UIEditor
 			*/
 			System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			openFolderDialog.Description = "选择UI所在文件夹";
-			openFolderDialog.SelectedPath = "E:\\mmo2013001\\artist\\version_backup\\ResourceDsKr_dev\\ui\\free";
+			openFolderDialog.SelectedPath = "E:\\mmo2013001\\artist\\clinet_onDev\\ui\\free";
 			System.Windows.Forms.DialogResult result = openFolderDialog.ShowDialog();
 
 			if (result == System.Windows.Forms.DialogResult.Cancel)
@@ -72,6 +82,9 @@ namespace UIEditor
 			string path = openFolderDialog.SelectedPath;
 
 			m_rootPath = path;
+			m_dep = 0;
+			m_mapStrSkinGroup.Clear();
+			m_mapStrSkin.Clear();
 			refreshProjTree(path, this.treePro, true);
 		}
 
@@ -92,28 +105,93 @@ namespace UIEditor
 				treeUIChild.Header = dri.Name;
 				rootItem.Items.Add(treeUIChild);
 
+				m_dep++;
 				refreshProjTree(path + "\\" + dri.Name, treeUIChild, false);
+				m_dep--;
 			}
-			foreach (var dri in di.GetFiles("*"))
+			if (m_dep == 1 && rootItem.Header.ToString() == "skin")
 			{
-				TreeViewItem treeUIChild = new TreeViewItem();
-				ToolTip treeTip = new ToolTip();
+				foreach (var dri in di.GetFiles("*.xml"))
+				{
+					//皮肤组们
+					TreeViewItem treeUIChild = new TreeViewItem();
+					ToolTip treeTip = new ToolTip();
 
-				j++;
-				treeTip.Content = path + "\\" + dri.Name;
-				treeUIChild.ToolTip = treeTip;
-				treeUIChild.Header = dri.Name;
-				treeUIChild.MouseDoubleClick += new MouseButtonEventHandler(openFileTab);
-				rootItem.Items.Add(treeUIChild);
+					XmlDocument xmlDoc = new XmlDocument();
+					xmlDoc = new XmlDocument();
+					xmlDoc.Load(path + "\\" + dri.Name);
+					XmlNode xn = xmlDoc.SelectSingleNode("BoloUI");
+
+					if (xn != null)
+					{
+						j++;
+						treeTip.Content = path + "\\" + dri.Name;
+						treeUIChild.ToolTip = treeTip;
+						treeUIChild.Header = dri.Name;
+						treeUIChild.MouseDoubleClick += new MouseButtonEventHandler(openFileTab);
+						rootItem.Items.Add(treeUIChild);
+
+						XmlNodeList xnl = xn.ChildNodes;
+						string frontName = dri.Name.Substring(dri.Name.LastIndexOf("\\") + 1, (dri.Name.LastIndexOf(".") - dri.Name.LastIndexOf("\\") - 1));
+						m_mapStrSkinGroup[frontName] = xmlDoc;
+
+						foreach (XmlNode xnf in xnl)
+						{
+							//皮肤们
+							if (xnf.NodeType == XmlNodeType.Element)
+							{
+								XmlElement xe = (XmlElement)xnf;
+
+								switch (xe.Name)
+								{
+									case "publicskin":
+										#region
+										{
+											m_mapStrSkin[xe.GetAttribute("Name")] = xe;
+										}
+										#endregion
+										break;
+									case "skin":
+										#region
+										{
+											m_mapStrSkin[xe.GetAttribute("Name")] = xe;
+										}
+										#endregion
+										break;
+									default:
+										break;
+								}
+							}
+						}
+					}
+					else
+					{
+					}
+				}
 			}
-			ToolTip rootTip = new ToolTip();
-
-			if (rootNode == true)
+			else
 			{
-				rootTip.Content = path;
-				rootItem.ToolTip = rootTip;
-				rootItem.IsExpanded = false;
-				rootItem.Header = "UI工程目录(" + i + "个目录和" + j + "个项目)";
+				foreach (var dri in di.GetFiles("*"))
+				{
+					TreeViewItem treeUIChild = new TreeViewItem();
+					ToolTip treeTip = new ToolTip();
+
+					j++;
+					treeTip.Content = path + "\\" + dri.Name;
+					treeUIChild.ToolTip = treeTip;
+					treeUIChild.Header = dri.Name;
+					treeUIChild.MouseDoubleClick += new MouseButtonEventHandler(openFileTab);
+					rootItem.Items.Add(treeUIChild);
+				}
+
+				if (rootNode == true)
+				{
+					ToolTip rootTip = new ToolTip();
+					rootTip.Content = path;
+					rootItem.ToolTip = rootTip;
+					rootItem.IsExpanded = false;
+					rootItem.Header = "UI工程目录(" + i + "个目录和" + j + "个项目)";
+				}
 			}
 		}
 

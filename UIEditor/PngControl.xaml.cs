@@ -52,5 +52,13 @@ namespace UIEditor
 				m_loaded = true;
 			}
 		}
+
+		private void imageFrame_Unloaded(object sender, RoutedEventArgs e)
+		{
+			if (m_imgSource != null)
+			{
+				m_imgSource.StreamSource.Dispose();
+			}
+		}
 	}
 }
