@@ -20,6 +20,13 @@ namespace UIEditor.BoloUI
 	/// <summary>
 	/// DrawImg.xaml 的交互逻辑
 	/// </summary>
+	
+	public struct AniNode
+	{
+		public string aniPath;
+		public XmlElement aniXe;
+	}
+
 	public partial class DrawImg : Grid
 	{
 		public double m_imgHeight;
@@ -28,6 +35,11 @@ namespace UIEditor.BoloUI
 
 		public XmlElement m_xe;
 		public string m_path;
+		public List<AniNode> m_aniNodes;
+		public bool m_enLoop;
+		public double m_aniFrameTime;
+		public float m_perDpiX;
+		public float m_perDpiY;
 
 		public DrawImg(XmlElement xe, string rootPath)
 		{
@@ -35,26 +47,113 @@ namespace UIEditor.BoloUI
 			m_xe = xe;
 			m_loaded = false;
 			m_path = "";
+			m_aniNodes = new List<AniNode>();
 
 			string ImageName = m_xe.GetAttribute("ImageName");
+
 			string fileName = ImageName.Substring(ImageName.LastIndexOf(".") + 1, (ImageName.Length - ImageName.LastIndexOf(".") - 1));
 			string folderName = ImageName.Substring(ImageName.LastIndexOf("\\") + 1, (ImageName.LastIndexOf(".") - ImageName.LastIndexOf("\\") - 1));
 			fileName += ".png";
-			m_path = rootPath + "\\" + "images" + "\\" + folderName + "\\" + fileName;
+			string path = rootPath + "\\" + "images" + "\\" + folderName + "\\" + fileName;
+			AniNode aniNode = new AniNode();
+			aniNode.aniPath = path;
+			aniNode.aniXe = m_xe;
+			m_aniNodes.Add(aniNode);
+
+			XmlNodeList xnl = m_xe.ChildNodes;
+			if (m_xe.ChildNodes.Count > 0)
+			{
+				foreach (XmlNode xnf in xnl)
+				{
+					if (xnf.NodeType == XmlNodeType.Element)
+					{
+						XmlElement xeAni = (XmlElement)xnf;
+
+						if (xeAni.Name == "animation")
+						{
+							if (xeAni.GetAttribute("loop") == "true")
+							{
+								m_enLoop = true;
+							}
+							else
+							{
+								m_enLoop = false;
+							}
+							XmlNodeList xnlAni = xeAni.ChildNodes;
+							foreach (XmlNode xnfFrame in xnlAni)
+							{
+								if (xnfFrame.NodeType == XmlNodeType.Element)
+								{
+									XmlElement xeFrame = (XmlElement)xnfFrame;
+									if (xeFrame.Name == "frame")
+									{
+										if (xeFrame.GetAttribute("image") != "")
+										{
+											string frameImageName = xeFrame.GetAttribute("image");
+											string frameFileName = frameImageName.Substring(frameImageName.LastIndexOf(".") + 1, (frameImageName.Length - frameImageName.LastIndexOf(".") - 1));
+											string frameFolderName = frameImageName.Substring(frameImageName.LastIndexOf("\\") + 1, (frameImageName.LastIndexOf(".") - frameImageName.LastIndexOf("\\") - 1));
+
+											frameFileName += ".png";
+											string framePath = rootPath + "\\" + "images" + "\\" + frameFolderName + "\\" + frameFileName;
+											AniNode frameNode = new AniNode();
+											frameNode.aniPath = framePath;
+											frameNode.aniXe = xeFrame;
+											m_aniNodes.Add(frameNode);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			m_path = path;
+			m_aniFrameTime = 0.17f;
 		}
 
 		private void tabFrameLoaded(object sender, RoutedEventArgs e)
 		{
 			if (m_loaded == false)
 			{
-				this.mx_imgFrame.ToolTip = m_path;
+				int iFrame = 0;
+				double sTime = 0.0d;
+
+				foreach(AniNode aniNode in m_aniNodes)
+				{
+					if (aniNode.aniXe.Name == "frame" && aniNode.aniXe.GetAttribute("time") != "")
+					{
+						sTime = double.Parse(aniNode.aniXe.GetAttribute("time")) / 1000;
+					}
+					else
+					{
+						if (iFrame > 0)
+						{
+							sTime += m_aniFrameTime;
+						}
+					}
+
+					System.Windows.Media.Animation.DiscreteStringKeyFrame aniFrame =
+						new System.Windows.Media.Animation.DiscreteStringKeyFrame(
+							aniNode.aniPath,
+							System.Windows.Media.Animation.KeyTime.FromTimeSpan(TimeSpan.FromSeconds(sTime))
+						);
+					mx_aniFrame.KeyFrames.Add(aniFrame);
+					
+					iFrame++;
+				}
+				mx_aniFrame.Duration = TimeSpan.FromSeconds(sTime);
 
 				MainWindow pW = Window.GetWindow(this) as MainWindow;
 				double iH, iW;
 				double iX, iY;
+				double cX0, cX1, cX2;
+				double cY0, cY1, cY2;
 
-				m_imgHeight = double.Parse(mx_imgHeight.ToolTip.ToString())*3/4;
-				m_imgWidth = double.Parse(mx_imgWidth.ToolTip.ToString())*3/4;
+				System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(m_path);
+				float m_perDpiX = bmp.HorizontalResolution / pW.m_dpiSysX;
+				float m_perDpiY = bmp.VerticalResolution / pW.m_dpiSysY;
+				m_imgWidth = bmp.Size.Width * m_perDpiX;
+				m_imgHeight = bmp.Size.Height * m_perDpiY;
 				double perX = 1.0d, perY = 1.0d, perDx = 0.0d, perDy = 0.0d;
 
 				if (m_xe.GetAttribute("Height") != null && m_xe.GetAttribute("Height") != "")
@@ -86,10 +185,14 @@ namespace UIEditor.BoloUI
 				{
 					if (m_xe.GetAttribute("NGX") != "")
 					{
-						this.mx_ngc0.Width = new GridLength(double.Parse(m_xe.GetAttribute("NGX")));
-						this.mx_ngc2.Width = new GridLength((double)m_imgWidth - double.Parse(m_xe.GetAttribute("NGX")));
-						perX = double.Parse(m_xe.GetAttribute("NGX")) / (double)m_imgWidth;
+						double ngX = double.Parse(m_xe.GetAttribute("NGX"));
+
+						this.mx_ngc0.Width = new GridLength(ngX);
+						this.mx_ngc2.Width = new GridLength((double)m_imgWidth - ngX);
+						perX = ngX / (double)m_imgWidth;
 						this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Visible;
+
+						iW = ngX;
 					}
 					else
 					{
@@ -98,10 +201,14 @@ namespace UIEditor.BoloUI
 					}
 					if (m_xe.GetAttribute("NGY") != "")
 					{
-						this.mx_ngr0.Height = new GridLength(double.Parse(m_xe.GetAttribute("NGY")));
-						this.mx_ngr2.Height = new GridLength((double)m_imgHeight - double.Parse(m_xe.GetAttribute("NGY")));
-						perY = double.Parse(m_xe.GetAttribute("NGY")) / (double)m_imgHeight;
+						double ngY = double.Parse(m_xe.GetAttribute("NGY"));
+
+						this.mx_ngr0.Height = new GridLength(ngY);
+						this.mx_ngr2.Height = new GridLength((double)m_imgHeight - ngY);
+						perY = ngY / (double)m_imgHeight;
 						this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Visible;
+
+						iH = ngY;
 					}
 					else
 					{
@@ -130,6 +237,10 @@ namespace UIEditor.BoloUI
 					this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
 					this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
 				}
+				cX0 = iW;
+				cX2 = m_imgWidth - iW;
+				cY0 = iH;
+				cY2 = m_imgHeight - iH;
 
 				Rect[][] viewRect = new Rect[3][];
 				viewRect[0] = new Rect[3];
@@ -164,48 +275,50 @@ namespace UIEditor.BoloUI
 					{
 						case 1:
 							{
-								mx_ngBrush00.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc0.ActualWidth/2, mx_ngr0.ActualHeight/2);
-								mx_ngBrush01.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc1.ActualWidth/2, mx_ngr0.ActualHeight/2);
-								mx_ngBrush02.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc2.ActualWidth/2, mx_ngr0.ActualHeight/2);
-								mx_ngBrush10.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc0.ActualWidth/2, mx_ngr1.ActualHeight/2);
-								mx_ngBrush11.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc1.ActualWidth/2, mx_ngr1.ActualHeight/2);
-								mx_ngBrush12.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc2.ActualWidth/2, mx_ngr1.ActualHeight/2);
-								mx_ngBrush20.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc0.ActualWidth/2, mx_ngr2.ActualHeight/2);
-								mx_ngBrush21.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc1.ActualWidth/2, mx_ngr2.ActualHeight/2);
-								mx_ngBrush22.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc2.ActualWidth/2, mx_ngr2.ActualHeight/2);
+								//this.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#88cc88ff"));
+								mx_ngBrush00.Transform = new ScaleTransform(-1.0f, 1.0f, cX0 / 2, cY0 / 2);
+								mx_ngBrush01.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc1.ActualWidth / 2, cY0 / 2);
+								mx_ngBrush02.Transform = new ScaleTransform(-1.0f, 1.0f, cX2 / 2, cY0 / 2);
+								mx_ngBrush10.Transform = new ScaleTransform(-1.0f, 1.0f, cX0 / 2, mx_ngr1.ActualHeight / 2);
+								mx_ngBrush11.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc1.ActualWidth / 2, mx_ngr1.ActualHeight / 2);
+								mx_ngBrush12.Transform = new ScaleTransform(-1.0f, 1.0f, cX2 / 2, mx_ngr1.ActualHeight / 2);
+								mx_ngBrush20.Transform = new ScaleTransform(-1.0f, 1.0f, cX0 / 2, cY2 / 2);
+								mx_ngBrush21.Transform = new ScaleTransform(-1.0f, 1.0f, mx_ngc1.ActualWidth / 2, cY2 / 2);
+								mx_ngBrush22.Transform = new ScaleTransform(-1.0f, 1.0f, cX2 / 2, cY2 / 2);
 							}
 							break;
 						case 2:
 							{
-								mx_ngBrush00.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr0.ActualHeight/2);
-								mx_ngBrush01.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr0.ActualHeight/2);
-								mx_ngBrush02.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr0.ActualHeight/2);
-								mx_ngBrush10.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr1.ActualHeight/2);
-								mx_ngBrush11.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr1.ActualHeight/2);
-								mx_ngBrush12.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr1.ActualHeight/2);
-								mx_ngBrush20.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr2.ActualHeight/2);
-								mx_ngBrush21.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr2.ActualHeight/2);
-								mx_ngBrush22.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr2.ActualHeight/2);
+								//this.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#88ffcc88"));
+								mx_ngBrush00.Transform = new ScaleTransform(1.0f, -1.0f, cX0 / 2, cY0 / 2);
+								mx_ngBrush01.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc1.ActualWidth / 2, cY0 / 2);
+								mx_ngBrush02.Transform = new ScaleTransform(1.0f, -1.0f, cX2 / 2, cY0 / 2);
+								mx_ngBrush10.Transform = new ScaleTransform(1.0f, -1.0f, cX0 / 2, mx_ngr1.ActualHeight / 2);
+								mx_ngBrush11.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc1.ActualWidth / 2, mx_ngr1.ActualHeight / 2);
+								mx_ngBrush12.Transform = new ScaleTransform(1.0f, -1.0f, cX2 / 2, mx_ngr1.ActualHeight / 2);
+								mx_ngBrush20.Transform = new ScaleTransform(1.0f, -1.0f, cX0 / 2, cY2 / 2);
+								mx_ngBrush21.Transform = new ScaleTransform(1.0f, -1.0f, mx_ngc1.ActualWidth / 2, cY2 / 2);
+								mx_ngBrush22.Transform = new ScaleTransform(1.0f, -1.0f, cX2 / 2, cY2 / 2);
 							}
 							break;
 						case 3:
 							{
-								mx_ngBrush00.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr0.ActualHeight/2);
-								mx_ngBrush01.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr0.ActualHeight/2);
-								mx_ngBrush02.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr0.ActualHeight/2);
-								mx_ngBrush10.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr1.ActualHeight/2);
-								mx_ngBrush11.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr1.ActualHeight/2);
-								mx_ngBrush12.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr1.ActualHeight/2);
-								mx_ngBrush20.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc0.ActualWidth/2, mx_ngr2.ActualHeight/2);
-								mx_ngBrush21.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc1.ActualWidth/2, mx_ngr2.ActualHeight/2);
-								mx_ngBrush22.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc2.ActualWidth/2, mx_ngr2.ActualHeight/2);
+								//this.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8888ffcc"));
+								mx_ngBrush00.Transform = new ScaleTransform(-1.0f, -1.0f, cX0 / 2, cY0 / 2);
+								mx_ngBrush01.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc1.ActualWidth / 2, cY0 / 2);
+								mx_ngBrush02.Transform = new ScaleTransform(-1.0f, -1.0f, cX2 / 2, cY0 / 2);
+								mx_ngBrush10.Transform = new ScaleTransform(-1.0f, -1.0f, cX0 / 2, mx_ngr1.ActualHeight / 2);
+								mx_ngBrush11.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc1.ActualWidth / 2, mx_ngr1.ActualHeight / 2);
+								mx_ngBrush12.Transform = new ScaleTransform(-1.0f, -1.0f, cX2 / 2, mx_ngr1.ActualHeight / 2);
+								mx_ngBrush20.Transform = new ScaleTransform(-1.0f, -1.0f, cX0 / 2, cY2 / 2);
+								mx_ngBrush21.Transform = new ScaleTransform(-1.0f, -1.0f, mx_ngc1.ActualWidth / 2, cY2 / 2);
+								mx_ngBrush22.Transform = new ScaleTransform(-1.0f, -1.0f, cX2 / 2, cY2 / 2);
 							}
 							break;
 						default:
 							break;
 					}
 				}
-
 				if (m_xe.GetAttribute("X") != "")
 				{
 					iX = double.Parse(m_xe.GetAttribute("X"));
@@ -223,7 +336,7 @@ namespace UIEditor.BoloUI
 					iY = 0;
 				}
 
-				if(m_xe.GetAttribute("Anchor") != "")
+				if (m_xe.GetAttribute("Anchor") != "")
 				{
 					int anchor = int.Parse(m_xe.GetAttribute("Anchor"));
 

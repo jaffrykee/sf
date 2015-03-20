@@ -120,24 +120,6 @@ namespace UIEditor.BoloUI
 
 		public void drawAnimation(object frame, XmlElement xe, string path)
 		{
-			XmlNodeList xnl = m_xe.ChildNodes;
-
-			if (frame.GetType() == Type.GetType("System.Windows.Controls.ContentControl") ||
-				frame.GetType() == Type.GetType("System.Windows.Controls.Panel"))
-			{
-				foreach (XmlNode xnf in xnl)
-				{
-					if (xnf.NodeType == XmlNodeType.Element)
-					{
-						XmlElement xeImg = (XmlElement)xnf;
-
-						if (xeImg.Name == "imageShape")
-						{
-							drawImg(frame, xeImg, path);
-						}
-					}
-				}
-			}
 		}
 
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)

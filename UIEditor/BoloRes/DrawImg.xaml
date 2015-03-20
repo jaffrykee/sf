@@ -14,12 +14,14 @@
 			<BeginStoryboard>
 				<Storyboard>
 					<StringAnimationUsingKeyFrames 
+						Name="mx_aniFrame"
 						Storyboard.TargetName="mx_imgFrame" Storyboard.TargetProperty="(Grid.ToolTip)"
-						Duration="0:0:8" FillBehavior="HoldEnd">
+						Duration="0:0:0.4" RepeatBehavior="Forever">
+<!-- 
 						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE1.png" KeyTime="0:0:0" />
-						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE2.png" KeyTime="0:0:2" />
-						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE3.png" KeyTime="0:0:4" />
-						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE4.png" KeyTime="0:0:6" />
+						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE2.png" KeyTime="0:0:0.1" />
+						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE3.png" KeyTime="0:0:0.2" />
+						<DiscreteStringKeyFrame Value="E:\mmo2013001\artist\clinet_onDev\ui\free\images\HitCombo\HitsE4.png" KeyTime="0:0:0.3" /> -->
 					</StringAnimationUsingKeyFrames>
 				</Storyboard>
 			</BeginStoryboard>

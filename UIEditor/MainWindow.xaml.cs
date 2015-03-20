@@ -35,6 +35,8 @@ namespace UIEditor
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
+		public float m_dpiSysX;
+		public float m_dpiSysY;
 
 		private int m_dep;
 
@@ -45,6 +47,8 @@ namespace UIEditor
 			InitializeComponent();
 			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
 			m_mapStrSkin = new Dictionary<string, XmlElement>();
+			m_dpiSysX = 96.0f;
+			m_dpiSysY = 96.0f;
 		}
 
 		private void openProj(object sender, RoutedEventArgs e)
