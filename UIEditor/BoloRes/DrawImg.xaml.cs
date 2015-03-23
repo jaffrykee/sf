@@ -95,6 +95,11 @@ namespace UIEditor.BoloUI
 
 											frameFileName += ".png";
 											string framePath = rootPath + "\\" + "images" + "\\" + frameFolderName + "\\" + frameFileName;
+
+											if (!System.IO.File.Exists(framePath))
+											{
+												(Window.GetWindow(this) as MainWindow).mx_debug.Text += "没有找到文件：\"" + m_path + "\"\r\n";
+											}
 											AniNode frameNode = new AniNode();
 											frameNode.aniPath = framePath;
 											frameNode.aniXe = xeFrame;
@@ -149,6 +154,12 @@ namespace UIEditor.BoloUI
 				double cX0, cX1, cX2;
 				double cY0, cY1, cY2;
 
+				if (!System.IO.File.Exists(m_path))
+				{
+					pW.mx_debug.Text += "没有找到文件：\"" + m_path + "\"\r\n";
+
+					return;
+				}
 				System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(m_path);
 				float m_perDpiX = bmp.HorizontalResolution / pW.m_dpiSysX;
 				float m_perDpiY = bmp.VerticalResolution / pW.m_dpiSysY;
