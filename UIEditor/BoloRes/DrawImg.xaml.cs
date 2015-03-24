@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using System.Data;
+using System.Windows.Media.Animation;
 
 namespace UIEditor.BoloUI
 {
@@ -40,6 +41,9 @@ namespace UIEditor.BoloUI
 		public double m_aniFrameTime;
 		public float m_perDpiX;
 		public float m_perDpiY;
+
+		private double m_dW;
+		private double m_dH;
 
 		public DrawImg(XmlElement xe, string rootPath)
 		{
@@ -100,10 +104,13 @@ namespace UIEditor.BoloUI
 											{
 												(Window.GetWindow(this) as MainWindow).mx_debug.Text += "没有找到文件：\"" + m_path + "\"\r\n";
 											}
-											AniNode frameNode = new AniNode();
-											frameNode.aniPath = framePath;
-											frameNode.aniXe = xeFrame;
-											m_aniNodes.Add(frameNode);
+											else
+											{
+												AniNode frameNode = new AniNode();
+												frameNode.aniPath = framePath;
+												frameNode.aniXe = xeFrame;
+												m_aniNodes.Add(frameNode);
+											}
 										}
 									}
 								}
@@ -116,16 +123,18 @@ namespace UIEditor.BoloUI
 			m_aniFrameTime = 0.17f;
 		}
 
-		private void tabFrameLoaded(object sender, RoutedEventArgs e)
+		private void drawFrame(AniNode aniNode, ref int iFrame, ref double sTime)
 		{
-			if (m_loaded == false)
-			{
-				int iFrame = 0;
-				double sTime = 0.0d;
+			double dW = 0.0d;
+			double dH = 0.0d;
+			double dX = 0.0d;
+			double dY = 0.0d;
 
-				foreach(AniNode aniNode in m_aniNodes)
+			if (aniNode.aniXe.Name == "frame" || aniNode.aniXe.Name == "imageShape")
+			{
+				if (aniNode.aniXe.Name == "frame")
 				{
-					if (aniNode.aniXe.Name == "frame" && aniNode.aniXe.GetAttribute("time") != "")
+					if (aniNode.aniXe.GetAttribute("time") != "")
 					{
 						sTime = double.Parse(aniNode.aniXe.GetAttribute("time")) / 1000;
 					}
@@ -136,18 +145,124 @@ namespace UIEditor.BoloUI
 							sTime += m_aniFrameTime;
 						}
 					}
+					if(aniNode.aniXe.GetAttribute("w") != "")
+					{
+						dW = double.Parse(aniNode.aniXe.GetAttribute("w"));
 
-					System.Windows.Media.Animation.DiscreteStringKeyFrame aniFrame =
-						new System.Windows.Media.Animation.DiscreteStringKeyFrame(
-							aniNode.aniPath,
-							System.Windows.Media.Animation.KeyTime.FromTimeSpan(TimeSpan.FromSeconds(sTime))
-						);
-					mx_aniFrame.KeyFrames.Add(aniFrame);
-					
-					iFrame++;
+						DiscreteObjectKeyFrame aniWidth =
+							new DiscreteObjectKeyFrame(
+								new GridLength(dW),
+								KeyTime.FromTimeSpan(TimeSpan.FromSeconds(sTime))
+							);
+						mx_aniW.KeyFrames.Add(aniWidth);
+					}
+					else
+					{
+						dW = m_dW;
+					}
+					if (aniNode.aniXe.GetAttribute("h") != "")
+					{
+						dH = double.Parse(aniNode.aniXe.GetAttribute("h"));
+
+						DiscreteObjectKeyFrame aniHeight =
+							new DiscreteObjectKeyFrame(
+								new GridLength(dH),
+								KeyTime.FromTimeSpan(TimeSpan.FromSeconds(sTime))
+							);
+						mx_aniH.KeyFrames.Add(aniHeight);
+					}
+					else
+					{
+						dH = m_dH;
+					}
+					if (aniNode.aniXe.GetAttribute("x") != "" || aniNode.aniXe.GetAttribute("y") != "" || aniNode.aniXe.GetAttribute("Anchor") != "")
+					{
+
+						if (aniNode.aniXe.GetAttribute("x") != "")
+						{
+							dX = double.Parse(aniNode.aniXe.GetAttribute("x"));
+						}
+						else
+						{
+							if(m_xe.GetAttribute("X") != "")
+							{
+								dX = double.Parse(m_xe.GetAttribute("X"));
+							}
+						}
+						if (aniNode.aniXe.GetAttribute("y") != "")
+						{
+							dY = double.Parse(aniNode.aniXe.GetAttribute("y"));
+						}
+						else
+						{
+							if (m_xe.GetAttribute("Y") != "")
+							{
+								dY = double.Parse(m_xe.GetAttribute("Y"));
+							}
+						}
+
+						if (aniNode.aniXe.GetAttribute("Anchor") != "")
+						{
+							int anchor = int.Parse(m_xe.GetAttribute("Anchor"));
+
+							if ((anchor & 0x01) > 0)
+							{
+								//水平居中
+								dX = dX + (((Canvas)this.Parent).Width - dW) / 2;
+							}
+							if ((anchor & 0x02) > 0)
+							{
+								//垂直居中
+								dY = dY + (((Canvas)this.Parent).Height - dH) / 2;
+							}
+							if ((anchor & 0x04) > 0)
+							{
+								//左对齐
+							}
+							if ((anchor & 0x08) > 0)
+							{
+								//右对齐
+								dX = dX + (((Canvas)this.Parent).Width - dW);
+							}
+							if ((anchor & 0x10) > 0)
+							{
+								//上对齐
+							}
+							if ((anchor & 0x20) > 0)
+							{
+								//底部对齐
+								dY = dY + (((Canvas)this.Parent).Height - dH);
+							}
+						}
+
+						DiscreteDoubleKeyFrame aniX =
+							new DiscreteDoubleKeyFrame(
+								dX,
+								KeyTime.FromTimeSpan(TimeSpan.FromSeconds(sTime))
+							);
+						DiscreteDoubleKeyFrame aniY =
+							new DiscreteDoubleKeyFrame(
+								dY,
+								KeyTime.FromTimeSpan(TimeSpan.FromSeconds(sTime))
+							);
+						mx_aniX.KeyFrames.Add(aniX);
+						mx_aniY.KeyFrames.Add(aniY);
+					}
 				}
-				mx_aniFrame.Duration = TimeSpan.FromSeconds(sTime);
+				DiscreteStringKeyFrame aniFrame =
+					new DiscreteStringKeyFrame(
+						aniNode.aniPath,
+						KeyTime.FromTimeSpan(TimeSpan.FromSeconds(sTime))
+					);
+				mx_aniFrame.KeyFrames.Add(aniFrame);
+				iFrame++;
+			}
+		}
 
+		private void tabFrameLoaded(object sender, RoutedEventArgs e)
+		{
+			if (m_loaded == false)
+			{
 				MainWindow pW = Window.GetWindow(this) as MainWindow;
 				double iH, iW;
 				double iX, iY;
@@ -252,6 +367,9 @@ namespace UIEditor.BoloUI
 				cX2 = m_imgWidth - iW;
 				cY0 = iH;
 				cY2 = m_imgHeight - iH;
+
+				m_dW = iW;
+				m_dH = iH;
 
 				Rect[][] viewRect = new Rect[3][];
 				viewRect[0] = new Rect[3];
@@ -382,6 +500,19 @@ namespace UIEditor.BoloUI
 				}
 				Canvas.SetLeft(mx_rootFrame, iX);
 				Canvas.SetTop(mx_rootFrame, iY);
+
+				int iFrame = 0;
+				double sTime = 0.0d;
+
+				foreach (AniNode aniNode in m_aniNodes)
+				{
+					drawFrame(aniNode, ref iFrame, ref sTime);
+				}
+				mx_aniFrame.Duration = TimeSpan.FromSeconds(sTime);
+				mx_aniX.Duration = TimeSpan.FromSeconds(sTime);
+				mx_aniY.Duration = TimeSpan.FromSeconds(sTime);
+				mx_aniW.Duration = TimeSpan.FromSeconds(sTime);
+				mx_aniH.Duration = TimeSpan.FromSeconds(sTime);
 
 				m_loaded = true;
 			}
