@@ -7,13 +7,13 @@
 			Loaded="tabFrameLoaded">
 	<Grid Background="#ffcccccc">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="200"/>
+			<RowDefinition Height="*" MinHeight="20"/>
+			<RowDefinition Height="*" MinHeight="20"/>
+			<RowDefinition Height="200" MinHeight="20"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="auto"/>
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*" MinWidth="20"/>
+			<ColumnDefinition Width="*" MinWidth="20"/>
 		</Grid.ColumnDefinitions>
 		<!-- 960 640         720 480 -->
 		<Canvas Name="workSpace" Grid.Row="0" Grid.Column="0" Width="960" Height="640" Background="#ffffffff">

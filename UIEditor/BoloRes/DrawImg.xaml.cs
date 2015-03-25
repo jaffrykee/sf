@@ -30,6 +30,7 @@ namespace UIEditor.BoloUI
 
 	public partial class DrawImg : Grid
 	{
+		public XmlControl m_rootControl;
 		public double m_imgHeight;
 		public double m_imgWidth;
 		public bool m_loaded;
@@ -45,13 +46,14 @@ namespace UIEditor.BoloUI
 		private double m_dW;
 		private double m_dH;
 
-		public DrawImg(XmlElement xe, string rootPath)
+		public DrawImg(XmlElement xe, string rootPath, XmlControl rootControl)
 		{
 			InitializeComponent();
 			m_xe = xe;
 			m_loaded = false;
 			m_path = "";
 			m_aniNodes = new List<AniNode>();
+			m_rootControl = rootControl;
 
 			string ImageName = m_xe.GetAttribute("ImageName");
 
@@ -102,7 +104,7 @@ namespace UIEditor.BoloUI
 
 											if (!System.IO.File.Exists(framePath))
 											{
-												(Window.GetWindow(this) as MainWindow).mx_debug.Text += "没有找到文件：\"" + m_path + "\"\r\n";
+												m_rootControl.textContent.Text += "没有找到文件：\"" + m_path + "\"\r\n";
 											}
 											else
 											{
@@ -132,8 +134,31 @@ namespace UIEditor.BoloUI
 
 			if (aniNode.aniXe.Name == "frame" || aniNode.aniXe.Name == "imageShape")
 			{
+				#region frame
 				if (aniNode.aniXe.Name == "frame")
 				{
+					foreach (XmlAttribute att in aniNode.aniXe.Attributes)
+					{
+						switch(att.Name)
+						{
+							case "time":
+							case "image":
+							case "w":
+							case "h":
+							case "x":
+							case "y":
+							case "Anchor":
+							case "angle":
+								break;
+							default:
+								{
+									m_rootControl.textContent.Text += ("attr:<name>" + att.Name + "\t<value>" + att.Value + "\r\n");
+								}
+								break;
+						}
+					}
+
+					#region time
 					if (aniNode.aniXe.GetAttribute("time") != "")
 					{
 						sTime = double.Parse(aniNode.aniXe.GetAttribute("time")) / 1000;
@@ -145,7 +170,10 @@ namespace UIEditor.BoloUI
 							sTime += m_aniFrameTime;
 						}
 					}
-					if(aniNode.aniXe.GetAttribute("w") != "")
+					#endregion
+
+					#region w & h
+					if (aniNode.aniXe.GetAttribute("w") != "")
 					{
 						dW = double.Parse(aniNode.aniXe.GetAttribute("w"));
 
@@ -175,6 +203,9 @@ namespace UIEditor.BoloUI
 					{
 						dH = m_dH;
 					}
+					#endregion
+
+					#region x , y & Anchor
 					if (aniNode.aniXe.GetAttribute("x") != "" || aniNode.aniXe.GetAttribute("y") != "" || aniNode.aniXe.GetAttribute("Anchor") != "")
 					{
 
@@ -203,7 +234,7 @@ namespace UIEditor.BoloUI
 
 						if (aniNode.aniXe.GetAttribute("Anchor") != "")
 						{
-							int anchor = int.Parse(m_xe.GetAttribute("Anchor"));
+							int anchor = int.Parse(aniNode.aniXe.GetAttribute("Anchor"));
 
 							if ((anchor & 0x01) > 0)
 							{
@@ -248,7 +279,23 @@ namespace UIEditor.BoloUI
 						mx_aniX.KeyFrames.Add(aniX);
 						mx_aniY.KeyFrames.Add(aniY);
 					}
+					#endregion
+
+					#region angle
+					if (aniNode.aniXe.GetAttribute("angle") != "")
+					{
+						double dAngle = double.Parse(aniNode.aniXe.GetAttribute("angle"));
+
+						DiscreteDoubleKeyFrame aniAngle =
+							new DiscreteDoubleKeyFrame(
+								dAngle,
+								KeyTime.FromTimeSpan(TimeSpan.FromSeconds(sTime))
+							);
+						mx_aniAngle.KeyFrames.Add(aniAngle);
+					}
+					#endregion
 				}
+				#endregion frame
 				DiscreteStringKeyFrame aniFrame =
 					new DiscreteStringKeyFrame(
 						aniNode.aniPath,
@@ -271,42 +318,71 @@ namespace UIEditor.BoloUI
 
 				if (!System.IO.File.Exists(m_path))
 				{
-					pW.mx_debug.Text += "没有找到文件：\"" + m_path + "\"\r\n";
+					m_rootControl.textContent.Text += "没有找到文件：\"" + m_path + "\"\r\n";
 
 					return;
 				}
+
+				if (m_xe.Name == "imageShape")
+				{
+					foreach (XmlAttribute att in m_xe.Attributes)
+					{
+						switch (att.Name)
+						{
+							case "ImageName":
+							case "Height":
+							case "Width":
+							case "NineGrid":
+							case "NGX":
+							case "NGY":
+							case "NGWidth":
+							case "NGHeight":
+							case "mirrorType":
+							case "X":
+							case "Y":
+							case "Anchor":
+							case "angle":
+								break;
+							default:
+								{
+									m_rootControl.textContent.Text += ("attr:<name>" + att.Name + "\t<value>" + att.Value + "\r\n");
+								}
+								break;
+						}
+					}
+				}
+
+				#region Width & Height
 				System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(m_path);
 				float m_perDpiX = bmp.HorizontalResolution / pW.m_dpiSysX;
 				float m_perDpiY = bmp.VerticalResolution / pW.m_dpiSysY;
-				m_imgWidth = bmp.Size.Width * m_perDpiX;
-				m_imgHeight = bmp.Size.Height * m_perDpiY;
+				m_imgWidth = bmp.Size.Width;
+				m_imgHeight = bmp.Size.Height;
 				double perX = 1.0d, perY = 1.0d, perDx = 0.0d, perDy = 0.0d;
 
 				if (m_xe.GetAttribute("Height") != null && m_xe.GetAttribute("Height") != "")
 				{
 					iH = double.Parse(m_xe.GetAttribute("Height"));
-
-					this.mx_ctrR0.Height = new GridLength(iH);
-					this.mx_ctrR0.MinHeight = iH;
 				}
 				else
 				{
 					iH = m_imgHeight;
-					this.mx_ctrR0.Height = new GridLength(iH);
-					this.mx_ctrR0.MinHeight = iH;
 				}
 				if (m_xe.GetAttribute("Width") != null && m_xe.GetAttribute("Width") != "")
 				{
 					iW = double.Parse(m_xe.GetAttribute("Width"));
-					this.mx_ctrC0.Width = new GridLength(iW);
-					this.mx_ctrC0.MinWidth = iW;
 				}
 				else
 				{
 					iW = m_imgWidth;
-					this.mx_ctrC0.Width = new GridLength(iW);
-					this.mx_ctrC0.MinWidth = iW;
 				}
+				this.mx_ctrR0.Height = new GridLength(iH);
+				this.mx_ctrR0.MinHeight = iH;
+				this.mx_ctrC0.Width = new GridLength(iW);
+				this.mx_ctrC0.MinWidth = iW;
+				#endregion
+
+				#region NineGrid
 				if (m_xe.GetAttribute("NineGrid") == "true")
 				{
 					if (m_xe.GetAttribute("NGX") != "")
@@ -395,7 +471,9 @@ namespace UIEditor.BoloUI
 				this.mx_ngBrush20.Viewbox = viewRect[2][0];
 				this.mx_ngBrush21.Viewbox = viewRect[2][1];
 				this.mx_ngBrush22.Viewbox = viewRect[2][2];
+				#endregion NineGrid
 
+				#region mirrorType(翻转)
 				if (m_xe.GetAttribute("mirrorType") != "")
 				{
 					int mirrorType = int.Parse(m_xe.GetAttribute("mirrorType"));
@@ -448,6 +526,9 @@ namespace UIEditor.BoloUI
 							break;
 					}
 				}
+				#endregion
+
+				#region X , Y & Anchor
 				if (m_xe.GetAttribute("X") != "")
 				{
 					iX = double.Parse(m_xe.GetAttribute("X"));
@@ -500,7 +581,16 @@ namespace UIEditor.BoloUI
 				}
 				Canvas.SetLeft(mx_rootFrame, iX);
 				Canvas.SetTop(mx_rootFrame, iY);
+				#endregion
 
+				if(m_xe.GetAttribute("angle") != "")
+				{
+					double dAngle = double.Parse(m_xe.GetAttribute("angle"));
+
+					this.mx_angle.Angle = dAngle;
+				}
+
+				#region ani(动画)
 				int iFrame = 0;
 				double sTime = 0.0d;
 
@@ -513,6 +603,15 @@ namespace UIEditor.BoloUI
 				mx_aniY.Duration = TimeSpan.FromSeconds(sTime);
 				mx_aniW.Duration = TimeSpan.FromSeconds(sTime);
 				mx_aniH.Duration = TimeSpan.FromSeconds(sTime);
+				if (m_enLoop == false)
+				{
+					mx_aniFrame.RepeatBehavior = new RepeatBehavior(1);
+					mx_aniX.RepeatBehavior = new RepeatBehavior(1);
+					mx_aniY.RepeatBehavior = new RepeatBehavior(1);
+					mx_aniW.RepeatBehavior = new RepeatBehavior(1);
+					mx_aniH.RepeatBehavior = new RepeatBehavior(1);
+				}
+				#endregion
 
 				m_loaded = true;
 			}

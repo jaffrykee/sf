@@ -23,17 +23,20 @@ namespace UIEditor.BoloUI
 	{
 		public XmlControl m_rootControl;
 		public XmlElement m_xe;
+		public Canvas m_parentCanvas;
+		public Canvas m_curCanvas;
 
 		public Basic()
 		{
 			InitializeComponent();
 		}
 
-		public Basic(XmlElement xe, XmlControl rootControl)
+		public Basic(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
 		{
 			InitializeComponent();
 			m_rootControl = rootControl;
 			m_xe = xe;
+			m_parentCanvas = parentCanvas;
 		}
 
 		protected void addChild()
@@ -76,6 +79,13 @@ namespace UIEditor.BoloUI
 			this.Header = this.GetType().Name;
 			this.Header += ":" + m_xe.GetAttribute("name");
 			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
+			MainWindow pW = Window.GetWindow(this) as MainWindow;
+
+			if(m_xe.GetAttribute("skin") != "")
+			{
+				Grid tabContent;
+				resBasic.drawImg(m_parentCanvas, m_xe, pW.m_rootPath, m_rootControl, tabContent);
+			}
 
 			addChild();
 		}

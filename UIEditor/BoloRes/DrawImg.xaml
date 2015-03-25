@@ -8,7 +8,8 @@
 	Loaded="tabFrameLoaded" Unloaded="imageFrame_Unloaded"
 	SnapsToDevicePixels="True"
 	Name="mx_rootFrame"
-	  >
+	RenderTransformOrigin="0.5, 0.5"
+	>
 	<Grid.Triggers>
 		<EventTrigger RoutedEvent="Grid.Loaded">
 			<BeginStoryboard>
@@ -43,6 +44,11 @@
 						Storyboard.TargetName="mx_ctrR0" Storyboard.TargetProperty="(RowDefinition.Height)"
 						Duration="0:0:0.4" RepeatBehavior="Forever">
 					</ObjectAnimationUsingKeyFrames>
+					<DoubleAnimationUsingKeyFrames
+						Name="mx_aniAngle"
+						Storyboard.TargetName="mx_angle" Storyboard.TargetProperty="(RotateTransform.Angle)"
+						Duration="0:0:0.4" RepeatBehavior="Forever">
+					</DoubleAnimationUsingKeyFrames>
 				</Storyboard>
 			</BeginStoryboard>
 		</EventTrigger>
@@ -55,6 +61,9 @@
 		VerticalAlignment="Top"
 		HorizontalAlignment="Left"
 		>
+		<Grid.RenderTransform>
+			<RotateTransform x:Name="mx_angle"></RotateTransform>
+		</Grid.RenderTransform>
 		<!-- *96/72 = *4/3 -->
 		<Grid.RowDefinitions>
 			<RowDefinition Name="mx_ngr0" Height="70"/>
@@ -194,7 +203,13 @@
 			<ColumnDefinition Name="mx_ctrC0" Width="*"/>
 			<ColumnDefinition Width="0"/>
 		</Grid.ColumnDefinitions>
-		<Border Grid.Row="0" Grid.Column="0" Name="mx_drawFrame"></Border>
+		<Border Grid.Row="0" Grid.Column="0" Name="mx_drawFrame">
+			<Canvas Name="workSpace"
+				Width="{Binding ElementName=mx_ctrC0, Path=Width.Value}"
+				Height="{Binding ElementName=mx_ctrR0, Path=Height.Value}"
+			>
+			</Canvas>
+		</Border>
 		<GridSplitter Name="mx_gsChangeHeight" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#33000000"></GridSplitter>
 		<GridSplitter Name="mx_gsChangeWidth" Width="5" HorizontalAlignment="Right" Background="#33000000"></GridSplitter>
 	</Grid>

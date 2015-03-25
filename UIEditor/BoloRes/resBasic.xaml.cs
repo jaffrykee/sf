@@ -65,7 +65,7 @@ namespace UIEditor.BoloUI
 			MainWindow pW = (MainWindow)Window.GetWindow(this);
 
 			m_rootControl.workSpace.Children.Clear();
-			drawImg(m_rootControl.workSpace, m_xe, pW.m_rootPath);
+			drawImg(m_rootControl.workSpace, m_xe, pW.m_rootPath, m_rootControl);
 		}
 
 		public void eventDrawApperance(object sender, MouseEventArgs e)
@@ -83,9 +83,21 @@ namespace UIEditor.BoloUI
 			drawAnimation(m_rootControl.workSpace, m_xe, pW.m_rootPath);
 		}
 
-		public void drawImg(object frame, XmlElement xe, string path)
+		static public void drawImg(object frame, XmlElement xe, string path, XmlControl rootControl)
 		{
-			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), xe, path) as Grid;
+			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), xe, path, rootControl) as Grid;
+			if (frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl")
+			{
+				(frame as ContentControl).Content = tabContent;
+			}
+			else if (frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel")
+			{
+				(frame as Panel).Children.Add(tabContent);
+			}
+		}
+		static public void drawImg(object frame, XmlElement xe, string path, XmlControl rootControl, ref Grid tabContent)
+		{
+			tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), xe, path, rootControl) as Grid;
 			if (frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl")
 			{
 				(frame as ContentControl).Content = tabContent;
@@ -111,7 +123,7 @@ namespace UIEditor.BoloUI
 
 						if (xeImg.Name == "imageShape")
 						{
-							drawImg(frame, xeImg, path);
+							drawImg(frame, xeImg, path, m_rootControl);
 						}
 					}
 				}
