@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class panel : Basic
 	{
-		public panel(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public panel(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 

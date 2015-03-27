@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class countDown : Basic
 	{
-		public countDown(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public countDown(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 

@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class richText : Basic
 	{
-		public richText(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public richText(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 

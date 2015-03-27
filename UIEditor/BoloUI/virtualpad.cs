@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class virtualpad : Basic
 	{
-		public virtualpad(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public virtualpad(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 

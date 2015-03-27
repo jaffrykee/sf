@@ -81,10 +81,22 @@ namespace UIEditor.BoloUI
 			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
 			MainWindow pW = Window.GetWindow(this) as MainWindow;
 
+
 			if(m_xe.GetAttribute("skin") != "")
 			{
-				Grid tabContent;
-				resBasic.drawImg(m_parentCanvas, m_xe, pW.m_rootPath, m_rootControl, tabContent);
+				XmlElement xe = pW.m_mapStrSkin[m_xe.GetAttribute("skin")];
+				Grid tabContent = new Grid();
+				resBasic.drawImg(m_parentCanvas, m_xe, pW.m_rootPath, m_rootControl, ref tabContent);
+				this.m_curCanvas = ((UIEditor.BoloUI.DrawImg)tabContent).mx_workSpace;
+
+				if(m_xe.GetAttribute("h") != "")
+				{
+					this.m_curCanvas.Height = double.Parse(m_xe.GetAttribute("h"));
+				}
+				if(m_xe.GetAttribute("w") != "")
+				{
+					this.m_curCanvas.Width = double.Parse(m_xe.GetAttribute("w"));
+				}
 			}
 
 			addChild();

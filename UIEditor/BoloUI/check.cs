@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class check : Basic
 	{
-		public check(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public check(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 

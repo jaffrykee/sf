@@ -204,7 +204,7 @@
 			<ColumnDefinition Width="0"/>
 		</Grid.ColumnDefinitions>
 		<Border Grid.Row="0" Grid.Column="0" Name="mx_drawFrame">
-			<Canvas Name="workSpace"
+			<Canvas Name="mx_workSpace"
 				Width="{Binding ElementName=mx_ctrC0, Path=Width.Value}"
 				Height="{Binding ElementName=mx_ctrR0, Path=Height.Value}"
 			>

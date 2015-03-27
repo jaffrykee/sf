@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class listPanel : Basic
 	{
-		public listPanel(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public listPanel(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 

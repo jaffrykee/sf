@@ -16,7 +16,7 @@
 			<ColumnDefinition Width="*" MinWidth="20"/>
 		</Grid.ColumnDefinitions>
 		<!-- 960 640         720 480 -->
-		<Canvas Name="workSpace" Grid.Row="0" Grid.Column="0" Width="960" Height="640" Background="#ffffffff">
+		<Canvas Name="mx_workSpace" Grid.Row="0" Grid.Column="0" Width="960" Height="640" Background="#ffffffff">
 		</Canvas>
 		<!--
 		<ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Margin="0,0,0,5">

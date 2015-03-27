@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class skillbutton : Basic
 	{
-		public skillbutton(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public skillbutton(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 
