@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class progress : Basic
 	{
-		public progress(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public progress(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 

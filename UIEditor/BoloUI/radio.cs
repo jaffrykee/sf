@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class radio : Basic
 	{
-		public radio(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public radio(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 

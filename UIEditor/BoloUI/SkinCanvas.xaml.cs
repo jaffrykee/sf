@@ -12,24 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Xml;
 
 namespace UIEditor.BoloUI
 {
-	public class countDown : Basic
+	/// <summary>
+	/// SkinCanvas.xaml 的交互逻辑
+	/// </summary>
+	public partial class SkinCanvas : Canvas
 	{
-		public countDown(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
-			: base(xe, rootControl, parentCanvas)
+		public SkinCanvas()
 		{
-		}
-
-		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
-		{
-			this.Header = this.GetType().Name;
-			this.Header += ":" + m_xe.GetAttribute("name");
-			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
-
-			addChild();
+			InitializeComponent();
 		}
 	}
 }

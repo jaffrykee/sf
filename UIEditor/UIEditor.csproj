@@ -93,6 +93,9 @@
     <Compile Include="BoloUI\skillbutton.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BoloUI\SkinCanvas.xaml.cs">
+      <DependentUpon>SkinCanvas.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BoloUI\virtualpad.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -131,6 +134,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BoloUI\Event.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoloUI\SkinCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

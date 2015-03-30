@@ -23,21 +23,26 @@ namespace UIEditor.BoloUI
 	{
 		public XmlControl m_rootControl;
 		public XmlElement m_xe;
+		public Canvas m_parentCanvas;
+		public Canvas m_curCanvas;
 
 		public Basic()
 		{
 			InitializeComponent();
 		}
 
-		public Basic(XmlElement xe, XmlControl rootControl)
+		public Basic(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
 		{
 			InitializeComponent();
 			m_rootControl = rootControl;
 			m_xe = xe;
+			m_parentCanvas = parentCanvas;
 		}
 
 		protected void addChild()
 		{
+			drawSkin();
+
 			XmlNodeList xnl = m_xe.ChildNodes;
 			foreach (XmlNode xnf in xnl)
 			{
@@ -56,7 +61,7 @@ namespace UIEditor.BoloUI
 						default:
 							if (Type.GetType("UIEditor.BoloUI." + xe.Name) != null)
 							{
-								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI." + xe.Name), xe, m_rootControl) as TreeViewItem;
+								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI." + xe.Name), xe, m_rootControl, m_curCanvas) as TreeViewItem;
 								this.Items.Add(treeChild);
 							}
 							else
@@ -78,6 +83,44 @@ namespace UIEditor.BoloUI
 			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
 
 			addChild();
+		}
+
+		protected void drawSkin()
+		{
+			MainWindow pW = Window.GetWindow(this) as MainWindow;
+			XmlElement xe;
+			DrawSkin_T drawData;
+
+			drawData.frame = m_parentCanvas;
+			drawData.path = pW.m_rootPath;
+			drawData.rootControl = m_rootControl;
+
+			if (m_xe.GetAttribute("skin") != "" && pW.m_mapStrSkin.TryGetValue(m_xe.GetAttribute("skin"), out xe))
+			{
+				drawData.xe = xe;
+				resBasic.drawApperanceById(drawData, "0");
+			}
+
+			object skinCanvas = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.SkinCanvas")) as Canvas;
+			this.m_parentCanvas.Children.Add((Canvas)skinCanvas);
+			this.m_curCanvas = (Canvas)skinCanvas;
+			if (m_xe.GetAttribute("h") != "")
+			{
+				this.m_curCanvas.Height = double.Parse(m_xe.GetAttribute("h"));
+			}
+			if (m_xe.GetAttribute("w") != "")
+			{
+				this.m_curCanvas.Width = double.Parse(m_xe.GetAttribute("w"));
+			}
+			if (m_xe.GetAttribute("x") != "")
+			{
+				Canvas.SetLeft(this.m_curCanvas, double.Parse(m_xe.GetAttribute("x")));
+			}
+			if (m_xe.GetAttribute("y") != "")
+			{
+				Canvas.SetTop(this.m_curCanvas, double.Parse(m_xe.GetAttribute("y")));
+			}
+			//this.m_curCanvas.Background = new SolidColorBrush((Color)Color.FromArgb(20, 0, 0, 0));
 		}
 	}
 }

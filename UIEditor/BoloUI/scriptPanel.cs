@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class scriptPanel : Basic
 	{
-		public scriptPanel(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public scriptPanel(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 

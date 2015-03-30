@@ -176,7 +176,7 @@ namespace UIEditor
 								case "panel":
 									#region
 									{
-										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.panel"), xe, this) as TreeViewItem;
+										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.panel"), xe, this, this.mx_workSpace) as TreeViewItem;
 										this.m_openedFile.m_treeUI.Items.Add(treeChild);
 									}
 									#endregion

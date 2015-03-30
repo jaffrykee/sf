@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="UIEditor.MainWindow"
         Title="MainWindow" Width="Auto" Height="Auto"
+		WindowState="Maximized"
 		>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -66,7 +67,14 @@
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"></GridSplitter>
 		<DockPanel Grid.Row="3" Grid.Column="1">
-			<Label Name="debug"></Label>
+			<TextBox
+			Name="mx_debug"
+			TextWrapping="Wrap"
+			AcceptsReturn="True"
+			VerticalScrollBarVisibility="Visible"
+			HorizontalAlignment="Stretch"
+			IsReadOnly="True">
+			</TextBox>
 		</DockPanel>
 	</Grid>
 </Window>

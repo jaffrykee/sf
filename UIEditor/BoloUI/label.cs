@@ -18,7 +18,8 @@ namespace UIEditor.BoloUI
 {
 	public class label : Basic
 	{
-		public label(XmlElement xe, XmlControl rootControl):base(xe, rootControl)
+		public label(XmlElement xe, XmlControl rootControl, Canvas parentCanvas)
+			: base(xe, rootControl, parentCanvas)
 		{
 		}
 
