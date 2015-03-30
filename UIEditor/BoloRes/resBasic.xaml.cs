@@ -71,7 +71,6 @@ namespace UIEditor.BoloUI
 		public void eventDrawImg(object sender, MouseEventArgs e)
 		{
 			MainWindow pW = (MainWindow)Window.GetWindow(this);
-			Grid tabContent = new Grid();
 			DrawSkin_T drawData;
 
 			drawData.frame = m_rootControl.mx_workSpace;
@@ -80,13 +79,12 @@ namespace UIEditor.BoloUI
 			drawData.rootControl = m_rootControl;
 
 			m_rootControl.mx_workSpace.Children.Clear();
-			drawImg(drawData, ref tabContent);
+			drawImg(drawData);
 		}
 
 		public void eventDrawApperance(object sender, MouseEventArgs e)
 		{
 			MainWindow pW = (MainWindow)Window.GetWindow(this);
-			Grid tabContent = new Grid();
 			DrawSkin_T drawData;
 
 			drawData.frame = m_rootControl.mx_workSpace;
@@ -95,7 +93,7 @@ namespace UIEditor.BoloUI
 			drawData.rootControl = m_rootControl;
 
 			m_rootControl.mx_workSpace.Children.Clear();
-			drawApperance(drawData, ref tabContent);
+			drawApperance(drawData);
 		}
 
 		public void eventDrawAnimation(object sender, MouseEventArgs e)
@@ -106,27 +104,31 @@ namespace UIEditor.BoloUI
 			drawAnimation(m_rootControl.mx_workSpace, m_xe, pW.m_rootPath);
 		}
 
-		static public void drawImg(DrawSkin_T drawData, ref Grid tabContent)
+		static public void drawImg(DrawSkin_T drawData)
 		{
-			tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), drawData.xe, drawData.path, drawData.rootControl) as Grid;
-			if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl")
+			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawImg"), drawData.xe, drawData.path, drawData.rootControl) as Grid;
+			if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl" ||
+				drawData.frame.GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.ContentControl")
 			{
 				(drawData.frame as ContentControl).Content = tabContent;
 			}
-			else if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel")
+			else if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel" ||
+				drawData.frame.GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.Panel")
 			{
 				(drawData.frame as Panel).Children.Add(tabContent);
 			}
 		}
 
-		static public void drawApperance(DrawSkin_T drawData, ref Grid tabContent)
+		static public void drawApperance(DrawSkin_T drawData)
 		{
 			if(drawData.xe != null)
 			{
 				XmlNodeList xnl = drawData.xe.ChildNodes;
 
 				if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl" ||
-					drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel")
+					drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel" ||
+					drawData.frame.GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.ContentControl" ||
+					drawData.frame.GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.Panel")
 				{
 					foreach (XmlNode xnf in xnl)
 					{
@@ -137,22 +139,15 @@ namespace UIEditor.BoloUI
 							if (xeImg.Name == "imageShape")
 							{
 								drawData.xe = xeImg;
-								drawImg(drawData, ref tabContent);
+								drawImg(drawData);
 							}
 						}
 					}
 				}
 			}
-			else
-			{
-				if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl" ||
-					drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel")
-				{
-				}
-			}
 		}
 
-		static public bool drawApperanceById(DrawSkin_T drawData, ref Grid tabContent, string appId)
+		static public bool drawApperanceById(DrawSkin_T drawData, string appId)
 		{
 			if(drawData.xe != null)
 			{
@@ -167,26 +162,21 @@ namespace UIEditor.BoloUI
 
 						if (xeApp.Name == "apperance")
 						{
-							if (xeApp.GetAttribute("id") == appId || appId == "")
+							if (xeApp.GetAttribute("id") != "" && xeApp.GetAttribute("id") == appId)
 							{
 								drawData.xe = xeApp;
-								drawApperance(drawData, ref tabContent);
+								drawApperance(drawData);
 
 								return true;
 							}
 						}
 					}
 				}
-				drawData.xe = null;
-				drawApperance(drawData, ref tabContent);
 
 				return false;
 			}
 			else
 			{
-				drawData.xe = null;
-				drawApperance(drawData, ref tabContent);
-
 				return false;
 			}
 		}

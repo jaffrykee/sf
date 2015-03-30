@@ -204,11 +204,6 @@
 			<ColumnDefinition Width="0"/>
 		</Grid.ColumnDefinitions>
 		<Border Grid.Row="0" Grid.Column="0" Name="mx_drawFrame">
-			<Canvas Name="mx_workSpace"
-				Width="{Binding ElementName=mx_ctrC0, Path=Width.Value}"
-				Height="{Binding ElementName=mx_ctrR0, Path=Height.Value}"
-			>
-			</Canvas>
 		</Border>
 		<GridSplitter Name="mx_gsChangeHeight" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#33000000"></GridSplitter>
 		<GridSplitter Name="mx_gsChangeWidth" Width="5" HorizontalAlignment="Right" Background="#33000000"></GridSplitter>

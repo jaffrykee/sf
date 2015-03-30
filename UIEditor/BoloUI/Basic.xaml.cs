@@ -89,7 +89,6 @@ namespace UIEditor.BoloUI
 		{
 			MainWindow pW = Window.GetWindow(this) as MainWindow;
 			XmlElement xe;
-			Grid tabContent = new Grid();
 			DrawSkin_T drawData;
 
 			drawData.frame = m_parentCanvas;
@@ -99,14 +98,12 @@ namespace UIEditor.BoloUI
 			if (m_xe.GetAttribute("skin") != "" && pW.m_mapStrSkin.TryGetValue(m_xe.GetAttribute("skin"), out xe))
 			{
 				drawData.xe = xe;
+				resBasic.drawApperanceById(drawData, "0");
 			}
-			else
-			{
-				drawData.xe = null;
-			}
-			resBasic.drawApperanceById(drawData, ref tabContent, "0");
-			this.m_curCanvas = ((UIEditor.BoloUI.DrawImg)tabContent).mx_workSpace;
 
+			object skinCanvas = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.SkinCanvas")) as Canvas;
+			this.m_parentCanvas.Children.Add((Canvas)skinCanvas);
+			this.m_curCanvas = (Canvas)skinCanvas;
 			if (m_xe.GetAttribute("h") != "")
 			{
 				this.m_curCanvas.Height = double.Parse(m_xe.GetAttribute("h"));
@@ -115,6 +112,15 @@ namespace UIEditor.BoloUI
 			{
 				this.m_curCanvas.Width = double.Parse(m_xe.GetAttribute("w"));
 			}
+			if (m_xe.GetAttribute("x") != "")
+			{
+				Canvas.SetLeft(this.m_curCanvas, double.Parse(m_xe.GetAttribute("x")));
+			}
+			if (m_xe.GetAttribute("y") != "")
+			{
+				Canvas.SetTop(this.m_curCanvas, double.Parse(m_xe.GetAttribute("y")));
+			}
+			//this.m_curCanvas.Background = new SolidColorBrush((Color)Color.FromArgb(20, 0, 0, 0));
 		}
 	}
 }
