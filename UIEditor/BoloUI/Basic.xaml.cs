@@ -59,7 +59,7 @@ namespace UIEditor.BoloUI
 						default:
 							if (Type.GetType("UIEditor.BoloUI." + xe.Name) != null)
 							{
-								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI." + xe.Name), xe, m_rootControl) as TreeViewItem;
+								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI." + xe.Name), xe, m_rootControl, m_curCanvas) as TreeViewItem;
 								this.Items.Add(treeChild);
 							}
 							else
@@ -82,11 +82,18 @@ namespace UIEditor.BoloUI
 			MainWindow pW = Window.GetWindow(this) as MainWindow;
 
 
-			if(m_xe.GetAttribute("skin") != "")
+			//if(m_xe.GetAttribute("skin") != "")
 			{
 				XmlElement xe = pW.m_mapStrSkin[m_xe.GetAttribute("skin")];
 				Grid tabContent = new Grid();
-				resBasic.drawImg(m_parentCanvas, m_xe, pW.m_rootPath, m_rootControl, ref tabContent);
+				DrawSkin_T drawData;
+
+				drawData.frame = m_parentCanvas;
+				drawData.xe = xe;
+				drawData.path = pW.m_rootPath;
+				drawData.rootControl = m_rootControl;
+
+				resBasic.drawApperanceById(drawData, ref tabContent, "0");
 				this.m_curCanvas = ((UIEditor.BoloUI.DrawImg)tabContent).mx_workSpace;
 
 				if(m_xe.GetAttribute("h") != "")

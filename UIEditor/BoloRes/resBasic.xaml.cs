@@ -142,16 +142,31 @@ namespace UIEditor.BoloUI
 			}
 		}
 
-		static public bool drawApperanceById(XmlElement xeSkin, string id)
+		static public bool drawApperanceById(DrawSkin_T drawData, ref Grid tabContent, string appId)
 		{
+			XmlElement xeSkin = drawData.xe;
 			XmlNodeList xnl = xeSkin.ChildNodes;
 
 			foreach(XmlNode xnf in xnl)
 			{
 				if (xnf.NodeType == XmlNodeType.Element)
 				{
+					XmlElement xeApp = (XmlElement)xnf;
+
+					if(xeApp.Name == "apperance")
+					{
+						if (xeApp.GetAttribute("id") == appId)
+						{
+							drawData.xe = xeApp;
+							drawApperance(drawData, ref tabContent);
+
+							return true;
+						}
+					}
 				}
 			}
+
+			return false;
 		}
 
 		public void drawAnimation(object frame, XmlElement xe, string path)
