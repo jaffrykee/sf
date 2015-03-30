@@ -121,52 +121,74 @@ namespace UIEditor.BoloUI
 
 		static public void drawApperance(DrawSkin_T drawData, ref Grid tabContent)
 		{
-			XmlNodeList xnl = drawData.xe.ChildNodes;
-
-			if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl" ||
-				drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel")
+			if(drawData.xe != null)
 			{
-				foreach (XmlNode xnf in xnl)
-				{
-					if (xnf.NodeType == XmlNodeType.Element)
-					{
-						XmlElement xeImg = (XmlElement)xnf;
+				XmlNodeList xnl = drawData.xe.ChildNodes;
 
-						if (xeImg.Name == "imageShape")
+				if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl" ||
+					drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel")
+				{
+					foreach (XmlNode xnf in xnl)
+					{
+						if (xnf.NodeType == XmlNodeType.Element)
 						{
-							drawData.xe = xeImg;
-							drawImg(drawData, ref tabContent);
+							XmlElement xeImg = (XmlElement)xnf;
+
+							if (xeImg.Name == "imageShape")
+							{
+								drawData.xe = xeImg;
+								drawImg(drawData, ref tabContent);
+							}
 						}
 					}
+				}
+			}
+			else
+			{
+				if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl" ||
+					drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel")
+				{
 				}
 			}
 		}
 
 		static public bool drawApperanceById(DrawSkin_T drawData, ref Grid tabContent, string appId)
 		{
-			XmlElement xeSkin = drawData.xe;
-			XmlNodeList xnl = xeSkin.ChildNodes;
-
-			foreach(XmlNode xnf in xnl)
+			if(drawData.xe != null)
 			{
-				if (xnf.NodeType == XmlNodeType.Element)
+				XmlElement xeSkin = drawData.xe;
+				XmlNodeList xnl = xeSkin.ChildNodes;
+
+				foreach (XmlNode xnf in xnl)
 				{
-					XmlElement xeApp = (XmlElement)xnf;
-
-					if(xeApp.Name == "apperance")
+					if (xnf.NodeType == XmlNodeType.Element)
 					{
-						if (xeApp.GetAttribute("id") == appId)
-						{
-							drawData.xe = xeApp;
-							drawApperance(drawData, ref tabContent);
+						XmlElement xeApp = (XmlElement)xnf;
 
-							return true;
+						if (xeApp.Name == "apperance")
+						{
+							if (xeApp.GetAttribute("id") == appId || appId == "")
+							{
+								drawData.xe = xeApp;
+								drawApperance(drawData, ref tabContent);
+
+								return true;
+							}
 						}
 					}
 				}
-			}
+				drawData.xe = null;
+				drawApperance(drawData, ref tabContent);
 
-			return false;
+				return false;
+			}
+			else
+			{
+				drawData.xe = null;
+				drawApperance(drawData, ref tabContent);
+
+				return false;
+			}
 		}
 
 		public void drawAnimation(object frame, XmlElement xe, string path)

@@ -41,6 +41,8 @@ namespace UIEditor.BoloUI
 
 		protected void addChild()
 		{
+			drawSkin();
+
 			XmlNodeList xnl = m_xe.ChildNodes;
 			foreach (XmlNode xnf in xnl)
 			{
@@ -79,34 +81,40 @@ namespace UIEditor.BoloUI
 			this.Header = this.GetType().Name;
 			this.Header += ":" + m_xe.GetAttribute("name");
 			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
-			MainWindow pW = Window.GetWindow(this) as MainWindow;
-
-
-			//if(m_xe.GetAttribute("skin") != "")
-			{
-				XmlElement xe = pW.m_mapStrSkin[m_xe.GetAttribute("skin")];
-				Grid tabContent = new Grid();
-				DrawSkin_T drawData;
-
-				drawData.frame = m_parentCanvas;
-				drawData.xe = xe;
-				drawData.path = pW.m_rootPath;
-				drawData.rootControl = m_rootControl;
-
-				resBasic.drawApperanceById(drawData, ref tabContent, "0");
-				this.m_curCanvas = ((UIEditor.BoloUI.DrawImg)tabContent).mx_workSpace;
-
-				if(m_xe.GetAttribute("h") != "")
-				{
-					this.m_curCanvas.Height = double.Parse(m_xe.GetAttribute("h"));
-				}
-				if(m_xe.GetAttribute("w") != "")
-				{
-					this.m_curCanvas.Width = double.Parse(m_xe.GetAttribute("w"));
-				}
-			}
 
 			addChild();
+		}
+
+		protected void drawSkin()
+		{
+			MainWindow pW = Window.GetWindow(this) as MainWindow;
+			XmlElement xe;
+			Grid tabContent = new Grid();
+			DrawSkin_T drawData;
+
+			drawData.frame = m_parentCanvas;
+			drawData.path = pW.m_rootPath;
+			drawData.rootControl = m_rootControl;
+
+			if (m_xe.GetAttribute("skin") != "" && pW.m_mapStrSkin.TryGetValue(m_xe.GetAttribute("skin"), out xe))
+			{
+				drawData.xe = xe;
+			}
+			else
+			{
+				drawData.xe = null;
+			}
+			resBasic.drawApperanceById(drawData, ref tabContent, "0");
+			this.m_curCanvas = ((UIEditor.BoloUI.DrawImg)tabContent).mx_workSpace;
+
+			if (m_xe.GetAttribute("h") != "")
+			{
+				this.m_curCanvas.Height = double.Parse(m_xe.GetAttribute("h"));
+			}
+			if (m_xe.GetAttribute("w") != "")
+			{
+				this.m_curCanvas.Width = double.Parse(m_xe.GetAttribute("w"));
+			}
 		}
 	}
 }
