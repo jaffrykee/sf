@@ -41,7 +41,79 @@ namespace UIEditor.BoloUI
 
 		protected void addChild()
 		{
-			drawSkin();
+			#region 检验是否有未知的BoloUI属性
+			foreach (XmlAttribute att in m_xe.Attributes)
+			{
+				switch (att.Name)
+				{
+					case "baseID":
+					case "name":
+					case "visible":
+					case "skin":
+					case "w":
+					case "h":
+					case "x":
+					case "y":
+					case "anchor":
+					case "anchorSelf":
+					case "dock":
+
+					//上边都是已经解析的，下边都是已知的未解析的。
+
+					case "text":
+					case "value":
+
+					case "showStyle":
+					case "vStyle":
+					case "fillHeadTailShowType":
+
+					case "autoSize":
+					case "leftBorder":
+					case "rightBorder":
+					case "lineHeight":
+
+					case "sliderHeight":
+					case "sliderLeftFill":
+					case "sliderWidth":
+
+					case "blinkTextAreaH":
+					case "blinkTextAreaW":
+					case "blinkTextAreaX":
+					case "blinktimes":
+					case "pressedEndBlink":
+
+					case "hours":
+					case "minutes":
+					case "seconds":
+					case "start":
+					case "changeSpeed":
+					case "backTime":
+					case "movieLayer":
+					case "movieSpe":
+
+					case "canSelectByKey":
+					case "canFocus":
+					case "isEnableScroll":
+
+					case "cel":
+					case "docklayer":
+					case "countType":
+					case "fingerpadr":
+					case "pf":
+
+					case "appendOri":
+					case "ori":
+						break;
+					default:
+						{
+							m_rootControl.textContent.Text += ("UIattr:<name>" + att.Name + "\t<value>" + att.Value + "\r\n");
+						}
+						break;
+				}
+			}
+			#endregion
+
+			bool visible = drawSkin();
 
 			XmlNodeList xnl = m_xe.ChildNodes;
 			foreach (XmlNode xnf in xnl)
@@ -85,14 +157,22 @@ namespace UIEditor.BoloUI
 			addChild();
 		}
 
-		protected void drawSkin()
+		protected bool drawSkin()
 		{
+			if (m_xe.GetAttribute("visible") == "false" || m_parentCanvas == null)
+			{
+				this.m_curCanvas = null;
+
+				return false;
+			}
+
 			object skinCanvas = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.SkinCanvas")) as Canvas;
 			this.m_parentCanvas.Children.Add((Canvas)skinCanvas);
 			this.m_curCanvas = (Canvas)skinCanvas;
 			double dH = 0.0d, dW = 0.0d;
 			double dX = 0.0d, dY = 0.0d;
 
+			#region h w x & y
 			if (m_xe.GetAttribute("h") != "")
 			{
 				dH = double.Parse(m_xe.GetAttribute("h"));
@@ -127,23 +207,94 @@ namespace UIEditor.BoloUI
 			{
 				dY = 0;
 			}
+			#endregion
+
+			#region anchor
 			if (m_xe.GetAttribute("anchor") != "")
 			{
 				int anchor = int.Parse(m_xe.GetAttribute("anchor"));
 
-				if ((anchor & 0x03) == 0x02)
+				switch(anchor & 0x03)
 				{
-					//下
-					dY = dY + (((Canvas)this.m_parentCanvas).Height - dH);
+					case 0x01:
+						//上
+						break;
+					case 0x02:
+						//下
+						dY = dY + (this.m_parentCanvas.Height);
+						break;
+					case 0x03:
+						//中
+						dY = dY + (this.m_parentCanvas.Height)/2;
+						break;
+					default:
+						break;
 				}
-
-				if ((anchor & 0x0c) == 0x08)
+				switch (anchor & 0x0c)
 				{
-					//右
-					dX = dX + (((Canvas)this.m_parentCanvas).Width - dW);
+					case 0x04:
+						//左
+						break;
+					case 0x08:
+						//右
+						dX = dX + (this.m_parentCanvas.Width);
+						break;
+					case 0x0c:
+						//中
+						dX = dX + (this.m_parentCanvas.Width)/2;
+						break;
+					default:
+						break;
 				}
 			}
+			#endregion
 
+			if (m_xe.GetAttribute("baseID") == "soulitemLP")
+			{
+				int a = 0;
+			}
+
+			#region anchorSelf
+			if (m_xe.GetAttribute("anchorSelf") != "")
+			{
+				int anchorSelf = int.Parse(m_xe.GetAttribute("anchorSelf"));
+
+				switch (anchorSelf & 0x03)
+				{
+					case 0x01:
+						//上
+						break;
+					case 0x02:
+						//下
+						dY = dY - dH;
+						break;
+					case 0x03:
+						//中
+						dY = dY - dH / 2;
+						break;
+					default:
+						break;
+				}
+				switch (anchorSelf & 0x0c)
+				{
+					case 0x04:
+						//左
+						break;
+					case 0x08:
+						//右
+						dX = dX - dW;
+						break;
+					case 0x0c:
+						//中
+						dX = dX - dW / 2;
+						break;
+					default:
+						break;
+				}
+			}
+			#endregion
+
+			#region dock
 			if (m_xe.GetAttribute("dock") != "")
 			{
 				int dock = int.Parse(m_xe.GetAttribute("dock"));
@@ -181,13 +332,14 @@ namespace UIEditor.BoloUI
 						break;
 				}
 			}
-			
+			#endregion
+
 			this.m_curCanvas.Height = dH;
 			this.m_curCanvas.Width = dW;
 			Canvas.SetLeft(this.m_curCanvas, dX);
 			Canvas.SetTop(this.m_curCanvas, dY);
 
-			this.m_curCanvas.Background = new SolidColorBrush((Color)Color.FromArgb(20, 0, 0, 0));
+			this.m_curCanvas.Background = new SolidColorBrush((Color)Color.FromArgb(0, 0, 0, 0));
 
 			MainWindow pW = Window.GetWindow(this) as MainWindow;
 			XmlElement xe;
@@ -202,6 +354,8 @@ namespace UIEditor.BoloUI
 				drawData.xe = xe;
 				resBasic.drawApperanceById(drawData, "0");
 			}
+
+			return true;
 		}
 	}
 }

@@ -376,10 +376,10 @@ namespace UIEditor.BoloUI
 				{
 					iW = m_imgWidth;
 				}
-				this.mx_ctrR0.Height = new GridLength(iH);
 				this.mx_ctrR0.MinHeight = iH;
-				this.mx_ctrC0.Width = new GridLength(iW);
 				this.mx_ctrC0.MinWidth = iW;
+				mx_ctrC0.Width = new GridLength(((Canvas)this.Parent).Width);
+				mx_ctrR0.Height = new GridLength(((Canvas)this.Parent).Height);
 				#endregion
 
 				#region NineGrid
@@ -581,8 +581,6 @@ namespace UIEditor.BoloUI
 				}
 				Canvas.SetLeft(mx_rootFrame, iX);
 				Canvas.SetTop(mx_rootFrame, iY);
-				mx_ctrC0.Width = new GridLength(((Canvas)this.Parent).Width);
-				mx_ctrR0.Height = new GridLength(((Canvas)this.Parent).Height);
 				#endregion
 
 				if(m_xe.GetAttribute("angle") != "")
