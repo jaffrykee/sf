@@ -581,6 +581,8 @@ namespace UIEditor.BoloUI
 				}
 				Canvas.SetLeft(mx_rootFrame, iX);
 				Canvas.SetTop(mx_rootFrame, iY);
+				mx_ctrC0.Width = new GridLength(((Canvas)this.Parent).Width);
+				mx_ctrR0.Height = new GridLength(((Canvas)this.Parent).Height);
 				#endregion
 
 				if(m_xe.GetAttribute("angle") != "")
