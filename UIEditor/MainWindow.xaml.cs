@@ -72,7 +72,7 @@ namespace UIEditor
 			*/
 			System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			openFolderDialog.Description = "选择UI所在文件夹";
-			openFolderDialog.SelectedPath = "E:\\mmo2013001\\artist\\client_resouce_release\\ui\\free";
+			openFolderDialog.SelectedPath = "E:\\mmo2013001\\artist\\client_resouce\\ui\\free";
 			System.Windows.Forms.DialogResult result = openFolderDialog.ShowDialog();
 
 			if (result == System.Windows.Forms.DialogResult.Cancel)
