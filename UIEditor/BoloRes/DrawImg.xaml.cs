@@ -397,14 +397,14 @@ namespace UIEditor.BoloUI
 						this.mx_ngc0.Width = new GridLength(ngX);
 						this.mx_ngc2.Width = new GridLength((double)m_imgWidth - ngX);
 						perX = ngX / (double)m_imgWidth;
-						this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Visible;
+						//this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Visible;
 
 						iW = ngX;
 					}
 					else
 					{
 						this.mx_ngc0.Width = new GridLength((double)m_imgWidth);
-						this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
+						//this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
 					}
 					if (m_xe.GetAttribute("NGY") != "")
 					{
@@ -414,14 +414,14 @@ namespace UIEditor.BoloUI
 						this.mx_ngr0.Height = new GridLength(ngY);
 						this.mx_ngr2.Height = new GridLength((double)m_imgHeight - ngY);
 						perY = ngY / (double)m_imgHeight;
-						this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Visible;
+						//this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Visible;
 
 						iH = ngY;
 					}
 					else
 					{
 						this.mx_ngr0.Height = new GridLength((double)m_imgHeight);
-						this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
+						//this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
 					}
 					if (m_xe.GetAttribute("NGWidth") != "")
 					{
@@ -443,8 +443,8 @@ namespace UIEditor.BoloUI
 					isNg = false;
 					this.mx_ngc0.Width = new GridLength(iW);
 					this.mx_ngr0.Height = new GridLength(iH);
-					this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
-					this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
+					//this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
+					//this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
 				}
 				cX0 = iW;
 				cX2 = m_imgWidth - iW;

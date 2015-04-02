@@ -79,6 +79,7 @@
     <Compile Include="BoloUI\check.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BoloUI\tabPanel.cs" />
     <Compile Include="BoloUI\radio.cs" />
     <Compile Include="BoloUI\richText.cs" />
     <Compile Include="BoloUI\scriptPanel.cs">
@@ -140,10 +141,6 @@
     <Page Include="BoloUI\SkinCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dark.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="FileTabItem.xaml">
       <SubType>Designer</SubType>

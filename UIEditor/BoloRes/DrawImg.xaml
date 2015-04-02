@@ -7,6 +7,7 @@
     mc:Ignorable="d"
 	Loaded="tabFrameLoaded" Unloaded="imageFrame_Unloaded"
 	SnapsToDevicePixels="True"
+	UseLayoutRounding="True"
 	Name="mx_rootFrame"
 	RenderTransformOrigin="0.5, 0.5"
 	>
@@ -205,7 +206,8 @@
 		</Grid.ColumnDefinitions>
 		<Border Grid.Row="0" Grid.Column="0" Name="mx_drawFrame">
 		</Border>
+<!-- 
 		<GridSplitter Name="mx_gsChangeHeight" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="#33000000"></GridSplitter>
-		<GridSplitter Name="mx_gsChangeWidth" Width="5" HorizontalAlignment="Right" Background="#33000000"></GridSplitter>
+		<GridSplitter Name="mx_gsChangeWidth" Width="5" HorizontalAlignment="Right" Background="#33000000"></GridSplitter> -->
 	</Grid>
 </Grid>

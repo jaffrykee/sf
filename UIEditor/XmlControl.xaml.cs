@@ -97,6 +97,7 @@ namespace UIEditor
 										}
 										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.PublicSkin"), xe, this) as TreeViewItem;
 										publicskinFolder.Items.Add(treeChild);
+										m_parentWindow.m_mapStrSkin[xe.GetAttribute("Name")] = xe;
 									}
 									#endregion
 									break;
@@ -125,6 +126,7 @@ namespace UIEditor
 										}
 										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Skin"), xe, this) as TreeViewItem;
 										skinFolder.Items.Add(treeChild);
+										m_parentWindow.m_mapStrSkin[xe.GetAttribute("Name")] = xe;
 									}
 									#endregion
 									break;
