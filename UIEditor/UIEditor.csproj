@@ -79,6 +79,7 @@
     <Compile Include="BoloUI\check.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BoloUI\apartPanel.cs" />
     <Compile Include="BoloUI\tabPanel.cs" />
     <Compile Include="BoloUI\radio.cs" />
     <Compile Include="BoloUI\richText.cs" />
