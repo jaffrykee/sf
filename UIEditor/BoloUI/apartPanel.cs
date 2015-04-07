@@ -30,20 +30,23 @@ namespace UIEditor.BoloUI
 			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
 
 			addChild();
-
-			double widthCount = 0;
+			
 			int i = 0;
-			foreach(TreeViewItem treeChild in this.Items)
+			double widthCount = 0;
+			Basic lastChild = new Basic();
+			foreach (Basic treeChild in this.Items)
 			{
-				if(i == this.Items.Count - 1)
+				if (treeChild.m_curCanvas != null)
 				{
-					((UIEditor.BoloUI.Basic)treeChild).m_curCanvas.Width = m_curCanvas.Width - widthCount;
-				}
-				else
-				{
-					widthCount += ((UIEditor.BoloUI.Basic)treeChild).m_curCanvas.Width;
+					widthCount += treeChild.m_curCanvas.Width;
+					lastChild = treeChild;
 				}
 				i++;
+			}
+			if (lastChild.m_curCanvas != null)
+			{
+				widthCount -= lastChild.m_curCanvas.Width;
+				lastChild.m_curCanvas.Width = m_curCanvas.Width - widthCount;
 			}
 		}
 	}

@@ -552,8 +552,6 @@ namespace UIEditor.BoloUI
 				{
 					iY = 0;
 				}
-
-				bool isSpecial = true;
 				
 				if(isNg == false)
 				{

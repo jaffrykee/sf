@@ -119,7 +119,22 @@ namespace UIEditor.BoloUI
 			}
 		}
 
-		static public void drawApperance(DrawSkin_T drawData)
+		static public void drawText(DrawSkin_T drawData, string text = "")
+		{
+			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.DrawText"), drawData.xe, drawData.path, drawData.rootControl, text) as Grid;
+			if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.ContentControl" ||
+				drawData.frame.GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.ContentControl")
+			{
+				(drawData.frame as ContentControl).Content = tabContent;
+			}
+			else if (drawData.frame.GetType().BaseType.ToString() == "System.Windows.Controls.Panel" ||
+				drawData.frame.GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.Panel")
+			{
+				(drawData.frame as Panel).Children.Add(tabContent);
+			}
+		}
+
+		static public void drawApperance(DrawSkin_T drawData, string text = "")
 		{
 			if(drawData.xe != null)
 			{
@@ -136,10 +151,18 @@ namespace UIEditor.BoloUI
 						{
 							XmlElement xeImg = (XmlElement)xnf;
 
-							if (xeImg.Name == "imageShape")
+							switch (xeImg.Name)
 							{
-								drawData.xe = xeImg;
-								drawImg(drawData);
+								case "imageShape":
+									drawData.xe = xeImg;
+									drawImg(drawData);
+									break;
+								case "textShape":
+									drawData.xe = xeImg;
+									drawText(drawData, text);
+									break;
+								default:
+									break;
 							}
 						}
 					}
@@ -147,7 +170,7 @@ namespace UIEditor.BoloUI
 			}
 		}
 
-		static public bool drawApperanceById(DrawSkin_T drawData, string appId)
+		static public bool drawApperanceById(DrawSkin_T drawData, string appId, string text = "")
 		{
 			if(drawData.xe != null)
 			{
@@ -165,7 +188,7 @@ namespace UIEditor.BoloUI
 							if (xeApp.GetAttribute("id") != "" && xeApp.GetAttribute("id") == appId)
 							{
 								drawData.xe = xeApp;
-								drawApperance(drawData);
+								drawApperance(drawData, text);
 
 								return true;
 							}

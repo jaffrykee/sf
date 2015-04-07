@@ -352,7 +352,8 @@ namespace UIEditor.BoloUI
 			if (m_xe.GetAttribute("skin") != "" && pW.m_mapStrSkin.TryGetValue(m_xe.GetAttribute("skin"), out xe))
 			{
 				drawData.xe = xe;
-				resBasic.drawApperanceById(drawData, "0");
+
+				resBasic.drawApperanceById(drawData, "0", m_xe.GetAttribute("text"));
 			}
 
 			return true;

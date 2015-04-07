@@ -61,6 +61,9 @@
     <Compile Include="BoloRes\DrawImg.xaml.cs">
       <DependentUpon>DrawImg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoloRes\DrawText.xaml.cs">
+      <DependentUpon>DrawText.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BoloRes\SkinGroup.cs" />
     <Compile Include="BoloRes\TextShape.cs" />
     <Compile Include="BoloRes\Skin.cs" />
@@ -124,6 +127,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BoloRes\DrawImg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoloRes\DrawText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
