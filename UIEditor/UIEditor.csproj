@@ -116,6 +116,9 @@
     <Compile Include="FileTabItem.xaml.cs">
       <DependentUpon>FileTabItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Public\AttrList.xaml.cs">
+      <DependentUpon>AttrList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UnknownControl.xaml.cs">
       <DependentUpon>UnknownControl.xaml</DependentUpon>
     </Compile>
@@ -172,6 +175,10 @@
     <Page Include="PngControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Public\AttrList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Generic.Dark.xaml">
       <SubType>Designer</SubType>

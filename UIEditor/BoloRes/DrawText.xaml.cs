@@ -41,7 +41,7 @@ namespace UIEditor.BoloUI
 			if (m_loaded == false)
 			{
 				m_loaded = true;
-				mx_text.Content = m_text;
+				mx_text.Content += m_text;
 				if(m_xe.Name == "textShape")
 				{
 

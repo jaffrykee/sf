@@ -5,8 +5,15 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	mc:Ignorable="d" 
 	Loaded="isLoaded"
-	Width="auto"
-	Height="auto"
 	>
-	<Label Name="mx_text"></Label>
+	<Label Name="mx_text" FontFamily="文泉驿等宽微米黑" Background="#00ffffff">
+		<Label.Effect>
+			<DropShadowEffect x:Name="FlowerShadow" 
+				BlurRadius="5" 
+				Color="Black"
+				ShadowDepth="2" 
+				Opacity="1" 
+				Direction="45"/>
+		</Label.Effect>
+	</Label>
 </Grid>
