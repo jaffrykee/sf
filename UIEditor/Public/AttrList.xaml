@@ -1,12 +1,16 @@
-﻿<DockPanel
+﻿<StackPanel
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:userView="clr-namespace:UIEditor"
 	mc:Ignorable="d"
 	x:Class="UIEditor.AttrList"
-	x:Name="UserControl"
-	d:DesignWidth="640" d:DesignHeight="480">
-
-	<Grid x:Name="LayoutRoot"/>
-</DockPanel>
+	x:Name="mx_root"
+	Background="#ff666666"
+	Width="300"
+	>
+	<userView:AttrRow Margin="2,2,2,2"/>
+	<userView:AttrRow Margin="2,2,2,2"/>
+	<userView:AttrRow Margin="2,2,2,2"/>
+</StackPanel>
