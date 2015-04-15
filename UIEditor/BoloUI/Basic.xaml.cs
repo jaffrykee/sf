@@ -25,6 +25,9 @@ namespace UIEditor.BoloUI
 		public XmlElement m_xe;
 		public Canvas m_parentCanvas;
 		public Canvas m_curCanvas;
+		public Dictionary<string, AttrRow> m_mapStrNormalAttr;
+		public Dictionary<string, AttrRow> m_mapStrViewAttr;
+		public Dictionary<string, AttrRow> m_mapStrOtherAttr;
 
 		public Basic()
 		{
@@ -37,78 +40,99 @@ namespace UIEditor.BoloUI
 			m_rootControl = rootControl;
 			m_xe = xe;
 			m_parentCanvas = parentCanvas;
+			m_mapStrNormalAttr = new Dictionary<string, AttrRow>
+			{
+				#region
+				{"baseID",null},
+				{"name", null},
+				{"visible", null},
+				#endregion
+			};
+			m_mapStrViewAttr = new Dictionary<string, AttrRow>
+			{
+				#region
+				{"skin",null},
+				{"w", null},
+				{"h", null},
+				{"x", null},
+				{"y", null},
+				{"anchor", null},
+				{"anchorSelf", null},
+				{"dock", null}
+				#endregion
+			};
+			m_mapStrOtherAttr = new Dictionary<string, AttrRow>
+			{
+				#region
+				{"text",null},
+				{"value",null},
+
+				{"showStyle",null},
+				{"vStyle",null},
+				{"fillHeadTailShowType",null},
+
+				{"autoSize",null},
+				{"leftBorder",null},
+				{"rightBorder",null},
+				{"lineHeight",null},
+
+				{"sliderHeight",null},
+				{"sliderLeftFill",null},
+				{"sliderWidth",null},
+
+				{"blinkTextAreaH",null},
+				{"blinkTextAreaW",null},
+				{"blinkTextAreaX",null},
+				{"blinktimes",null},
+				{"pressedEndBlink",null},
+
+				{"hours",null},
+				{"minutes",null},
+				{"seconds",null},
+				{"start",null},
+				{"changeSpeed",null},
+				{"backTime",null},
+				{"movieLayer",null},
+				{"movieSpe",null},
+
+				{"canSelectByKey",null},
+				{"canFocus",null},
+				{"isEnableScroll",null},
+
+				{"cel",null},
+				{"docklayer",null},
+				{"countType",null},
+				{"fingerpadr",null},
+				{"pf",null},
+
+				{"appendOri",null},
+				{"ori",null}
+				#endregion
+			};
 		}
 
 		protected void addChild()
 		{
+			MainWindow pW = Window.GetWindow(this) as MainWindow;
+
 			#region 检验是否有未知的BoloUI属性
 			foreach (XmlAttribute att in m_xe.Attributes)
 			{
-				switch (att.Name)
+				AttrRow nullPtr;
+
+				if(m_mapStrNormalAttr.TryGetValue(att.Name, out nullPtr))
 				{
-					case "baseID":
-					case "name":
-					case "visible":
-					case "skin":
-					case "w":
-					case "h":
-					case "x":
-					case "y":
-					case "anchor":
-					case "anchorSelf":
-					case "dock":
-
-					//上边都是已经解析的，下边都是已知的未解析的。
-
-					case "text":
-					case "value":
-
-					case "showStyle":
-					case "vStyle":
-					case "fillHeadTailShowType":
-
-					case "autoSize":
-					case "leftBorder":
-					case "rightBorder":
-					case "lineHeight":
-
-					case "sliderHeight":
-					case "sliderLeftFill":
-					case "sliderWidth":
-
-					case "blinkTextAreaH":
-					case "blinkTextAreaW":
-					case "blinkTextAreaX":
-					case "blinktimes":
-					case "pressedEndBlink":
-
-					case "hours":
-					case "minutes":
-					case "seconds":
-					case "start":
-					case "changeSpeed":
-					case "backTime":
-					case "movieLayer":
-					case "movieSpe":
-
-					case "canSelectByKey":
-					case "canFocus":
-					case "isEnableScroll":
-
-					case "cel":
-					case "docklayer":
-					case "countType":
-					case "fingerpadr":
-					case "pf":
-
-					case "appendOri":
-					case "ori":
-						break;
-					default:
-						{
-							m_rootControl.textContent.Text += ("UIattr:<name>" + att.Name + "\t<value>" + att.Value + "\r\n");
-						}
-						break;
+				}
+				else if(m_mapStrViewAttr.TryGetValue(att.Name, out nullPtr))
+				{
+				}
+				else if (m_mapStrOtherAttr.TryGetValue(att.Name, out nullPtr))
+				{
+				}
+				else
+				{
+					m_rootControl.textContent.Text += ("UIattr:<name>" + att.Name + "\t<value>" + att.Value + "\r\n");
+					m_mapStrOtherAttr.Add(att.Name, null);
 				}
 			}
 			#endregion
@@ -148,12 +172,16 @@ namespace UIEditor.BoloUI
 			}
 		}
 
+		protected void initHeader()
+		{
+			mx_text.Content = this.GetType().Name;
+			mx_text.Content += ":" + m_xe.GetAttribute("name");
+			mx_text.Content += "(" + m_xe.GetAttribute("baseID") + ")";
+		}
+
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Header = this.GetType().Name;
-			this.Header += ":" + m_xe.GetAttribute("name");
-			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
-
+			initHeader();
 			addChild();
 		}
 
@@ -357,6 +385,72 @@ namespace UIEditor.BoloUI
 			}
 
 			return true;
+		}
+
+		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			MainWindow pW = Window.GetWindow(this) as MainWindow;
+			AttrRow nullPtr;
+			AttrList normalAttrList;
+			AttrList viewAttrList;
+			AttrList otherAttrList;
+
+			if (pW.m_mapStrAttrList.TryGetValue("normal", out normalAttrList))
+			{
+				normalAttrList.mx_frame.Children.Clear();
+			}
+			if (pW.m_mapStrAttrList.TryGetValue("view", out viewAttrList))
+			{
+				viewAttrList.mx_frame.Children.Clear();
+			}
+			if (pW.m_mapStrAttrList.TryGetValue("other", out otherAttrList))
+			{
+				otherAttrList.mx_frame.Children.Clear();
+			}
+
+			if (pW.m_mapStrAttrList.TryGetValue("normal", out normalAttrList))
+			{
+				foreach (KeyValuePair<string, AttrRow> row in m_mapStrNormalAttr)
+				{
+					normalAttrList.mx_frame.Children.Add(new AttrRow(row.Key, m_xe.GetAttribute(row.Key)));
+				}
+			}
+			if (pW.m_mapStrAttrList.TryGetValue("view", out viewAttrList))
+			{
+				foreach (KeyValuePair<string, AttrRow> row in m_mapStrNormalAttr)
+				{
+					normalAttrList.mx_frame.Children.Add(new AttrRow(row.Key, m_xe.GetAttribute(row.Key)));
+				}
+			}
+			
+			foreach (XmlAttribute att in m_xe.Attributes)
+			{
+				if (m_mapStrNormalAttr.TryGetValue(att.Name, out nullPtr))
+				{
+					if (pW.m_mapStrAttrList.TryGetValue("normal", out normalAttrList))
+					{
+						normalAttrList.mx_frame.Children.Add(new AttrRow(att.Name, m_xe.GetAttribute(att.Name)));
+					}
+				}
+				else if (m_mapStrViewAttr.TryGetValue(att.Name, out nullPtr))
+				{
+					if (pW.m_mapStrAttrList.TryGetValue("view", out viewAttrList))
+					{
+						viewAttrList.mx_frame.Children.Add(new AttrRow(att.Name, m_xe.GetAttribute(att.Name)));
+					}
+				}
+				else if (m_mapStrOtherAttr.TryGetValue(att.Name, out nullPtr))
+				{
+					if (pW.m_mapStrAttrList.TryGetValue("other", out otherAttrList))
+					{
+						otherAttrList.mx_frame.Children.Add(new AttrRow(att.Name, m_xe.GetAttribute(att.Name)));
+					}
+				}
+				else
+				{
+					m_rootControl.textContent.Text += ("UIattr:<name>" + att.Name + "\t<value>" + att.Value + "\r\n");
+				}
+			}
 		}
 	}
 }

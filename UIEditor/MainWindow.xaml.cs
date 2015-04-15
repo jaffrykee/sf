@@ -20,13 +20,13 @@ namespace UIEditor
 	/// <summary>
 	/// MainWindow.xaml 的交互逻辑
 	/// </summary>
+
 	public struct OpenedFile
 	{
 		public string m_path;
 		public TabItem m_tab;
 		public TreeViewItem m_treeUI;
 		public XmlDocument m_xmlDoc;
-
 	}
 
 	public partial class MainWindow : Window
@@ -35,6 +35,7 @@ namespace UIEditor
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
+		public Dictionary<string, AttrList> m_mapStrAttrList;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
 
@@ -47,6 +48,7 @@ namespace UIEditor
 			InitializeComponent();
 			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
 			m_mapStrSkin = new Dictionary<string, XmlElement>();
+			m_mapStrAttrList = new Dictionary<string, AttrList>();
 			m_dpiSysX = 96.0f;
 			m_dpiSysY = 96.0f;
 		}

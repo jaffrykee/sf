@@ -25,10 +25,7 @@ namespace UIEditor.BoloUI
 
 		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Header = this.GetType().Name;
-			this.Header += ":" + m_xe.GetAttribute("name");
-			this.Header += "(" + m_xe.GetAttribute("baseID") + ")";
-
+			initHeader();
 			addChild();
 			
 			int i = 0;

@@ -16,11 +16,19 @@ namespace UIEditor
 	/// <summary>
 	/// AttrList.xaml 的交互逻辑
 	/// </summary>
-	public partial class AttrList : StackPanel
+	public partial class AttrList : Grid
 	{
-		public AttrList()
+		public string m_name;
+
+		public AttrList(string name = "")
 		{
+			m_name = name;
 			this.InitializeComponent();
+		}
+
+		private void mx_root_Loaded(object sender, RoutedEventArgs e)
+		{
+			mx_title.Content = m_name;
 		}
 	}
 }
