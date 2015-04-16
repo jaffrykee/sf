@@ -410,16 +410,50 @@ namespace UIEditor.BoloUI
 
 			if (pW.m_mapStrAttrList.TryGetValue("normal", out normalAttrList))
 			{
-				foreach (KeyValuePair<string, AttrRow> row in m_mapStrNormalAttr)
+				List<KeyValuePair<string, AttrRow>> lstStrAttrRow = m_mapStrNormalAttr.ToList();
+
+				foreach (KeyValuePair<string, AttrRow> row in lstStrAttrRow)
 				{
-					normalAttrList.mx_frame.Children.Add(new AttrRow(row.Key, m_xe.GetAttribute(row.Key)));
+					if (m_xe.GetAttribute(row.Key) == "")
+					{
+					}
+					else
+					{
+					}
+					m_mapStrNormalAttr[row.Key] = new AttrRow(row.Key, m_xe.GetAttribute(row.Key));
+					normalAttrList.mx_frame.Children.Add(m_mapStrNormalAttr[row.Key]);
 				}
 			}
 			if (pW.m_mapStrAttrList.TryGetValue("view", out viewAttrList))
 			{
-				foreach (KeyValuePair<string, AttrRow> row in m_mapStrNormalAttr)
+				List<KeyValuePair<string, AttrRow>> lstStrAttrRow = m_mapStrViewAttr.ToList();
+
+				foreach (KeyValuePair<string, AttrRow> row in lstStrAttrRow)
 				{
-					normalAttrList.mx_frame.Children.Add(new AttrRow(row.Key, m_xe.GetAttribute(row.Key)));
+					if (m_xe.GetAttribute(row.Key) == "")
+					{
+					}
+					else
+					{
+					}
+					m_mapStrViewAttr[row.Key] = new AttrRow(row.Key, m_xe.GetAttribute(row.Key));
+					viewAttrList.mx_frame.Children.Add(m_mapStrViewAttr[row.Key]);
+				}
+			}
+			if (pW.m_mapStrAttrList.TryGetValue("other", out otherAttrList))
+			{
+				List<KeyValuePair<string, AttrRow>> lstStrAttrRow = m_mapStrOtherAttr.ToList();
+
+				foreach (KeyValuePair<string, AttrRow> row in lstStrAttrRow)
+				{
+					if (m_xe.GetAttribute(row.Key) == "")
+					{
+					}
+					else
+					{
+					}
+					m_mapStrOtherAttr[row.Key] = new AttrRow(row.Key, m_xe.GetAttribute(row.Key));
+					otherAttrList.mx_frame.Children.Add(m_mapStrOtherAttr[row.Key]);
 				}
 			}
 			
@@ -427,27 +461,19 @@ namespace UIEditor.BoloUI
 			{
 				if (m_mapStrNormalAttr.TryGetValue(att.Name, out nullPtr))
 				{
-					if (pW.m_mapStrAttrList.TryGetValue("normal", out normalAttrList))
-					{
-						normalAttrList.mx_frame.Children.Add(new AttrRow(att.Name, m_xe.GetAttribute(att.Name)));
-					}
 				}
 				else if (m_mapStrViewAttr.TryGetValue(att.Name, out nullPtr))
 				{
-					if (pW.m_mapStrAttrList.TryGetValue("view", out viewAttrList))
-					{
-						viewAttrList.mx_frame.Children.Add(new AttrRow(att.Name, m_xe.GetAttribute(att.Name)));
-					}
 				}
 				else if (m_mapStrOtherAttr.TryGetValue(att.Name, out nullPtr))
+				{
+				}
+				else
 				{
 					if (pW.m_mapStrAttrList.TryGetValue("other", out otherAttrList))
 					{
 						otherAttrList.mx_frame.Children.Add(new AttrRow(att.Name, m_xe.GetAttribute(att.Name)));
 					}
-				}
-				else
-				{
 					m_rootControl.textContent.Text += ("UIattr:<name>" + att.Name + "\t<value>" + att.Value + "\r\n");
 				}
 			}

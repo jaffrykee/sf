@@ -14,5 +14,7 @@
 		<ColumnDefinition Name="mx_c1" Width="*"/>
 	</Grid.ColumnDefinitions>
 	<Label Name="mx_name" Grid.Column="0" MinWidth="50" Foreground="#ffffffff" HorizontalAlignment="Right">width:</Label>
-	<TextBox Name="mx_value" Grid.Column="1" MinWidth="100">2</TextBox>
+	<Grid Grid.Column="1" Background="#ffffffff"></Grid>
+	<Label Name="mx_valueDef" Grid.Column="1" MinWidth="100" Foreground="#ffaaaaaa">default</Label>
+	<TextBox Name="mx_value" Grid.Column="1" MinWidth="100" FocusableChanged="mx_value_FocusableChanged" Background="#00000000"></TextBox>
 </Grid>
