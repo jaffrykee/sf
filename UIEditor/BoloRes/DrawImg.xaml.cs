@@ -359,63 +359,69 @@ namespace UIEditor.BoloUI
 				m_imgWidth = bmp.Size.Width;
 				m_imgHeight = bmp.Size.Height;
 				double perX = 1.0d, perY = 1.0d, perDx = 0.0d, perDy = 0.0d;
+				double curCanvasWidth = ((Canvas)this.Parent).Width;
+				double curCanvasHeight = ((Canvas)this.Parent).Height;
+				bool isNg = false;
 
 				if (m_xe.GetAttribute("Height") != null && m_xe.GetAttribute("Height") != "")
 				{
 					iH = double.Parse(m_xe.GetAttribute("Height"));
+					mx_ctrR0.Height = new GridLength(iH);
 				}
 				else
 				{
 					iH = m_imgHeight;
+					mx_ctrR0.Height = new GridLength(curCanvasHeight);
 				}
 				if (m_xe.GetAttribute("Width") != null && m_xe.GetAttribute("Width") != "")
 				{
 					iW = double.Parse(m_xe.GetAttribute("Width"));
+					mx_ctrC0.Width = new GridLength(iW);
 				}
 				else
 				{
 					iW = m_imgWidth;
+					mx_ctrC0.Width = new GridLength(curCanvasWidth);
 				}
-				this.mx_ctrR0.Height = new GridLength(iH);
-				this.mx_ctrR0.MinHeight = iH;
-				this.mx_ctrC0.Width = new GridLength(iW);
-				this.mx_ctrC0.MinWidth = iW;
 				#endregion
 
 				#region NineGrid
 				if (m_xe.GetAttribute("NineGrid") == "true")
 				{
+					isNg = true;
 					if (m_xe.GetAttribute("NGX") != "")
 					{
 						double ngX = double.Parse(m_xe.GetAttribute("NGX"));
 
+						this.mx_ctrC0.MinWidth = iW;
 						this.mx_ngc0.Width = new GridLength(ngX);
 						this.mx_ngc2.Width = new GridLength((double)m_imgWidth - ngX);
 						perX = ngX / (double)m_imgWidth;
-						this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Visible;
+						//this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Visible;
 
 						iW = ngX;
 					}
 					else
 					{
 						this.mx_ngc0.Width = new GridLength((double)m_imgWidth);
-						this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
+						//this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
 					}
 					if (m_xe.GetAttribute("NGY") != "")
 					{
 						double ngY = double.Parse(m_xe.GetAttribute("NGY"));
 
+						this.mx_ctrR0.MinHeight = iH;
 						this.mx_ngr0.Height = new GridLength(ngY);
 						this.mx_ngr2.Height = new GridLength((double)m_imgHeight - ngY);
 						perY = ngY / (double)m_imgHeight;
-						this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Visible;
+						//this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Visible;
 
 						iH = ngY;
 					}
 					else
 					{
 						this.mx_ngr0.Height = new GridLength((double)m_imgHeight);
-						this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
+						//this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
 					}
 					if (m_xe.GetAttribute("NGWidth") != "")
 					{
@@ -434,10 +440,11 @@ namespace UIEditor.BoloUI
 				}
 				else
 				{
+					isNg = false;
 					this.mx_ngc0.Width = new GridLength(iW);
 					this.mx_ngr0.Height = new GridLength(iH);
-					this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
-					this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
+					//this.mx_gsChangeHeight.Visibility = System.Windows.Visibility.Collapsed;
+					//this.mx_gsChangeWidth.Visibility = System.Windows.Visibility.Collapsed;
 				}
 				cX0 = iW;
 				cX2 = m_imgWidth - iW;
@@ -545,7 +552,15 @@ namespace UIEditor.BoloUI
 				{
 					iY = 0;
 				}
-
+				
+				if(isNg == false)
+				{
+				}
+				else
+				{
+					iW = curCanvasWidth;
+					iH = curCanvasHeight;
+				}
 				if (m_xe.GetAttribute("Anchor") != "")
 				{
 					int anchor = int.Parse(m_xe.GetAttribute("Anchor"));
@@ -553,11 +568,13 @@ namespace UIEditor.BoloUI
 					if ((anchor & 0x01) > 0)
 					{
 						//水平居中
+						//iX = iX + (((Canvas)this.Parent).Width - curCanvasWidth) / 2;
 						iX = iX + (((Canvas)this.Parent).Width - iW) / 2;
 					}
 					if ((anchor & 0x02) > 0)
 					{
 						//垂直居中
+						//iY = iY + (((Canvas)this.Parent).Height - curCanvasHeight) / 2;
 						iY = iY + (((Canvas)this.Parent).Height - iH) / 2;
 					}
 					if ((anchor & 0x04) > 0)
@@ -567,6 +584,7 @@ namespace UIEditor.BoloUI
 					if ((anchor & 0x08) > 0)
 					{
 						//右对齐
+						//iX = iX + (((Canvas)this.Parent).Width - curCanvasWidth);
 						iX = iX + (((Canvas)this.Parent).Width - iW);
 					}
 					if ((anchor & 0x10) > 0)
@@ -576,6 +594,7 @@ namespace UIEditor.BoloUI
 					if ((anchor & 0x20) > 0)
 					{
 						//底部对齐
+						//iY = iY + (((Canvas)this.Parent).Height - curCanvasHeight);
 						iY = iY + (((Canvas)this.Parent).Height - iH);
 					}
 				}

@@ -33,8 +33,8 @@ namespace UIEditor.BoloUI
 
 		private void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.Header = m_xe.GetAttribute("type");
-			this.Header += ":" + m_xe.GetAttribute("function");
+			mx_text.Content = m_xe.GetAttribute("type");
+			//mx_text.Content += ":" + m_xe.GetAttribute("function");
 		}
 	}
 }

@@ -97,6 +97,7 @@ namespace UIEditor
 										}
 										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.PublicSkin"), xe, this) as TreeViewItem;
 										publicskinFolder.Items.Add(treeChild);
+										m_parentWindow.m_mapStrSkin[xe.GetAttribute("Name")] = xe;
 									}
 									#endregion
 									break;
@@ -125,6 +126,7 @@ namespace UIEditor
 										}
 										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Skin"), xe, this) as TreeViewItem;
 										skinFolder.Items.Add(treeChild);
+										m_parentWindow.m_mapStrSkin[xe.GetAttribute("Name")] = xe;
 									}
 									#endregion
 									break;
@@ -206,6 +208,15 @@ namespace UIEditor
 						}
 					}
 				 */
+
+				m_parentWindow.mx_toolArea.Children.Clear();
+				m_parentWindow.m_mapStrAttrList.Clear();
+				m_parentWindow.m_mapStrAttrList["normal"] = new UIEditor.AttrList("基本");
+				m_parentWindow.m_mapStrAttrList["view"] = new UIEditor.AttrList("显示相关");
+				m_parentWindow.m_mapStrAttrList["other"] = new UIEditor.AttrList("其他");
+				m_parentWindow.mx_toolArea.Children.Add(m_parentWindow.m_mapStrAttrList["normal"]);
+				m_parentWindow.mx_toolArea.Children.Add(m_parentWindow.m_mapStrAttrList["view"]);
+				m_parentWindow.mx_toolArea.Children.Add(m_parentWindow.m_mapStrAttrList["other"]);
 
 				m_loaded = true;
 			}

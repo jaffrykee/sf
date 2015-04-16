@@ -61,6 +61,9 @@
     <Compile Include="BoloRes\DrawImg.xaml.cs">
       <DependentUpon>DrawImg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoloRes\DrawText.xaml.cs">
+      <DependentUpon>DrawText.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BoloRes\SkinGroup.cs" />
     <Compile Include="BoloRes\TextShape.cs" />
     <Compile Include="BoloRes\Skin.cs" />
@@ -79,6 +82,8 @@
     <Compile Include="BoloUI\check.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BoloUI\apartPanel.cs" />
+    <Compile Include="BoloUI\tabPanel.cs" />
     <Compile Include="BoloUI\radio.cs" />
     <Compile Include="BoloUI\richText.cs" />
     <Compile Include="BoloUI\scriptPanel.cs">
@@ -111,6 +116,12 @@
     <Compile Include="FileTabItem.xaml.cs">
       <DependentUpon>FileTabItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Public\AttrList.xaml.cs">
+      <DependentUpon>AttrList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Public\AttrRow.xaml.cs">
+      <DependentUpon>AttrRow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UnknownControl.xaml.cs">
       <DependentUpon>UnknownControl.xaml</DependentUpon>
     </Compile>
@@ -122,6 +133,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BoloRes\DrawImg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoloRes\DrawText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -140,10 +155,6 @@
     <Page Include="BoloUI\SkinCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dark.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="FileTabItem.xaml">
       <SubType>Designer</SubType>
@@ -165,6 +176,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PngControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Public\AttrList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Public\AttrRow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -219,7 +238,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Image\hyaline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
