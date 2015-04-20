@@ -37,9 +37,9 @@ namespace UIEditor
 			this.mx_value.Text = m_value;
 		}
 
-		private void mx_value_FocusableChanged(object sender, DependencyPropertyChangedEventArgs e)
+		private void mx_value_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if(mx_value.Text == "")
+			if (mx_value.Text == "")
 			{
 				mx_valueDef.Visibility = Visibility.Visible;
 			}
