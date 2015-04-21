@@ -74,7 +74,7 @@ namespace UIEditor
 			*/
 			System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			openFolderDialog.Description = "选择UI所在文件夹";
-			openFolderDialog.SelectedPath = "E:\\mmo2013001\\artist\\client_resouce\\ui\\free";
+			openFolderDialog.SelectedPath = "D:\\s360\\game\\sf\\sf\\data";
 			System.Windows.Forms.DialogResult result = openFolderDialog.ShowDialog();
 
 			if (result == System.Windows.Forms.DialogResult.Cancel)
@@ -83,15 +83,17 @@ namespace UIEditor
 			}
 			string path = openFolderDialog.SelectedPath;
 
-			m_rootPath = path;
-			m_dep = 0;
-			m_mapStrSkinGroup.Clear();
-			m_mapStrSkin.Clear();
-			refreshProjTree(path, this.treePro, true);
+			refreshProjTree(path, this.mx_treePro, true);
 		}
 
 		private void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
 		{
+			m_rootPath = path;
+			m_dep = 0;
+			m_mapStrSkinGroup.Clear();
+			m_mapStrSkin.Clear();
+			rootItem.Items.Clear();
+
 			int i = 0;
 			int j = 0;
 

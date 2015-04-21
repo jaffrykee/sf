@@ -52,7 +52,7 @@
         </DockPanel>
 		<DockPanel Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Background="#ffdddddd" Margin="0,0,5,0">
             <TreeView BorderThickness="0">
-                <TreeViewItem Name="treePro">
+                <TreeViewItem Name="mx_treePro">
                 </TreeViewItem>
             </TreeView>
 		</DockPanel>
