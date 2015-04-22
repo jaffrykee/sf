@@ -451,12 +451,12 @@ HRESULT WinApp::OnRender()
 		m_pRenderTarget->BeginDraw();
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
-		D2D1_RECT_F rect2 = D2D1::RectF(100.0f, (sH - 50.0f), 150.0f, sH);
 
 		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, sW, sH), m_pGridPatternBitmapBrush);	// 画格子背景
-		m_pRenderTarget->FillRectangle(rect1, m_pBlueB);
-		m_pRenderTarget->FillRectangle(rect2, m_pRedB);
+// 		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
+// 		D2D1_RECT_F rect2 = D2D1::RectF(100.0f, (sH - 50.0f), 150.0f, sH);
+// 		m_pRenderTarget->FillRectangle(rect1, m_pBlueB);
+// 		m_pRenderTarget->FillRectangle(rect2, m_pRedB);
 //		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//添加A位图
 //		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//添加B位图
 #if 0
@@ -507,6 +507,7 @@ typedef struct SFMessage
 	LPARAM lParam;
 }SFMessage_T;
 
+//SF引擎响应
 DWORD WINAPI ThreadProc(LPVOID lpParam)
 {
 	SFMessage_T tmp = *(SFMessage_T*)lpParam;
