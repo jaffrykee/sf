@@ -1,0 +1,117 @@
+﻿生成启动时间为 2015/4/22 16:55:29。
+     1>项目“D:\s360\game\sf\sf\sf.vcxproj”在节点 4 上(Build 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt sf.cpp
+         sf.cpp
+     1>d:\s360\game\sf\tkmt\include\tdindexdataex.h(9): warning C4251: “TDataT<MyData>::m_name”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“TDataT<MyData>”的客户端使用
+                 d:\s360\game\sf\tkmt\include\tdindexdataex.h(16): 参见对正在编译的类 模板 实例化“TDataT<MyData>”的引用
+     1>d:\s360\game\sf\tkmt\include\tdindexdataex.h(22): warning C4251: “TDIndexDataEx<MyData>::m_arr”: class“std::vector<TDataT<MyData>,std::allocator<TDataT<MyData>>>”需要有 dll 接口由 class“TDIndexDataEx<MyData>”的客户端使用
+                 d:\s360\game\sf\tkmt\include\tdindexdataex.h(33): 参见对正在编译的类 模板 实例化“TDIndexDataEx<MyData>”的引用
+     1>d:\s360\game\sf\tkmt\include\tdindexdataex.h(23): warning C4251: “TDIndexDataEx<MyData>::m_map”: class“std::map<std::string,TDataT<MyData>,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>”需要有 dll 接口由 class“TDIndexDataEx<MyData>”的客户端使用
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=TDataT<MyData>
+                 ]
+     1>d:\s360\game\sf\tkmt\include\tfile.h(7): warning C4251: “TFile::m_strPath”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“TFile”的客户端使用
+     1>d:\s360\game\sf\tkmt\include\tfile.h(9): warning C4251: “TFile::m_filter”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“TFile”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfconfig.h(352): warning C4251: “SFConfig::m_resPlayerFramePath”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFConfig”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfconfig.h(353): warning C4251: “SFConfig::m_resSceneFramePath”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFConfig”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfconfig.h(354): warning C4251: “SFConfig::m_resSceneDataPath”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFConfig”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfconfig.h(355): warning C4251: “SFConfig::m_resPath”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFConfig”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfconfig.h(356): warning C4251: “SFConfig::m_resPlayerInfoPrefix”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFConfig”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfconfig.h(357): warning C4251: “SFConfig::m_resPlayerInfoFileName”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFConfig”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfconfig.h(361): warning C4251: “SFConfig::m_aTmr”: class“std::vector<UINT,std::allocator<char32_t>>”需要有 dll 接口由 class“SFConfig”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfconfig.h(365): warning C4251: “SFConfig::m_strAsSplit”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFConfig”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfconfig.h(367): warning C4251: “SFConfig::m_mapEvent”: class“std::map<UINT,MapEvent_T,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>”需要有 dll 接口由 class“SFConfig”的客户端使用
+                 with
+                 [
+                     _Kty=WPARAM
+         ,            _Ty=MapEvent_T
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfeventmanager.h(19): warning C4251: “SFEventManager::m_mapKdTev”: class“std::map<SF_KD,SF_TEV,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>”需要有 dll 接口由 class“SFEventManager”的客户端使用
+                 with
+                 [
+                     _Kty=SF_KD
+         ,            _Ty=SF_TEV
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfresource.h(23): warning C4251: “SFResFrame::m_lBodyBox”: class“std::list<D2D1_RECT_F,std::allocator<_Ty>>”需要有 dll 接口由 class“SFResFrame”的客户端使用
+                 with
+                 [
+                     _Ty=D2D1_RECT_F
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfresource.h(24): warning C4251: “SFResFrame::m_lAttackBox”: class“std::list<D2D1_RECT_F,std::allocator<_Ty>>”需要有 dll 接口由 class“SFResFrame”的客户端使用
+                 with
+                 [
+                     _Ty=D2D1_RECT_F
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfresource.h(42): warning C4251: “SFResObject::m_strId”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFResObject”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfresource.h(44): warning C4251: “SFResObject::m_arrFrame”: class“std::vector<SFResFrame,std::allocator<_Ty>>”需要有 dll 接口由 class“SFResObject”的客户端使用
+                 with
+                 [
+                     _Ty=SFResFrame
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfresource.h(62): warning C4251: “SFResSkill::m_arrObject”: class“std::vector<SFResObject,std::allocator<_Ty>>”需要有 dll 接口由 class“SFResSkill”的客户端使用
+                 with
+                 [
+                     _Ty=SFResObject
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfresource.h(190): warning C4251: “SFResScene::m_type”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFResScene”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfeventkey.h(18): warning C4251: “SFPEventStatus::m_sDownEvent”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFPEventStatus”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfplayer.h(32): warning C4251: “SFSkill::m_name”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFSkill”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfplayer.h(35): warning C4251: “SFSkill::m_skillFrames”: class“std::list<SFSkillFrame,std::allocator<_Ty>>”需要有 dll 接口由 class“SFSkill”的客户端使用
+                 with
+                 [
+                     _Ty=SFSkillFrame
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfplayer.h(42): warning C4251: “SFPlayer::m_id”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFPlayer”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfplayer.h(45): warning C4251: “SFPlayer::m_name”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFPlayer”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfactscene.h(35): warning C4251: “SFSpriteGroup::m_name”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFSpriteGroup”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfactscene.h(36): warning C4251: “SFSpriteGroup::m_aSprite”: class“std::vector<SFSprite *,std::allocator<_Ty>>”需要有 dll 接口由 class“SFSpriteGroup”的客户端使用
+                 with
+                 [
+                     _Ty=SFSprite *
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfactscene.h(47): warning C4251: “SFActScene::m_mapSpriteGroup”: class“std::map<std::string,SFSpriteGroup *,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>”需要有 dll 接口由 class“SFActScene”的客户端使用
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=SFSpriteGroup *
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfactscene.h(52): warning C4251: “SFActScene::m_mapTevEk”: class“std::map<SF_TEV,SF_EK,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>”需要有 dll 接口由 class“SFActScene”的客户端使用
+                 with
+                 [
+                     _Kty=SF_TEV
+         ,            _Ty=SF_EK
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfresconfigreader.h(51): warning C4251: “SFXmlReader::m_path”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFXmlReader”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfresconfigreader.h(52): warning C4251: “SFXmlReader::m_name”: class“std::basic_string<char,std::char_traits<char>,std::allocator<char>>”需要有 dll 接口由 class“SFXmlReader”的客户端使用
+     1>d:\s360\game\sf\sflib\include\sfresconfigreader.h(54): warning C4251: “SFXmlReader::m_frame”: class“std::map<std::string,SFXmlReader::XsdNodeData,std::less<_Kty>,std::allocator<std::pair<const _Kty,_Ty>>>”需要有 dll 接口由 class“SFXmlReader”的客户端使用
+                 with
+                 [
+                     _Kty=std::string
+         ,            _Ty=SFXmlReader::XsdNodeData
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfresconfigreader.h(57): warning C4251: “SFXmlReader::m_pParentNodeBuffer”: class“std::vector<SFXmlReader::XmlNodeData *,std::allocator<_Other>>”需要有 dll 接口由 class“SFXmlReader”的客户端使用
+                 with
+                 [
+                     _Other=SFXmlReader::XmlNodeData *
+                 ]
+     1>d:\s360\game\sf\sflib\include\sfresconfigreader.h(59): warning C4251: “SFXmlReader::s_parseCount”: class“std::vector<SFXmlReader::XmlNodeData *,std::allocator<_Other>>”需要有 dll 接口由 class“SFXmlReader”的客户端使用
+                 with
+                 [
+                     _Other=SFXmlReader::XmlNodeData *
+                 ]
+     1>d:\s360\game\sf\sf\sf.cpp(454): warning C4244: “参数”: 从“double”转换到“FLOAT”，可能丢失数据
+     1>d:\s360\game\sf\sf\sf.cpp(455): warning C4244: “参数”: 从“double”转换到“FLOAT”，可能丢失数据
+     1>d:\s360\game\sf\sf\sf.cpp(457): warning C4244: “参数”: 从“double”转换到“FLOAT”，可能丢失数据
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\s360\game\sf\Debug\sf.exe" /INCREMENTAL /NOLOGO d2d1.lib dwrite.lib windowscodecs.lib dxgi.lib d3d10_1.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\s360\game\sf\Debug\sf.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\s360\game\sf\Debug\sf.lib" /MACHINE:X86 Debug\sf.obj
+         D:\s360\game\sf\Debug\sfLib.lib
+         D:\s360\game\sf\Debug\tkmT.lib
+         sf.vcxproj -> D:\s360\game\sf\Debug\sf.exe
+     1>已完成生成项目“D:\s360\game\sf\sf\sf.vcxproj”(Build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:02.25
