@@ -125,7 +125,9 @@ m_pLinearGradientBrush(NULL),
 m_pBlackBrush(NULL),
 m_pGridPatternBitmapBrush(NULL),
 m_pBitmap(NULL),
-m_pAnotherBitmap(NULL)
+m_pAnotherBitmap(NULL),
+m_pBlueB(NULL),
+m_pRedB(NULL)
 {
 }
 #pragma endregion
@@ -299,6 +301,11 @@ HRESULT WinApp::CreateDeviceResources()
 				pGradientStops->Release();
 			}
 		}
+		if (SUCCEEDED(hr))
+		{
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Blue, 0.5f), &m_pBlueB);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Red, 0.5f), &m_pRedB);
+		}
 
 		//通过文件创建位图
 		hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\img\\blue.png", 100, 0, &m_pBitmap);
@@ -438,14 +445,20 @@ HRESULT WinApp::OnRender()
 	{
 		static const WCHAR sc_helloWorld[] = L"Hello, World!";
 		D2D1_SIZE_F renderTargetSize = m_pRenderTarget->GetSize();
+		double sW = renderTargetSize.width;
+		double sH = renderTargetSize.height;
 
 		m_pRenderTarget->BeginDraw();
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, renderTargetSize.width, renderTargetSize.height), m_pGridPatternBitmapBrush);	// 画格子背景
+		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
+		D2D1_RECT_F rect2 = D2D1::RectF(100.0f, (sH - 50.0f), 150.0f, sH);
+
+		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, sW, sH), m_pGridPatternBitmapBrush);	// 画格子背景
+		m_pRenderTarget->FillRectangle(rect1, m_pBlueB);
+		m_pRenderTarget->FillRectangle(rect2, m_pRedB);
 //		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//添加A位图
 //		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//添加B位图
-
 #if 0
 		D2D1_SIZE_F size = m_pBitmap->GetSize();
 

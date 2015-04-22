@@ -79,6 +79,9 @@ private:
 	ID2D1BitmapBrush *m_pGridPatternBitmapBrush;
 	ID2D1Bitmap *m_pBitmap;
 	ID2D1Bitmap *m_pAnotherBitmap;
+
+	ID2D1SolidColorBrush *m_pBlueB;
+	ID2D1SolidColorBrush *m_pRedB;
 };
 
 class PActPlayer
