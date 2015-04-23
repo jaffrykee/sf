@@ -59,6 +59,7 @@ public:
 	FLOAT m_ground;
 	D2D1_POINT_2F m_poiInitP1;
 	D2D1_POINT_2F m_poiInitP2;
+	vector<SFResFrame*> m_arrFrame;
 
 	SFActScene(SF_SCN_MAP mapType = SCN_MAP_DEF);
 	SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType = SCN_MAP_DEF);
@@ -67,6 +68,7 @@ public:
 	bool addSprite(string groupName, SFSprite* pSprite);
 	SFPlayer* getPlayerInSceneByPGN(string groupName);
 	bool doEvent(SF_TEV event);
+	bool addFrameToCollosion(SFPlayer* pPlayer);
 	bool doCollision();
 
 	//将来可能会将Fight类型的Scene以继承类的方式提出来。

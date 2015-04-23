@@ -173,14 +173,18 @@ SFPlayer* SFActScene::getPlayerInSceneByPGN(string groupName)
 	return NULL;
 }
 
+//事件抉择
 bool SFActScene::doEvent(SF_TEV event)
 {
 	if (event >= TEV_KEY_MIN && event <= TEV_KEY_MAX)
 	{
+		//键盘事件
 		if (event >= TEV_KD_MIN && event <= TEV_KD_MAX)
 		{
+			//键盘按下事件
 			if (event >= TEV_KD_P1MIN && event <= TEV_KD_P1MAX)
 			{
+				//P1
 				if (getFightP1())
 				{
 					return getFightP1()->downEvent(m_mapTevEk[event]);
@@ -192,6 +196,7 @@ bool SFActScene::doEvent(SF_TEV event)
 			}
 			else if (event >= TEV_KD_P2MIN && event <= TEV_KD_P2MAX)
 			{
+				//P2
 				if (getFightP2())
 				{
 					return getFightP2()->downEvent(m_mapTevEk[event]);
@@ -204,8 +209,10 @@ bool SFActScene::doEvent(SF_TEV event)
 		}
 		else if (event >= TEV_KU_MIN && event <= TEV_KU_MAX)
 		{
+			//键盘弹起事件
 			if (event >= TEV_KU_P1MIN && event <= TEV_KU_P1MAX)
 			{
+				//P1
 				if (getFightP1())
 				{
 					return getFightP1()->upEvent(m_mapTevEk[event]);
@@ -217,6 +224,7 @@ bool SFActScene::doEvent(SF_TEV event)
 			}
 			else if (event >= TEV_KU_P2MIN && event <= TEV_KU_P2MAX)
 			{
+				//P2
 				if (getFightP2())
 				{
 					return getFightP2()->upEvent(m_mapTevEk[event]);
@@ -230,10 +238,14 @@ bool SFActScene::doEvent(SF_TEV event)
 	}
 	else if (event >= TEV_TMR_MIN && event <= TEV_TMR_MAX)
 	{
+		//时钟触发事件
 		bool ret1, ret2;
 
 		if (event == TEV_TMR_PAINT)
 		{
+			//判断碰撞之类，SF主物理逻辑，以及确定位置
+			doCollision();
+
 			return true;
 		}
 		else
@@ -255,8 +267,36 @@ bool SFActScene::doEvent(SF_TEV event)
 	return false;
 }
 
+bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer)
+{
+	pPlayer->moveToNextFrame();
+
+	SFResSkill* pSkill = pPlayer->m_resPlayer->m_arrSkill[pPlayer->m_nowSkill][pPlayer->m_nowAs][pPlayer->m_nowSsse];
+	if (pSkill != NULL)
+	{
+		UINT objectCount = pSkill->m_arrObject.size();
+		if (objectCount > 0)
+		{
+			for (UINT i = 0; i < objectCount; i++)
+			{
+				m_arrFrame.insert(m_arrFrame.end(), &(pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame]));
+			}
+		}
+	}
+
+	return true;
+}
+
 bool SFActScene::doCollision()
 {
+	SFPlayer* pPlayer = NULL;
+
+	m_arrFrame.clear();
+	addFrameToCollosion(getFightP1());
+	addFrameToCollosion(getFightP2());
+
+	//<inc>20150423
+
 	return true;
 }
 

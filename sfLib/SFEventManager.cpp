@@ -19,6 +19,7 @@ bool SFEventManager::setActiveScene(SFActScene* pScene)
 	}
 }
 
+//
 bool SFEventManager::doEvent(SF_TEV event, LPARAM lParam)
 {
 	if (m_pActiveScene != NULL)
@@ -31,14 +32,17 @@ bool SFEventManager::doEvent(SF_TEV event, LPARAM lParam)
 	}
 }
 
+//看看该系统事件SF是否应该响应
 bool SFEventManager::doSystemEvent(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	MapEventGroup_T::iterator itEventGroup = m_pMapEvent->find(message);
+
 	if (itEventGroup != m_pMapEvent->end())
 	{
 		MapEvent_T::iterator itEvent = (*m_pMapEvent)[message].find(wParam);
 		if (itEvent != (*m_pMapEvent)[message].end())
 		{
+			//看看该系统事件的wParam SF是否应该响应
 			return doEvent((*m_pMapEvent)[message][wParam], lParam);
 		}
 		else

@@ -63,7 +63,7 @@ public:
 	SF_AS m_nowAs;
 	SF_SSSE m_nowSsse;
 	//当前等待打印的技能的帧计数器
-	int m_countSkillFrame;
+	UINT m_countSkillFrame;
 
 	//当前位置
 	D2D1_POINT_2F m_position;
