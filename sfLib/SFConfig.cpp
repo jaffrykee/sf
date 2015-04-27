@@ -28,6 +28,8 @@ SFConfig::SFConfig():
 	m_pEventManager(NULL)
 #pragma endregion
 {
+	m_aTmr[SF_TMR::TMR_PAINT] = 15;
+	m_aTmr[SF_TMR::TMR_ACTION] = m_aTmr[SF_TMR::TMR_PAINT];
 }
 
 SFConfig* SFConfig::GetInstance()
