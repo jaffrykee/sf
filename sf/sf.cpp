@@ -3,8 +3,8 @@
 using namespace std;
 
 #pragma region 显示坐标define
-#define ACT_WID 640
-#define ACT_HIG 480
+#define ACT_WID 800
+#define ACT_HIG 500
 
 #define ACT_REALWID ((float)(ACT_WID) - (FRA_X))
 #define ACT_REALHIG ((float)(ACT_HIG) - (FRA_Y))
@@ -453,9 +453,11 @@ HRESULT WinApp::OnRender()
 		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
 		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, sW, sH), m_pGridPatternBitmapBrush);	// 画格子背景
+
+		g_pEventManager->m_pActiveScene->onDraw(m_pRenderTarget, m_pBlueB, m_pRedB);
 // 		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
 // 		D2D1_RECT_F rect2 = D2D1::RectF(100.0f, (sH - 50.0f), 150.0f, sH);
-// 		m_pRenderTarget->FillRectangle(rect1, m_pBlueB);
+//		m_pRenderTarget->FillRectangle(rect1, m_pBlueB);
 // 		m_pRenderTarget->FillRectangle(rect2, m_pRedB);
 //		m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//添加A位图
 //		m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//添加B位图

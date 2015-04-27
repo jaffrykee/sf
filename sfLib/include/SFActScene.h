@@ -59,7 +59,9 @@ public:
 	FLOAT m_ground;
 	D2D1_POINT_2F m_poiInitP1;
 	D2D1_POINT_2F m_poiInitP2;
-	vector<SFResFrame*> m_arrFrame;
+
+	//测试用
+	UINT m_tc;
 
 	SFActScene(SF_SCN_MAP mapType = SCN_MAP_DEF);
 	SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType = SCN_MAP_DEF);
@@ -68,7 +70,7 @@ public:
 	bool addSprite(string groupName, SFSprite* pSprite);
 	SFPlayer* getPlayerInSceneByPGN(string groupName);
 	bool doEvent(SF_TEV event);
-	bool addFrameToCollosion(SFPlayer* pPlayer);
+	bool addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*>& arrpFrame);
 	bool doCollision();
 
 	//将来可能会将Fight类型的Scene以继承类的方式提出来。
@@ -82,4 +84,9 @@ public:
 	bool initPositionFightP2();
 	void setDirection(bool isP1Left);
 	void refreshDirection();
+	D2D1_POINT_2F getScenePoiFromView(ID2D1HwndRenderTarget* pRenderTarget, D2D1_POINT_2F vPoi);
+	D2D1_RECT_F getSceneRectFromView(ID2D1HwndRenderTarget* pRenderTarget, D2D1_RECT_F vRect);
+	D2D1_POINT_2F getViewPoiFromScene(ID2D1HwndRenderTarget* pRenderTarget, D2D1_POINT_2F sPoi);
+	D2D1_RECT_F getViewRectFromScene(ID2D1HwndRenderTarget* pRenderTarget, D2D1_RECT_F sRect);
+	void onDraw(ID2D1HwndRenderTarget* pRenderTarget, ID2D1SolidColorBrush* pBodyBrush, ID2D1SolidColorBrush* pActBrush);
 };

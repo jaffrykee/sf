@@ -106,6 +106,8 @@ m_mapTevEk({
 	initPositionFightP2();
 	doCollision();
 	setDirection(true);
+
+	m_tc = 0;
 }
 
 SFActScene::~SFActScene()
@@ -243,12 +245,16 @@ bool SFActScene::doEvent(SF_TEV event)
 
 		if (event == TEV_TMR_PAINT)
 		{
+			return true;
+		}
+		else if (event == TEV_TMR_ACTION)
+		{
 			//判断碰撞之类，SF主物理逻辑，以及确定位置
 			doCollision();
 
 			return true;
 		}
-		else
+		else if (event == TEV_TMR_SKILL)
 		{
 			if (getFightP1() != NULL && getFightP2() != NULL)
 			{
@@ -267,7 +273,7 @@ bool SFActScene::doEvent(SF_TEV event)
 	return false;
 }
 
-bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer)
+bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*>& arrpFrame)
 {
 	pPlayer->moveToNextFrame();
 
@@ -279,10 +285,37 @@ bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer)
 		{
 			for (UINT i = 0; i < objectCount; i++)
 			{
-				m_arrFrame.insert(m_arrFrame.end(), &(pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame]));
+				arrpFrame.insert(arrpFrame.end(), &(pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame]));
 			}
 		}
 	}
+
+	if (m_tc % 20 == 0)
+	{
+		if (pPlayer->m_nowSkill == EKA_DEF || pPlayer->m_nowSkill == EKA_MAX)
+		{
+			for (UINT i = 0; i < arrpFrame.size(); i++)
+			{
+				list<D2D1_RECT_F>::iterator it;
+				for (list<D2D1_RECT_F>::iterator it = arrpFrame[i]->m_lBodyBox.begin(); it != arrpFrame[i]->m_lBodyBox.end(); it++)
+				{
+					sf_cout(SF_DEBUG::DEBUG_COM, "<P" << pPlayer->m_pid << ">:" << g_pConf->m_pDiEka->m_str[pPlayer->m_nowSkill] << ":" << it->left << "," << it->right << "," << it->top << "," << it->bottom << endl);
+				}
+			}
+		}
+	}
+	if (pPlayer->m_nowSkill != EKA_DEF && pPlayer->m_nowSkill != EKA_MAX)
+	{
+		for (UINT i = 0; i < arrpFrame.size(); i++)
+		{
+			list<D2D1_RECT_F>::iterator it;
+			for (list<D2D1_RECT_F>::iterator it = arrpFrame[i]->m_lBodyBox.begin(); it != arrpFrame[i]->m_lBodyBox.end(); it++)
+			{
+				sf_cout(SF_DEBUG::DEBUG_COM, "<P" << pPlayer->m_pid << ">:" << g_pConf->m_pDiEka->m_str[pPlayer->m_nowSkill] << ":" << it->left << "," << it->right << "," << it->top << "," << it->bottom << endl);
+			}
+		}
+	}
+	//<inc>20150423
 
 	return true;
 }
@@ -290,12 +323,16 @@ bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer)
 bool SFActScene::doCollision()
 {
 	SFPlayer* pPlayer = NULL;
+	vector<SFResFrame*> arrpFrame1;
+	vector<SFResFrame*> arrpFrame2;
 
-	m_arrFrame.clear();
-	addFrameToCollosion(getFightP1());
-	addFrameToCollosion(getFightP2());
-
-	//<inc>20150423
+	if (m_tc % 20 == 0)
+	{
+		sf_cout(DEBUG_COM, "<time>:" << m_tc / 20 << endl);
+	}
+	addFrameToCollosion(getFightP1(), arrpFrame1);
+	addFrameToCollosion(getFightP2(), arrpFrame2);
+	m_tc++;
 
 	return true;
 }
@@ -357,7 +394,7 @@ bool SFActScene::initPositionFightP2()
 	FLOAT dy = getFightP2()->m_resPlayer->m_arrSkill[EKA_DEF][AS_DEF][SSSE_DEF]->m_arrObject[0].m_arrFrame[0].m_lBodyBox.begin()->bottom;
 	m_poiInitP2.y -= dy;
 
-	return setPositionFightP1(m_poiInitP2);
+	return setPositionFightP2(m_poiInitP2);
 }
 
 void SFActScene::setDirection(bool isP1Left)
@@ -387,5 +424,109 @@ void SFActScene::refreshDirection()
 	else
 	{
 		setDirection(false);
+	}
+}
+
+D2D1_POINT_2F SFActScene::getScenePoiFromView(ID2D1HwndRenderTarget* pRenderTarget, D2D1_POINT_2F vPoi)
+{
+	D2D1_POINT_2F ret;
+
+	ret.x = vPoi.x*(1280 / pRenderTarget->GetSize().width);
+	ret.y = vPoi.y*(1280 / pRenderTarget->GetSize().height);
+	return ret;
+}
+
+D2D1_RECT_F SFActScene::getSceneRectFromView(ID2D1HwndRenderTarget* pRenderTarget, D2D1_RECT_F vRect)
+{
+	D2D1_RECT_F ret;
+
+	ret.top = vRect.top*(1280 / pRenderTarget->GetSize().height);
+	ret.left = vRect.left*(1280 / pRenderTarget->GetSize().width);
+	ret.bottom = vRect.bottom*(1280 / pRenderTarget->GetSize().height);
+	ret.right = vRect.right*(1280 / pRenderTarget->GetSize().width);
+	return ret;
+}
+
+D2D1_POINT_2F SFActScene::getViewPoiFromScene(ID2D1HwndRenderTarget* pRenderTarget, D2D1_POINT_2F sPoi)
+{
+	D2D1_POINT_2F ret;
+
+	ret.x = sPoi.x*(pRenderTarget->GetSize().width / 1280);
+	ret.y = sPoi.y*(pRenderTarget->GetSize().height / 1280);
+	return ret;
+}
+
+D2D1_RECT_F SFActScene::getViewRectFromScene(ID2D1HwndRenderTarget* pRenderTarget, D2D1_RECT_F sRect)
+{
+	D2D1_RECT_F ret;
+
+	ret.top = sRect.top*(pRenderTarget->GetSize().height / 1280);
+	ret.left = sRect.left*(pRenderTarget->GetSize().width / 1280);
+	ret.bottom = sRect.bottom*(pRenderTarget->GetSize().height / 1280);
+	ret.right = sRect.right*(pRenderTarget->GetSize().width / 1280);
+	return ret;
+}
+
+void SFActScene::onDraw(ID2D1HwndRenderTarget* pRenderTarget, ID2D1SolidColorBrush* pBodyBrush, ID2D1SolidColorBrush* pActBrush)
+{
+	static UINT i = 0;
+
+	i++;
+	if (i % 60 == 0)
+	{
+		cout << "<sPoi1>" << getFightP1()->m_position.x << "," << getFightP1()->m_position.y << endl;
+		cout << "<sPoi2>" << getFightP2()->m_position.x << "," << getFightP2()->m_position.y << endl;
+	}
+
+	double mpx = (getFightP1()->m_position.x + getFightP2()->m_position.x)/2;
+	double dpx = 1280 / 2 - mpx;
+
+	if (i % 60 == 0)
+	{
+		D2D1_POINT_2F vPoi1 = getViewPoiFromScene(pRenderTarget, getFightP1()->m_position);
+		D2D1_POINT_2F vPoi2 = getViewPoiFromScene(pRenderTarget, getFightP2()->m_position);
+
+		cout << "<vPoi1>" << vPoi1.x << "," << vPoi1.y << endl;
+		cout << "<vPoi2>" << vPoi2.x << "," << vPoi2.y << endl;
+	}
+
+	SFPlayer* pPlayer = getFightP1();
+	SFResSkill* pSkill = pPlayer->m_resPlayer->m_arrSkill[pPlayer->m_nowSkill][pPlayer->m_nowAs][pPlayer->m_nowSsse];
+	if (pSkill != NULL)
+	{
+		UINT objectCount = pSkill->m_arrObject.size();
+		if (objectCount > 0)
+		{
+			for (UINT i = 0; i < objectCount; i++)
+			{
+				D2D1_RECT_F sRect = *(pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame].m_lBodyBox.begin());
+				sRect.left += (pPlayer->m_position.x + dpx);
+				sRect.right += (pPlayer->m_position.x + dpx);
+				sRect.top += pPlayer->m_position.y;
+				sRect.bottom += pPlayer->m_position.y;
+				D2D1_RECT_F vRect = getViewRectFromScene(pRenderTarget, sRect);
+				pRenderTarget->FillRectangle(vRect, pBodyBrush);
+			}
+		}
+	}
+
+	pPlayer = getFightP2();
+	pSkill = pPlayer->m_resPlayer->m_arrSkill[pPlayer->m_nowSkill][pPlayer->m_nowAs][pPlayer->m_nowSsse];
+	if (pSkill != NULL)
+	{
+		UINT objectCount = pSkill->m_arrObject.size();
+		if (objectCount > 0)
+		{
+			for (UINT i = 0; i < objectCount; i++)
+			{
+				D2D1_RECT_F sRect = *(pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame].m_lBodyBox.begin());
+				sRect.left += (pPlayer->m_position.x + dpx);
+				sRect.right += (pPlayer->m_position.x + dpx);
+				sRect.top += pPlayer->m_position.y;
+				sRect.bottom += pPlayer->m_position.y;
+				D2D1_RECT_F vRect = getViewRectFromScene(pRenderTarget, sRect);
+				pRenderTarget->FillRectangle(vRect, pBodyBrush);
+			}
+		}
 	}
 }

@@ -194,7 +194,41 @@ bool SFPlayer::doSkill()
 
 void SFPlayer::moveToNextFrame()
 {
+	if (m_nowSkill == EKA_MAX)
+	{
+		m_nowSkill = EKA_DEF;
+		m_hitStatus = ASH_DEF;
+	}
 
+	SFResSkill* pSkill = m_resPlayer->m_arrSkill[m_nowSkill][m_nowAs][m_nowSsse];
+
+	if (pSkill != NULL && (m_hitStatus == ASH_DEF || m_countSkillFrame != 0))
+	{
+		if (pSkill->m_arrObject.size() > 0)
+		{
+			UINT frameSize = pSkill->m_arrObject[0].m_arrFrame.size();
+
+			m_countSkillFrame++;
+			if (m_countSkillFrame >= frameSize)
+			{
+				m_hitStatus = ASH_DEF;
+				m_nowSkill = EKA_DEF;
+				m_countSkillFrame = 0;
+			}
+			else
+			{
+				m_hitStatus = ASH_ATC;
+			}
+		}
+		else
+		{
+			m_countSkillFrame = 0;
+		}
+	}
+	else
+	{
+		m_countSkillFrame = 0;
+	}
 }
 
 void SFPlayer::doTimer(SF_TEV timer)

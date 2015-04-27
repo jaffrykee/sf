@@ -88,7 +88,7 @@ enum SF_TMR
 	TMR_MAX
 };
 const vector<UINT> conf_aIntTmr = {
-	0, 15, 10, 30
+	0, 15, 100, 30
 };
 #pragma endregion
 
