@@ -35,6 +35,7 @@
 #pragma comment(lib, "Shlwapi.lib")
 
 #include <tkmT.h>
+#include <SFd2d.h>
 
 class SFConfig;
 

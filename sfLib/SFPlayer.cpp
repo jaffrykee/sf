@@ -2,7 +2,7 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
-SFPlayer::SFPlayer(UINT id, SF_SKN skinId, int pid) :m_skinId(skinId), m_pid(pid)
+SFPlayer::SFPlayer(UINT id, SF_SKN skinId, int pid, SFActScene* pScene) :m_skinId(skinId), m_pid(pid), m_pScene(pScene)
 {
 	m_id = TStrTrans::intIdToStrId(id);
 	m_resPlayer = new SFResPlayer(m_id, skinId);
@@ -14,7 +14,7 @@ SFPlayer::SFPlayer(UINT id, SF_SKN skinId, int pid) :m_skinId(skinId), m_pid(pid
 	m_iTimeOut = 0;
 }
 
-SFPlayer::SFPlayer(string id, SF_SKN skinId, int pid) :m_id(id), m_skinId(skinId), m_pid(pid)
+SFPlayer::SFPlayer(string id, SF_SKN skinId, int pid, SFActScene* pScene) :m_id(id), m_skinId(skinId), m_pid(pid), m_pScene(pScene)
 {
 	m_resPlayer = new SFResPlayer(m_id, skinId);
 
@@ -207,7 +207,23 @@ void SFPlayer::moveToNextFrame()
 		if (pSkill->m_arrObject.size() > 0)
 		{
 			UINT frameSize = pSkill->m_arrObject[0].m_arrFrame.size();
+			D2D1_POINT_2F poiMove = pSkill->m_arrObject[0].m_arrFrame[m_countSkillFrame].m_poiMove;
+			bool isP1 = true;
+			bool isP1Left = true;
 
+			isP1 = (m_pid == 1) ? true : false;
+			isP1Left = (m_pScene->getFightP1()->m_position.x < m_pScene->getFightP2()->m_position.x) ? true : false;
+
+			if (isP1 ^ isP1Left)
+			{
+				this->m_position.x -= poiMove.x;
+				this->m_position.y -= poiMove.y;
+			}
+			else
+			{
+				this->m_position.x += poiMove.x;
+				this->m_position.y += poiMove.y;
+			}
 			m_countSkillFrame++;
 			if (m_countSkillFrame >= frameSize)
 			{

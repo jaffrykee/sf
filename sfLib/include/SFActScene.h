@@ -88,5 +88,7 @@ public:
 	D2D1_RECT_F getSceneRectFromView(ID2D1HwndRenderTarget* pRenderTarget, D2D1_RECT_F vRect);
 	D2D1_POINT_2F getViewPoiFromScene(ID2D1HwndRenderTarget* pRenderTarget, D2D1_POINT_2F sPoi);
 	D2D1_RECT_F getViewRectFromScene(ID2D1HwndRenderTarget* pRenderTarget, D2D1_RECT_F sRect);
-	void onDraw(ID2D1HwndRenderTarget* pRenderTarget, ID2D1SolidColorBrush* pBodyBrush, ID2D1SolidColorBrush* pActBrush);
+	void onDrawForFightBox(ID2D1HwndRenderTarget* pRenderTarget, ID2D1SolidColorBrush* pBrush, SFPlayer* pPlayer, list<D2D1_RECT_F>* pList);
+	void onDrawForFightSprite(ID2D1HwndRenderTarget* pRenderTarget, ID2D1SolidColorBrush* pBodyBrush, ID2D1SolidColorBrush* pActBrush, SFPlayer* pPlayer);
+	void onDraw(ID2D1HwndRenderTarget* pRenderTarget, ID2D1SolidColorBrush* pBodyBrush, ID2D1SolidColorBrush* pActBrush, ID2D1BitmapBrush* pBackBrush);
 };

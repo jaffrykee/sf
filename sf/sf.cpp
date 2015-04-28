@@ -449,12 +449,8 @@ HRESULT WinApp::OnRender()
 		double sH = renderTargetSize.height;
 
 		m_pRenderTarget->BeginDraw();
-		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-
-		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, sW, sH), m_pGridPatternBitmapBrush);	// 画格子背景
-
-		g_pEventManager->m_pActiveScene->onDraw(m_pRenderTarget, m_pBlueB, m_pRedB);
+		//m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+		g_pEventManager->m_pActiveScene->onDraw(m_pRenderTarget, m_pBlueB, m_pRedB, m_pGridPatternBitmapBrush);
 // 		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
 // 		D2D1_RECT_F rect2 = D2D1::RectF(100.0f, (sH - 50.0f), 150.0f, sH);
 //		m_pRenderTarget->FillRectangle(rect1, m_pBlueB);

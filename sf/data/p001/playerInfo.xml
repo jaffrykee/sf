@@ -42,7 +42,7 @@
 							</box_table>
 						</frame>
 						<frame id="3">
-							<point x="2" y="0"></point>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="-75" l="-52" b="75" r="52"></rect>
@@ -53,7 +53,7 @@
 							</box_table>
 						</frame>
 						<frame id="4">
-							<point x="3" y="0"></point>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="-75" l="-53" b="75" r="53"></rect>
@@ -64,7 +64,7 @@
 							</box_table>
 						</frame>
 						<frame id="5">
-							<point x="4" y="0"></point>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="-75" l="-54" b="75" r="54"></rect>
@@ -75,7 +75,7 @@
 							</box_table>
 						</frame>
 						<frame id="6">
-							<point x="5" y="0"></point>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="-75" l="-55" b="75" r="55"></rect>
@@ -86,7 +86,7 @@
 							</box_table>
 						</frame>
 						<frame id="7">
-							<point x="6" y="0"></point>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="-75" l="-54" b="75" r="54"></rect>
@@ -97,7 +97,7 @@
 							</box_table>
 						</frame>
 						<frame id="8">
-							<point x="7" y="0"></point>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="-75" l="-53" b="75" r="53"></rect>
@@ -108,7 +108,7 @@
 							</box_table>
 						</frame>
 						<frame id="9">
-							<point x="8" y="0"></point>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="-75" l="-52" b="75" r="52"></rect>
@@ -116,7 +116,7 @@
 							</box_table>
 						</frame>
 						<frame id="10">
-							<point x="9" y="0"></point>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="-75" l="-51" b="75" r="51"></rect>
@@ -124,7 +124,7 @@
 							</box_table>
 						</frame>
 						<frame id="11">
-							<point x="10" y="0"></point>
+							<point x="1" y="0"></point>
 							<box_table>
 								<box type="1">
 									<rect t="-75" l="-50" b="75" r="50"></rect>
