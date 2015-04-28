@@ -30,6 +30,8 @@ SFConfig::SFConfig():
 {
 	m_aTmr[SF_TMR::TMR_PAINT] = 15;
 	m_aTmr[SF_TMR::TMR_ACTION] = m_aTmr[SF_TMR::TMR_PAINT];
+	m_viewBenchmark.width = 1280;
+	m_viewBenchmark.height = 800;
 }
 
 SFConfig* SFConfig::GetInstance()

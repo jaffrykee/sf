@@ -4,8 +4,8 @@
 		<scene type="fight" width="2000" height="800">
 			<camera_info x="1000" y="400"></camera_info>
 			<sprite_table>
-				<sprite id="player1" x="800" y="920"></sprite>
-				<sprite id="player2" x="1200" y="920"></sprite>
+				<sprite id="player1" x="800" y="800"></sprite>
+				<sprite id="player2" x="1200" y="800"></sprite>
 				<sprite id="ground" y="920"></sprite>
 			</sprite_table>
 		</scene>

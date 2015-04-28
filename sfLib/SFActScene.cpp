@@ -404,8 +404,8 @@ D2D1_POINT_2F SFActScene::getScenePoiFromView(ID2D1HwndRenderTarget* pRenderTarg
 {
 	D2D1_POINT_2F ret;
 
-	ret.x = vPoi.x*(1280 / pRenderTarget->GetSize().width);
-	ret.y = vPoi.y*(800 / pRenderTarget->GetSize().height);
+	ret.x = vPoi.x*(g_pConf->m_viewBenchmark.width / pRenderTarget->GetSize().width);
+	ret.y = vPoi.y*(g_pConf->m_viewBenchmark.height / pRenderTarget->GetSize().height);
 	return ret;
 }
 
@@ -413,10 +413,10 @@ D2D1_RECT_F SFActScene::getSceneRectFromView(ID2D1HwndRenderTarget* pRenderTarge
 {
 	D2D1_RECT_F ret;
 
-	ret.top = vRect.top*(800 / pRenderTarget->GetSize().height);
-	ret.left = vRect.left*(1280 / pRenderTarget->GetSize().width);
-	ret.bottom = vRect.bottom*(800 / pRenderTarget->GetSize().height);
-	ret.right = vRect.right*(1280 / pRenderTarget->GetSize().width);
+	ret.top = vRect.top*(g_pConf->m_viewBenchmark.height / pRenderTarget->GetSize().height);
+	ret.left = vRect.left*(g_pConf->m_viewBenchmark.width / pRenderTarget->GetSize().width);
+	ret.bottom = vRect.bottom*(g_pConf->m_viewBenchmark.height / pRenderTarget->GetSize().height);
+	ret.right = vRect.right*(g_pConf->m_viewBenchmark.width / pRenderTarget->GetSize().width);
 	return ret;
 }
 
@@ -424,8 +424,8 @@ D2D1_POINT_2F SFActScene::getViewPoiFromScene(ID2D1HwndRenderTarget* pRenderTarg
 {
 	D2D1_POINT_2F ret;
 
-	ret.x = sPoi.x*(pRenderTarget->GetSize().width / 1280);
-	ret.y = sPoi.y*(pRenderTarget->GetSize().height / 800);
+	ret.x = sPoi.x*(pRenderTarget->GetSize().width / g_pConf->m_viewBenchmark.width);
+	ret.y = sPoi.y*(pRenderTarget->GetSize().height / g_pConf->m_viewBenchmark.height);
 	return ret;
 }
 
@@ -433,10 +433,10 @@ D2D1_RECT_F SFActScene::getViewRectFromScene(ID2D1HwndRenderTarget* pRenderTarge
 {
 	D2D1_RECT_F ret;
 
-	ret.top = sRect.top*(pRenderTarget->GetSize().height / 800);
-	ret.left = sRect.left*(pRenderTarget->GetSize().width / 1280);
-	ret.bottom = sRect.bottom*(pRenderTarget->GetSize().height / 800);
-	ret.right = sRect.right*(pRenderTarget->GetSize().width / 1280);
+	ret.top = sRect.top*(pRenderTarget->GetSize().height / g_pConf->m_viewBenchmark.height);
+	ret.left = sRect.left*(pRenderTarget->GetSize().width / g_pConf->m_viewBenchmark.width);
+	ret.bottom = sRect.bottom*(pRenderTarget->GetSize().height / g_pConf->m_viewBenchmark.height);
+	ret.right = sRect.right*(pRenderTarget->GetSize().width / g_pConf->m_viewBenchmark.width);
 	return ret;
 }
 
@@ -508,15 +508,15 @@ void SFActScene::onDraw(
 	)
 {
 	double mpx = (getFightP1()->m_position.x + getFightP2()->m_position.x)/2;
-	double dpx = 1280 / 2 - mpx;
+	double dpx = g_pConf->m_viewBenchmark.width / 2 - mpx;
 	D2D1_POINT_2F sCmrPoi = { dpx , 0 };
 	D2D1_POINT_2F vCmrPoi = getViewPoiFromScene(pRenderTarget, sCmrPoi);
 	D2D1_POINT_2F sSize = { m_width, m_height };
 	D2D1_POINT_2F vSize = getViewPoiFromScene(pRenderTarget, sSize);
 
 	//设置变换
-	pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(vCmrPoi.x, vCmrPoi.y));
 	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+	pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(vCmrPoi.x, vCmrPoi.y));
 	//画背景
 	pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, vSize.x, vSize.y), pBackBrush);
 	onDrawForFightSprite(pRenderTarget, pBodyBrush, pActBrush, getFightP1());

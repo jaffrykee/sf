@@ -366,6 +366,9 @@ public:
 	TDIndexData* m_pDiFightPGN;
 	MapEventGroup_T m_mapEvent;
 
+	//显示基准
+	D2D1_SIZE_F m_viewBenchmark;
+
 	SFEventManager* m_pEventManager;
 
 private:
