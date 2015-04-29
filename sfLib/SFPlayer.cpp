@@ -12,6 +12,7 @@ SFPlayer::SFPlayer(UINT id, SF_SKN skinId, int pid, SFActScene* pScene) :m_skinI
 	m_nowSkill = EKA_MAX;
 	m_countSkillFrame = 0;
 	m_iTimeOut = 0;
+	m_pGroup = NULL;
 }
 
 SFPlayer::SFPlayer(string id, SF_SKN skinId, int pid, SFActScene* pScene) :m_id(id), m_skinId(skinId), m_pid(pid), m_pScene(pScene)
@@ -23,6 +24,7 @@ SFPlayer::SFPlayer(string id, SF_SKN skinId, int pid, SFActScene* pScene) :m_id(
 	m_nowSkill = EKA_MAX;
 	m_countSkillFrame = 0;
 	m_iTimeOut = 0;
+	m_pGroup = NULL;
 }
 
 SFPlayer::~SFPlayer()

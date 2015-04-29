@@ -2,6 +2,7 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
+#pragma region SFSpriteGroup
 SFSpriteGroup::SFSpriteGroup(string name) :m_name(name)
 {
 
@@ -26,10 +27,13 @@ bool SFSpriteGroup::addSprite(SFSprite* pSprite)
 		return false;
 	}
 	m_aSprite.insert(m_aSprite.end(), pSprite);
+	pSprite->m_pGroup = this;
 
 	return true;
 }
+#pragma endregion
 
+#pragma region SFActScene
 SFActScene::SFActScene(SF_SCN_MAP mapType) :m_mapType(mapType)
 {
 	m_stage = SCN_STG_FREE;
@@ -120,58 +124,6 @@ SFActScene::~SFActScene()
 			itSpriteGroup->second = NULL;
 		}
 	}
-}
-
-bool SFActScene::addSprite(string groupName, SFSprite* pSprite)
-{
-	if (pSprite == NULL || m_stage != SCN_STG_FREE)
-	{
-		return false;
-	}
-
-	map<string, SFSpriteGroup*>::iterator itSpriteGroup = m_mapSpriteGroup.find(groupName);
-	SFSpriteGroup* pSpriteGroup = NULL;
-
-	if (itSpriteGroup != m_mapSpriteGroup.end())
-	{
-		pSpriteGroup = m_mapSpriteGroup[groupName];
-	}
-	else
-	{
-		pSpriteGroup = new SFSpriteGroup(groupName);
-		m_mapSpriteGroup[groupName] = pSpriteGroup;
-	}
-	if (pSpriteGroup->addSprite(pSprite))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-SFPlayer* SFActScene::getPlayerInSceneByPGN(string groupName)
-{
-	map<string, SFSpriteGroup*>::iterator itSpriteGroup = m_mapSpriteGroup.find(groupName);
-	SFSpriteGroup* pSpriteGroup = NULL;
-
-	if (itSpriteGroup != m_mapSpriteGroup.end())
-	{
-		pSpriteGroup = m_mapSpriteGroup[groupName];
-		if (pSpriteGroup != NULL)
-		{
-			if (pSpriteGroup->m_aSprite.size() > 0)
-			{
-				if (pSpriteGroup->m_aSprite[0] != NULL)
-				{
-					return pSpriteGroup->m_aSprite[0];
-				}
-			}
-		}
-	}
-
-	return NULL;
 }
 
 //事件抉择
@@ -274,17 +226,19 @@ bool SFActScene::doEvent(SF_TEV event)
 
 bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*>& arrpFrame)
 {
-	pPlayer->moveToNextFrame();
-
-	SFResSkill* pSkill = pPlayer->m_resPlayer->m_arrSkill[pPlayer->m_nowSkill][pPlayer->m_nowAs][pPlayer->m_nowSsse];
-	if (pSkill != NULL)
+	if (pPlayer != NULL)
 	{
-		UINT objectCount = pSkill->m_arrObject.size();
-		if (objectCount > 0)
+		pPlayer->moveToNextFrame();
+		SFResSkill* pSkill = pPlayer->m_resPlayer->m_arrSkill[pPlayer->m_nowSkill][pPlayer->m_nowAs][pPlayer->m_nowSsse];
+		if (pSkill != NULL)
 		{
-			for (UINT i = 0; i < objectCount; i++)
+			UINT objectCount = pSkill->m_arrObject.size();
+			if (objectCount > 0)
 			{
-				arrpFrame.insert(arrpFrame.end(), &(pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame]));
+				for (UINT i = 0; i < objectCount; i++)
+				{
+					arrpFrame.insert(arrpFrame.end(), &(pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame]));
+				}
 			}
 		}
 	}
@@ -292,6 +246,7 @@ bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*
 	return true;
 }
 
+//与绘制是不同线程
 bool SFActScene::doCollision()
 {
 	SFPlayer* pPlayer = NULL;
@@ -308,6 +263,60 @@ bool SFActScene::doCollision()
 	m_tc++;
 
 	return true;
+}
+
+#pragma region 基本
+bool SFActScene::addSprite(string groupName, SFSprite* pSprite)
+{
+	if (pSprite == NULL || m_stage != SCN_STG_FREE)
+	{
+		return false;
+	}
+
+	map<string, SFSpriteGroup*>::iterator itSpriteGroup = m_mapSpriteGroup.find(groupName);
+	SFSpriteGroup* pSpriteGroup = NULL;
+
+	if (itSpriteGroup != m_mapSpriteGroup.end())
+	{
+		pSpriteGroup = m_mapSpriteGroup[groupName];
+	}
+	else
+	{
+		pSpriteGroup = new SFSpriteGroup(groupName);
+		pSpriteGroup->m_pScene = this;
+		m_mapSpriteGroup[groupName] = pSpriteGroup;
+	}
+	if (pSpriteGroup->addSprite(pSprite))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+SFPlayer* SFActScene::getPlayerInSceneByPGN(string groupName)
+{
+	map<string, SFSpriteGroup*>::iterator itSpriteGroup = m_mapSpriteGroup.find(groupName);
+	SFSpriteGroup* pSpriteGroup = NULL;
+
+	if (itSpriteGroup != m_mapSpriteGroup.end())
+	{
+		pSpriteGroup = m_mapSpriteGroup[groupName];
+		if (pSpriteGroup != NULL)
+		{
+			if (pSpriteGroup->m_aSprite.size() > 0)
+			{
+				if (pSpriteGroup->m_aSprite[0] != NULL)
+				{
+					return pSpriteGroup->m_aSprite[0];
+				}
+			}
+		}
+	}
+
+	return NULL;
 }
 
 bool SFActScene::addFightP1(SFSprite* pSprite)
@@ -329,7 +338,9 @@ SFPlayer* SFActScene::getFightP2()
 {
 	return m_mapSpriteGroup[g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2]]->m_aSprite[0];
 }
+#pragma endregion
 
+#pragma region 位置
 bool SFActScene::setPositionFightP1(D2D1_POINT_2F point)
 {
 	if (getFightP1() != NULL)
@@ -399,47 +410,9 @@ void SFActScene::refreshDirection()
 		setDirection(false);
 	}
 }
+#pragma endregion
 
-D2D1_POINT_2F SFActScene::getScenePoiFromView(ID2D1HwndRenderTarget* pRenderTarget, D2D1_POINT_2F vPoi)
-{
-	D2D1_POINT_2F ret;
-
-	ret.x = vPoi.x*(g_pConf->m_viewBenchmark.width / pRenderTarget->GetSize().width);
-	ret.y = vPoi.y*(g_pConf->m_viewBenchmark.height / pRenderTarget->GetSize().height);
-	return ret;
-}
-
-D2D1_RECT_F SFActScene::getSceneRectFromView(ID2D1HwndRenderTarget* pRenderTarget, D2D1_RECT_F vRect)
-{
-	D2D1_RECT_F ret;
-
-	ret.top = vRect.top*(g_pConf->m_viewBenchmark.height / pRenderTarget->GetSize().height);
-	ret.left = vRect.left*(g_pConf->m_viewBenchmark.width / pRenderTarget->GetSize().width);
-	ret.bottom = vRect.bottom*(g_pConf->m_viewBenchmark.height / pRenderTarget->GetSize().height);
-	ret.right = vRect.right*(g_pConf->m_viewBenchmark.width / pRenderTarget->GetSize().width);
-	return ret;
-}
-
-D2D1_POINT_2F SFActScene::getViewPoiFromScene(ID2D1HwndRenderTarget* pRenderTarget, D2D1_POINT_2F sPoi)
-{
-	D2D1_POINT_2F ret;
-
-	ret.x = sPoi.x*(pRenderTarget->GetSize().width / g_pConf->m_viewBenchmark.width);
-	ret.y = sPoi.y*(pRenderTarget->GetSize().height / g_pConf->m_viewBenchmark.height);
-	return ret;
-}
-
-D2D1_RECT_F SFActScene::getViewRectFromScene(ID2D1HwndRenderTarget* pRenderTarget, D2D1_RECT_F sRect)
-{
-	D2D1_RECT_F ret;
-
-	ret.top = sRect.top*(pRenderTarget->GetSize().height / g_pConf->m_viewBenchmark.height);
-	ret.left = sRect.left*(pRenderTarget->GetSize().width / g_pConf->m_viewBenchmark.width);
-	ret.bottom = sRect.bottom*(pRenderTarget->GetSize().height / g_pConf->m_viewBenchmark.height);
-	ret.right = sRect.right*(pRenderTarget->GetSize().width / g_pConf->m_viewBenchmark.width);
-	return ret;
-}
-
+#pragma region 绘制
 void SFActScene::onDrawForFightBox(
 	ID2D1HwndRenderTarget* pRenderTarget,
 	ID2D1SolidColorBrush* pBrush,
@@ -468,7 +441,7 @@ void SFActScene::onDrawForFightBox(
 		}
 		sRect.top += pPlayer->m_position.y;
 		sRect.bottom += pPlayer->m_position.y;
-		D2D1_RECT_F vRect = getViewRectFromScene(pRenderTarget, sRect);
+		D2D1_RECT_F vRect = SFd2d::getViewRectFromScene(pRenderTarget, sRect);
 		pRenderTarget->FillRectangle(vRect, pBrush);
 	}
 }
@@ -480,26 +453,30 @@ void SFActScene::onDrawForFightSprite(
 	SFPlayer* pPlayer
 	)
 {
-	SFResSkill* pSkill = pPlayer->m_resPlayer->m_arrSkill[pPlayer->m_nowSkill][pPlayer->m_nowAs][pPlayer->m_nowSsse];
-
-	if (pSkill != NULL)
+	if (pPlayer != NULL)
 	{
-		UINT objectCount = pSkill->m_arrObject.size();
-		if (objectCount > 0)
-		{
-			for (UINT i = 0; i < objectCount; i++)
-			{
-				list<D2D1_RECT_F>* pList = NULL;
+		SFResSkill* pSkill = pPlayer->m_resPlayer->m_arrSkill[pPlayer->m_nowSkill][pPlayer->m_nowAs][pPlayer->m_nowSsse];
 
-				pList = &pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame].m_lBodyBox;
-				onDrawForFightBox(pRenderTarget, pBodyBrush, pPlayer, pList);
-				pList = &pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame].m_lAttackBox;
-				onDrawForFightBox(pRenderTarget, pActBrush, pPlayer, pList);
+		if (pSkill != NULL)
+		{
+			UINT objectCount = pSkill->m_arrObject.size();
+			if (objectCount > 0)
+			{
+				for (UINT i = 0; i < objectCount; i++)
+				{
+					list<D2D1_RECT_F>* pList = NULL;
+
+					pList = &pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame].m_lBodyBox;
+					onDrawForFightBox(pRenderTarget, pBodyBrush, pPlayer, pList);
+					pList = &pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame].m_lAttackBox;
+					onDrawForFightBox(pRenderTarget, pActBrush, pPlayer, pList);
+				}
 			}
 		}
 	}
 }
 
+//与碰撞是不同线程
 void SFActScene::onDraw(
 	ID2D1HwndRenderTarget* pRenderTarget,
 	ID2D1SolidColorBrush* pBodyBrush,
@@ -510,9 +487,9 @@ void SFActScene::onDraw(
 	double mpx = (getFightP1()->m_position.x + getFightP2()->m_position.x)/2;
 	double dpx = g_pConf->m_viewBenchmark.width / 2 - mpx;
 	D2D1_POINT_2F sCmrPoi = { dpx , 0 };
-	D2D1_POINT_2F vCmrPoi = getViewPoiFromScene(pRenderTarget, sCmrPoi);
+	D2D1_POINT_2F vCmrPoi = SFd2d::getViewPoiFromScene(pRenderTarget, sCmrPoi);
 	D2D1_POINT_2F sSize = { m_width, m_height };
-	D2D1_POINT_2F vSize = getViewPoiFromScene(pRenderTarget, sSize);
+	D2D1_POINT_2F vSize = SFd2d::getViewPoiFromScene(pRenderTarget, sSize);
 
 	//设置变换
 	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
@@ -522,3 +499,5 @@ void SFActScene::onDraw(
 	onDrawForFightSprite(pRenderTarget, pBodyBrush, pActBrush, getFightP1());
 	onDrawForFightSprite(pRenderTarget, pBodyBrush, pActBrush, getFightP2());
 }
+#pragma endregion
+#pragma endregion

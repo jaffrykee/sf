@@ -42,6 +42,7 @@ public:
 	string m_id;
 	//属于哪个场景
 	SFActScene* m_pScene;
+	SFSpriteGroup* m_pGroup;
 	//皮肤id，初始化调用资源用
 	int m_skinId;
 	string m_name;
