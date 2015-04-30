@@ -58,7 +58,9 @@ public:
 	SFPEventStatus m_eStatus;
 	//心跳超时计时
 	UINT m_iTimeOut;
+	//被击状态
 	SF_ASH m_hitStatus;
+	//站立跳跃状态等
 	SF_AS m_standStatus;
 
 	//当前等待打印的技能
@@ -70,6 +72,9 @@ public:
 
 	//当前位置
 	D2D1_POINT_2F m_position;
+
+	//朝向，true为朝右
+	bool m_isTwdRight;
 
 	SFPlayer(UINT id, SF_SKN skinId, int pid, SFActScene* pScene = NULL);
 	SFPlayer(string id, SF_SKN skinId, int pid, SFActScene* pScene = NULL);

@@ -246,7 +246,7 @@ bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*
 	return true;
 }
 
-//与绘制是不同线程
+//碰撞，与绘制是不同线程
 bool SFActScene::doCollision()
 {
 	SFPlayer* pPlayer = NULL;
@@ -257,6 +257,7 @@ bool SFActScene::doCollision()
 	{
 		sf_cout(DEBUG_COM, "<time>:" << m_tc / 60 << endl);
 	}
+	refreshDirection();
 	addFrameToCollosion(getFightP1(), arrpFrame1);
 	addFrameToCollosion(getFightP2(), arrpFrame2);
 	refreshDirection();
@@ -383,19 +384,41 @@ bool SFActScene::initPositionFightP2()
 
 void SFActScene::setDirection(bool isP1Left)
 {
-	if (isP1Left)
+	if (getFightP1()->m_hitStatus == ASH_DEF)
 	{
-		m_mapTevEk[TEV_KU_P1LF] = EK_4;
-		m_mapTevEk[TEV_KU_P1RG] = EK_6;
-		m_mapTevEk[TEV_KU_P2LF] = EK_6;
-		m_mapTevEk[TEV_KU_P2RG] = EK_4;
+		if (isP1Left)
+		{
+			m_mapTevEk[TEV_KU_P1LF] = EK_4;
+			m_mapTevEk[TEV_KU_P1RG] = EK_6;
+			m_mapTevEk[TEV_KD_P1LF] = EK_4;
+			m_mapTevEk[TEV_KD_P1RG] = EK_6;
+		}
+		else
+		{
+			m_mapTevEk[TEV_KU_P1LF] = EK_6;
+			m_mapTevEk[TEV_KU_P1RG] = EK_4;
+			m_mapTevEk[TEV_KD_P1LF] = EK_6;
+			m_mapTevEk[TEV_KD_P1RG] = EK_4;
+		}
+		getFightP1()->m_isTwdRight = isP1Left;
 	}
-	else
+	if (getFightP2()->m_hitStatus == ASH_DEF)
 	{
-		m_mapTevEk[TEV_KU_P1LF] = EK_6;
-		m_mapTevEk[TEV_KU_P1RG] = EK_4;
-		m_mapTevEk[TEV_KU_P2LF] = EK_4;
-		m_mapTevEk[TEV_KU_P2RG] = EK_6;
+		if (isP1Left)
+		{
+			m_mapTevEk[TEV_KU_P2LF] = EK_6;
+			m_mapTevEk[TEV_KU_P2RG] = EK_4;
+			m_mapTevEk[TEV_KD_P2LF] = EK_6;
+			m_mapTevEk[TEV_KD_P2RG] = EK_4;
+		}
+		else
+		{
+			m_mapTevEk[TEV_KU_P2LF] = EK_4;
+			m_mapTevEk[TEV_KU_P2RG] = EK_6;
+			m_mapTevEk[TEV_KD_P2LF] = EK_4;
+			m_mapTevEk[TEV_KD_P2RG] = EK_6;
+		}
+		getFightP2()->m_isTwdRight = !isP1Left;
 	}
 }
 
@@ -420,24 +443,18 @@ void SFActScene::onDrawForFightBox(
 	list<D2D1_RECT_F>* pList
 	)
 {
-	bool isP1 = true;
-	bool isP1Left = true;
-
-	isP1 = (pPlayer->m_pid == 1) ? true : false;
-	isP1Left = (getFightP1()->m_position.x < getFightP2()->m_position.x) ? true : false;
-
 	for (list<D2D1_RECT_F>::iterator it = pList->begin(); it != pList->end(); it++)
 	{
 		D2D1_RECT_F sRect = *it;
-		if (isP1 ^ isP1Left)
-		{
-			sRect.left = pPlayer->m_position.x - sRect.left;
-			sRect.right = pPlayer->m_position.x - sRect.right;
-		}
-		else
+		if (pPlayer->m_isTwdRight)
 		{
 			sRect.left += pPlayer->m_position.x;
 			sRect.right += pPlayer->m_position.x;
+		}
+		else
+		{
+			sRect.left = pPlayer->m_position.x - sRect.left;
+			sRect.right = pPlayer->m_position.x - sRect.right;
 		}
 		sRect.top += pPlayer->m_position.y;
 		sRect.bottom += pPlayer->m_position.y;
