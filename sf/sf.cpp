@@ -2,33 +2,6 @@
 #include <sf.h>
 using namespace std;
 
-#pragma region 显示坐标define
-#define ACT_WID 800
-#define ACT_HIG 500
-
-#define ACT_REALWID ((float)(ACT_WID) - (FRA_X))
-#define ACT_REALHIG ((float)(ACT_HIG) - (FRA_Y))
-
-#define BODY_W ((ACT_REALWID) * 0.095f)
-#define BODY_H ((ACT_REALHIG) * 0.32f)
-//窗口边框补差
-#define FRA_X (18.f)
-#define FRA_Y (40.f)
-
-//顶部菜单高度
-#define TOP_Y (40.f)
-//地面
-#define BTN_Y ((ACT_REALHIG) * 0.83f)
-#define INIT_LX1 ((ACT_REALWID) * 0.2f)
-#define INIT_LY1 ((INIT_LY2) - (BODY_H))
-#define INIT_LX2 ((INIT_LX1) + (BODY_W))
-#define INIT_LY2 (BTN_Y)
-#define INIT_RX1 ((ACT_REALWID) * 0.7f)
-#define INIT_RY1 ((INIT_RY2) - BODY_H)
-#define INIT_RX2 ((INIT_RX1) + BODY_W)
-#define INIT_RY2 (BTN_Y)
-#pragma endregion 
-
 #pragma region 按键设置define
 #define ACT_K1UP	VK_W
 #define ACT_K1LF	VK_A
@@ -169,7 +142,7 @@ HRESULT WinApp::Initialize()
 		m_pD2DFactory->GetDesktopDpi(&dpiX, &dpiY);
 		m_hwnd = CreateWindow(
 			"D2DWinApp", "SF", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-			static_cast<UINT>(ceil(ACT_WID.f*dpiX / 96.f)), static_cast<UINT>(ceil(ACT_HIG.f*dpiY / 96.f)),
+			static_cast<UINT>(ceil(g_pConf->m_defaultResolution.width*dpiX / 96.f)), static_cast<UINT>(ceil(g_pConf->m_defaultResolution.height*dpiY / 96.f)),
 			NULL, NULL, HINST_THISCOMPONENT, this
 			);
 		hr = m_hwnd ? S_OK : E_FAIL;

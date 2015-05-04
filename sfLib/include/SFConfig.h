@@ -368,6 +368,7 @@ public:
 
 	//显示基准
 	D2D1_SIZE_F m_viewBenchmark;
+	D2D1_SIZE_F m_defaultResolution;
 
 	SFEventManager* m_pEventManager;
 

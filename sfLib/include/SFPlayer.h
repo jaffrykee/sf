@@ -70,11 +70,19 @@ public:
 	//当前等待打印的技能的帧计数器
 	UINT m_countSkillFrame;
 
+#pragma region 物理
 	//当前位置
 	D2D1_POINT_2F m_position;
 
 	//朝向，true为朝右
 	bool m_isTwdRight;
+
+	double m_phyax;
+	double m_phyay;
+	double m_phyvx;
+	double m_phyvy;
+
+#pragma endregion
 
 	SFPlayer(UINT id, SF_SKN skinId, int pid, SFActScene* pScene = NULL);
 	SFPlayer(string id, SF_SKN skinId, int pid, SFActScene* pScene = NULL);
@@ -89,7 +97,6 @@ public:
 	SF_EK getLastKeyFromSkill(SF_EKA skill);
 	bool upEvent(SF_EK key);
 	bool downEvent(SF_EK key);
-	bool doSkill();
 	int getMaxSkillFrame();
 	void moveToNextFrame();
 	void doTimer(SF_TEV);

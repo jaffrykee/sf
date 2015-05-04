@@ -126,6 +126,7 @@ SFActScene::~SFActScene()
 	}
 }
 
+#pragma region 事件
 //事件抉择
 bool SFActScene::doEvent(SF_TEV event)
 {
@@ -223,7 +224,9 @@ bool SFActScene::doEvent(SF_TEV event)
 
 	return false;
 }
+#pragma endregion
 
+#pragma region 碰撞
 bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*>& arrpFrame)
 {
 	if (pPlayer != NULL)
@@ -265,6 +268,7 @@ bool SFActScene::doCollision()
 
 	return true;
 }
+#pragma endregion
 
 #pragma region 基本
 bool SFActScene::addSprite(string groupName, SFSprite* pSprite)

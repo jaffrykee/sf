@@ -34,6 +34,7 @@ SFPlayer::~SFPlayer()
 	delete m_resPlayer;
 }
 
+#pragma region 通用取值与设值
 void SFPlayer::setEventListTimeout()
 {
 	m_eStatus.setTimeout();
@@ -83,7 +84,84 @@ bool SFPlayer::getEnableUpEventInSkill(SF_EKA skill, SF_AS sta)
 
 	return false;
 }
+#pragma endregion
 
+#pragma region 事件接口
+//由场景调用，计时器事件
+void SFPlayer::doTimer(SF_TEV timer)
+{
+	if (timer == TEV_TMR_SKILL)
+	{
+		if (m_iTimeOut < 5)
+		{
+			m_iTimeOut++;
+		}
+		else
+		{
+			setEventListTimeout();
+		}
+	}
+}
+
+//由场景调用的，键盘弹起事件
+bool SFPlayer::upEvent(SF_EK key)
+{
+	setDownStatusDisable((SF_EK)key);
+	if (m_hitStatus == ASH_SAVED)
+	{
+		if (getLastKeyFromSkill(m_nowSkill) == key)
+		{
+			if (this->getEnableUpEventInSkill(m_nowSkill, m_nowAs))
+			{
+				//m_nowSsse = SSSE_UP;
+				//setHitStatus(ASH_ATC);
+			}
+			else
+			{
+				//<inc>场景中应该有个释放控制的函数，能够让场景按照地图类型，将精灵归位。
+				m_nowSkill = EKA_DEF;
+				m_nowAs = AS_DEF;
+				m_nowSsse = SSSE_BASIC;
+				m_standStatus = AS_DEF;
+				setHitStatus(ASH_DEF);
+			}
+		}
+	}
+	return false;
+}
+
+//由场景调用的，键盘按下事件
+bool SFPlayer::downEvent(SF_EK key)
+{
+	SF_EKA ret = EKA_MAX;
+
+	if (m_eStatus.m_aStatus[key] == 1)
+	{
+		return true;
+	}
+	m_iTimeOut = 0;
+	m_eStatus.addEvent(key);
+	setDownStatusEnable(key);
+	//只有可控制状态才可以进入selectSkill阶段
+	if (m_hitStatus == ASH_DEF || m_hitStatus == ASH_SAVED)
+	{
+		m_hitStatus = ASH_DEF;
+		ret = getActionSkill(m_eStatus.m_sDownEvent);
+	}
+	if (ret == EKA_MAX)
+	{
+		return false;
+	}
+	else
+	{
+		m_nowSkill = ret;
+	}
+	return true;
+}
+#pragma endregion
+
+#pragma region 技能选择
+//抉择技能
 SF_EKA SFPlayer::getActionSkill(string ekaStr)
 {
 	for (UINT i = 0; i < ekaStr.size(); i++)
@@ -138,66 +216,9 @@ SF_EK SFPlayer::getLastKeyFromSkill(SF_EKA skill)
 
 	return EK_MAX;
 }
+#pragma endregion
 
-bool SFPlayer::upEvent(SF_EK key)
-{
-	setDownStatusDisable((SF_EK)key);
-	if (m_hitStatus == ASH_SAVED)
-	{
-		if (getLastKeyFromSkill(m_nowSkill) == key)
-		{
-			if (this->getEnableUpEventInSkill(m_nowSkill, m_nowAs))
-			{
-				//m_nowSsse = SSSE_UP;
-				//setHitStatus(ASH_ATC);
-			}
-			else
-			{
-				//<inc>场景中应该有个释放控制的函数，能够让场景按照地图类型，将精灵归位。
-				m_nowSkill = EKA_DEF;
-				m_nowAs = AS_DEF;
-				m_nowSsse = SSSE_BASIC;
-				m_standStatus = AS_DEF;
-				setHitStatus(ASH_DEF);
-			}
-		}
-	}
-	return false;
-}
-
-bool SFPlayer::downEvent(SF_EK key)
-{
-	SF_EKA ret = EKA_MAX;
-
-	if (m_eStatus.m_aStatus[key] == 1)
-	{
-		return true;
-	}
-	m_iTimeOut = 0;
-	m_eStatus.addEvent(key);
-	setDownStatusEnable(key);
-	//只有可控制状态才可以进入selectSkill阶段
-	if (m_hitStatus == ASH_DEF || m_hitStatus == ASH_SAVED)
-	{
-		m_hitStatus = ASH_DEF;
-		ret = getActionSkill(m_eStatus.m_sDownEvent);
-	}
-	if (ret == EKA_MAX)
-	{
-		return false;
-	}
-	else
-	{
-		m_nowSkill = ret;
-	}
-	return true;
-}
-
-bool SFPlayer::doSkill()
-{
-	return false;
-}
-
+//由场景的doCollision调用，精灵移到下一帧
 void SFPlayer::moveToNextFrame()
 {
 	if (m_nowSkill == EKA_MAX)
@@ -254,20 +275,5 @@ void SFPlayer::moveToNextFrame()
 	else
 	{
 		m_countSkillFrame = 0;
-	}
-}
-
-void SFPlayer::doTimer(SF_TEV timer)
-{
-	if (timer == TEV_TMR_SKILL)
-	{
-		if (m_iTimeOut < 5)
-		{
-			m_iTimeOut++;
-		}
-		else
-		{
-			setEventListTimeout();
-		}
 	}
 }
