@@ -76,6 +76,9 @@ public:
 
 	//朝向，true为朝右
 	bool m_isTwdRight;
+	//旋转角度
+	double m_angle;
+	bool m_enAngle;
 
 	double m_phyax;
 	double m_phyay;

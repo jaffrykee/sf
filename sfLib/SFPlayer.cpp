@@ -143,7 +143,7 @@ bool SFPlayer::downEvent(SF_EK key)
 	m_eStatus.addEvent(key);
 	setDownStatusEnable(key);
 	//只有可控制状态才可以进入selectSkill阶段
-	if (m_hitStatus == ASH_DEF || m_hitStatus == ASH_SAVED)
+	if (m_hitStatus == ASH_DEF || (m_hitStatus == ASH_SAVED && m_nowSkill <= EKA_66))
 	{
 		m_hitStatus = ASH_DEF;
 		ret = getActionSkill(m_eStatus.m_sDownEvent);
