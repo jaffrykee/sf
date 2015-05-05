@@ -113,7 +113,7 @@ bool SFPlayer::upEvent(SF_EK key)
 		{
 			if (this->getEnableUpEventInSkill(m_nowSkill, m_nowAs))
 			{
-				//m_nowSsse = SSSE_UP;
+				m_nowSsse = SSSE_UP;
 				//setHitStatus(ASH_ATC);
 			}
 			else
@@ -124,6 +124,7 @@ bool SFPlayer::upEvent(SF_EK key)
 				m_nowSsse = SSSE_BASIC;
 				m_standStatus = AS_DEF;
 				setHitStatus(ASH_DEF);
+				m_countSkillFrame = 0;
 			}
 		}
 	}
@@ -145,7 +146,6 @@ bool SFPlayer::downEvent(SF_EK key)
 	//只有可控制状态才可以进入selectSkill阶段
 	if (m_hitStatus == ASH_DEF || (m_hitStatus == ASH_SAVED && m_nowSkill <= EKA_66))
 	{
-		m_hitStatus = ASH_DEF;
 		ret = getActionSkill(m_eStatus.m_sDownEvent);
 	}
 	if (ret == EKA_MAX)
@@ -178,7 +178,7 @@ SF_EKA SFPlayer::getActionSkill(string ekaStr)
 				sf_cout(DEBUG_SKILL_KEY, "<<");
 				if (m_resPlayer->m_arrSkill[ret][m_standStatus][SF_SSSE::SSSE_BASIC]->m_savable == true)
 				{
-					setHitStatus(ASH_SAVED);
+					m_hitStatus = ASH_SAVED;
 				}
 				else
 				{
@@ -225,6 +225,86 @@ void SFPlayer::moveToNextFrame()
 	{
 		m_nowSkill = EKA_DEF;
 		m_hitStatus = ASH_DEF;
+	}
+	if ((m_nowSkill == EKA_DEF && m_hitStatus == ASH_DEF) || (m_hitStatus == ASH_SAVED && m_nowSkill <= EKA_42))
+	{
+		UCHAR d4 = m_eStatus.m_aStatus[EK_4];
+		UCHAR d6 = m_eStatus.m_aStatus[EK_6];
+		UCHAR d8 = m_eStatus.m_aStatus[EK_8];
+		UCHAR d2 = m_eStatus.m_aStatus[EK_2];
+
+		if (d4 != d6)
+		{
+			if (d8 != d2)
+			{
+				if (d8 == 1)
+				{
+					m_hitStatus = ASH_DEF;
+					if (d6 == 1)
+					{
+						if (m_nowSkill == EKA_66)
+						{
+							m_nowSkill = EKA_668;
+						}
+						else
+						{
+							m_nowSkill = EKA_68;
+						}
+					}
+					else
+					{
+						m_nowSkill = EKA_48;
+					}
+				}
+				else
+				{
+					m_hitStatus = ASH_SAVED;
+					if (d6 == 1)
+					{
+						m_nowSkill = EKA_2;
+					}
+					else
+					{
+						m_nowSkill = EKA_42;
+					}
+				}
+			}
+			else
+			{
+				m_hitStatus = ASH_SAVED;
+				if (d6 == 1)
+				{
+					if (m_nowSkill == EKA_66)
+					{
+						m_nowSkill = EKA_66;
+					}
+					else
+					{
+						m_nowSkill = EKA_6;
+					}
+				}
+				else
+				{
+					m_nowSkill = EKA_4;
+				}
+			}
+		}
+		else
+		{
+			if (d8 != d2)
+			{
+				if (d8 == 1)
+				{
+					m_hitStatus = ASH_DEF;
+					m_nowSkill = EKA_8;
+				}
+				else
+				{
+					m_hitStatus = ASH_SAVED;
+					m_nowSkill = EKA_2;
+				}
+			}
+		}
 	}
 
 	SFResSkill* pSkill = m_resPlayer->m_arrSkill[m_nowSkill][m_nowAs][m_nowSsse];

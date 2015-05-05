@@ -46,6 +46,7 @@ enum SF_EKA
 {
 	EKA_DEF,
 	EKA_8, EKA_4, EKA_2, EKA_6, EKA_44, EKA_66,
+	EKA_48, EKA_68, EKA_668, EKA_42,
 	EKA_A, EKA_B, EKA_C, EKA_D,
 	EKA_26A, EKA_26B, EKA_26C, EKA_26D,
 	EKA_24A, EKA_24B, EKA_24C, EKA_24D,
@@ -65,6 +66,7 @@ enum SF_EKA
 const vector<string> conf_aStrEka = {
 	"DEF",
 	"8", "4", "2", "6", "44", "66",
+	"48", "68", "668", "42",
 	"A", "B", "C", "D",
 	"26A", "26B", "26C", "26D",
 	"24A", "24B", "24C", "24D",

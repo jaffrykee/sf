@@ -404,7 +404,13 @@ void SFActScene::setDirection(bool isP1Left)
 			m_mapTevEk[TEV_KD_P1LF] = EK_6;
 			m_mapTevEk[TEV_KD_P1RG] = EK_4;
 		}
-		getFightP1()->m_isTwdRight = isP1Left;
+		if (getFightP1()->m_isTwdRight != isP1Left)
+		{
+			UCHAR tmp = getFightP1()->m_eStatus.m_aStatus[EK_4];
+			getFightP1()->m_eStatus.m_aStatus[EK_4] = getFightP1()->m_eStatus.m_aStatus[EK_6];
+			getFightP1()->m_eStatus.m_aStatus[EK_6] = tmp;
+			getFightP1()->m_isTwdRight = isP1Left;
+		}
 	}
 	if (getFightP2()->m_hitStatus == ASH_DEF)
 	{
@@ -422,7 +428,13 @@ void SFActScene::setDirection(bool isP1Left)
 			m_mapTevEk[TEV_KD_P2LF] = EK_4;
 			m_mapTevEk[TEV_KD_P2RG] = EK_6;
 		}
-		getFightP2()->m_isTwdRight = !isP1Left;
+		if (getFightP2()->m_isTwdRight != !isP1Left)
+		{
+			UCHAR tmp = getFightP2()->m_eStatus.m_aStatus[EK_4];
+			getFightP2()->m_eStatus.m_aStatus[EK_4] = getFightP2()->m_eStatus.m_aStatus[EK_6];
+			getFightP2()->m_eStatus.m_aStatus[EK_6] = tmp;
+			getFightP2()->m_isTwdRight = !isP1Left;
+		}
 	}
 }
 
