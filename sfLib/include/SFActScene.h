@@ -36,11 +36,17 @@ typedef struct SFCollisionNode_S
 	D2D1_RECT_F m_box;
 }SFCNode_T;
 
+typedef struct SFClsnFrameInfo_S
+{
+	SFPlayer* pSprite;
+	SFResFrame* pFrame;
+}SFCFI_T;
+
 class __declspec(dllexport) SFSpriteGroup
 {
 public:
 	string m_name;
-	vector<SFSprite*> m_aSprite;
+	vector<SFSprite*> m_arrpSprite;
 	SFActScene* m_pScene;
 
 	SFSpriteGroup(string name);
@@ -78,7 +84,7 @@ public:
 	bool addSprite(string groupName, SFSprite* pSprite);
 	SFPlayer* getPlayerInSceneByPGN(string groupName);
 	bool doEvent(SF_TEV event);
-	bool addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*>& arrpFrame);
+	bool addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFCFI_T>* pArrpFrame);
 	bool doCollision();
 
 	//将来可能会将Fight类型的Scene以继承类的方式提出来。

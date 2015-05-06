@@ -10,12 +10,12 @@ SFSpriteGroup::SFSpriteGroup(string name) :m_name(name)
 
 SFSpriteGroup::~SFSpriteGroup()
 {
-	for (UINT i = 0; i < m_aSprite.size(); i++)
+	for (UINT i = 0; i < m_arrpSprite.size(); i++)
 	{
-		if (m_aSprite[i] != NULL)
+		if (m_arrpSprite[i] != NULL)
 		{
-			delete m_aSprite[i];
-			m_aSprite[i] = NULL;
+			delete m_arrpSprite[i];
+			m_arrpSprite[i] = NULL;
 		}
 	}
 }
@@ -26,7 +26,7 @@ bool SFSpriteGroup::addSprite(SFSprite* pSprite)
 	{
 		return false;
 	}
-	m_aSprite.insert(m_aSprite.end(), pSprite);
+	m_arrpSprite.insert(m_arrpSprite.end(), pSprite);
 	pSprite->m_pGroup = this;
 
 	return true;
@@ -227,7 +227,8 @@ bool SFActScene::doEvent(SF_TEV event)
 #pragma endregion
 
 #pragma region 碰撞
-bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*>& arrpFrame)
+//加入碰撞缓存
+bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFCFI_T>* pArrpFrame)
 {
 	if (pPlayer != NULL)
 	{
@@ -240,7 +241,13 @@ bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*
 			{
 				for (UINT i = 0; i < objectCount; i++)
 				{
-					arrpFrame.insert(arrpFrame.end(), &(pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame]));
+					pArrpFrame->insert(
+						pArrpFrame->end(),
+						{
+							pPlayer,
+							&(pSkill->m_arrObject[i].m_arrFrame[pPlayer->m_countSkillFrame])
+						}
+					);
 				}
 			}
 		}
@@ -249,22 +256,61 @@ bool SFActScene::addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFResFrame*
 	return true;
 }
 
-//碰撞，与绘制是不同线程
+//碰撞主逻辑，与绘制是不同线程
 bool SFActScene::doCollision()
 {
 	SFPlayer* pPlayer = NULL;
-	vector<SFResFrame*> arrpFrame1;
-	vector<SFResFrame*> arrpFrame2;
+	vector<vector<SFCFI_T>*> arrpArrpFrame;	//缓存
 
 	if (m_tc % 60 == 0)
 	{
 		sf_cout(DEBUG_COM, "<time>:" << m_tc / 60 << endl);
 	}
-	refreshDirection();
-	addFrameToCollosion(getFightP1(), arrpFrame1);
-	addFrameToCollosion(getFightP2(), arrpFrame2);
-	refreshDirection();
 	m_tc++;
+
+	refreshDirection();
+	//将各个碰撞组的各个精灵的盒子加入碰撞缓存
+	for (
+		map<string, SFSpriteGroup*>::iterator itGroup = m_mapSpriteGroup.begin();
+		itGroup != m_mapSpriteGroup.end();
+		itGroup++
+	)
+	{
+		arrpArrpFrame.insert(arrpArrpFrame.end(), new vector<SFCFI_T>);
+
+		vector<SFSprite*>* pArrpSprite = &itGroup->second->m_arrpSprite;
+		for (vector<SFSprite*>::iterator itSprite = pArrpSprite->begin(); itSprite != pArrpSprite->end(); itSprite++)
+		{
+			addFrameToCollosion(*itSprite._Ptr, *arrpArrpFrame.rbegin());
+		}
+	}
+	refreshDirection();
+	for (vector<vector<SFCFI_T>*>::iterator itArrpArrCfi = arrpArrpFrame.begin();
+		itArrpArrCfi != arrpArrpFrame.end(); itArrpArrCfi++)
+	{
+		for (vector<SFCFI_T>::iterator itArrCfi = (*itArrpArrCfi)->begin();
+			itArrCfi != (*itArrpArrCfi)->end(); itArrCfi++)
+		{
+			itArrCfi->pFrame;
+			for (vector<vector<SFCFI_T>*>::iterator itArrpArrCfi2 = arrpArrpFrame.begin();
+				itArrpArrCfi2 != arrpArrpFrame.end(); itArrpArrCfi2++)
+			{
+				for (vector<SFCFI_T>::iterator itArrCfi2 = (*itArrpArrCfi2)->begin();
+					itArrCfi2 != (*itArrpArrCfi2)->end(); itArrCfi2++)
+				{
+				}
+			}
+		}
+	}
+
+	for (UINT i = 0; i < arrpArrpFrame.size(); i++)
+	{
+		if (arrpArrpFrame[i] != NULL)
+		{
+			delete arrpArrpFrame[i];
+			arrpArrpFrame[i] = NULL;
+		}
+	}
 
 	return true;
 }
@@ -311,11 +357,11 @@ SFPlayer* SFActScene::getPlayerInSceneByPGN(string groupName)
 		pSpriteGroup = m_mapSpriteGroup[groupName];
 		if (pSpriteGroup != NULL)
 		{
-			if (pSpriteGroup->m_aSprite.size() > 0)
+			if (pSpriteGroup->m_arrpSprite.size() > 0)
 			{
-				if (pSpriteGroup->m_aSprite[0] != NULL)
+				if (pSpriteGroup->m_arrpSprite[0] != NULL)
 				{
-					return pSpriteGroup->m_aSprite[0];
+					return pSpriteGroup->m_arrpSprite[0];
 				}
 			}
 		}
@@ -336,12 +382,12 @@ bool SFActScene::addFightP2(SFSprite* pSprite)
 
 SFPlayer* SFActScene::getFightP1()
 {
-	return m_mapSpriteGroup[g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1]]->m_aSprite[0];
+	return m_mapSpriteGroup[g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P1]]->m_arrpSprite[0];
 }
 
 SFPlayer* SFActScene::getFightP2()
 {
-	return m_mapSpriteGroup[g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2]]->m_aSprite[0];
+	return m_mapSpriteGroup[g_pConf->m_pDiFightPGN->m_str[FIGHT_PGN_P2]]->m_arrpSprite[0];
 }
 #pragma endregion
 

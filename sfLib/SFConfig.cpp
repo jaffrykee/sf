@@ -30,6 +30,7 @@ SFConfig::SFConfig():
 {
 	m_aTmr[SF_TMR::TMR_PAINT] = 15;
 	m_aTmr[SF_TMR::TMR_ACTION] = m_aTmr[SF_TMR::TMR_PAINT];
+	m_aTmr[SF_TMR::TMR_SKILL] = 35;
 	m_viewBenchmark.width = 800;
 	m_viewBenchmark.height = 500;
 	m_defaultResolution.width = 320;
