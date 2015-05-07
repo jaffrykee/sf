@@ -422,8 +422,55 @@ HRESULT WinApp::OnRender()
 		double sH = renderTargetSize.height;
 
 		m_pRenderTarget->BeginDraw();
+		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+//		g_pEventManager->m_pActiveScene->onDraw(m_pRenderTarget, m_pBlueB, m_pRedB, m_pGridPatternBitmapBrush);
+
+		ID2D1PathGeometry* pPathG = NULL;
+		hr = m_pD2DFactory->CreatePathGeometry(&pPathG);
+
+		FLOAT len = 10;
+		FLOAT mar = 2;
+		if (SUCCEEDED(hr))
+		{
+			ID2D1GeometrySink *pSink = NULL;
+			hr = pPathG->Open(&pSink);
+
+			if (SUCCEEDED(hr))
+			{
+				pSink->SetFillMode(D2D1_FILL_MODE_WINDING);
+
+				pSink->BeginFigure(
+					D2D1::Point2F(sqrt(3)*len, 0 * len),
+					D2D1_FIGURE_BEGIN_FILLED
+					);
+
+				D2D1_POINT_2F points[6] = {
+					D2D1::Point2F(2 * sqrt(3) * len, 1 * len),
+					D2D1::Point2F(2 * sqrt(3) * len, 3 * len),
+					D2D1::Point2F(sqrt(3) * len, 4 * len),
+					D2D1::Point2F(0 * len, 3 * len),
+					D2D1::Point2F(0 * len, 1 * len),
+					D2D1::Point2F(sqrt(3)*len, 0 * len)
+				};
+
+				pSink->AddLines(points, ARRAYSIZE(points));
+				pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
+			}
+
+			pSink->Close();
+		}
+
+		//轮廓
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+		for (UINT i = 0; i < sW / (2 * sqrt(3) * len + mar); i++)
+		{
+			m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation((2 * sqrt(3) * len + mar) * i, 0));
+			m_pRenderTarget->DrawGeometry(pPathG, m_pBlueB, 1.f);
+		}
+		//填充
+		//m_pRenderTarget->FillGeometry(pPathG, m_pRedB);
+
 		//m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-		g_pEventManager->m_pActiveScene->onDraw(m_pRenderTarget, m_pBlueB, m_pRedB, m_pGridPatternBitmapBrush);
 // 		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
 // 		D2D1_RECT_F rect2 = D2D1::RectF(100.0f, (sH - 50.0f), 150.0f, sH);
 //		m_pRenderTarget->FillRectangle(rect1, m_pBlueB);
