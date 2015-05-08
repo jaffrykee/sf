@@ -428,8 +428,11 @@ HRESULT WinApp::OnRender()
 		ID2D1PathGeometry* pPathG = NULL;
 		hr = m_pD2DFactory->CreatePathGeometry(&pPathG);
 
+		FLOAT scaleX = 1;
+		FLOAT scaleY = 0.5;
 		FLOAT len = 10;
-		FLOAT mar = 2;
+		FLOAT mar = 3;
+
 		if (SUCCEEDED(hr))
 		{
 			ID2D1GeometrySink *pSink = NULL;
@@ -440,17 +443,17 @@ HRESULT WinApp::OnRender()
 				pSink->SetFillMode(D2D1_FILL_MODE_WINDING);
 
 				pSink->BeginFigure(
-					D2D1::Point2F(sqrt(3)*len, 0 * len),
+					D2D1::Point2F(0 * len, sqrt(3) * len),
 					D2D1_FIGURE_BEGIN_FILLED
 					);
 
 				D2D1_POINT_2F points[6] = {
-					D2D1::Point2F(2 * sqrt(3) * len, 1 * len),
-					D2D1::Point2F(2 * sqrt(3) * len, 3 * len),
-					D2D1::Point2F(sqrt(3) * len, 4 * len),
-					D2D1::Point2F(0 * len, 3 * len),
-					D2D1::Point2F(0 * len, 1 * len),
-					D2D1::Point2F(sqrt(3)*len, 0 * len)
+					D2D1::Point2F(1 * len, 0 * len),
+					D2D1::Point2F(3 * len, 0 * len),
+					D2D1::Point2F(4 * len, sqrt(3) * len),
+					D2D1::Point2F(3 * len, 2 * sqrt(3) * len),
+					D2D1::Point2F(1 * len, 2 * sqrt(3) * len),
+					D2D1::Point2F(0 * len, sqrt(3) * len)
 				};
 
 				pSink->AddLines(points, ARRAYSIZE(points));
@@ -460,12 +463,35 @@ HRESULT WinApp::OnRender()
 			pSink->Close();
 		}
 
+		vector<vector<ID2D1TransformedGeometry*>*> arrpArrpTpath;
+		ID2D1TransformedGeometry* pPathF = NULL;
+		for (INT i = -1; i < (sW / scaleX) / (3 * len + sqrt(3) / 2 * mar); i++)
+		{
+			arrpArrpTpath.insert(arrpArrpTpath.end(), new vector<ID2D1TransformedGeometry*>);
+			for (UINT j = 0; j < (sH / scaleY) / (2 * sqrt(3) * len + mar) + 1; j++)
+			{
+				(*arrpArrpTpath.rbegin())->insert((*arrpArrpTpath.rbegin())->end(), NULL);
+				hr = m_pD2DFactory->CreateTransformedGeometry(
+					pPathG,
+					D2D1::Matrix3x2F::Translation(
+						(3 * len + sqrt(3) / 2 * mar) * i,
+						(2 * sqrt(3) * len + mar) * (j - 0.5 * (i % 2 ? 1 : 0))
+						),
+					&(*((*arrpArrpTpath.rbegin())->rbegin()))
+					);
+			}
+		}
+
 		//轮廓
 		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-		for (UINT i = 0; i < sW / (2 * sqrt(3) * len + mar); i++)
+		for (UINT i = 0; i < arrpArrpTpath.size(); i++)
 		{
-			m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation((2 * sqrt(3) * len + mar) * i, 0));
-			m_pRenderTarget->DrawGeometry(pPathG, m_pBlueB, 1.f);
+			for (UINT j = 0; j < arrpArrpTpath[i]->size(); j++)
+			{
+				m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Scale(scaleX, scaleY));
+				m_pRenderTarget->DrawGeometry((*arrpArrpTpath[i])[j], m_pBlueB, 1.f);
+				//m_pRenderTarget->FillGeometry((*arrpArrpTpath[i])[j], m_pBlueB);
+			}
 		}
 		//填充
 		//m_pRenderTarget->FillGeometry(pPathG, m_pRedB);
