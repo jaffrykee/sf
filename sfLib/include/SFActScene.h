@@ -55,7 +55,7 @@ public:
 };
 
 //场景类，目前只能是单线程，将来可能会向多线程发展。
-class __declspec(dllexport) SFActScene
+class __declspec(dllexport) SFActScene : public Scene
 {
 public:
 	map<string, SFSpriteGroup*> m_mapSpriteGroup;
@@ -84,6 +84,7 @@ public:
 	bool addSprite(string groupName, SFSprite* pSprite);
 	SFPlayer* getPlayerInSceneByPGN(string groupName);
 	bool doEvent(SF_TEV event);
+	bool doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	bool addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFCFI_T>* pArrpFrame);
 	bool doCollision();
 

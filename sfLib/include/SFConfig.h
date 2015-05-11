@@ -271,7 +271,7 @@ typedef struct SFSelectedPlayer
 	typedef map<WPARAM, SF_TEV> MapEvent_T;
 	typedef map<UINT, MapEvent_T> MapEventGroup_T;
 
-	const MapEvent_T conf_mapEventKeyDown = {
+	const MapEvent_T conf_mapSfActEventKeyDown = {
 		MapEvent_T::value_type(VK_A, TEV_KD_P1LF),
 		MapEvent_T::value_type(VK_W, TEV_KD_P1UP),
 		MapEvent_T::value_type(VK_S, TEV_KD_P1DW),
@@ -298,7 +298,7 @@ typedef struct SFSelectedPlayer
 		MapEvent_T::value_type(VK_4, TEV_KD_P2MN)
 	};
 
-	const MapEvent_T conf_mapEventKeyUp = {
+	const MapEvent_T conf_mapSfActEventKeyUp = {
 		MapEvent_T::value_type(VK_A, TEV_KU_P1LF),
 		MapEvent_T::value_type(VK_W, TEV_KU_P1UP),
 		MapEvent_T::value_type(VK_S, TEV_KU_P1DW),
@@ -325,16 +325,22 @@ typedef struct SFSelectedPlayer
 		MapEvent_T::value_type(VK_4, TEV_KU_P2MN)
 	};
 
-	const MapEvent_T conf_mapEventTimer = {
+	const MapEvent_T conf_mapSfActEventTimer = {
 		MapEvent_T::value_type(TMR_ACTION, TEV_TMR_ACTION),
 		MapEvent_T::value_type(TMR_SKILL, TEV_TMR_SKILL),
 		MapEvent_T::value_type(TMR_PAINT, TEV_TMR_PAINT)
 	};
 
-	const MapEventGroup_T conf_mapEvent = {
-		MapEventGroup_T::value_type(WM_KEYDOWN, conf_mapEventKeyDown),
-		MapEventGroup_T::value_type(WM_KEYUP, conf_mapEventKeyUp),
-		MapEventGroup_T::value_type(WM_TIMER, conf_mapEventTimer)
+	const MapEventGroup_T conf_mapSfActEvent = {
+		MapEventGroup_T::value_type(WM_KEYDOWN, conf_mapSfActEventKeyDown),
+		MapEventGroup_T::value_type(WM_KEYUP, conf_mapSfActEventKeyUp),
+		MapEventGroup_T::value_type(WM_TIMER, conf_mapSfActEventTimer)
+	};
+
+	const MapEventGroup_T conf_mapCmEvent = {
+		MapEventGroup_T::value_type(WM_LBUTTONDOWN, {}),
+		MapEventGroup_T::value_type(WM_LBUTTONUP, {}),
+		MapEventGroup_T::value_type(WM_MOUSEMOVE, {})
 	};
 #pragma endregion
 
@@ -366,7 +372,8 @@ public:
 	TDIndexData* m_pDiSsse;
 	string m_strAsSplit;
 	TDIndexData* m_pDiFightPGN;
-	MapEventGroup_T m_mapEvent;
+	MapEventGroup_T m_mapSfActEvent;
+	MapEventGroup_T m_mapCmEvent;
 
 	//显示基准
 	D2D1_SIZE_F m_viewBenchmark;

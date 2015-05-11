@@ -24,7 +24,8 @@ SFConfig::SFConfig():
 	m_pDiSsse(new TDIndexData(conf_aStrSsse)),
 	m_strAsSplit("_"),
 	m_pDiFightPGN(new TDIndexData(conf_aStrFightPGN)),
-	m_mapEvent(conf_mapEvent),
+	m_mapSfActEvent(conf_mapSfActEvent),
+	m_mapCmEvent(conf_mapCmEvent),
 	m_pEventManager(NULL)
 #pragma endregion
 {

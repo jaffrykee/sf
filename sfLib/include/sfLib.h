@@ -2,6 +2,7 @@
 #pragma execution_character_set("utf-8")
 
 #include <windows.h>
+#include <windowsx.h>
 
 #include <stdlib.h>
 #include <malloc.h>
@@ -54,6 +55,7 @@ class SFActScene;
 class SFSpriteGroup;
 
 class SFEventManager;
+class Scene;
 
 //后置include
 #include <SFConfig.h>
@@ -62,8 +64,10 @@ class SFEventManager;
 #include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>
-#include <SFActScene.h>
+
 #include <SFResConfigReader.h>
 #include <SFCamera.h>
 
+#include <Scene.h>
+#include <SFActScene.h>
 #include <CMScene.h>

@@ -204,16 +204,6 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 	}
 	SafeRelease(&pSink);
 
-	//创建场景和精灵
-	sf_cout(DEBUG_COM, endl << "Loading resource.");
-	g_pEventManager = new SFEventManager();
-	g_scn = new SFActScene(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
-	g_pP1 = g_scn->getFightP1();
-	g_pP2 = g_scn->getFightP2();
-	g_cmr = new SFCamera();
-	g_pEventManager->setActiveScene(g_scn);
-	sf_cout(DEBUG_COM, endl << "Load resource finished.");
-
 	/*创建进程
 	STARTUPINFO si;
 	memset(&si, 0, sizeof(STARTUPINFO));//初始化si在内存块中的值（详见memset函数）
@@ -300,7 +290,17 @@ HRESULT WinApp::CreateDeviceResources()
 			SetTimer(m_hwnd, TMR_ACTION, g_pConf->m_aTmr[TMR_ACTION], NULL);
 			SetTimer(m_hwnd, TMR_SKILL, g_pConf->m_aTmr[TMR_SKILL], NULL);
 		}
+
+		//创建场景和精灵
+		sf_cout(DEBUG_COM, endl << "Loading resource.");
+		g_pEventManager = new SFEventManager();
+		g_scn = new SFActScene(PLR_JET, SKN_SK1, PLR_JET, SKN_SK1);
+		g_pP1 = g_scn->getFightP1();
+		g_pP2 = g_scn->getFightP2();
+		g_cmr = new SFCamera();
 		g_pCmScene = new CMScene();
+		g_pEventManager->setActiveScene(g_pCmScene);
+		sf_cout(DEBUG_COM, endl << "Load resource finished.");
 	}
 
 	return hr;
@@ -423,8 +423,8 @@ HRESULT WinApp::OnRender()
 		g_pConf->m_pRenderTarget->BeginDraw();
 		g_pConf->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 //		g_pEventManager->m_pActiveScene->onDraw(g_pConf->m_pRenderTarget, g_pConf->m_pBrushBlue, g_pConf->m_pBrushRed, m_pGridPatternBitmapBrush);
-		g_pCmScene->onDrawByCell(3, 3);
 
+		g_pCmScene->onDraw(g_pCmScene->m_cX, g_pCmScene->m_cY);
 
 		//g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 // 		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
@@ -558,6 +558,9 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					result = 0;
 					wasHandled = true;
 					break;
+				case WM_LBUTTONDOWN:
+				case WM_LBUTTONUP:
+				case WM_MOUSEMOVE:
 				case WM_KEYDOWN:
 				case WM_KEYUP:
 					hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);

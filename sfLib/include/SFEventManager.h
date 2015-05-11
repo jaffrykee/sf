@@ -15,11 +15,11 @@ class __declspec(dllexport) SFEventManager
 	};
 public:
 	MapEventGroup_T* m_pMapEvent;
-	SFActScene* m_pActiveScene;
+	Scene* m_pActiveScene;
 	map<SF_KD, SF_TEV> m_mapKdTev;
 
 	SFEventManager();
-	bool setActiveScene(SFActScene* pScene);
+	bool setActiveScene(Scene* pScene);
 	bool doEvent(SF_TEV event, LPARAM lParam);
 	bool doSystemEvent(UINT message, WPARAM wParam, LPARAM lParam);
 };

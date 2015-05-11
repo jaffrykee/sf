@@ -34,12 +34,14 @@ bool SFSpriteGroup::addSprite(SFSprite* pSprite)
 #pragma endregion
 
 #pragma region SFActScene
-SFActScene::SFActScene(SF_SCN_MAP mapType) :m_mapType(mapType)
+SFActScene::SFActScene(SF_SCN_MAP mapType) :Scene(), m_mapType(mapType)
 {
 	m_stage = SCN_STG_FREE;
+	m_mapEvent = &g_pConf->m_mapSfActEvent;
 }
 
 SFActScene::SFActScene(UINT resId1, SF_SKN skin1, UINT resId2, SF_SKN skin2, SF_SCN_MAP mapType):
+Scene(),
 #pragma region 默认值
 m_mapType(mapType),
 m_mapTevEk({
@@ -98,6 +100,7 @@ m_mapTevEk({
 	SFPlayer* pPlayer2 = new SFPlayer(resId2, skin2, 2, this);
 	m_pResScene = new SFResScene();
 
+	m_mapEvent = &g_pConf->m_mapSfActEvent;
 	m_width = m_pResScene->m_width;
 	m_height = m_pResScene->m_height;
 	m_poiInitP1 = m_pResScene->m_poiP1;
@@ -223,6 +226,11 @@ bool SFActScene::doEvent(SF_TEV event)
 	}
 
 	return false;
+}
+
+bool SFActScene::doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	return true;
 }
 #pragma endregion
 

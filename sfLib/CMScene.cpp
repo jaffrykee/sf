@@ -2,7 +2,8 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
-CMScene::CMScene():
+CMScene::CMScene() :
+Scene(),
 m_arrArrMap(
 {
 	{
@@ -43,11 +44,21 @@ m_arrArrMap(
 {
 	ID2D1PathGeometry* pPathG = NULL;
 	HRESULT hr = g_pConf->m_pD2DFactory->CreatePathGeometry(&pPathG);
+	m_isDown = false;
+	m_dx = 0;
+	m_dy = 0;
 
+	m_mapEvent = &g_pConf->m_mapCmEvent;
 	m_viewScaleX = 1.6;
 	m_viewScaleY = 1;
 	m_viewLen = 7;
 	m_viewMar = 0;
+	m_cX = 0;
+	m_cY = 0;
+	m_mx0 = -1;
+	m_my0 = -1;
+	m_dx = 0;
+	m_dy = 0;
 
 	FLOAT lenX = m_viewLen * m_viewScaleX;
 	FLOAT lenY = m_viewLen * m_viewScaleY;
@@ -188,12 +199,14 @@ void CMScene::onDrawByCell(UINT x, UINT y)
 	FLOAT dx = -(3 * lenX + sqrt(3) / 2 * marX) * x + (sW - lenX * 4) / 2;
 	FLOAT dy = -((2 * sqrt(3) * lenY + marY) * (y - 0.5 * (y % 2 ? 1 : 0)) - m_arrArrMap[x][y].m_height) + (sH - lenY * 2 * sqrt(3)) / 2;
 
-	onDraw(dx, dy);
+	onDraw(dx + m_dx, dy + m_dy);
 	drawCenter();
 }
 
 void CMScene::onDraw(FLOAT x, FLOAT y)
 {
+	m_dx = 0;
+	m_dy = 0;
 	g_pConf->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 	g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 	for (UINT i = 0; i < m_arrArrMap.size(); i++)
@@ -205,4 +218,36 @@ void CMScene::onDraw(FLOAT x, FLOAT y)
 			g_pConf->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_cell, g_pConf->m_pBrushBlue);
 		}
 	}
+}
+
+bool CMScene::doEvent(SF_TEV event)
+{
+	return true;
+}
+
+bool CMScene::doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+	case WM_LBUTTONDOWN:
+		m_isDown = true;
+		m_mx0 = GET_X_LPARAM(lParam);
+		m_my0 = GET_Y_LPARAM(lParam);
+		break;
+	case WM_LBUTTONUP:
+		m_isDown = false;
+		break;
+	case WM_MOUSEMOVE:
+		if (m_isDown)
+		{
+			m_dx += GET_X_LPARAM(lParam) - m_mx0;
+			m_dy += GET_Y_LPARAM(lParam) - m_my0;
+			m_mx0 = GET_X_LPARAM(lParam);
+			m_my0 = GET_Y_LPARAM(lParam);
+		}
+		break;
+	default:
+		break;
+	}
+	return true;
 }

@@ -2,15 +2,17 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
-SFEventManager::SFEventManager() :m_pMapEvent(&g_pConf->m_mapEvent), m_pActiveScene(NULL)
+SFEventManager::SFEventManager() :m_pMapEvent(NULL), m_pActiveScene(NULL)
 {
 }
 
-bool SFEventManager::setActiveScene(SFActScene* pScene)
+bool SFEventManager::setActiveScene(Scene* pScene)
 {
 	if (pScene != NULL)
 	{
 		m_pActiveScene = pScene;
+		m_pMapEvent = pScene->m_mapEvent;
+
 		return true;
 	}
 	else
@@ -35,15 +37,29 @@ bool SFEventManager::doEvent(SF_TEV event, LPARAM lParam)
 //看看该系统事件SF是否应该响应
 bool SFEventManager::doSystemEvent(UINT message, WPARAM wParam, LPARAM lParam)
 {
-	MapEventGroup_T::iterator itEventGroup = m_pMapEvent->find(message);
-
-	if (itEventGroup != m_pMapEvent->end())
+	if (m_pMapEvent != NULL)
 	{
-		MapEvent_T::iterator itEvent = (*m_pMapEvent)[message].find(wParam);
-		if (itEvent != (*m_pMapEvent)[message].end())
+		MapEventGroup_T::iterator itEventGroup = m_pMapEvent->find(message);
+
+		if (itEventGroup != m_pMapEvent->end())
 		{
-			//看看该系统事件的wParam SF是否应该响应
-			return doEvent((*m_pMapEvent)[message][wParam], lParam);
+			MapEvent_T::iterator itEvent = (*m_pMapEvent)[message].find(wParam);
+			if (message >= WM_MOUSEFIRST && message <= WM_MOUSELAST)
+			{
+				return m_pActiveScene->doMonseEvent(message, wParam, lParam);
+			}
+			else
+			{
+				if (itEvent != (*m_pMapEvent)[message].end())
+				{
+					//看看该系统事件的wParam SF是否应该响应
+					return doEvent((*m_pMapEvent)[message][wParam], lParam);
+				}
+				else
+				{
+					return false;
+				}
+			}
 		}
 		else
 		{
