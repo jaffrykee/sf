@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CMScene.cpp" />
     <ClCompile Include="SFd2d.cpp" />
     <ClCompile Include="SFCamera.cpp" />
     <ClCompile Include="SFEventManager.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="SFResource.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\CMScene.h" />
     <ClInclude Include="include\SFActScene.h" />
     <ClInclude Include="include\SFCamera.h" />
     <ClInclude Include="include\SFConfig.h" />

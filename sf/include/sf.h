@@ -68,10 +68,8 @@ private:
 
 private:
 	HWND m_hwnd;
-	ID2D1Factory *m_pD2DFactory;
 	IWICImagingFactory *m_pWICFactory;
 	IDWriteFactory *m_pDWriteFactory;
-	ID2D1HwndRenderTarget *m_pRenderTarget;
 	IDWriteTextFormat *m_pTextFormat;
 	ID2D1PathGeometry *m_pPathGeometry;
 	ID2D1LinearGradientBrush *m_pLinearGradientBrush;
@@ -79,9 +77,6 @@ private:
 	ID2D1BitmapBrush *m_pGridPatternBitmapBrush;
 	ID2D1Bitmap *m_pBitmap;
 	ID2D1Bitmap *m_pAnotherBitmap;
-
-	ID2D1SolidColorBrush *m_pBlueB;
-	ID2D1SolidColorBrush *m_pRedB;
 };
 
 class PActPlayer

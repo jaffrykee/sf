@@ -39,6 +39,9 @@
     <ClCompile Include="SFd2d.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CMScene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\SFActScene.h">
@@ -75,6 +78,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\SFd2d.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CMScene.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -35,6 +35,10 @@ SFConfig::SFConfig():
 	m_viewBenchmark.height = 500;
 	m_defaultResolution.width = 400;
 	m_defaultResolution.height = 250;
+	m_pD2DFactory = NULL;
+	m_pRenderTarget = NULL;
+	m_pBrushBlue = NULL;
+	m_pBrushRed = NULL;
 }
 
 SFConfig* SFConfig::GetInstance()

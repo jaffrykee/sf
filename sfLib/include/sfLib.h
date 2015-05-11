@@ -65,3 +65,5 @@ class SFEventManager;
 #include <SFActScene.h>
 #include <SFResConfigReader.h>
 #include <SFCamera.h>
+
+#include <CMScene.h>
