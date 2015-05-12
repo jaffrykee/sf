@@ -1,21 +1,19 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
 
-#include <init.h>
-
 using namespace std;
 
 /******************************************************************
 *                                                                 *
-*  WinApp                                                         *
+*  SFApp                                                         *
 *                                                                 *
 ******************************************************************/
 
-class WinApp
+class __declspec(dllexport) SFApp
 {
 public:
-	WinApp();
-	~WinApp();
+	SFApp();
+	~SFApp();
 
 	HRESULT Initialize();
 
@@ -66,7 +64,7 @@ private:
 		ID2D1Bitmap **ppBitmap
 		);
 
-private:
+public:
 	HWND m_hwnd;
 	IWICImagingFactory *m_pWICFactory;
 	IDWriteFactory *m_pDWriteFactory;
@@ -77,6 +75,12 @@ private:
 	ID2D1BitmapBrush *m_pGridPatternBitmapBrush;
 	ID2D1Bitmap *m_pBitmap;
 	ID2D1Bitmap *m_pAnotherBitmap;
+
+	ID2D1Factory *m_pD2DFactory;
+	ID2D1HwndRenderTarget *m_pRenderTarget;
+	ID2D1SolidColorBrush *m_pBrushBlue;
+	ID2D1SolidColorBrush *m_pBrushRed;
+	ID2D1SolidColorBrush *m_pBrushWhite;
 };
 
 class PActPlayer

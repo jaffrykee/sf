@@ -137,8 +137,7 @@
     <Image Include="img\blue.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\init.h" />
-    <ClInclude Include="include\sf.h" />
+    <ClInclude Include="include\sfMain.h" />
     <ClInclude Include="include\xml.h" />
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +165,7 @@
     </Xsd>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sf.cpp" />
+    <ClCompile Include="sfMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="doc\Text.txt" />

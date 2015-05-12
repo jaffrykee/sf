@@ -36,7 +36,8 @@
 #pragma comment(lib, "Shlwapi.lib")
 
 #include <tkmT.h>
-#include <SFd2d.h>
+
+class SFApp;
 
 class SFConfig;
 
@@ -58,16 +59,18 @@ class SFEventManager;
 class Scene;
 
 //后置include
+#include <sfApp.h>
+#include <SFd2d.h>
 #include <SFConfig.h>
+
 #include <SFEventManager.h>
 #include <SFDebug.h>
 #include <SFResource.h>
 #include <SFEventKey.h>
 #include <SFPlayer.h>
-
 #include <SFResConfigReader.h>
 #include <SFCamera.h>
-
 #include <Scene.h>
 #include <SFActScene.h>
+
 #include <CMScene.h>

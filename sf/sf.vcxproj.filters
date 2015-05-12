@@ -23,13 +23,10 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\init.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sf.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\xml.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sfMain.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,11 +44,11 @@
     </Xsd>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sf.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <Text Include="doc\Text.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="doc\Text.txt" />
+    <ClCompile Include="sfMain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

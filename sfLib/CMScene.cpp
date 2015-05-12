@@ -43,10 +43,8 @@ m_arrArrMap(
 )
 {
 	ID2D1PathGeometry* pPathG = NULL;
-	HRESULT hr = g_pConf->m_pD2DFactory->CreatePathGeometry(&pPathG);
+	HRESULT hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathG);
 	m_isDown = false;
-	m_dx = 0;
-	m_dy = 0;
 
 	m_mapEvent = &g_pConf->m_mapCmEvent;
 	m_viewScaleX = 1.6;
@@ -57,8 +55,6 @@ m_arrArrMap(
 	m_cY = 0;
 	m_mx0 = -1;
 	m_my0 = -1;
-	m_dx = 0;
-	m_dy = 0;
 
 	FLOAT lenX = m_viewLen * m_viewScaleX;
 	FLOAT lenY = m_viewLen * m_viewScaleY;
@@ -99,7 +95,7 @@ m_arrArrMap(
 	{
 		for (UINT j = 0; j < m_arrArrMap[i].size(); j++)
 		{
-			hr = g_pConf->m_pD2DFactory->CreateTransformedGeometry(
+			hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 				pPathG,
 				D2D1::Matrix3x2F::Translation(
 				(3 * lenX + sqrt(3) / 2 * marX) * i,
@@ -123,13 +119,13 @@ void CMScene::loadDataFromXml(string path)
 
 void CMScene::drawCenter()
 {
-	double sW = g_pConf->m_pRenderTarget->GetSize().width;
-	double sH = g_pConf->m_pRenderTarget->GetSize().height;
+	double sW = g_pConf->m_pWin->m_pRenderTarget->GetSize().width;
+	double sH = g_pConf->m_pWin->m_pRenderTarget->GetSize().height;
 	ID2D1PathGeometry* pPathG1 = NULL;
 	ID2D1PathGeometry* pPathG2 = NULL;
 
-	HRESULT hr = g_pConf->m_pD2DFactory->CreatePathGeometry(&pPathG1);
-	g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+	HRESULT hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathG1);
+	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 	if (SUCCEEDED(hr))
 	{
 		ID2D1GeometrySink *pSink = NULL;
@@ -155,9 +151,9 @@ void CMScene::drawCenter()
 
 		pSink->Close();
 	}
-	g_pConf->m_pRenderTarget->DrawGeometry(pPathG1, g_pConf->m_pBrushRed, 1.f);
+	g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(pPathG1, g_pConf->m_pWin->m_pBrushRed, 1.f);
 
-	hr = g_pConf->m_pD2DFactory->CreatePathGeometry(&pPathG2);
+	hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathG2);
 	if (SUCCEEDED(hr))
 	{
 		ID2D1GeometrySink *pSink = NULL;
@@ -183,13 +179,13 @@ void CMScene::drawCenter()
 
 		pSink->Close();
 	}
-	g_pConf->m_pRenderTarget->DrawGeometry(pPathG2, g_pConf->m_pBrushRed, 1.f);
+	g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(pPathG2, g_pConf->m_pWin->m_pBrushRed, 1.f);
 }
 
 void CMScene::onDrawByCell(UINT x, UINT y)
 {
-	double sW = g_pConf->m_pRenderTarget->GetSize().width;
-	double sH = g_pConf->m_pRenderTarget->GetSize().height;
+	double sW = g_pConf->m_pWin->m_pRenderTarget->GetSize().width;
+	double sH = g_pConf->m_pWin->m_pRenderTarget->GetSize().height;
 
 	FLOAT lenX = m_viewLen * m_viewScaleX;
 	FLOAT lenY = m_viewLen * m_viewScaleY;
@@ -199,23 +195,36 @@ void CMScene::onDrawByCell(UINT x, UINT y)
 	FLOAT dx = -(3 * lenX + sqrt(3) / 2 * marX) * x + (sW - lenX * 4) / 2;
 	FLOAT dy = -((2 * sqrt(3) * lenY + marY) * (y - 0.5 * (y % 2 ? 1 : 0)) - m_arrArrMap[x][y].m_height) + (sH - lenY * 2 * sqrt(3)) / 2;
 
-	onDraw(dx + m_dx, dy + m_dy);
+	m_cX = dx;
+	m_cY = dy;
+	onDraw();
 	drawCenter();
 }
 
-void CMScene::onDraw(FLOAT x, FLOAT y)
+void CMScene::onDraw()
 {
-	m_dx = 0;
-	m_dy = 0;
-	g_pConf->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
-	g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+	double sW = g_pConf->m_pWin->m_pRenderTarget->GetSize().width;
+	double sH = g_pConf->m_pWin->m_pRenderTarget->GetSize().height;
+	if (m_isDown)
+	{
+		POINT pt;
+		RECT rect;
+
+		GetCursorPos(&pt);
+		m_cX += (pt.x - m_mx0);
+		m_cY += (pt.y - m_my0);
+		m_mx0 = pt.x;
+		m_my0 = pt.y;
+	}
+	g_pConf->m_pWin->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 	for (UINT i = 0; i < m_arrArrMap.size(); i++)
 	{
 		for (UINT j = 0; j < m_arrArrMap[i].size(); j++)
 		{
-			g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(x, y));
-			g_pConf->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_cell, g_pConf->m_pBrushWhite, 1.f);
-			g_pConf->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_cell, g_pConf->m_pBrushBlue);
+			g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(m_cX, m_cY));
+			g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_cell, g_pConf->m_pWin->m_pBrushWhite, 1.f);
+			g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_cell, g_pConf->m_pWin->m_pBrushBlue);
 		}
 	}
 }
@@ -230,21 +239,19 @@ bool CMScene::doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_LBUTTONDOWN:
-		m_isDown = true;
-		m_mx0 = GET_X_LPARAM(lParam);
-		m_my0 = GET_Y_LPARAM(lParam);
+		{
+			POINT pt;
+
+			m_isDown = true;
+			GetCursorPos(&pt);
+			m_mx0 = pt.x;
+			m_my0 = pt.y;
+		}
 		break;
 	case WM_LBUTTONUP:
 		m_isDown = false;
 		break;
 	case WM_MOUSEMOVE:
-		if (m_isDown)
-		{
-			m_dx += GET_X_LPARAM(lParam) - m_mx0;
-			m_dy += GET_Y_LPARAM(lParam) - m_my0;
-			m_mx0 = GET_X_LPARAM(lParam);
-			m_my0 = GET_Y_LPARAM(lParam);
-		}
 		break;
 	default:
 		break;

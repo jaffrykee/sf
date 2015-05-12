@@ -1,5 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
-#include <sf.h>
+#include <sfLibInit.h>
+#include <sfLib.h>
 using namespace std;
 
 #pragma region 按键设置define
@@ -30,9 +31,6 @@ using namespace std;
 #define ACT_K2MN	VK_4
 #pragma endregion
 
-#pragma region 计时器define
-#pragma endregion
-
 #pragma region 运动相关参数
 #define SPEED_FWD 2
 #define SPEED_BCK 1
@@ -54,40 +52,8 @@ CMScene* g_pCmScene = NULL;
 SFCamera* g_cmr = NULL;
 #pragma endregion
 
-#pragma region 入口以及初始配置
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
-{
-	HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
-
-	//控制台
-	if (g_pConf->m_enDebug[DEBUG_COM])
-	{
-		AllocConsole();
-		int fd = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
-		FILE *file = _fdopen(fd, "w");
-		*stdout = *file;
-		int status = setvbuf(stdout, 0, _IONBF, 0);
-	}
-
-	if (SUCCEEDED(CoInitialize(NULL)))
-	{
-		{
-			WinApp app;
-
-			if (SUCCEEDED(app.Initialize()))
-			{
-				app.RunMessageLoop();
-			}
-		}
-		CoUninitialize();
-	}
-
-	return 0;
-}
-#pragma endregion
-
 #pragma region Initialize members
-WinApp::WinApp() :
+SFApp::SFApp() :
 m_hwnd(NULL),
 m_pWICFactory(NULL),
 m_pDWriteFactory(NULL),
@@ -97,18 +63,22 @@ m_pLinearGradientBrush(NULL),
 m_pBlackBrush(NULL),
 m_pGridPatternBitmapBrush(NULL),
 m_pBitmap(NULL),
-m_pAnotherBitmap(NULL)
+m_pAnotherBitmap(NULL),
+m_pD2DFactory(NULL),
+m_pRenderTarget(NULL),
+m_pBrushBlue(NULL),
+m_pBrushRed(NULL)
 {
 }
 #pragma endregion
 
 #pragma region Release resources
-WinApp::~WinApp()
+SFApp::~SFApp()
 {
-	SafeRelease(&g_pConf->m_pD2DFactory);
+	SafeRelease(&m_pD2DFactory);
 	SafeRelease(&m_pWICFactory);
 	SafeRelease(&m_pDWriteFactory);
-	SafeRelease(&g_pConf->m_pRenderTarget);
+	SafeRelease(&m_pRenderTarget);
 	SafeRelease(&m_pTextFormat);
 	SafeRelease(&m_pPathGeometry);
 	SafeRelease(&m_pLinearGradientBrush);
@@ -121,7 +91,7 @@ WinApp::~WinApp()
 #pragma endregion
 
 #pragma region 初始化设备，如分辨率等
-HRESULT WinApp::Initialize()
+HRESULT SFApp::Initialize()
 {
 	HRESULT hr = CreateDeviceIndependentResources();
 	if (SUCCEEDED(hr))
@@ -132,13 +102,13 @@ HRESULT WinApp::Initialize()
 		wcex.cbWndExtra = sizeof(LONG_PTR);
 		wcex.hInstance = HINST_THISCOMPONENT;
 		wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-		wcex.lpszClassName = "D2DWinApp";
+		wcex.lpszClassName = "D2DSFApp";
 
 		RegisterClassEx(&wcex);
 		FLOAT dpiX, dpiY;
-		g_pConf->m_pD2DFactory->GetDesktopDpi(&dpiX, &dpiY);
+		m_pD2DFactory->GetDesktopDpi(&dpiX, &dpiY);
 		m_hwnd = CreateWindow(
-			"D2DWinApp", "SF", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+			"D2DSFApp", "SF", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 			static_cast<UINT>(ceil(g_pConf->m_defaultResolution.width*dpiX / 96.f)), static_cast<UINT>(ceil(g_pConf->m_defaultResolution.height*dpiY / 96.f)),
 			NULL, NULL, HINST_THISCOMPONENT, this
 			);
@@ -155,13 +125,13 @@ HRESULT WinApp::Initialize()
 #pragma endregion
 
 #pragma region 创建设备无关资源
-HRESULT WinApp::CreateDeviceIndependentResources()
+HRESULT SFApp::CreateDeviceIndependentResources()
 {
 	static const WCHAR msc_fontName[] = L"Verdana";
 	static const FLOAT msc_fontSize = 50;
 
 	ID2D1GeometrySink *pSink = NULL;
-	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &g_pConf->m_pD2DFactory);	//创建D2D工厂
+	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pD2DFactory);	//创建D2D工厂
 	if (SUCCEEDED(hr))
 	{
 		hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pWICFactory));	//创建WIC工厂
@@ -185,7 +155,7 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 	}
 	if (SUCCEEDED(hr))
 	{
-		hr = g_pConf->m_pD2DFactory->CreatePathGeometry(&m_pPathGeometry);
+		hr = m_pD2DFactory->CreatePathGeometry(&m_pPathGeometry);
 	}
 	if (SUCCEEDED(hr))
 	{
@@ -231,29 +201,29 @@ HRESULT WinApp::CreateDeviceIndependentResources()
 #pragma endregion
 
 #pragma region 创建设备相关资源，如图像、视频等
-HRESULT WinApp::CreateDeviceResources()
+HRESULT SFApp::CreateDeviceResources()
 {
 	HRESULT hr = S_OK;
 
-	if (!g_pConf->m_pRenderTarget)
+	if (!m_pRenderTarget)
 	{
 		RECT rc;
 		GetClientRect(m_hwnd, &rc);
 		D2D1_SIZE_U size = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
 
-		hr = g_pConf->m_pD2DFactory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(m_hwnd, size), &g_pConf->m_pRenderTarget);
+		hr = m_pD2DFactory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(m_hwnd, size), &m_pRenderTarget);
 		if (SUCCEEDED(hr))
 		{
-			hr = g_pConf->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &m_pBlackBrush);	// Create a black brush.
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &m_pBlackBrush);	// Create a black brush.
 		}
 		if (SUCCEEDED(hr))
 		{
 			ID2D1GradientStopCollection *pGradientStops = NULL;
 			static const D2D1_GRADIENT_STOP stops[] = { { 0.f, { 0.f, 1.f, 1.f, 0.25f } }, { 1.f, { 0.f, 0.f, 1.f, 1.f } } };	// Create a linear gradient.
-			hr = g_pConf->m_pRenderTarget->CreateGradientStopCollection(stops, ARRAYSIZE(stops), &pGradientStops);
+			hr = m_pRenderTarget->CreateGradientStopCollection(stops, ARRAYSIZE(stops), &pGradientStops);
 			if (SUCCEEDED(hr))
 			{
-				hr = g_pConf->m_pRenderTarget->CreateLinearGradientBrush(
+				hr = m_pRenderTarget->CreateLinearGradientBrush(
 					D2D1::LinearGradientBrushProperties(D2D1::Point2F(100, 0), D2D1::Point2F(100, 200)), D2D1::BrushProperties(),
 					pGradientStops,
 					&m_pLinearGradientBrush
@@ -263,26 +233,26 @@ HRESULT WinApp::CreateDeviceResources()
 		}
 		if (SUCCEEDED(hr))
 		{
-			hr = g_pConf->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Blue, 0.5f), &g_pConf->m_pBrushBlue);
-			hr = g_pConf->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Red, 0.5f), &g_pConf->m_pBrushRed);
-			hr = g_pConf->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White, 0.5f), &g_pConf->m_pBrushWhite);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Blue, 0.5f), &m_pBrushBlue);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Red, 0.5f), &m_pBrushRed);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White, 0.5f), &m_pBrushWhite);
 		}
 
 		//通过文件创建位图
-		hr = LoadBitmapFromFile(g_pConf->m_pRenderTarget, m_pWICFactory, L".\\img\\blue.png", 100, 0, &m_pBitmap);
-		hr = LoadBitmapFromFile(g_pConf->m_pRenderTarget, m_pWICFactory, L".\\img\\black.png", 100, 0, &m_pAnotherBitmap);
+		hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\img\\blue.png", 100, 0, &m_pBitmap);
+		hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\img\\black.png", 100, 0, &m_pAnotherBitmap);
 #if 0
 		//通过资源创建一个位图
-		hr = LoadResourceBitmap(g_pConf->m_pRenderTarget, m_pWICFactory, L"blue", L"Image", 100, 0, &m_pBitmap);
+		hr = LoadResourceBitmap(m_pRenderTarget, m_pWICFactory, L"blue", L"Image", 100, 0, &m_pBitmap);
 		if (SUCCEEDED(hr))
 		{
 			//通过文件创建一个位图
-			hr = LoadBitmapFromFile(g_pConf->m_pRenderTarget, m_pWICFactory, L".\\sampleImage.jpg", 100, 0, &m_pAnotherBitmap);
+			hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\sampleImage.jpg", 100, 0, &m_pAnotherBitmap);
 		}
 #endif
 		if (SUCCEEDED(hr))
 		{
-			hr = CreateGridPatternBrush(g_pConf->m_pRenderTarget, &m_pGridPatternBitmapBrush);
+			hr = CreateGridPatternBrush(m_pRenderTarget, &m_pGridPatternBitmapBrush);
 		}
 		if (SUCCEEDED(hr))
 		{
@@ -308,7 +278,7 @@ HRESULT WinApp::CreateDeviceResources()
 #pragma endregion
 
 #pragma region CreateGridPatternBrush
-HRESULT WinApp::CreateGridPatternBrush(ID2D1RenderTarget *pRenderTarget, ID2D1BitmapBrush **ppBitmapBrush)
+HRESULT SFApp::CreateGridPatternBrush(ID2D1RenderTarget *pRenderTarget, ID2D1BitmapBrush **ppBitmapBrush)
 {
 	ID2D1BitmapRenderTarget *pCompatibleRenderTarget = NULL;
 	HRESULT hr = pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(10.0f, 10.0f), &pCompatibleRenderTarget);
@@ -329,7 +299,7 @@ HRESULT WinApp::CreateGridPatternBrush(ID2D1RenderTarget *pRenderTarget, ID2D1Bi
 			if (SUCCEEDED(hr))
 			{
 				D2D1_BITMAP_BRUSH_PROPERTIES brushProperties = D2D1::BitmapBrushProperties(D2D1_EXTEND_MODE_WRAP, D2D1_EXTEND_MODE_WRAP);	// Choose the tiling mode for the bitmap brush.
-				hr = g_pConf->m_pRenderTarget->CreateBitmapBrush(pGridBitmap, brushProperties, ppBitmapBrush);	// Create the bitmap brush.
+				hr = m_pRenderTarget->CreateBitmapBrush(pGridBitmap, brushProperties, ppBitmapBrush);	// Create the bitmap brush.
 				pGridBitmap->Release();
 			}
 			pGridBrush->Release();
@@ -342,9 +312,9 @@ HRESULT WinApp::CreateGridPatternBrush(ID2D1RenderTarget *pRenderTarget, ID2D1Bi
 #pragma endregion
 
 #pragma region 释放资源？
-void WinApp::DiscardDeviceResources()
+void SFApp::DiscardDeviceResources()
 {
-	SafeRelease(&g_pConf->m_pRenderTarget);
+	SafeRelease(&m_pRenderTarget);
 	SafeRelease(&m_pBitmap);
 	SafeRelease(&m_pBlackBrush);
 	SafeRelease(&m_pLinearGradientBrush);
@@ -354,7 +324,7 @@ void WinApp::DiscardDeviceResources()
 #pragma endregion
 
 #pragma region MessageLoop
-void WinApp::RunMessageLoop()
+void SFApp::RunMessageLoop()
 {
 	MSG msg;
 
@@ -367,19 +337,19 @@ void WinApp::RunMessageLoop()
 #pragma endregion
 
 #pragma region 主画图逻辑关键帧
-HRESULT WinApp::OnHardRender()
+HRESULT SFApp::OnHardRender()
 {
 	HRESULT hr = CreateDeviceResources();
 	char tmp[100] = { 0 };
 
 	if (SUCCEEDED(hr))
 	{
-		D2D1_SIZE_F renderTargetSize = g_pConf->m_pRenderTarget->GetSize();
+		D2D1_SIZE_F renderTargetSize = m_pRenderTarget->GetSize();
 
-		g_pConf->m_pRenderTarget->BeginDraw();
-		g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-		g_pConf->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-		g_pConf->m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, renderTargetSize.width, renderTargetSize.height), m_pGridPatternBitmapBrush);	// 画格子背景
+		m_pRenderTarget->BeginDraw();
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+		m_pRenderTarget->FillRectangle(D2D1::RectF(0.0f, 0.0f, renderTargetSize.width, renderTargetSize.height), m_pGridPatternBitmapBrush);	// 画格子背景
 //		g_pConf->m_pRenderTarget->DrawBitmap(m_pBitmap, g_Player1.m_body);	//添加A位图
 //		g_pConf->m_pRenderTarget->DrawBitmap(m_pAnotherBitmap, g_Player2.m_body);	//添加B位图
 
@@ -388,14 +358,14 @@ HRESULT WinApp::OnHardRender()
 
 		size.width = BLU_W;
 		size.height = BLU_H;
-		g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(45, D2D1::Point2F(renderTargetSize.width / 2, renderTargetSize.height / 2)));	//旋转45度
-		g_pConf->m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_pBlackBrush);	//显示文字
-		g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0, renderTargetSize.height - 200));
-		g_pConf->m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
-		g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(renderTargetSize.width - 200, 0));
-		g_pConf->m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(45, D2D1::Point2F(renderTargetSize.width / 2, renderTargetSize.height / 2)));	//旋转45度
+		m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_pBlackBrush);	//显示文字
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0, renderTargetSize.height - 200));
+		m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(renderTargetSize.width - 200, 0));
+		m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
 #endif
-		hr = g_pConf->m_pRenderTarget->EndDraw();
+		hr = m_pRenderTarget->EndDraw();
 		if (hr == D2DERR_RECREATE_TARGET)
 		{
 			hr = S_OK;
@@ -408,7 +378,7 @@ HRESULT WinApp::OnHardRender()
 #pragma endregion
 
 #pragma region 主画图逻辑
-HRESULT WinApp::OnRender()
+HRESULT SFApp::OnRender()
 {
 	HRESULT hr = CreateDeviceResources();
 	char tmp[100] = { 0 };
@@ -416,15 +386,15 @@ HRESULT WinApp::OnRender()
 	if (SUCCEEDED(hr))
 	{
 		static const WCHAR sc_helloWorld[] = L"Hello, World!";
-		D2D1_SIZE_F renderTargetSize = g_pConf->m_pRenderTarget->GetSize();
+		D2D1_SIZE_F renderTargetSize = m_pRenderTarget->GetSize();
 		double sW = renderTargetSize.width;
 		double sH = renderTargetSize.height;
 
-		g_pConf->m_pRenderTarget->BeginDraw();
-		g_pConf->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+		m_pRenderTarget->BeginDraw();
+		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 //		g_pEventManager->m_pActiveScene->onDraw(g_pConf->m_pRenderTarget, g_pConf->m_pBrushBlue, g_pConf->m_pBrushRed, m_pGridPatternBitmapBrush);
 
-		g_pCmScene->onDraw(g_pCmScene->m_cX, g_pCmScene->m_cY);
+		g_pCmScene->onDraw();
 
 		//g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 // 		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
@@ -438,14 +408,14 @@ HRESULT WinApp::OnRender()
 
 		size.width = BLU_W;
 		size.height = BLU_H;
-		g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(45, D2D1::Point2F(renderTargetSize.width / 2, renderTargetSize.height / 2)));	//旋转45度
-		g_pConf->m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_pBlackBrush);	//显示文字
-		g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0, renderTargetSize.height - 200));
-		g_pConf->m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
-		g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(renderTargetSize.width - 200, 0));
-		g_pConf->m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(45, D2D1::Point2F(renderTargetSize.width / 2, renderTargetSize.height / 2)));	//旋转45度
+		m_pRenderTarget->DrawText(sc_helloWorld, ARRAYSIZE(sc_helloWorld) - 1, m_pTextFormat, D2D1::RectF(0, 0, renderTargetSize.width, renderTargetSize.height), m_pBlackBrush);	//显示文字
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0, renderTargetSize.height - 200));
+		m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
+		m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(renderTargetSize.width - 200, 0));
+		m_pRenderTarget->FillGeometry(m_pPathGeometry, m_pLinearGradientBrush);
 #endif
-		hr = g_pConf->m_pRenderTarget->EndDraw();
+		hr = m_pRenderTarget->EndDraw();
 		if (hr == D2DERR_RECREATE_TARGET)
 		{
 			hr = S_OK;
@@ -458,9 +428,9 @@ HRESULT WinApp::OnRender()
 #pragma endregion
 
 #pragma region If the application receives a WM_SIZE message, this method resize the render target appropriately.
-void WinApp::OnResize(UINT width, UINT height)
+void SFApp::OnResize(UINT width, UINT height)
 {
-	if (g_pConf->m_pRenderTarget)
+	if (m_pRenderTarget)
 	{
 		D2D1_SIZE_U size;
 		size.width = width;
@@ -469,7 +439,7 @@ void WinApp::OnResize(UINT width, UINT height)
 		// Note: This method can fail, but it's okay to ignore the
 		// error here -- it will be repeated on the next call to
 		// EndDraw.
-		g_pConf->m_pRenderTarget->Resize(size);
+		m_pRenderTarget->Resize(size);
 	}
 }
 #pragma endregion
@@ -492,7 +462,7 @@ DWORD WINAPI ThreadProc(LPVOID lpParam)
 }
 
 #pragma region 消息处理
-LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = 0;
 	string strTmp = "";
@@ -504,17 +474,17 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 	if (message == WM_CREATE)
 	{
 		LPCREATESTRUCT pcs = (LPCREATESTRUCT)lParam;
-		WinApp *pWinApp = (WinApp*)pcs->lpCreateParams;
+		SFApp *pSFApp = (SFApp*)pcs->lpCreateParams;
 
-		::SetWindowLongPtrW(hwnd, GWLP_USERDATA, PtrToUlong(pWinApp));
+		::SetWindowLongPtrW(hwnd, GWLP_USERDATA, PtrToUlong(pSFApp));
 		result = 1;
 	}
 	else
 	{
-		WinApp *pWinApp = reinterpret_cast<WinApp *>(static_cast<LONG_PTR>(::GetWindowLongPtrW(hwnd, GWLP_USERDATA)));
+		SFApp *pSFApp = reinterpret_cast<SFApp *>(static_cast<LONG_PTR>(::GetWindowLongPtrW(hwnd, GWLP_USERDATA)));
 		bool wasHandled = false;
 
-		if (pWinApp)
+		if (pSFApp)
 		{
 			switch (message)
 			{
@@ -523,7 +493,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 						UINT width = LOWORD(lParam);
 						UINT height = HIWORD(lParam);
 
-						pWinApp->OnResize(width, height);
+						pSFApp->OnResize(width, height);
 					}
 					result = 0;
 					wasHandled = true;
@@ -532,7 +502,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					switch (wParam)
 					{
 						case TMR_PAINT:
-							pWinApp->OnRender();
+							pSFApp->OnRender();
 							ValidateRect(hwnd, NULL);
 							break;
 						case TMR_SKILL:
@@ -552,7 +522,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 					break;
 				case WM_PAINT:
 					{
-						pWinApp->OnRender();
+						pSFApp->OnRender();
 						ValidateRect(hwnd, NULL);
 					}
 					result = 0;
@@ -587,7 +557,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 #pragma endregion
 
 #pragma region LoadResourceBitmap
-HRESULT WinApp::LoadResourceBitmap(
+HRESULT SFApp::LoadResourceBitmap(
 	ID2D1RenderTarget *pRenderTarget,
 	IWICImagingFactory *pIWICFactory,
 	PCWSTR resourceName,
@@ -699,7 +669,7 @@ HRESULT WinApp::LoadResourceBitmap(
 #pragma endregion
 
 #pragma region LoadBitmapFromFile
-HRESULT WinApp::LoadBitmapFromFile(
+HRESULT SFApp::LoadBitmapFromFile(
 	ID2D1RenderTarget *pRenderTarget,
 	IWICImagingFactory *pIWICFactory,
 	PCWSTR uri,

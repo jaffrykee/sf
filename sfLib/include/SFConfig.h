@@ -381,11 +381,7 @@ public:
 
 	SFEventManager* m_pEventManager;
 
-	ID2D1Factory *m_pD2DFactory;
-	ID2D1HwndRenderTarget *m_pRenderTarget;
-	ID2D1SolidColorBrush *m_pBrushBlue;
-	ID2D1SolidColorBrush *m_pBrushRed;
-	ID2D1SolidColorBrush *m_pBrushWhite;
+	SFApp* m_pWin;
 
 private:
 	static SFConfig *m_pInstance;
