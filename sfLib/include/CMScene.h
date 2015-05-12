@@ -31,6 +31,8 @@ public:
 	FLOAT m_perEn;
 	//崎岖度
 	FLOAT m_rugged;
+	//崎岖阀值（正负1之间）
+	FLOAT m_perRug;
 	FLOAT m_maxH;
 	FLOAT m_minH;
 

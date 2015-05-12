@@ -11,7 +11,7 @@ Scene()
 	m_mapEvent = &g_pConf->m_mapCmEvent;
 	m_viewScaleX = 1.6;
 	m_viewScaleY = 1;
-	m_viewLen = 7;
+	m_viewLen = 10;
 	m_viewMar = 0;
 	m_cX = 0;
 	m_cY = 0;
@@ -25,10 +25,11 @@ Scene()
 #pragma endregion
 
 #pragma region 生成随机地图
-	m_maxX = 1000;
-	m_maxY = 1000;
+	m_maxX = 200;
+	m_maxY = 200;
 	m_perEn = 1;
 	m_rugged = 10;
+	m_perRug = 0.5f;
 	m_maxH = 0;
 	m_minH = 0;
 
@@ -75,7 +76,18 @@ Scene()
 				}
 			}
 			FLOAT dh = (((FLOAT)rand()) / ((FLOAT)RAND_MAX) * 2 - 1) * m_rugged;
-			ht = (dh < (m_rugged / 2)) ? 0 : dh +average;
+			if (m_perRug > 0)
+			{
+				ht = (dh < (m_rugged * m_perRug)) ? 0 : dh + average;
+			}
+			else if (m_perRug < 0)
+			{
+				ht = (dh > (m_rugged * m_perRug)) ? 0 : dh + average;
+			}
+			else
+			{
+				ht = dh + average;
+			}
 			if (ht > m_maxH)
 			{
 				m_maxH = ht;
@@ -136,12 +148,14 @@ Scene()
 			{
 				if (k >= 1)
 				{
+#pragma region 菱形
 					switch (k)
 					{
 					case 1:
 					{
-						ID2D1PathGeometry* pPathD1 = NULL;
 #pragma region 菱形1
+						ID2D1PathGeometry* pPathD1 = NULL;
+
 						hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathD1);
 						if (SUCCEEDED(hr))
 						{
@@ -170,7 +184,6 @@ Scene()
 
 							pSink->Close();
 						}
-#pragma endregion
 						hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 							pPathD1,
 							D2D1::Matrix3x2F::Translation(
@@ -179,12 +192,13 @@ Scene()
 							),
 							&m_arrArrMap[i][j].m_arrpCell[k]
 							);
+#pragma endregion
 					}
 						break;
 					case 2:
 					{
-						ID2D1PathGeometry* pPathD2 = NULL;
 #pragma region 菱形2
+						ID2D1PathGeometry* pPathD2 = NULL;
 						hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathD2);
 						if (SUCCEEDED(hr))
 						{
@@ -213,7 +227,6 @@ Scene()
 
 							pSink->Close();
 						}
-#pragma endregion
 						hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 							pPathD2,
 							D2D1::Matrix3x2F::Translation(
@@ -222,12 +235,13 @@ Scene()
 							),
 							&m_arrArrMap[i][j].m_arrpCell[k]
 							);
+#pragma endregion
 					}
 						break;
 					case 3:
 					{
-						ID2D1PathGeometry* pPathD3 = NULL;
 #pragma region 菱形3
+						ID2D1PathGeometry* pPathD3 = NULL;
 						hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathD3);
 						if (SUCCEEDED(hr))
 						{
@@ -256,7 +270,6 @@ Scene()
 
 							pSink->Close();
 						}
-#pragma endregion
 						hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 							pPathD3,
 							D2D1::Matrix3x2F::Translation(
@@ -265,11 +278,13 @@ Scene()
 							),
 							&m_arrArrMap[i][j].m_arrpCell[k]
 							);
+#pragma endregion
 					}
 						break;
 					default:
 						break;
 					}
+#pragma endregion
 				}
 				else
 				{
@@ -382,6 +397,7 @@ void CMScene::onDrawByCell(UINT x, UINT y)
 	drawCenter();
 }
 
+//绘制
 void CMScene::onDraw()
 {
 	double sW = g_pConf->m_pWin->m_pRenderTarget->GetSize().width;
