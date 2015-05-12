@@ -233,9 +233,10 @@ HRESULT SFApp::CreateDeviceResources()
 		}
 		if (SUCCEEDED(hr))
 		{
-			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Blue, 0.5f), &m_pBrushBlue);
-			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Red, 0.5f), &m_pBrushRed);
-			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White, 0.5f), &m_pBrushWhite);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x0055cc, 0.92f), &m_pBrushBlue);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x113377, 0.95f), &m_pBrushBlueHalf);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xaa5533, 0.5f), &m_pBrushRed);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xffffff, 1.f), &m_pBrushWhite);
 		}
 
 		//通过文件创建位图

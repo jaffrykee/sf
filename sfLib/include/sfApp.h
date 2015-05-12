@@ -81,6 +81,7 @@ public:
 	ID2D1SolidColorBrush *m_pBrushBlue;
 	ID2D1SolidColorBrush *m_pBrushRed;
 	ID2D1SolidColorBrush *m_pBrushWhite;
+	ID2D1SolidColorBrush *m_pBrushBlueHalf;
 };
 
 class PActPlayer

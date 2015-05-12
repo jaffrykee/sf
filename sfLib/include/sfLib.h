@@ -30,6 +30,7 @@
 #include <sstream>
 #include <Fcntl.h>
 #include <io.h>
+#include <time.h>
 
 #pragma comment(lib, "comsuppwd.lib")
 #pragma comment(lib, "XmlLite.lib")

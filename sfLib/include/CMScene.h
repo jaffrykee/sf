@@ -3,7 +3,7 @@
 
 typedef struct CMSceneMapData_S
 {
-	ID2D1TransformedGeometry* m_cell;
+	ID2D1TransformedGeometry* m_arrpCell[4];
 	FLOAT m_height;
 	bool m_enArrived;
 }CMSMData_T;
@@ -22,6 +22,17 @@ public:
 	bool m_isDown;
 	FLOAT m_mx0;
 	FLOAT m_my0;
+
+	//地图宽
+	UINT m_maxX;
+	//地图长
+	UINT m_maxY;
+	//可通行率
+	FLOAT m_perEn;
+	//崎岖度
+	FLOAT m_rugged;
+	FLOAT m_maxH;
+	FLOAT m_minH;
 
 	CMScene();
 	~CMScene();
