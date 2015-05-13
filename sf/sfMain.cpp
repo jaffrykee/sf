@@ -16,6 +16,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		int status = setvbuf(stdout, 0, _IONBF, 0);
 	}
 
+	SYSTEM_INFO info;
+	GetSystemInfo(&info);
+	g_pConf->m_numCore = info.dwNumberOfProcessors;
+
 	if (SUCCEEDED(CoInitialize(NULL)))
 	{
 		{

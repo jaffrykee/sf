@@ -382,6 +382,7 @@ public:
 	SFEventManager* m_pEventManager;
 
 	SFApp* m_pWin;
+	DWORD m_numCore;
 
 private:
 	static SFConfig *m_pInstance;
