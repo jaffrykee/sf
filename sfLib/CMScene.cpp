@@ -7,7 +7,8 @@ typedef struct CMDrawInit_S
 	CMScene* m_pScene;
 }CMDInit_T;
 
-/*
+#define CM_THREADINIT
+
 //初始化图形
 DWORD WINAPI threadInitDraw(LPVOID lpParam)
 {
@@ -227,7 +228,8 @@ DWORD WINAPI threadInitDraw(LPVOID lpParam)
 
 	return 0;
 }
-*/
+
+CMDInit_T initData;
 
 CMScene::CMScene() :
 Scene()
@@ -330,14 +332,14 @@ Scene()
 
 
 #pragma region 图形相关
-	// 	DWORD threadID;
-	// 	HANDLE hThread;
-	// 	CMDInit_T initData = { this };
-	// 
-	// 	hThread = CreateThread(NULL, 0, threadInitDraw, &initData, 0, &threadID);
-	// 	WaitForSingleObject(hThread, INFINITE);
-	// 	CloseHandle(hThread);
+#ifdef CM_THREADINIT
+	DWORD threadID;
+	HANDLE hThread;
 
+	initData = { this };
+	hThread = CreateThread(NULL, 0, threadInitDraw, &initData, 0, &threadID);
+	CloseHandle(hThread);
+#else
 	FLOAT lenX = m_viewLen * m_viewScaleX;
 	FLOAT lenY = m_viewLen * m_viewScaleY;
 	FLOAT marX = m_viewMar * m_viewScaleX;
@@ -547,6 +549,7 @@ Scene()
 			}
 		}
 	}
+#endif
 #pragma endregion
 }
 

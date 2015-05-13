@@ -395,7 +395,7 @@ HRESULT SFApp::OnRender()
 		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 //		g_pEventManager->m_pActiveScene->onDraw(g_pConf->m_pRenderTarget, g_pConf->m_pBrushBlue, g_pConf->m_pBrushRed, m_pGridPatternBitmapBrush);
 
-		g_pCmScene->onDraw();
+		g_pEventManager->m_pActiveScene->onDraw();
 
 		//g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 // 		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
@@ -462,6 +462,8 @@ DWORD WINAPI ThreadProc(LPVOID lpParam)
 	return 0;
 }
 
+SFMessage_T tmp;
+
 #pragma region 消息处理
 LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -470,8 +472,8 @@ LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 	int st = 0;
 	DWORD threadID;
 	HANDLE hThread;
-	SFMessage_T tmp = {message, wParam, lParam};
 
+	tmp = { message, wParam, lParam };
 	if (message == WM_CREATE)
 	{
 		LPCREATESTRUCT pcs = (LPCREATESTRUCT)lParam;
@@ -509,7 +511,7 @@ LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 						case TMR_SKILL:
 						case TMR_ACTION:
 							hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);
-							WaitForSingleObject(hThread, INFINITE);
+							//WaitForSingleObject(hThread, INFINITE);
 							CloseHandle(hThread);
 							break;
 					}
@@ -535,7 +537,7 @@ LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 				case WM_KEYDOWN:
 				case WM_KEYUP:
 					hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);
-					WaitForSingleObject(hThread, INFINITE);
+					//WaitForSingleObject(hThread, INFINITE);
 					CloseHandle(hThread);
 					break;
 				case WM_DESTROY:
