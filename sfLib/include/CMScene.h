@@ -35,6 +35,8 @@ public:
 	FLOAT m_perRug;
 	FLOAT m_maxH;
 	FLOAT m_minH;
+	FLOAT m_viewMouseScaleX;
+	FLOAT m_viewMouseScaleY;
 
 	CMScene();
 	~CMScene();

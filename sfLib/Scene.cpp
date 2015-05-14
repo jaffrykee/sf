@@ -21,3 +21,8 @@ bool Scene::doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	return true;
 }
+
+void Scene::onDraw()
+{
+
+}

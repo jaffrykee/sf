@@ -101,5 +101,5 @@ public:
 	void refreshDirection();
 	void onDrawForFightBox(ID2D1HwndRenderTarget* pRenderTarget, ID2D1SolidColorBrush* pBrush, SFPlayer* pPlayer, list<D2D1_RECT_F>* pList);
 	void onDrawForFightSprite(ID2D1HwndRenderTarget* pRenderTarget, ID2D1SolidColorBrush* pBodyBrush, ID2D1SolidColorBrush* pActBrush, SFPlayer* pPlayer);
-	void onDraw(ID2D1HwndRenderTarget* pRenderTarget, ID2D1SolidColorBrush* pBodyBrush, ID2D1SolidColorBrush* pActBrush, ID2D1BitmapBrush* pBackBrush);
+	void onDraw();
 };

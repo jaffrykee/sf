@@ -38,6 +38,8 @@ private:
 		UINT height
 		);
 
+	static DWORD WINAPI DrawProc(LPVOID lpParam);
+
 	static LRESULT CALLBACK WndProc(
 		HWND hWnd,
 		UINT message,

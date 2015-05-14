@@ -10,5 +10,5 @@ public:
 	~Scene();
 	bool doEvent(SF_TEV event);
 	virtual bool doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam);
-	virtual bool onDraw();
+	virtual void onDraw();
 };

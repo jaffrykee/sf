@@ -78,6 +78,7 @@ DWORD WINAPI threadInitDraw(LPVOID lpParam)
 #pragma region 菱形1
 								ID2D1PathGeometry* pPathD1 = NULL;
 
+								CHECK_WIN_KILLED;
 								hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathD1);
 								if (SUCCEEDED(hr))
 								{
@@ -106,6 +107,7 @@ DWORD WINAPI threadInitDraw(LPVOID lpParam)
 
 									pSink->Close();
 								}
+								CHECK_WIN_KILLED;
 								hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 									pPathD1,
 									D2D1::Matrix3x2F::Translation(
@@ -121,6 +123,8 @@ DWORD WINAPI threadInitDraw(LPVOID lpParam)
 							{
 #pragma region 菱形2
 								ID2D1PathGeometry* pPathD2 = NULL;
+
+								CHECK_WIN_KILLED;
 								hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathD2);
 								if (SUCCEEDED(hr))
 								{
@@ -149,6 +153,7 @@ DWORD WINAPI threadInitDraw(LPVOID lpParam)
 
 									pSink->Close();
 								}
+								CHECK_WIN_KILLED;
 								hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 									pPathD2,
 									D2D1::Matrix3x2F::Translation(
@@ -164,6 +169,8 @@ DWORD WINAPI threadInitDraw(LPVOID lpParam)
 							{
 #pragma region 菱形3
 								ID2D1PathGeometry* pPathD3 = NULL;
+
+								CHECK_WIN_KILLED;
 								hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathD3);
 								if (SUCCEEDED(hr))
 								{
@@ -192,6 +199,7 @@ DWORD WINAPI threadInitDraw(LPVOID lpParam)
 
 									pSink->Close();
 								}
+								CHECK_WIN_KILLED;
 								hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 									pPathD3,
 									D2D1::Matrix3x2F::Translation(
@@ -211,6 +219,7 @@ DWORD WINAPI threadInitDraw(LPVOID lpParam)
 					}
 					else
 					{
+						CHECK_WIN_KILLED;
 						hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 							pPathG,
 							D2D1::Matrix3x2F::Translation(
@@ -245,16 +254,19 @@ Scene()
 	m_mx0 = -1;
 	m_my0 = -1;
 
-	m_maxX = 1000;
-	m_maxY = 1000;
+	m_maxX = 3000;
+	m_maxY = 3000;
 	m_perEn = 1;
 	m_rugged = 10;
 	m_perRug = 0.9f;
 	m_maxH = 0;
 	m_minH = 0;
 
-	m_cX = 0;
-	m_cY = 0;
+	m_cX = m_maxX * m_viewScaleX * m_viewLen * 3 - 300;
+	m_cY = m_maxY * m_viewScaleY * m_viewLen * 2 * sqrt(3) - 300;
+
+	m_viewMouseScaleX = 2;
+	m_viewMouseScaleY = 2;
 #pragma endregion
 
 #pragma region 生成随机地图
@@ -338,6 +350,7 @@ Scene()
 
 	initData = { this };
 	hThread = CreateThread(NULL, 0, threadInitDraw, &initData, 0, &threadID);
+	//WaitForSingleObject(hThread, INFINITE);
 	CloseHandle(hThread);
 #else
 	FLOAT lenX = m_viewLen * m_viewScaleX;
@@ -638,8 +651,8 @@ void CMScene::onDrawByCell(UINT x, UINT y)
 	FLOAT marX = m_viewMar * m_viewScaleX;
 	FLOAT marY = m_viewMar * m_viewScaleY;
 
-	FLOAT dx = -(3 * lenX + sqrt(3) / 2 * marX) * x + (sW - lenX * 4) / 2;
-	FLOAT dy = -((2 * sqrt(3) * lenY + marY) * (y - 0.5 * (y % 2 ? 1 : 0)) - m_arrArrMap[x][y].m_height) + (sH - lenY * 2 * sqrt(3)) / 2;
+	FLOAT dx = (3 * lenX + sqrt(3) / 2 * marX) * x - (sW - lenX * 4) / 2;
+	FLOAT dy = ((2 * sqrt(3) * lenY + marY) * (y - 0.5 * (y % 2 ? 1 : 0)) - m_arrArrMap[x][y].m_height) - (sH - lenY * 2 * sqrt(3)) / 2;
 
 	m_cX = dx;
 	m_cY = dy;
@@ -658,16 +671,16 @@ void CMScene::onDraw()
 		RECT rect;
 
 		GetCursorPos(&pt);
-		m_cX += (pt.x - m_mx0);
-		m_cY += (pt.y - m_my0);
+		m_cX -= m_viewMouseScaleX * (pt.x - m_mx0);
+		m_cY -= m_viewMouseScaleY * (pt.y - m_my0);
 		m_mx0 = pt.x;
 		m_my0 = pt.y;
 	}
 	g_pConf->m_pWin->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
-	INT i0 = -m_cX / (3 * m_viewLen * m_viewScaleX);
-	INT j0 = -m_cY / (2 * sqrt(3) * m_viewLen * m_viewScaleY);
+	INT i0 = m_cX / (3 * m_viewLen * m_viewScaleX);
+	INT j0 = m_cY / (2 * sqrt(3) * m_viewLen * m_viewScaleY);
 	INT iMax = sW / (3 * m_viewLen * m_viewScaleX) + i0 + 2;
 	INT jMax = sH / (2 * sqrt(3) * m_viewLen * m_viewScaleY) + j0 + 2;
 
@@ -695,14 +708,14 @@ void CMScene::onDraw()
 						{
 							if (m_arrArrMap[i][j].m_height != 0)
 							{
-								g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(m_cX, m_cY));
+								g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY));
 								g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 1.f);
 								g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushBlueHalf);
 							}
 						}
 						else
 						{
-							g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(m_cX, m_cY));
+							g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY));
 							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 1.f);
 							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushBlue);
 						}
@@ -722,14 +735,14 @@ void CMScene::onDraw()
 						{
 							if (m_arrArrMap[i][j].m_height != 0)
 							{
-								g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(m_cX, m_cY));
+								g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY));
 								g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 1.f);
 								g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushBlueHalf);
 							}
 						}
 						else
 						{
-							g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(m_cX, m_cY));
+							g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY));
 							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 1.f);
 							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushBlue);
 						}

@@ -564,13 +564,13 @@ void SFActScene::onDrawForFightSprite(
 }
 
 //与碰撞是不同线程
-void SFActScene::onDraw(
-	ID2D1HwndRenderTarget* pRenderTarget,
-	ID2D1SolidColorBrush* pBodyBrush,
-	ID2D1SolidColorBrush* pActBrush,
-	ID2D1BitmapBrush* pBackBrush
-	)
+void SFActScene::onDraw()
 {
+	ID2D1HwndRenderTarget* pRenderTarget = g_pConf->m_pWin->m_pRenderTarget;
+	ID2D1SolidColorBrush* pBodyBrush = g_pConf->m_pWin->m_pBrushBlueHalf;
+	ID2D1SolidColorBrush* pActBrush = g_pConf->m_pWin->m_pBrushRed;
+	ID2D1BitmapBrush* pBackBrush = g_pConf->m_pWin->m_pGridPatternBitmapBrush;
+
 	double mpx = (getFightP1()->m_position.x + getFightP2()->m_position.x)/2;
 	double dpx = g_pConf->m_viewBenchmark.width / 2 - mpx;
 	D2D1_POINT_2F sCmrPoi = { dpx , 0 };

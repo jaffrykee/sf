@@ -75,6 +75,7 @@ m_pBrushRed(NULL)
 #pragma region Release resources
 SFApp::~SFApp()
 {
+	g_pConf->m_pWin = NULL;
 	SafeRelease(&m_pD2DFactory);
 	SafeRelease(&m_pWICFactory);
 	SafeRelease(&m_pDWriteFactory);
@@ -395,7 +396,13 @@ HRESULT SFApp::OnRender()
 		m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 //		g_pEventManager->m_pActiveScene->onDraw(g_pConf->m_pRenderTarget, g_pConf->m_pBrushBlue, g_pConf->m_pBrushRed, m_pGridPatternBitmapBrush);
 
-		g_pEventManager->m_pActiveScene->onDraw();
+		if (g_pEventManager)
+		{
+			if (g_pEventManager->m_pActiveScene)
+			{
+				g_pEventManager->m_pActiveScene->onDraw();
+			}
+		}
 
 		//g_pConf->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 // 		D2D1_RECT_F rect1 = D2D1::RectF((sW - 100.0f), (sH - 50.0f), (sW - 50.0f), sH);
@@ -445,26 +452,27 @@ void SFApp::OnResize(UINT width, UINT height)
 }
 #pragma endregion
 
-typedef struct SFMessage
+typedef struct SFDrawData_S
 {
-	UINT message;
-	WPARAM wParam;
-	LPARAM lParam;
-}SFMessage_T;
+	SFApp* m_pSFApp;
+	HWND m_hwnd;
+}SFDrawData_T;
 
-//SF引擎响应
-DWORD WINAPI ThreadProc(LPVOID lpParam)
+//绘制线程
+DWORD WINAPI SFApp::DrawProc(LPVOID lpParam)
 {
-	SFMessage_T tmp = *(SFMessage_T*)lpParam;
+	SFDrawData_T tmp = *(SFDrawData_T*)lpParam;
 
-	g_pEventManager->doSystemEvent(tmp.message, tmp.wParam, tmp.lParam);
+	tmp.m_pSFApp->OnRender();
+	ValidateRect(tmp.m_hwnd, NULL);
 
 	return 0;
 }
 
-SFMessage_T tmp;
+SFDrawData_T g_drawData;
 
 #pragma region 消息处理
+
 LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = 0;
@@ -473,7 +481,6 @@ LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 	DWORD threadID;
 	HANDLE hThread;
 
-	tmp = { message, wParam, lParam };
 	if (message == WM_CREATE)
 	{
 		LPCREATESTRUCT pcs = (LPCREATESTRUCT)lParam;
@@ -486,6 +493,8 @@ LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 	{
 		SFApp *pSFApp = reinterpret_cast<SFApp *>(static_cast<LONG_PTR>(::GetWindowLongPtrW(hwnd, GWLP_USERDATA)));
 		bool wasHandled = false;
+
+		g_drawData = { pSFApp, hwnd };
 
 		if (pSFApp)
 		{
@@ -507,12 +516,13 @@ LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 						case TMR_PAINT:
 							pSFApp->OnRender();
 							ValidateRect(hwnd, NULL);
+// 							hThread = CreateThread(NULL, 0, DrawProc, &g_drawData, 0, &threadID);
+// 							WaitForSingleObject(hThread, INFINITE);
+// 							CloseHandle(hThread);
 							break;
 						case TMR_SKILL:
 						case TMR_ACTION:
-							hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);
-							//WaitForSingleObject(hThread, INFINITE);
-							CloseHandle(hThread);
+							g_pEventManager->doSystemEvent(message, wParam, lParam);
 							break;
 					}
 					result = 0;
@@ -527,18 +537,25 @@ LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 					{
 						pSFApp->OnRender();
 						ValidateRect(hwnd, NULL);
+// 						hThread = CreateThread(NULL, 0, DrawProc, &g_drawData, 0, &threadID);
+// 						WaitForSingleObject(hThread, INFINITE);
+// 						CloseHandle(hThread);
 					}
 					result = 0;
 					wasHandled = true;
 					break;
 				case WM_LBUTTONDOWN:
+					SetCapture(hwnd);
+					g_pEventManager->doSystemEvent(message, wParam, lParam);
+					break;
 				case WM_LBUTTONUP:
+					ReleaseCapture();
+					g_pEventManager->doSystemEvent(message, wParam, lParam);
+					break;
 				case WM_MOUSEMOVE:
 				case WM_KEYDOWN:
 				case WM_KEYUP:
-					hThread = CreateThread(NULL, 0, ThreadProc, &tmp, 0, &threadID);
-					//WaitForSingleObject(hThread, INFINITE);
-					CloseHandle(hThread);
+					g_pEventManager->doSystemEvent(message, wParam, lParam);
 					break;
 				case WM_DESTROY:
 					{
