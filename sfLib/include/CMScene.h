@@ -8,6 +8,11 @@ typedef struct CMSceneMapData_S
 	bool m_enArrived;
 }CMSMData_T;
 
+typedef struct CMDrawInit_S
+{
+	CMScene* m_pScene;
+}CMDInit_T;
+
 class __declspec(dllexport) CMScene : public Scene
 {
 public:
@@ -37,13 +42,26 @@ public:
 	FLOAT m_minH;
 	FLOAT m_viewMouseScaleX;
 	FLOAT m_viewMouseScaleY;
+	FLOAT m_prereadWidth;
+	FLOAT m_prereadHeight;
+	//六边形
+	ID2D1PathGeometry* m_pPathG;
 
 	CMScene();
 	~CMScene();
 	void loadDataFromXml(string path);
 	void onDrawByCell(UINT x = 0, UINT y = 0);
+	void drawSingleCell(UINT i, UINT j);
 	void onDraw();
 	void drawCenter();
 	bool doEvent(SF_TEV event);
 	bool doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam);
+
+public:
+	static CMDInit_T s_initData;
+
+	//初始化线程
+	static DWORD WINAPI threadInitDraw(LPVOID lpParam);
+	//初始化单个元素
+	static UINT initSingleCell(LPVOID lpParam, UINT i, UINT j);
 };

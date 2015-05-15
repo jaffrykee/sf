@@ -58,6 +58,7 @@ class SFSpriteGroup;
 
 class SFEventManager;
 class Scene;
+class CMScene;
 
 //后置include
 #include <sfApp.h>
