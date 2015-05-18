@@ -13,10 +13,10 @@ UINT CMScene::initSingleCell(LPVOID lpParam, UINT i, UINT j)
 	CMDInit_T initData = *(CMDInit_T*)lpParam;
 	HRESULT hr;
 
-	FLOAT lenX = initData.m_pScene->m_viewLen * initData.m_pScene->m_viewScaleX;
-	FLOAT lenY = initData.m_pScene->m_viewLen * initData.m_pScene->m_viewScaleY;
-	FLOAT marX = initData.m_pScene->m_viewMar * initData.m_pScene->m_viewScaleX;
-	FLOAT marY = initData.m_pScene->m_viewMar * initData.m_pScene->m_viewScaleY;
+	FLOAT lenX = initData.m_pScene->m_viewLen;
+	FLOAT lenY = initData.m_pScene->m_viewLen;
+	FLOAT marX = initData.m_pScene->m_viewMar;
+	FLOAT marY = initData.m_pScene->m_viewMar;
 	FLOAT dH = initData.m_pScene->m_arrArrMap[i][j].m_height - initData.m_pScene->m_minH;
 
 	if (initData.m_pScene->m_pPathG == NULL)
@@ -231,10 +231,10 @@ DWORD WINAPI CMScene::threadInitDraw(LPVOID lpParam)
 {
 	CMDInit_T initData = *(CMDInit_T*)lpParam;
 
-	FLOAT lenX = initData.m_pScene->m_viewLen * initData.m_pScene->m_viewScaleX;
-	FLOAT lenY = initData.m_pScene->m_viewLen * initData.m_pScene->m_viewScaleY;
-	FLOAT marX = initData.m_pScene->m_viewMar * initData.m_pScene->m_viewScaleX;
-	FLOAT marY = initData.m_pScene->m_viewMar * initData.m_pScene->m_viewScaleY;
+	FLOAT lenX = initData.m_pScene->m_viewLen;
+	FLOAT lenY = initData.m_pScene->m_viewLen;
+	FLOAT marX = initData.m_pScene->m_viewMar;
+	FLOAT marY = initData.m_pScene->m_viewMar;
 
 	#pragma region 图形相关
 	for (UINT i = 0; i < initData.m_pScene->m_arrArrMap.size(); i++)
@@ -256,24 +256,27 @@ Scene()
 	m_isDown = false;
 	m_pPathG = NULL;
 
-	m_mapEvent = &g_pConf->m_mapCmEvent;
+	m_pMapEvent = &g_pConf->m_mapCmEvent;
 	m_viewScaleX = 1.6;
 	m_viewScaleY = 1;
+	m_viewWheelScale = 1.1;
 	m_viewLen = 5;
 	m_viewMar = 0;
 	m_mx0 = -1;
 	m_my0 = -1;
 
-	m_maxX = 5000;
-	m_maxY = 5000;
+	m_maxX = 100;
+	m_maxY = 100;
 	m_perEn = 1;
-	m_rugged = 10;
+	m_rugged = m_viewLen;
 	m_perRug = 0.5;
 	m_maxH = 0;
 	m_minH = 0;
 
 	m_cX = m_maxX * m_viewScaleX * m_viewLen * 3 - 300;
 	m_cY = m_maxY * m_viewScaleY * m_viewLen * 2 * sqrt(3) - 300;
+	m_cX = 0;
+	m_cY = 0;
 
 	m_viewMouseScaleX = 2;
 	m_viewMouseScaleY = 2;
@@ -352,8 +355,8 @@ Scene()
 	}
 	#pragma endregion
 
-	m_prereadWidth = 0;
-	m_prereadHeight = (m_maxH - m_minH) * 0.1;
+	m_prereadWidth = 5;
+	m_prereadHeight = (m_maxH - m_minH) * 0.1 + 2;
 
 #ifndef CM_AUTOINIT
 	#pragma region 图形相关
@@ -366,10 +369,10 @@ Scene()
 	//WaitForSingleObject(hThread, INFINITE);
 	CloseHandle(hThread);
 #else
-	FLOAT lenX = m_viewLen * m_viewScaleX;
-	FLOAT lenY = m_viewLen * m_viewScaleY;
-	FLOAT marX = m_viewMar * m_viewScaleX;
-	FLOAT marY = m_viewMar * m_viewScaleY;
+	FLOAT lenX = m_viewLen;
+	FLOAT lenY = m_viewLen;
+	FLOAT marX = m_viewMar;
+	FLOAT marY = m_viewMar;
 
 	ID2D1PathGeometry* pPathG = NULL;
 
@@ -663,10 +666,10 @@ void CMScene::onDrawByCell(UINT x, UINT y)
 	double sW = g_pConf->m_pWin->m_pRenderTarget->GetSize().width;
 	double sH = g_pConf->m_pWin->m_pRenderTarget->GetSize().height;
 
-	FLOAT lenX = m_viewLen * m_viewScaleX;
-	FLOAT lenY = m_viewLen * m_viewScaleY;
-	FLOAT marX = m_viewMar * m_viewScaleX;
-	FLOAT marY = m_viewMar * m_viewScaleY;
+	FLOAT lenX = m_viewLen;
+	FLOAT lenY = m_viewLen;
+	FLOAT marX = m_viewMar;
+	FLOAT marY = m_viewMar;
 
 	FLOAT dx = (3 * lenX + sqrt(3) / 2 * marX) * x - (sW - lenX * 4) / 2;
 	FLOAT dy = ((2 * sqrt(3) * lenY + marY) * (y - 0.5 * (y % 2 ? 1 : 0)) - m_arrArrMap[x][y].m_height) - (sH - lenY * 2 * sqrt(3)) / 2;
@@ -679,56 +682,53 @@ void CMScene::onDrawByCell(UINT x, UINT y)
 
 void CMScene::drawSingleCell(UINT i, UINT j)
 {
+	HRESULT hr;
+	ID2D1SolidColorBrush* pBlueLight;
+	ID2D1SolidColorBrush* pBlueMid;
+	ID2D1SolidColorBrush* pBlueDark;
+	ID2D1SolidColorBrush* pBlueNormal;
+
+	hr = g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xcccccc, 0.95f), &pBlueLight);
+	hr = g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x777777, 0.95f), &pBlueMid);
+	hr = g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x333333, 0.95f), &pBlueDark);
+	hr = g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xaaaaaa, 0.95f), &pBlueNormal);
 	if (m_arrArrMap[i][j].m_enArrived)
 	{
-		if (m_arrArrMap[i][j].m_arrpCell[0] != NULL)
+		if (m_arrArrMap[i][j].m_arrpCell[0] == NULL)
 		{
-			for (UINT k = 0; k < ARRAYSIZE(m_arrArrMap[i][j].m_arrpCell); k++)
-			{
-				if (m_arrArrMap[i][j].m_arrpCell[k] != NULL)
-				{
-					if (k >= 1)
-					{
-						if (m_arrArrMap[i][j].m_height != 0)
-						{
-							g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY));
-							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 1.f);
-							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushBlueHalf);
-						}
-					}
-					else
-					{
-						g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY));
-						g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 1.f);
-						g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushBlue);
-					}
-				}
-			}
-		}
-		else
-		{
+			//不存在则初始化
 			s_initData = { this };
 			initSingleCell(&s_initData, i, j);
-
-			for (UINT k = 0; k < ARRAYSIZE(m_arrArrMap[i][j].m_arrpCell); k++)
+		}
+		for (INT k = ARRAYSIZE(m_arrArrMap[i][j].m_arrpCell) - 1; k >= 0; k--)
+		{
+			if (m_arrArrMap[i][j].m_arrpCell[k] != NULL)
 			{
-				if (m_arrArrMap[i][j].m_arrpCell[k] != NULL)
+				if (k >= 1)
 				{
-					if (k >= 1)
+					if (m_arrArrMap[i][j].m_height != 0)
 					{
-						if (m_arrArrMap[i][j].m_height != 0)
+						if (k == 1)
 						{
-							g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY));
-							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 1.f);
-							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushBlueHalf);
+							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 0.1f);
+							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], pBlueLight);
+						}
+						else if (k == 2)
+						{
+							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 0.1f);
+							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], pBlueMid);
+						}
+						else
+						{
+							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 0.1f);
+							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], pBlueDark);
 						}
 					}
-					else
-					{
-						g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY));
-						g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 1.f);
-						g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushBlue);
-					}
+				}
+				else
+				{
+					g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 0.1f);
+					g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], pBlueNormal);
 				}
 			}
 		}
@@ -745,18 +745,18 @@ void CMScene::onDraw()
 		RECT rect;
 
 		GetCursorPos(&pt);
-		m_cX -= m_viewMouseScaleX * (pt.x - m_mx0);
-		m_cY -= m_viewMouseScaleY * (pt.y - m_my0);
+		m_cX -= m_viewMouseScaleX * (pt.x - m_mx0) / m_viewScaleX;
+		m_cY -= m_viewMouseScaleY * (pt.y - m_my0) / m_viewScaleY;
 		m_mx0 = pt.x;
 		m_my0 = pt.y;
 	}
 	g_pConf->m_pWin->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
-	INT i0 = m_cX / (3 * m_viewLen * m_viewScaleX) - (m_prereadWidth + 2);
-	INT j0 = m_cY / (2 * sqrt(3) * m_viewLen * m_viewScaleY) - (m_prereadHeight + 2);
-	INT iMax = sW / (3 * m_viewLen * m_viewScaleX) + i0 + m_prereadWidth + 5;
-	INT jMax = sH / (2 * sqrt(3) * m_viewLen * m_viewScaleY) + j0 + m_prereadHeight + 5;
+	INT i0 = m_cX / (3 * m_viewLen) - m_prereadWidth;
+	INT j0 = m_cY / (2 * sqrt(3) * m_viewLen) - m_prereadHeight;
+	INT iMax = sW / (3 * m_viewLen * m_viewScaleX) + i0 + m_prereadWidth * 2;
+	INT jMax = sH / (2 * sqrt(3) * m_viewLen * m_viewScaleY) + j0 + m_prereadHeight * 2;
 
 	i0 = i0 < 0 ? 0 : i0;
 	j0 = j0 < 0 ? 0 : j0;
@@ -768,6 +768,7 @@ void CMScene::onDraw()
 	UINT i01 = (i0 % 2 == 1) ? i0 : i0 + 1;
 	UINT i02 = (i0 % 2 == 0) ? i0 : i0 + 1;
 
+	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY) * D2D1::Matrix3x2F::Scale(m_viewScaleX, m_viewScaleY));
 	for (UINT j = j0; j < jMax; j++)
 	{
 		for (UINT i = i01; i < iMax; i += 2)
@@ -779,6 +780,38 @@ void CMScene::onDraw()
 			drawSingleCell(i, j);
 		}
 	}
+	ID2D1SolidColorBrush* pBlack;
+	ID2D1SolidColorBrush* pWhite;
+	FLOAT perRd = 0.7;
+	FLOAT rdw = sW - sH * (1 - perRd);
+	FLOAT rdh = sH * perRd;
+	wstringstream ss;
+	wstring wsX, wsY;
+	wstring wstrPoi;
+	FLOAT minTxtWid = 100;
+
+	FLOAT maxPoiX = m_maxX * m_viewScaleX * m_viewLen * 3;
+	FLOAT maxPoiY = m_maxY * m_viewScaleY * m_viewLen * 2 * sqrt(3);
+
+	ss << (INT)(m_cX + sW / 2 / m_viewScaleX);
+	ss >> wsX;
+	ss.clear();
+	ss << (INT)(m_cY + sH / 2 / m_viewScaleY);
+	ss >> wsY;
+	wstrPoi = L"(" + wsX + L", " + wsY + L")";
+	g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x000000, 0.93f), &pBlack);
+	g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xffffff, 1.0f), &pWhite);
+	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+	g_pConf->m_pWin->m_pRenderTarget->DrawRectangle(D2D1::RectF(rdw, rdh, sW, sH), pWhite, 5.0f);
+	g_pConf->m_pWin->m_pRenderTarget->FillRectangle(D2D1::RectF(rdw, rdh, sW, sH), pBlack);
+	g_pConf->m_pWin->m_pRenderTarget->DrawText(
+		wstrPoi.c_str(),
+		wstrPoi.length(),
+		g_pConf->m_pWin->m_pTextFormat,
+		D2D1::RectF(sW - minTxtWid, rdh - 15, sW, rdh),
+		g_pConf->m_pWin->m_pBrushWhite
+		);	//显示文字
+
 }
 #pragma endregion
 
@@ -806,6 +839,18 @@ bool CMScene::doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam)
 		m_isDown = false;
 		break;
 	case WM_MOUSEMOVE:
+		break;
+	case WM_MOUSEWHEEL:
+		if ((INT)wParam > 0)
+		{
+			m_viewScaleX *= m_viewWheelScale;
+			m_viewScaleY *= m_viewWheelScale;
+		}
+		else if ((INT)wParam < 0)
+		{
+			m_viewScaleX /= m_viewWheelScale;
+			m_viewScaleY /= m_viewWheelScale;
+		}
 		break;
 	default:
 		break;

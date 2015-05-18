@@ -11,7 +11,7 @@ bool SFEventManager::setActiveScene(Scene* pScene)
 	if (pScene != NULL)
 	{
 		m_pActiveScene = pScene;
-		m_pMapEvent = pScene->m_mapEvent;
+		m_pMapEvent = pScene->m_pMapEvent;
 
 		return true;
 	}

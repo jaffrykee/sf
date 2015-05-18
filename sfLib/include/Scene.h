@@ -4,7 +4,7 @@
 class __declspec(dllexport) Scene
 {
 public:
-	MapEventGroup_T* m_mapEvent;
+	MapEventGroup_T* m_pMapEvent;
 
 	Scene();
 	~Scene();

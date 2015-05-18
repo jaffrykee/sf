@@ -128,8 +128,8 @@ HRESULT SFApp::Initialize()
 #pragma region 创建设备无关资源
 HRESULT SFApp::CreateDeviceIndependentResources()
 {
-	static const WCHAR msc_fontName[] = L"Verdana";
-	static const FLOAT msc_fontSize = 50;
+	static const WCHAR msc_fontName[] = L"Consolas";
+	static const FLOAT msc_fontSize = 12;
 
 	ID2D1GeometrySink *pSink = NULL;
 	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pD2DFactory);	//创建D2D工厂
@@ -144,7 +144,7 @@ HRESULT SFApp::CreateDeviceIndependentResources()
 	if (SUCCEEDED(hr))
 	{
 		hr = m_pDWriteFactory->CreateTextFormat(
-			msc_fontName, NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL,
+			msc_fontName, NULL, DWRITE_FONT_WEIGHT_THIN, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL,
 			msc_fontSize, L"", &m_pTextFormat
 			);
 	}
@@ -553,6 +553,7 @@ LRESULT CALLBACK SFApp::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM l
 					g_pEventManager->doSystemEvent(message, wParam, lParam);
 					break;
 				case WM_MOUSEMOVE:
+				case WM_MOUSEWHEEL:
 				case WM_KEYDOWN:
 				case WM_KEYUP:
 					g_pEventManager->doSystemEvent(message, wParam, lParam);

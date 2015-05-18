@@ -340,7 +340,8 @@ typedef struct SFSelectedPlayer
 	const MapEventGroup_T conf_mapCmEvent = {
 		MapEventGroup_T::value_type(WM_LBUTTONDOWN, {}),
 		MapEventGroup_T::value_type(WM_LBUTTONUP, {}),
-		MapEventGroup_T::value_type(WM_MOUSEMOVE, {})
+		MapEventGroup_T::value_type(WM_MOUSEMOVE, {}),
+		MapEventGroup_T::value_type(WM_MOUSEWHEEL, {})
 	};
 #pragma endregion
 

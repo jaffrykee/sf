@@ -19,6 +19,7 @@ public:
 	vector<vector<CMSMData_T>> m_arrArrMap;
 	FLOAT m_viewScaleX;
 	FLOAT m_viewScaleY;
+	FLOAT m_viewWheelScale;
 	FLOAT m_viewLen;
 	FLOAT m_viewMar;
 	FLOAT m_cX;
