@@ -238,6 +238,16 @@ HRESULT SFApp::CreateDeviceResources()
 			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x113377, 0.95f), &m_pBrushBlueHalf);
 			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xaa5533, 0.5f), &m_pBrushRed);
 			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xffffff, 1.f), &m_pBrushWhite);
+
+
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xcccccc, 0.95f), &g_pConf->m_mapStrpSCBrush["LightGray"]);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x777777, 0.95f), &g_pConf->m_mapStrpSCBrush["MidGray"]);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x333333, 0.95f), &g_pConf->m_mapStrpSCBrush["DarkGray"]);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xaaaaaa, 0.95f), &g_pConf->m_mapStrpSCBrush["NormalGray"]);
+
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x000000, 0.95f), &g_pConf->m_mapStrpSCBrush["Black"]);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xffffff, 0.95f), &g_pConf->m_mapStrpSCBrush["White"]);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x3366cc, 0.95f), &g_pConf->m_mapStrpSCBrush["Blue"]);
 		}
 
 		//通过文件创建位图

@@ -383,7 +383,11 @@ public:
 	SFEventManager* m_pEventManager;
 
 	SFApp* m_pWin;
+	//CPU核心数
 	DWORD m_numCore;
+	//单色画刷集合
+	map<string, ID2D1SolidColorBrush*> m_mapStrpSCBrush;
+
 
 private:
 	static SFConfig *m_pInstance;

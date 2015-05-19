@@ -278,8 +278,8 @@ Scene()
 	m_cX = 0;
 	m_cY = 0;
 
-	m_viewMouseScaleX = 2;
-	m_viewMouseScaleY = 2;
+	m_viewMouseScaleX = 1;
+	m_viewMouseScaleY = 1;
 	#pragma endregion
 
 	#pragma region 生成随机地图
@@ -683,15 +683,7 @@ void CMScene::onDrawByCell(UINT x, UINT y)
 void CMScene::drawSingleCell(UINT i, UINT j)
 {
 	HRESULT hr;
-	ID2D1SolidColorBrush* pBlueLight;
-	ID2D1SolidColorBrush* pBlueMid;
-	ID2D1SolidColorBrush* pBlueDark;
-	ID2D1SolidColorBrush* pBlueNormal;
 
-	hr = g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xcccccc, 0.95f), &pBlueLight);
-	hr = g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x777777, 0.95f), &pBlueMid);
-	hr = g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x333333, 0.95f), &pBlueDark);
-	hr = g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xaaaaaa, 0.95f), &pBlueNormal);
 	if (m_arrArrMap[i][j].m_enArrived)
 	{
 		if (m_arrArrMap[i][j].m_arrpCell[0] == NULL)
@@ -711,48 +703,35 @@ void CMScene::drawSingleCell(UINT i, UINT j)
 						if (k == 1)
 						{
 							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 0.1f);
-							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], pBlueLight);
+							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_mapStrpSCBrush["LightGray"]);
 						}
 						else if (k == 2)
 						{
 							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 0.1f);
-							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], pBlueMid);
+							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_mapStrpSCBrush["MidGray"]);
 						}
 						else
 						{
 							g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 0.1f);
-							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], pBlueDark);
+							g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_mapStrpSCBrush["DarkGray"]);
 						}
 					}
 				}
 				else
 				{
 					g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_pWin->m_pBrushWhite, 0.1f);
-					g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], pBlueNormal);
+					g_pConf->m_pWin->m_pRenderTarget->FillGeometry(m_arrArrMap[i][j].m_arrpCell[k], g_pConf->m_mapStrpSCBrush["NormalGray"]);
 				}
 			}
 		}
 	}
 }
 
-void CMScene::onDraw()
+//渲染世界
+void CMScene::drawWorld()
 {
-	double sW = g_pConf->m_pWin->m_pRenderTarget->GetSize().width;
-	double sH = g_pConf->m_pWin->m_pRenderTarget->GetSize().height;
-	if (m_isDown)
-	{
-		POINT pt;
-		RECT rect;
-
-		GetCursorPos(&pt);
-		m_cX -= m_viewMouseScaleX * (pt.x - m_mx0) / m_viewScaleX;
-		m_cY -= m_viewMouseScaleY * (pt.y - m_my0) / m_viewScaleY;
-		m_mx0 = pt.x;
-		m_my0 = pt.y;
-	}
-	g_pConf->m_pWin->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
-	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-
+	FLOAT sW = m_screenSize.width;
+	FLOAT sH = m_screenSize.height;
 	INT i0 = m_cX / (3 * m_viewLen) - m_prereadWidth;
 	INT j0 = m_cY / (2 * sqrt(3) * m_viewLen) - m_prereadHeight;
 	INT iMax = sW / (3 * m_viewLen * m_viewScaleX) + i0 + m_prereadWidth * 2;
@@ -780,38 +759,114 @@ void CMScene::onDraw()
 			drawSingleCell(i, j);
 		}
 	}
-	ID2D1SolidColorBrush* pBlack;
-	ID2D1SolidColorBrush* pWhite;
+}
+
+//渲染小地图
+void CMScene::drawMiniMap()
+{
+	FLOAT sW = m_screenSize.width;
+	FLOAT sH = m_screenSize.height;
+
+#pragma region 底子
 	FLOAT perRd = 0.7;
 	FLOAT rdw = sW - sH * (1 - perRd);
 	FLOAT rdh = sH * perRd;
-	wstringstream ss;
-	wstring wsX, wsY;
-	wstring wstrPoi;
-	FLOAT minTxtWid = 100;
 
 	FLOAT maxPoiX = m_maxX * m_viewScaleX * m_viewLen * 3;
 	FLOAT maxPoiY = m_maxY * m_viewScaleY * m_viewLen * 2 * sqrt(3);
 
+	m_miniMap = D2D1::RectF(rdw, rdh, sW, sH);
+	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+	g_pConf->m_pWin->m_pRenderTarget->DrawRectangle(m_miniMap, g_pConf->m_mapStrpSCBrush["White"], 5.0f);
+	g_pConf->m_pWin->m_pRenderTarget->FillRectangle(m_miniMap, g_pConf->m_mapStrpSCBrush["Black"]);
+#pragma endregion
+
+#pragma region 地图轮廓
+	FLOAT mapL, mapT, mapR, mapB;
+	if (m_maxX * 2 * sqrt(3) > m_maxY * 3)
+	{
+		FLOAT th = (sW - rdw) * (m_maxY * 3) / (m_maxX * 2 * sqrt(3));
+
+		mapL = rdw;
+		mapT = (sH - th + rdh) / 2;
+		mapR = sW;
+		mapB = (sH - th + rdh) / 2 + th;
+	}
+	else
+	{
+		FLOAT tw = (sH - rdh) * (m_maxX * 2 * sqrt(3)) / (m_maxY * 3);
+
+		mapL = (sW - tw + rdw) / 2;
+		mapT = rdh;
+		mapR = (sW - tw + rdw) / 2 + tw;
+		mapB = sH;
+	}
+	g_pConf->m_pWin->m_pRenderTarget->FillRectangle(D2D1::RectF(mapL, mapT, mapR, mapB), g_pConf->m_mapStrpSCBrush["Blue"]);
+#pragma endregion
+
+#pragma region 地图定位
+	FLOAT vMaxX = m_maxX * m_viewLen * 3;
+	FLOAT vMaxY = m_maxY * m_viewLen * 2 * sqrt(3);
+	FLOAT perVl = m_cX / vMaxX;
+	FLOAT perVt = m_cY / vMaxY;
+	FLOAT perVr = (m_cX + sW / m_viewScaleX) / vMaxX;
+	FLOAT perVb = (m_cY + sH / m_viewScaleY) / vMaxY;
+
+	g_pConf->m_pWin->m_pRenderTarget->DrawRectangle(D2D1::RectF(
+		mapL + (mapR - mapL) * perVl,
+		mapT + (mapB - mapT) * perVt,
+		mapL + (mapR - mapL) * perVr,
+		mapT + (mapB - mapT) * perVb
+		), g_pConf->m_mapStrpSCBrush["White"], 1.0f);
+#pragma endregion
+
+#pragma region 坐标文字
+	wstringstream ss;
+	wstring wsX, wsY;
+	wstring wstrPoi;
+	FLOAT minTxtWid = 100;
 	ss << (INT)(m_cX + sW / 2 / m_viewScaleX);
 	ss >> wsX;
 	ss.clear();
 	ss << (INT)(m_cY + sH / 2 / m_viewScaleY);
 	ss >> wsY;
 	wstrPoi = L"(" + wsX + L", " + wsY + L")";
-	g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x000000, 0.93f), &pBlack);
-	g_pConf->m_pWin->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xffffff, 1.0f), &pWhite);
-	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-	g_pConf->m_pWin->m_pRenderTarget->DrawRectangle(D2D1::RectF(rdw, rdh, sW, sH), pWhite, 5.0f);
-	g_pConf->m_pWin->m_pRenderTarget->FillRectangle(D2D1::RectF(rdw, rdh, sW, sH), pBlack);
+
+	//显示坐标
 	g_pConf->m_pWin->m_pRenderTarget->DrawText(
 		wstrPoi.c_str(),
 		wstrPoi.length(),
 		g_pConf->m_pWin->m_pTextFormat,
 		D2D1::RectF(sW - minTxtWid, rdh - 15, sW, rdh),
 		g_pConf->m_pWin->m_pBrushWhite
-		);	//显示文字
+		);
+#pragma endregion
+}
 
+//渲染
+void CMScene::onDraw()
+{
+	m_screenSize = g_pConf->m_pWin->m_pRenderTarget->GetSize();
+	FLOAT sW = m_screenSize.width;
+	FLOAT sH = m_screenSize.height;
+
+	g_pConf->m_pWin->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+
+	drawWorld();
+	drawMiniMap();
+
+	//鼠标响应
+	if (m_isDown)
+	{
+		POINT pt;
+
+		GetCursorPos(&pt);
+		m_cX -= m_viewMouseScaleX * (pt.x - m_mx0) / m_viewScaleX;
+		m_cY -= m_viewMouseScaleY * (pt.y - m_my0) / m_viewScaleY;
+		m_mx0 = pt.x;
+		m_my0 = pt.y;
+	}
 }
 #pragma endregion
 
@@ -827,16 +882,27 @@ bool CMScene::doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_LBUTTONDOWN:
 		{
-			POINT pt;
+			int xPos = GET_X_LPARAM(lParam);
+			int yPos = GET_Y_LPARAM(lParam);
 
-			m_isDown = true;
-			GetCursorPos(&pt);
-			m_mx0 = pt.x;
-			m_my0 = pt.y;
+			if (xPos > m_miniMap.left && xPos < m_miniMap.right && yPos < m_miniMap.top && yPos > m_miniMap.bottom)
+			{
+				m_isMiniDown = true;
+			}
+			else
+			{
+				POINT pt;
+
+				m_isDown = true;
+				GetCursorPos(&pt);
+				m_mx0 = pt.x;
+				m_my0 = pt.y;
+			}
 		}
 		break;
 	case WM_LBUTTONUP:
 		m_isDown = false;
+		m_isMiniDown = false;
 		break;
 	case WM_MOUSEMOVE:
 		break;

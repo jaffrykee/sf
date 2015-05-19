@@ -80,10 +80,10 @@ public:
 
 	ID2D1Factory *m_pD2DFactory;
 	ID2D1HwndRenderTarget *m_pRenderTarget;
-	ID2D1SolidColorBrush *m_pBrushBlue;
-	ID2D1SolidColorBrush *m_pBrushRed;
-	ID2D1SolidColorBrush *m_pBrushWhite;
-	ID2D1SolidColorBrush *m_pBrushBlueHalf;
+	ID2D1SolidColorBrush* m_pBrushBlue;
+	ID2D1SolidColorBrush* m_pBrushRed;
+	ID2D1SolidColorBrush* m_pBrushWhite;
+	ID2D1SolidColorBrush* m_pBrushBlueHalf;
 };
 
 class PActPlayer

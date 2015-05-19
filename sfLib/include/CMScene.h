@@ -25,7 +25,11 @@ public:
 	FLOAT m_cX;
 	FLOAT m_cY;
 
+	D2D1_SIZE_F m_screenSize;
+	D2D1_RECT_F m_miniMap;
+
 	bool m_isDown;
+	bool m_isMiniDown;
 	FLOAT m_mx0;
 	FLOAT m_my0;
 
@@ -54,6 +58,8 @@ public:
 	void onDrawByCell(UINT x = 0, UINT y = 0);
 	void drawSingleCell(UINT i, UINT j);
 	void onDraw();
+	void drawWorld();
+	void drawMiniMap();
 	void drawCenter();
 	bool doEvent(SF_TEV event);
 	bool doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam);
