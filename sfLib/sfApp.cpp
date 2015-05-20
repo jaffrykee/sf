@@ -240,10 +240,10 @@ HRESULT SFApp::CreateDeviceResources()
 			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xffffff, 1.f), &m_pBrushWhite);
 
 
-			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xcccccc, 0.95f), &g_pConf->m_mapStrpSCBrush["LightGray"]);
-			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x777777, 0.95f), &g_pConf->m_mapStrpSCBrush["MidGray"]);
-			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x333333, 0.95f), &g_pConf->m_mapStrpSCBrush["DarkGray"]);
-			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xaaaaaa, 0.95f), &g_pConf->m_mapStrpSCBrush["NormalGray"]);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xcccccc, 1.0f), &g_pConf->m_mapStrpSCBrush["LightGray"]);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x777777, 1.0f), &g_pConf->m_mapStrpSCBrush["MidGray"]);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x333333, 1.0f), &g_pConf->m_mapStrpSCBrush["DarkGray"]);
+			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xaaaaaa, 1.0f), &g_pConf->m_mapStrpSCBrush["NormalGray"]);
 
 			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0x000000, 0.95f), &g_pConf->m_mapStrpSCBrush["Black"]);
 			hr = m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0xffffff, 0.95f), &g_pConf->m_mapStrpSCBrush["White"]);

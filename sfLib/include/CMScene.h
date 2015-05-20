@@ -1,12 +1,18 @@
 ﻿#pragma once
 #pragma execution_character_set("utf-8")
 
-typedef struct CMSceneMapData_S
+typedef struct CMSceneDrawArea_S
 {
-	ID2D1TransformedGeometry* m_arrpCell[4];
+	ID2D1TransformedGeometry* m_geo;
+	ID2D1Brush* m_brush;
+}CMSDArea_T;
+
+typedef struct CMSceneCell_S
+{
+	list<CMSDArea_T> m_listArea;
 	FLOAT m_height;
 	bool m_enArrived;
-}CMSMData_T;
+}CMSCell_T;
 
 typedef struct CMDrawInit_S
 {
@@ -16,7 +22,7 @@ typedef struct CMDrawInit_S
 class __declspec(dllexport) CMScene : public Scene
 {
 public:
-	vector<vector<CMSMData_T>> m_arrArrMap;
+	vector<vector<CMSCell_T>> m_arrArrMap;
 	FLOAT m_viewScaleX;
 	FLOAT m_viewScaleY;
 	FLOAT m_viewWheelScale;
@@ -66,6 +72,15 @@ public:
 	bool doMouseEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	void moveToPosByMiniMap(INT xPos, INT yPos);
 	void moveToPosByMiniMap(POINT pos);
+
+	UINT initSingleArea(
+		D2D1_POINT_2F start,
+		D2D1_POINT_2F path[],
+		UINT pointsCount,
+		UINT i,
+		UINT j,
+		ID2D1Brush* pBrush
+		);
 
 public:
 	static CMDInit_T s_initData;
