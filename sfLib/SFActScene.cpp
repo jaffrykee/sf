@@ -228,7 +228,7 @@ bool SFActScene::doEvent(SF_TEV event)
 	return false;
 }
 
-bool SFActScene::doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam)
+bool SFActScene::doMouseEvent(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	return true;
 }

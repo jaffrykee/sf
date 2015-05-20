@@ -46,7 +46,7 @@ bool SFEventManager::doSystemEvent(UINT message, WPARAM wParam, LPARAM lParam)
 			MapEvent_T::iterator itEvent = (*m_pMapEvent)[message].find(wParam);
 			if (message >= WM_MOUSEFIRST && message <= WM_MOUSELAST)
 			{
-				return m_pActiveScene->doMonseEvent(message, wParam, lParam);
+				return m_pActiveScene->doMouseEvent(message, wParam, lParam);
 			}
 			else
 			{

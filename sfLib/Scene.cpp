@@ -17,7 +17,7 @@ bool Scene::doEvent(SF_TEV event)
 	return true;
 }
 
-bool Scene::doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam)
+bool Scene::doMouseEvent(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	return true;
 }

@@ -27,6 +27,7 @@ public:
 
 	D2D1_SIZE_F m_screenSize;
 	D2D1_RECT_F m_miniMap;
+	D2D1_RECT_F m_miniMapTexture;
 
 	bool m_isDown;
 	bool m_isMiniDown;
@@ -62,7 +63,9 @@ public:
 	void drawMiniMap();
 	void drawCenter();
 	bool doEvent(SF_TEV event);
-	bool doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam);
+	bool doMouseEvent(UINT message, WPARAM wParam, LPARAM lParam);
+	void moveToPosByMiniMap(INT xPos, INT yPos);
+	void moveToPosByMiniMap(POINT pos);
 
 public:
 	static CMDInit_T s_initData;

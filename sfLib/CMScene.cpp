@@ -7,7 +7,7 @@
 
 CMDInit_T CMScene::s_initData;
 
-#pragma region 初始化相关
+#pragma region 初始化相关与通用
 UINT CMScene::initSingleCell(LPVOID lpParam, UINT i, UINT j)
 {
 	CMDInit_T initData = *(CMDInit_T*)lpParam;
@@ -801,7 +801,8 @@ void CMScene::drawMiniMap()
 		mapR = (sW - tw + rdw) / 2 + tw;
 		mapB = sH;
 	}
-	g_pConf->m_pWin->m_pRenderTarget->FillRectangle(D2D1::RectF(mapL, mapT, mapR, mapB), g_pConf->m_mapStrpSCBrush["Blue"]);
+	m_miniMapTexture = D2D1::RectF(mapL, mapT, mapR, mapB);
+	g_pConf->m_pWin->m_pRenderTarget->FillRectangle(m_miniMapTexture, g_pConf->m_mapStrpSCBrush["Blue"]);
 #pragma endregion
 
 #pragma region 地图定位
@@ -867,6 +868,14 @@ void CMScene::onDraw()
 		m_mx0 = pt.x;
 		m_my0 = pt.y;
 	}
+	else if (m_isMiniDown)
+	{
+		POINT pt;
+
+		GetCursorPos(&pt);
+		ScreenToClient(g_pConf->m_pWin->m_hwnd, &pt);
+		moveToPosByMiniMap(pt);
+	}
 }
 #pragma endregion
 
@@ -876,18 +885,56 @@ bool CMScene::doEvent(SF_TEV event)
 	return true;
 }
 
-bool CMScene::doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam)
+void CMScene::moveToPosByMiniMap(INT xPos, INT yPos)
+{
+	FLOAT perCx, perCy;
+	FLOAT vMaxX = m_maxX * m_viewLen * 3;
+	FLOAT vMaxY = m_maxY * m_viewLen * 2 * sqrt(3);
+	FLOAT sW = m_screenSize.width;
+	FLOAT sH = m_screenSize.height;
+
+	m_isMiniDown = true;
+
+	if (xPos > m_miniMapTexture.right)
+	{
+		xPos = m_miniMapTexture.right;
+	}
+	else if (xPos < m_miniMapTexture.left)
+	{
+		xPos = m_miniMapTexture.left;
+	}
+	if (yPos < m_miniMapTexture.top)
+	{
+		yPos = m_miniMapTexture.top;
+	}
+	else if (yPos > m_miniMapTexture.bottom)
+	{
+		yPos = m_miniMapTexture.bottom;
+	}
+	perCx = (xPos - m_miniMapTexture.left) / (m_miniMapTexture.right - m_miniMapTexture.left);
+	perCy = (yPos - m_miniMapTexture.top) / (m_miniMapTexture.bottom - m_miniMapTexture.top);
+	m_cX = vMaxX * perCx - sW / m_viewScaleX / 2;
+	m_cY = vMaxY * perCy - sH / m_viewScaleY / 2;
+}
+
+void CMScene::moveToPosByMiniMap(POINT pos)
+{
+	moveToPosByMiniMap(pos.x, pos.y);
+}
+
+bool CMScene::doMouseEvent(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
 	case WM_LBUTTONDOWN:
 		{
-			int xPos = GET_X_LPARAM(lParam);
-			int yPos = GET_Y_LPARAM(lParam);
+			POINT pos;
+			pos.x = GET_X_LPARAM(lParam);
+			pos.y = GET_Y_LPARAM(lParam);
 
-			if (xPos > m_miniMap.left && xPos < m_miniMap.right && yPos < m_miniMap.top && yPos > m_miniMap.bottom)
+			if (pos.x > m_miniMap.left && pos.x < m_miniMap.right && pos.y > m_miniMap.top && pos.y < m_miniMap.bottom)
 			{
-				m_isMiniDown = true;
+				moveToPosByMiniMap(pos);
 			}
 			else
 			{

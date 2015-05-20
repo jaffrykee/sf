@@ -9,6 +9,6 @@ public:
 	Scene();
 	~Scene();
 	bool doEvent(SF_TEV event);
-	virtual bool doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual bool doMouseEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	virtual void onDraw();
 };

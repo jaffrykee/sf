@@ -84,7 +84,7 @@ public:
 	bool addSprite(string groupName, SFSprite* pSprite);
 	SFPlayer* getPlayerInSceneByPGN(string groupName);
 	bool doEvent(SF_TEV event);
-	bool doMonseEvent(UINT message, WPARAM wParam, LPARAM lParam);
+	bool doMouseEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	bool addFrameToCollosion(SFPlayer* pPlayer, __out vector<SFCFI_T>* pArrpFrame);
 	bool doCollision();
 
