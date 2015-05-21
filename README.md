@@ -1,2 +1,2 @@
-﻿sf
-==说明详见wiki
+﻿sf&cm
+﻿	ACT和SLG类型的东西？
