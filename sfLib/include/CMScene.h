@@ -5,11 +5,12 @@ typedef struct CMSceneDrawArea_S
 {
 	ID2D1TransformedGeometry* m_geo;
 	ID2D1Brush* m_brush;
+	bool m_enBorder;
 }CMSDArea_T;
 
 typedef struct CMSceneCell_S
 {
-	list<CMSDArea_T> m_listArea;
+	list<CMSDArea_T>* m_pListArea;
 	FLOAT m_height;
 	bool m_enArrived;
 }CMSCell_T;
@@ -30,6 +31,7 @@ public:
 	FLOAT m_viewMar;
 	FLOAT m_cX;
 	FLOAT m_cY;
+	FLOAT m_border;
 
 	D2D1_SIZE_F m_screenSize;
 	D2D1_RECT_F m_miniMap;
@@ -79,7 +81,9 @@ public:
 		UINT pointsCount,
 		UINT i,
 		UINT j,
-		ID2D1Brush* pBrush
+		__inout ID2D1PathGeometry** ppPathD,
+		ID2D1Brush* pBrush,
+		bool enBorder = false
 		);
 
 public:

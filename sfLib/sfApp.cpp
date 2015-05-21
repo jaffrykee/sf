@@ -70,6 +70,24 @@ m_pBrushBlue(NULL),
 m_pBrushRed(NULL)
 {
 }
+
+SFApp::SFApp(HWND hwnd) :
+m_hwnd(hwnd),
+m_pWICFactory(NULL),
+m_pDWriteFactory(NULL),
+m_pTextFormat(NULL),
+m_pPathGeometry(NULL),
+m_pLinearGradientBrush(NULL),
+m_pBlackBrush(NULL),
+m_pGridPatternBitmapBrush(NULL),
+m_pBitmap(NULL),
+m_pAnotherBitmap(NULL),
+m_pD2DFactory(NULL),
+m_pRenderTarget(NULL),
+m_pBrushBlue(NULL),
+m_pBrushRed(NULL)
+{
+}
 #pragma endregion
 
 #pragma region Release resources
@@ -108,11 +126,14 @@ HRESULT SFApp::Initialize()
 		RegisterClassEx(&wcex);
 		FLOAT dpiX, dpiY;
 		m_pD2DFactory->GetDesktopDpi(&dpiX, &dpiY);
-		m_hwnd = CreateWindow(
-			"D2DSFApp", "SF", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-			static_cast<UINT>(ceil(g_pConf->m_defaultResolution.width*dpiX / 96.f)), static_cast<UINT>(ceil(g_pConf->m_defaultResolution.height*dpiY / 96.f)),
-			NULL, NULL, HINST_THISCOMPONENT, this
-			);
+		if (m_hwnd == NULL)
+		{
+			m_hwnd = CreateWindow(
+				"D2DSFApp", "SF", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+				static_cast<UINT>(ceil(g_pConf->m_defaultResolution.width*dpiX / 96.f)), static_cast<UINT>(ceil(g_pConf->m_defaultResolution.height*dpiY / 96.f)),
+				NULL, NULL, HINST_THISCOMPONENT, this
+				);
+		}
 		hr = m_hwnd ? S_OK : E_FAIL;
 		if (SUCCEEDED(hr))
 		{

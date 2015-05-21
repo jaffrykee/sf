@@ -13,6 +13,7 @@ class __declspec(dllexport) SFApp
 {
 public:
 	SFApp();
+	SFApp(HWND hwnd);
 	~SFApp();
 
 	HRESULT Initialize();

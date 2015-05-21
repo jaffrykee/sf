@@ -37,6 +37,20 @@ Interface **ppInterfaceToRelease
 	}
 }
 
+template<class Interface>
+inline void
+SafeDelete(
+Interface **ppInterfaceToRelease
+)
+{
+	if (*ppInterfaceToRelease != NULL)
+	{
+		delete(*ppInterfaceToRelease);
+
+		(*ppInterfaceToRelease) = NULL;
+	}
+}
+
 //用于规避主线程提前关闭窗口的问题。
 #define CHECK_WIN_KILLED				 \
 do 										 \
