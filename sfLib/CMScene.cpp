@@ -2,10 +2,10 @@
 #include <sfLibInit.h>
 #include <sfLib.h>
 
-#define CM_THREADINIT
-#define CM_AUTOINIT
-
 CMDInit_T CMScene::s_initData;
+
+
+#pragma region 初始化相关与通用
 
 UINT CMScene::initSingleArea(
 	D2D1_POINT_2F start,
@@ -14,7 +14,7 @@ UINT CMScene::initSingleArea(
 	UINT i,
 	UINT j,
 	ID2D1Brush* pBrush
-)
+	)
 {
 	ID2D1PathGeometry* pPathD = NULL;
 	ID2D1GeometrySink *pSink = NULL;
@@ -45,19 +45,22 @@ UINT CMScene::initSingleArea(
 			hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 				pPathD,
 				D2D1::Matrix3x2F::Translation(
-				(3 * m_viewLen + sqrt(3) / 2 * m_viewLen) * i,
-				(2 * sqrt(3) * m_viewLen + m_viewLen) * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
+					(3 * m_viewLen + sqrt(3) / 2 * m_viewMar) * i,
+					(2 * sqrt(3) * m_viewLen + m_viewMar) * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
 				),
 				&m_arrArrMap[i][j].m_listArea.rbegin()->m_geo
 				);
-			m_arrArrMap[i][j].m_listArea.end()->m_brush = pBrush;
+			m_arrArrMap[i][j].m_listArea.rbegin()->m_brush = pBrush;
 			SafeRelease(&pPathD);
 		}
 	}
 }
 
-#pragma region 初始化相关与通用
-UINT CMScene::initSingleCell(LPVOID lpParam, UINT i, UINT j)
+UINT CMScene::initSingleCell(
+	LPVOID lpParam,
+	UINT i,
+	UINT j
+	)
 {
 	CMDInit_T initData = *(CMDInit_T*)lpParam;
 	ID2D1Brush* pBrush;
@@ -69,55 +72,58 @@ UINT CMScene::initSingleCell(LPVOID lpParam, UINT i, UINT j)
 	FLOAT dH = initData.m_pScene->m_arrArrMap[i][j].m_height - initData.m_pScene->m_minH;
 
 #pragma region 菱形
-	D2D1_POINT_2F dPath[4] = {};
+	if (initData.m_pScene->m_arrArrMap[i][j].m_height != 0)
+	{
+		D2D1_POINT_2F dPath[4] = {};
 
-	//1
-	pBrush = g_pConf->m_mapStrpSCBrush["LightGray"];
-	dPath[0] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
-	dPath[1] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY + dH);
-	dPath[2] = D2D1::Point2F(4 * lenX, sqrt(3) * lenY + dH);
-	dPath[3] = D2D1::Point2F(4 * lenX, sqrt(3) * lenY);
-	initData.m_pScene->initSingleArea(dPath[3], dPath, ARRAYSIZE(dPath), i, j, pBrush);
+		//1
+		pBrush = g_pConf->m_mapStrpSCBrush["LightGray"];
+		dPath[0] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
+		dPath[1] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY + dH);
+		dPath[2] = D2D1::Point2F(4 * lenX, sqrt(3) * lenY + dH);
+		dPath[3] = D2D1::Point2F(4 * lenX, sqrt(3) * lenY);
+		initData.m_pScene->initSingleArea(dPath[ARRAYSIZE(dPath) - 1], dPath, ARRAYSIZE(dPath), i, j, pBrush);
 
-	//2
-	pBrush = g_pConf->m_mapStrpSCBrush["MidGray"];
-	dPath[0] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
-	dPath[1] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY + dH);
-	dPath[2] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY + dH);
-	dPath[3] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
-	initData.m_pScene->initSingleArea(dPath[3], dPath, ARRAYSIZE(dPath), i, j, pBrush);
+		//2
+		pBrush = g_pConf->m_mapStrpSCBrush["MidGray"];
+		dPath[0] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
+		dPath[1] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY + dH);
+		dPath[2] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY + dH);
+		dPath[3] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
+		initData.m_pScene->initSingleArea(dPath[ARRAYSIZE(dPath) - 1], dPath, ARRAYSIZE(dPath), i, j, pBrush);
 
-	//3
-	pBrush = g_pConf->m_mapStrpSCBrush["DarkGray"];
-	dPath[0] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
-	dPath[1] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY + dH);
-	dPath[2] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY + dH);
-	dPath[3] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
-	initData.m_pScene->initSingleArea(dPath[3], dPath, ARRAYSIZE(dPath), i, j, pBrush);
+		//3
+		pBrush = g_pConf->m_mapStrpSCBrush["DarkGray"];
+		dPath[0] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
+		dPath[1] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY + dH);
+		dPath[2] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY + dH);
+		dPath[3] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
+		initData.m_pScene->initSingleArea(dPath[ARRAYSIZE(dPath) - 1], dPath, ARRAYSIZE(dPath), i, j, pBrush);
 
-	//4
-	pBrush = g_pConf->m_mapStrpSCBrush["DarkGray"];
-	dPath[0] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
-	dPath[1] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY + dH);
-	dPath[2] = D2D1::Point2F(1 * lenX, 0 * lenY + dH);
-	dPath[3] = D2D1::Point2F(1 * lenX, 0 * lenY);
-	initData.m_pScene->initSingleArea(dPath[3], dPath, ARRAYSIZE(dPath), i, j, pBrush);
+		//4
+		pBrush = g_pConf->m_mapStrpSCBrush["DarkGray"];
+		dPath[0] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
+		dPath[1] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY + dH);
+		dPath[2] = D2D1::Point2F(1 * lenX, 0 * lenY + dH);
+		dPath[3] = D2D1::Point2F(1 * lenX, 0 * lenY);
+		initData.m_pScene->initSingleArea(dPath[ARRAYSIZE(dPath) - 1], dPath, ARRAYSIZE(dPath), i, j, pBrush);
 
-	//5
-	pBrush = g_pConf->m_mapStrpSCBrush["MidGray"];
-	dPath[0] = D2D1::Point2F(1 * lenX, 0 * lenY);
-	dPath[1] = D2D1::Point2F(1 * lenX, 0 * lenY + dH);
-	dPath[2] = D2D1::Point2F(3 * lenX, 0 * lenY + dH);
-	dPath[3] = D2D1::Point2F(3 * lenX, 0 * lenY);
-	initData.m_pScene->initSingleArea(dPath[3], dPath, ARRAYSIZE(dPath), i, j, pBrush);
+		//5
+		pBrush = g_pConf->m_mapStrpSCBrush["MidGray"];
+		dPath[0] = D2D1::Point2F(1 * lenX, 0 * lenY);
+		dPath[1] = D2D1::Point2F(1 * lenX, 0 * lenY + dH);
+		dPath[2] = D2D1::Point2F(3 * lenX, 0 * lenY + dH);
+		dPath[3] = D2D1::Point2F(3 * lenX, 0 * lenY);
+		initData.m_pScene->initSingleArea(dPath[ARRAYSIZE(dPath) - 1], dPath, ARRAYSIZE(dPath), i, j, pBrush);
 
-	//6
-	pBrush = g_pConf->m_mapStrpSCBrush["LightGray"];
-	dPath[0] = D2D1::Point2F(3 * lenX, 0 * lenY);
-	dPath[1] = D2D1::Point2F(3 * lenX, 0 * lenY + dH);
-	dPath[2] = D2D1::Point2F(4 * lenX, sqrt(3) * lenY + dH);
-	dPath[3] = D2D1::Point2F(4 * lenX, sqrt(3) * lenY);
-	initData.m_pScene->initSingleArea(dPath[3], dPath, ARRAYSIZE(dPath), i, j, pBrush);
+		//6
+		pBrush = g_pConf->m_mapStrpSCBrush["LightGray"];
+		dPath[0] = D2D1::Point2F(3 * lenX, 0 * lenY);
+		dPath[1] = D2D1::Point2F(3 * lenX, 0 * lenY + dH);
+		dPath[2] = D2D1::Point2F(4 * lenX, sqrt(3) * lenY + dH);
+		dPath[3] = D2D1::Point2F(4 * lenX, sqrt(3) * lenY);
+		initData.m_pScene->initSingleArea(dPath[ARRAYSIZE(dPath) - 1], dPath, ARRAYSIZE(dPath), i, j, pBrush);
+	}
 #pragma endregion
 
 #pragma region 六边形
@@ -130,7 +136,7 @@ UINT CMScene::initSingleCell(LPVOID lpParam, UINT i, UINT j)
 	gPath[3] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
 	gPath[4] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
 	gPath[5] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
-	initData.m_pScene->initSingleArea(gPath[5], gPath, ARRAYSIZE(gPath), i, j, pBrush);
+	initData.m_pScene->initSingleArea(gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath), i, j, pBrush);
 #pragma endregion
 
 	return 0;
@@ -171,7 +177,7 @@ Scene()
 	m_viewScaleY = 1;
 	m_viewWheelScale = 1.1;
 	m_viewLen = 5;
-	m_viewMar = 1;
+	m_viewMar = 0;
 	m_mx0 = -1;
 	m_my0 = -1;
 
@@ -267,231 +273,6 @@ Scene()
 
 	m_prereadWidth = 5;
 	m_prereadHeight = (m_maxH - m_minH) * 0.1 + 5;
-
-#ifndef CM_AUTOINIT
-	#pragma region 图形相关
-#ifdef CM_THREADINIT
-	DWORD threadID;
-	HANDLE hThread;
-
-	s_initData = { this };
-	hThread = CreateThread(NULL, 0, threadInitDraw, &s_initData, 0, &threadID);
-	//WaitForSingleObject(hThread, INFINITE);
-	CloseHandle(hThread);
-#else
-	FLOAT lenX = m_viewLen;
-	FLOAT lenY = m_viewLen;
-	FLOAT marX = m_viewMar;
-	FLOAT marY = m_viewMar;
-
-	ID2D1PathGeometry* pPathG = NULL;
-
-	#pragma region 六边形
-	HRESULT hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathG);
-	if (SUCCEEDED(hr))
-	{
-		ID2D1GeometrySink *pSink = NULL;
-		hr = pPathG->Open(&pSink);
-
-		if (SUCCEEDED(hr))
-		{
-			pSink->SetFillMode(D2D1_FILL_MODE_WINDING);
-
-			pSink->BeginFigure(
-				D2D1::Point2F(0 * lenX, sqrt(3) * lenY),
-				D2D1_FIGURE_BEGIN_FILLED
-				);
-
-			D2D1_POINT_2F points[6] = {
-				D2D1::Point2F(1 * lenX, 0 * lenY),
-				D2D1::Point2F(3 * lenX, 0 * lenY),
-				D2D1::Point2F(4 * lenX, sqrt(3) * lenY),
-				D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY),
-				D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY),
-				D2D1::Point2F(0 * lenX, sqrt(3) * lenY)
-			};
-
-			pSink->AddLines(points, ARRAYSIZE(points));
-			pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-		}
-
-		pSink->Close();
-	}
-	#pragma endregion
-
-	for (UINT i = 0; i < m_arrArrMap.size(); i++)
-	{
-		for (UINT j = 0; j < m_arrArrMap[i].size(); j++)
-		{
-			FLOAT dH = m_arrArrMap[i][j].m_height - m_minH;
-
-			for (UINT k = 0; k < 4; k++)
-			{
-				//如果为NULL说明还没有被初始化
-				if (m_arrArrMap[i][j].m_arrpCell[k] == NULL)
-				{
-					if (k >= 1)
-					{
-						if (m_arrArrMap[i][j].m_height != 0)
-						{
-							#pragma region 菱形
-							switch (k)
-							{
-							case 1:
-							{
-								#pragma region 菱形1
-								ID2D1PathGeometry* pPathD1 = NULL;
-
-								hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathD1);
-								if (SUCCEEDED(hr))
-								{
-									ID2D1GeometrySink *pSink = NULL;
-									hr = pPathD1->Open(&pSink);
-
-									if (SUCCEEDED(hr))
-									{
-										pSink->SetFillMode(D2D1_FILL_MODE_WINDING);
-
-										pSink->BeginFigure(
-											D2D1::Point2F(4 * lenX, sqrt(3) * lenY),
-											D2D1_FIGURE_BEGIN_FILLED
-											);
-
-										D2D1_POINT_2F points[4] = {
-											D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY),
-											D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY + dH),
-											D2D1::Point2F(4 * lenX, sqrt(3) * lenY + dH),
-											D2D1::Point2F(4 * lenX, sqrt(3) * lenY)
-										};
-
-										pSink->AddLines(points, ARRAYSIZE(points));
-										pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-									}
-
-									pSink->Close();
-								}
-								hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
-									pPathD1,
-									D2D1::Matrix3x2F::Translation(
-									(3 * lenX + sqrt(3) / 2 * marX) * i,
-									(2 * sqrt(3) * lenY + marY) * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
-									),
-									&m_arrArrMap[i][j].m_arrpCell[k]
-									);
-								#pragma endregion
-							}
-								break;
-							case 2:
-							{
-								#pragma region 菱形2
-								ID2D1PathGeometry* pPathD2 = NULL;
-								hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathD2);
-								if (SUCCEEDED(hr))
-								{
-									ID2D1GeometrySink *pSink = NULL;
-									hr = pPathD2->Open(&pSink);
-
-									if (SUCCEEDED(hr))
-									{
-										pSink->SetFillMode(D2D1_FILL_MODE_WINDING);
-
-										pSink->BeginFigure(
-											D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY),
-											D2D1_FIGURE_BEGIN_FILLED
-											);
-
-										D2D1_POINT_2F points[4] = {
-											D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY),
-											D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY + dH),
-											D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY + dH),
-											D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY)
-										};
-
-										pSink->AddLines(points, ARRAYSIZE(points));
-										pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-									}
-
-									pSink->Close();
-								}
-								hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
-									pPathD2,
-									D2D1::Matrix3x2F::Translation(
-									(3 * lenX + sqrt(3) / 2 * marX) * i,
-									(2 * sqrt(3) * lenY + marY) * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
-									),
-									&m_arrArrMap[i][j].m_arrpCell[k]
-									);
-								#pragma endregion
-							}
-								break;
-							case 3:
-							{
-								#pragma region 菱形3
-								ID2D1PathGeometry* pPathD3 = NULL;
-								hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(&pPathD3);
-								if (SUCCEEDED(hr))
-								{
-									ID2D1GeometrySink *pSink = NULL;
-									hr = pPathD3->Open(&pSink);
-
-									if (SUCCEEDED(hr))
-									{
-										pSink->SetFillMode(D2D1_FILL_MODE_WINDING);
-
-										pSink->BeginFigure(
-											D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY),
-											D2D1_FIGURE_BEGIN_FILLED
-											);
-
-										D2D1_POINT_2F points[4] = {
-											D2D1::Point2F(0 * lenX, sqrt(3) * lenY),
-											D2D1::Point2F(0 * lenX, sqrt(3) * lenY + dH),
-											D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY + dH),
-											D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY)
-										};
-
-										pSink->AddLines(points, ARRAYSIZE(points));
-										pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-									}
-
-									pSink->Close();
-								}
-								hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
-									pPathD3,
-									D2D1::Matrix3x2F::Translation(
-									(3 * lenX + sqrt(3) / 2 * marX) * i,
-									(2 * sqrt(3) * lenY + marY) * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
-									),
-									&m_arrArrMap[i][j].m_arrpCell[k]
-									);
-								#pragma endregion
-							}
-								break;
-							default:
-								break;
-							}
-							#pragma endregion
-						}
-					}
-					else
-					{
-						hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
-							pPathG,
-							D2D1::Matrix3x2F::Translation(
-							(3 * lenX + sqrt(3) / 2 * marX) * i,
-							(2 * sqrt(3) * lenY + marY) * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
-							),
-							&m_arrArrMap[i][j].m_arrpCell[k]
-							);
-					}
-				}
-			}
-		}
-	}
-#endif
-
-	#pragma endregion
-#endif
 }
 
 CMScene::~CMScene()
