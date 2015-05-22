@@ -2,9 +2,9 @@
 #include <siLibInit.h>
 #include <siLib.h>
 
-extern "C" __declspec(dllexport) int createWin(HWND hwnd)
+__declspec(dllexport) int createWin(HWND hwnd)
 {
-	SFApp* pSf = new SFApp(hwnd);
 
-	return 0;
+
+	return 1;
 }

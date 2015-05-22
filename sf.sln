@@ -16,10 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{A2E66376-5943-482C-BC8E-08D105FB277E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharpInterface", "SharpInterface\SharpInterface.vcxproj", "{54E95B2D-A6E1-486E-8CCF-B8887BA2231D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{480C5F71-0AA0-4AC9-A693-945A4B266625} = {480C5F71-0AA0-4AC9-A693-945A4B266625}
-		{634161C5-46E1-4AD1-9518-C9ACA3223ED1} = {634161C5-46E1-4AD1-9518-C9ACA3223ED1}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
