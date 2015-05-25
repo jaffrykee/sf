@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+			 Loaded="tabFrameLoaded"
              >
-	<Label Loaded="tabFrameLoaded">未知的文件类型。</Label>
+	<Grid Name="mx_workspace"></Grid>
 </UserControl>

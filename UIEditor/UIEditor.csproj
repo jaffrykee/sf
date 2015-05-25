@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>E:\mmo2013001\artist\3d地图编辑器\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>E:\mmo2013001\artist\3d地图编辑器\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -113,6 +113,7 @@
     <Compile Include="BoloUI\Event.xaml.cs">
       <DependentUpon>Event.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ControlHost.cs" />
     <Compile Include="FileTabItem.xaml.cs">
       <DependentUpon>FileTabItem.xaml</DependentUpon>
     </Compile>
@@ -243,6 +244,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\test\DsFrame.csproj">
+      <Project>{a2e66376-5943-482c-bc8e-08d105fb277e}</Project>
+      <Name>DsFrame</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

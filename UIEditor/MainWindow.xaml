@@ -6,8 +6,9 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
 	xmlns:userView="clr-namespace:UIEditor"
-	Title="MainWindow" Width="Auto" Height="Auto"
+	Title="MainWindow" Width="1280" Height="800"
 	WindowState="Maximized"
+	Loaded="On_UIReady"
 	>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -64,6 +65,8 @@
 		<GridSplitter Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Width="5" HorizontalAlignment="Left"></GridSplitter>
 		<DockPanel Grid.Row="2" Grid.Column="1" Background="#ffeeeeee" Margin="0,0,0,5">
 			<TabControl Name="workTabs">
+				<Grid  Name="ControlHostElement">
+				</Grid>
 			</TabControl>
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"></GridSplitter>
