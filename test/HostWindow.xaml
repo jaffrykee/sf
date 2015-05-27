@@ -1,0 +1,19 @@
+﻿<Window
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  x:Class="DsFrame.HostWindow"
+  Name="mainWindow"
+	Width="auto"
+	Height="auto"
+  Loaded="On_UIReady">
+	<DockPanel Background="LightGreen">
+		<Border Name="ControlHostElement"
+			Width="800"
+			Height="600"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Top"
+			BorderBrush="LightGray"
+			BorderThickness="3"
+			DockPanel.Dock="Right"/>
+	</DockPanel>
+</Window>
