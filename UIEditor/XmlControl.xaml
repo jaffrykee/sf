@@ -4,7 +4,8 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             mc:Ignorable="d"
-			Loaded="tabFrameLoaded">
+			Loaded="tabFrameLoaded"
+			 Width="0" Height="0">
 	<Grid Background="#ffcccccc">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" MinHeight="50"/>
@@ -15,7 +16,7 @@
 		</Grid.ColumnDefinitions>
 		<ScrollViewer HorizontalScrollBarVisibility="Visible" Margin="0,0,0,5">
 			<Canvas Name="mx_workSpace" Width="960" Height="640">
-				<Canvas.Background>
+				<!--<Canvas.Background>
 					<ImageBrush
 						x:Name="mx_wsBckBrush"
 						ImageSource=".\Image\hyaline.png"
@@ -25,7 +26,7 @@
 						TileMode="Tile"
 						>
 					</ImageBrush>
-				</Canvas.Background>
+				</Canvas.Background>-->
 			</Canvas>
 		</ScrollViewer>
 		<GridSplitter VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="5"></GridSplitter>

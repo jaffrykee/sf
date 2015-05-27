@@ -208,40 +208,33 @@ namespace UIEditor
 		private void openFileTab(object sender, MouseEventArgs e)
 		{
 			TreeViewItem treeUI = (TreeViewItem)sender;
-			//OpenedFile openedFile;
+			OpenedFile openedFile;
 			string tabPath = ((ToolTip)treeUI.ToolTip).Content.ToString();
 			string fileType = tabPath.Substring(tabPath.LastIndexOf(".") + 1, (tabPath.Length - tabPath.LastIndexOf(".") - 1));   //扩展名
 
-			if(fileType == "xml")
+			if (m_mapOpenedFiles.TryGetValue(tabPath, out openedFile))
 			{
-				XmlDocument xmlDoc = new XmlDocument();
-				xmlDoc.Load(tabPath);
-				updateGL(xmlDoc.InnerXml);
+				this.mx_workTabs.SelectedItem = openedFile.m_tab;
 			}
-// 
-// 			if (m_mapOpenedFiles.TryGetValue(tabPath, out openedFile))
-// 			{
-// 				this.workTabs.SelectedItem = openedFile.m_tab;
-// 			}
-// 			else
-// 			{
-// 				ToolTip tabTip = new ToolTip();
-// 				Button close = new Button();
-// 
-// 				openedFile.m_tab = new TabItem();
-// 				tabTip.Content = tabPath;
-// 				openedFile.m_tab.Header = treeUI.Header.ToString();
-// 				openedFile.m_tab.ToolTip = tabTip;
-// 
-// 				var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
-// 				openedFile.m_tab.Content = tabContent;
-// 				openedFile.m_path = tabPath;
-// 				openedFile.m_treeUI = treeUI;
-// 
-// 				this.workTabs.Items.Add(openedFile.m_tab);
-// 				m_mapOpenedFiles[tabPath] = openedFile;
-// 				this.workTabs.SelectedItem = openedFile.m_tab;
-// 			}
+			else
+			{
+				ToolTip tabTip = new ToolTip();
+				Button close = new Button();
+
+				openedFile.m_tab = new TabItem();
+				tabTip.Content = tabPath;
+				openedFile.m_tab.Header = treeUI.Header.ToString();
+				openedFile.m_tab.ToolTip = tabTip;
+
+				var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
+				openedFile.m_tab.Content = tabContent;
+				openedFile.m_path = tabPath;
+				openedFile.m_treeUI = treeUI;
+
+				this.mx_workTabs.Items.Add(openedFile.m_tab);
+				m_mapOpenedFiles[tabPath] = openedFile;
+				this.mx_workTabs.SelectedItem = openedFile.m_tab;
+			}
 		}
 
 
@@ -433,5 +426,25 @@ namespace UIEditor
 			int msg,
 			int wParam,
 			ref COPYDATASTRUCT_SENDEX IParam);
+
+		private void mx_workTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if(((TabItem)mx_workTabs.SelectedItem) != null)
+			{
+				if(((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip) != null)
+				{
+					string tabPath = ((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip).Content.ToString();
+					string fileType = tabPath.Substring(tabPath.LastIndexOf(".") + 1, (tabPath.Length - tabPath.LastIndexOf(".") - 1));
+
+					if(fileType == "xml")
+					{
+						XmlDocument xmlDoc = new XmlDocument();
+						xmlDoc.Load(tabPath);
+						string buffer = xmlDoc.InnerXml;
+						this.updateGL(buffer);
+					}
+				}
+			}
+		}
 	}
 }

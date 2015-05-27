@@ -64,7 +64,7 @@ namespace UIEditor
 			MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
 
 			parentWindow.m_mapOpenedFiles.Remove(tabPath);
-			parentWindow.workTabs.Items.Remove(tabItem);
+			parentWindow.mx_workTabs.Items.Remove(tabItem);
 		}
 	}
 }
