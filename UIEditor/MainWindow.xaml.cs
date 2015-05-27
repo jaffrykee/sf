@@ -14,8 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Xml;
+using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using System.Runtime.InteropServices; 
 
 namespace UIEditor
 {
@@ -40,6 +40,7 @@ namespace UIEditor
 		public Dictionary<string, AttrList> m_mapStrAttrList;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
+		public IntPtr m_hwndGLParent;
 		public IntPtr m_hwndGL;
 
 		private int m_dep;
@@ -48,6 +49,7 @@ namespace UIEditor
 		{
 			m_rootPath = "";
 			m_hwndGL = IntPtr.Zero;
+			m_hwndGLParent = IntPtr.Zero;
 			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
 			InitializeComponent();
 			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
@@ -206,33 +208,40 @@ namespace UIEditor
 		private void openFileTab(object sender, MouseEventArgs e)
 		{
 			TreeViewItem treeUI = (TreeViewItem)sender;
-			OpenedFile openedFile;
+			//OpenedFile openedFile;
 			string tabPath = ((ToolTip)treeUI.ToolTip).Content.ToString();
 			string fileType = tabPath.Substring(tabPath.LastIndexOf(".") + 1, (tabPath.Length - tabPath.LastIndexOf(".") - 1));   //扩展名
 
-			if (m_mapOpenedFiles.TryGetValue(tabPath, out openedFile))
+			if(fileType == "xml")
 			{
-				this.workTabs.SelectedItem = openedFile.m_tab;
+				XmlDocument xmlDoc = new XmlDocument();
+				xmlDoc.Load(tabPath);
+				updateGL(xmlDoc.InnerXml);
 			}
-			else
-			{
-				ToolTip tabTip = new ToolTip();
-				Button close = new Button();
-
-				openedFile.m_tab = new TabItem();
-				tabTip.Content = tabPath;
-				openedFile.m_tab.Header = treeUI.Header.ToString();
-				openedFile.m_tab.ToolTip = tabTip;
-
-				var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
-				openedFile.m_tab.Content = tabContent;
-				openedFile.m_path = tabPath;
-				openedFile.m_treeUI = treeUI;
-
-				this.workTabs.Items.Add(openedFile.m_tab);
-				m_mapOpenedFiles[tabPath] = openedFile;
-				this.workTabs.SelectedItem = openedFile.m_tab;
-			}
+// 
+// 			if (m_mapOpenedFiles.TryGetValue(tabPath, out openedFile))
+// 			{
+// 				this.workTabs.SelectedItem = openedFile.m_tab;
+// 			}
+// 			else
+// 			{
+// 				ToolTip tabTip = new ToolTip();
+// 				Button close = new Button();
+// 
+// 				openedFile.m_tab = new TabItem();
+// 				tabTip.Content = tabPath;
+// 				openedFile.m_tab.Header = treeUI.Header.ToString();
+// 				openedFile.m_tab.ToolTip = tabTip;
+// 
+// 				var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
+// 				openedFile.m_tab.Content = tabContent;
+// 				openedFile.m_path = tabPath;
+// 				openedFile.m_treeUI = treeUI;
+// 
+// 				this.workTabs.Items.Add(openedFile.m_tab);
+// 				m_mapOpenedFiles[tabPath] = openedFile;
+// 				this.workTabs.SelectedItem = openedFile.m_tab;
+// 			}
 		}
 
 
@@ -248,32 +257,43 @@ namespace UIEditor
 		Window myWindow;
 
 		const int WM_COPYDATA = 0x004A;
-		public struct COPYDATASTRUCT
+		
+		public struct COPYDATASTRUCT_SEND
 		{
 			public IntPtr dwData;
-			public int cData;
+			public int cbData;
 			[MarshalAs(UnmanagedType.LPStr)]
 			public string lpData;
 		}
 
-		public struct COPYDATASTRUCT_GET
+		public struct COPYDATASTRUCT_SENDEX
 		{
 			public IntPtr dwData;
-			public int cData;
-			[MarshalAs(UnmanagedType.LPStr)]
+			public int cbData;
 			public IntPtr lpData;
-		} 
+		}
 
 		public void updateGL(string buffer)
 		{
-			byte[] arrBuffer = System.Text.Encoding.Default.GetBytes(buffer);
-			int len = arrBuffer.Length;
-			COPYDATASTRUCT msgData;
+			if (mx_hwndDebug.Text != "")
+			{
+				m_hwndGL = (IntPtr)long.Parse(mx_hwndDebug.Text);
+			}
+			unsafe
+			{
+				byte[] utfArr = Encoding.UTF8.GetBytes(buffer);
+				int lenUtf8 = utfArr.Length;
+				COPYDATASTRUCT_SENDEX msgData;
 
-			msgData.dwData = (IntPtr)100;
-			msgData.lpData = buffer;
-			msgData.cData = len + 1;
-			SendMessage(m_hwndGL, WM_COPYDATA, 0, ref msgData); 
+				fixed (byte* tmpBuff = utfArr)
+				{
+					msgData.dwData = (IntPtr)100;
+					msgData.lpData = (IntPtr)tmpBuff;
+					msgData.cbData = lenUtf8 + 1;
+					SendMessage(m_hwndGL, WM_COPYDATA, 0, ref msgData);
+				}
+
+			}
 		}
 
 		private void On_UIReady(object sender, EventArgs e)
@@ -299,21 +319,43 @@ namespace UIEditor
 			int textLength;
 
 			handled = false;
-			if (msg == WM_COMMAND)
+			switch (msg)
 			{
-				switch ((uint)wParam.ToInt32() >> 16 & 0xFFFF) //extract the HIWORD
-				{
-					case LBN_SELCHANGE: //Get the item text and display it
-						selectedItem = SendMessage(listControl.hwndListBox, LB_GETCURSEL, IntPtr.Zero, IntPtr.Zero);
-						textLength = SendMessage(listControl.hwndListBox, LB_GETTEXTLEN, IntPtr.Zero, IntPtr.Zero);
-						StringBuilder itemText = new StringBuilder();
-						SendMessage(hwndListBox, LB_GETTEXT, selectedItem, itemText);
-						handled = true;
-						break;
-				}
+				case WM_COMMAND:
+					switch ((uint)wParam.ToInt32() >> 16 & 0xFFFF) //extract the HIWORD
+					{
+						case LBN_SELCHANGE: //Get the item text and display it
+							selectedItem = SendMessage(listControl.hwndListBox, LB_GETCURSEL, IntPtr.Zero, IntPtr.Zero);
+							textLength = SendMessage(listControl.hwndListBox, LB_GETTEXTLEN, IntPtr.Zero, IntPtr.Zero);
+							StringBuilder itemText = new StringBuilder();
+							SendMessage(hwndListBox, LB_GETTEXT, selectedItem, itemText);
+							handled = true;
+							break;
+					}
+					break;
+				case WM_COPYDATA:
+					unsafe
+					{
+						COPYDATASTRUCT msgData = *(COPYDATASTRUCT*)lParam;
+						if ((int)((COPYDATASTRUCT*)lParam)->dwData == SEND_HWND)
+						{
+							m_hwndGL = wParam;
+						}
+					}
+					break;
+				default:
+					break;
 			}
 
 			return IntPtr.Zero;
+		}
+
+		public struct COPYDATASTRUCT
+		{
+			public IntPtr dwData;
+			public int cbData;
+			[MarshalAs(UnmanagedType.LPStr)]
+			public IntPtr lpData;
 		}
 
 		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -321,26 +363,31 @@ namespace UIEditor
 			switch (msg)
 			{
 				case WM_COPYDATA:
-					COPYDATASTRUCT_GET msgData = new COPYDATASTRUCT_GET();
-					Type mytype = msgData.GetType();
-					msgData = (COPYDATASTRUCT_GET)lParam;
-					if ((int)msgData.dwData == 0x0001)
+					COPYDATASTRUCT msgData = (COPYDATASTRUCT)Marshal.PtrToStructure(lParam, typeof(COPYDATASTRUCT));
+					string strData = Marshal.PtrToStringAnsi(msgData.lpData, msgData.cbData);
+					if ((int)msgData.dwData == SEND_HWND)
 					{
-						if (msgData.cData == 0)
-						{
-							m_hwndGL = (IntPtr)msgData.lpData;
-						}
+						this.m_hwndGL = hwnd;
 					}
+					break;
+				case WM_CLOSE:
+					SendMessage(m_hwndGL, WM_QUIT, IntPtr.Zero, IntPtr.Zero);
 					break;
 				default:
 					break;
 			}
+
+			return hwnd;
 		}
 
 		internal const int
-		  SEND_HWND = 0x00000001,
-		  LBN_SELCHANGE = 0x00000001,
+		  SEND_HWND = 0x00000000,
+
+		  WM_CLOSE = 0x0010,
+		  WM_QUIT = 0x0012,
 		  WM_COMMAND = 0x00000111,
+
+		  LBN_SELCHANGE = 0x00000001,
 		  LB_GETCURSEL = 0x00000188,
 		  LB_GETTEXTLEN = 0x0000018A,
 		  LB_ADDSTRING = 0x00000180,
@@ -372,5 +419,19 @@ namespace UIEditor
 			int msg,
 			int wParam,
 			ref COPYDATASTRUCT IParam);
+
+		[DllImport("User32.dll")]
+		public static extern int SendMessage(
+			IntPtr hwnd,
+			int msg,
+			int wParam,
+			ref COPYDATASTRUCT_SEND IParam);
+
+		[DllImport("User32.dll")]
+		public static extern int SendMessage(
+			IntPtr hwnd,
+			int msg,
+			int wParam,
+			ref COPYDATASTRUCT_SENDEX IParam);
 	}
 }

@@ -26,3 +26,5 @@
 			执行下一帧；
 			一个动画状态结束或中断，切换动画状态；
 			添加渲染层（在上边放个有阿尔法通道的之类的）；
+
+<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><BoloUI><panel dock=\"4\" h=\"640\" name=\"background\" skin=\"BackPure\" w=\"960\"><label h=\"45\" skin=\"Label_Title\" text=\"查看事件\" w=\"310\" x=\"10\" y=\"5\"/></panel></BoloUI>

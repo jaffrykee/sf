@@ -74,10 +74,10 @@ namespace UIEditor
 // 										  0);
 
 			MainWindow pW = Window.GetWindow(this) as MainWindow;
-			pW.m_hwndGL = (IntPtr)hwndHost;
-			hwndControl = pW.m_hwndGL;
+			pW.m_hwndGLParent = (IntPtr)hwndHost;
+			hwndControl = pW.m_hwndGLParent;
 			String path = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
-			System.Diagnostics.Process.Start(path, pW.m_hwndGL.ToString() + " 1000 640");
+			System.Diagnostics.Process.Start(path, pW.m_hwndGLParent.ToString() + " 1000 640");
 
 			return new HandleRef(this, hwndHost);
 		}
