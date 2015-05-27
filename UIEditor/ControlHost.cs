@@ -73,9 +73,11 @@ namespace UIEditor
 // 										  IntPtr.Zero,
 // 										  0);
 
-			IntPtr handle = (IntPtr)hwndHost;
+			MainWindow pW = Window.GetWindow(this) as MainWindow;
+			pW.m_hwndGL = (IntPtr)hwndHost;
+			hwndControl = pW.m_hwndGL;
 			String path = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
-			System.Diagnostics.Process.Start(path, handle.ToString() + " 800 600");
+			System.Diagnostics.Process.Start(path, pW.m_hwndGL.ToString() + " 1000 640");
 
 			return new HandleRef(this, hwndHost);
 		}
@@ -83,11 +85,6 @@ namespace UIEditor
 		protected override IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
 			handled = false;
-
-			if (msg >= 0x0200 && msg <= 0x020E || msg == 0x0100 || msg == 0x0101)
-			{
-				MainWindow.SendMessage(hwndHost, msg, wParam, lParam);
-			}
 
 			return IntPtr.Zero;
 		}

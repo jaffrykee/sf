@@ -40,12 +40,14 @@ namespace UIEditor
 		public Dictionary<string, AttrList> m_mapStrAttrList;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
+		public IntPtr m_hwndGL;
 
 		private int m_dep;
 
 		public MainWindow()
 		{
 			m_rootPath = "";
+			m_hwndGL = IntPtr.Zero;
 			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
 			InitializeComponent();
 			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
@@ -245,14 +247,51 @@ namespace UIEditor
 		Application app;
 		Window myWindow;
 
+		const int WM_COPYDATA = 0x004A;
+		public struct COPYDATASTRUCT
+		{
+			public IntPtr dwData;
+			public int cData;
+			[MarshalAs(UnmanagedType.LPStr)]
+			public string lpData;
+		}
+
+		public struct COPYDATASTRUCT_GET
+		{
+			public IntPtr dwData;
+			public int cData;
+			[MarshalAs(UnmanagedType.LPStr)]
+			public IntPtr lpData;
+		} 
+
+		public void updateGL(string buffer)
+		{
+			byte[] arrBuffer = System.Text.Encoding.Default.GetBytes(buffer);
+			int len = arrBuffer.Length;
+			COPYDATASTRUCT msgData;
+
+			msgData.dwData = (IntPtr)100;
+			msgData.lpData = buffer;
+			msgData.cData = len + 1;
+			SendMessage(m_hwndGL, WM_COPYDATA, 0, ref msgData); 
+		}
+
 		private void On_UIReady(object sender, EventArgs e)
 		{
 			app = System.Windows.Application.Current;
 			myWindow = app.MainWindow;
 			//myWindow.SizeToContent = SizeToContent.WidthAndHeight;
+			//listControl = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
 			listControl = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
-			ControlHostElement.Children.Add(listControl);
+			ControlHostElement.Child = listControl;
 			listControl.MessageHook += new HwndSourceHook(ControlMsgFilter);
+
+			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
+
+			if (source != null)
+			{
+				source.AddHook(WndProc);
+			}
 		}
 
 		private IntPtr ControlMsgFilter(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -273,15 +312,33 @@ namespace UIEditor
 						break;
 				}
 			}
-			if (msg >= 0x0200 && msg < 0x020E)
-			{
-				SendMessage(listControl.hwndListBox, msg, wParam, lParam);
-			}
 
 			return IntPtr.Zero;
 		}
 
+		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			switch (msg)
+			{
+				case WM_COPYDATA:
+					COPYDATASTRUCT_GET msgData = new COPYDATASTRUCT_GET();
+					Type mytype = msgData.GetType();
+					msgData = (COPYDATASTRUCT_GET)lParam;
+					if ((int)msgData.dwData == 0x0001)
+					{
+						if (msgData.cData == 0)
+						{
+							m_hwndGL = (IntPtr)msgData.lpData;
+						}
+					}
+					break;
+				default:
+					break;
+			}
+		}
+
 		internal const int
+		  SEND_HWND = 0x00000001,
 		  LBN_SELCHANGE = 0x00000001,
 		  WM_COMMAND = 0x00000111,
 		  LB_GETCURSEL = 0x00000188,
@@ -309,5 +366,11 @@ namespace UIEditor
 												  IntPtr wParam,
 												  String lParam);
 
+		[DllImport("User32.dll")]
+		public static extern int SendMessage(
+			IntPtr hwnd,
+			int msg,
+			int wParam,
+			ref COPYDATASTRUCT IParam);
 	}
 }
