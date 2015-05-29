@@ -27,4 +27,4 @@
 			一个动画状态结束或中断，切换动画状态；
 			添加渲染层（在上边放个有阿尔法通道的之类的）；
 
-<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><BoloUI><panel dock=\"4\" h=\"640\" name=\"background\" skin=\"BackPure\" w=\"960\"><label h=\"45\" skin=\"Label_Title\" text=\"查看事件\" w=\"310\" x=\"10\" y=\"5\"/></panel></BoloUI>
+<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><BoloUI><BoloUIEvent><event function=\"closeCurUI\" type=\"onClose\"/></BoloUIEvent><resource name=\"PassMap\"/><skin Name=\"PassMap\"><apperance id=\"0\"><imageShape Anchor=\"0\" ImageName=\"PassMap.PassMap\"/></apperance></skin><skin Name=\"text_20_q0\"><apperance id=\"0\"><textShape Anchor=\"3\" Color0=\"ffffffff\" Color1=\"ff000000\" Style=\"3\" fontSize=\"20\"/></apperance></skin><panel dock=\"4\" h=\"640\" name=\"background\" skin=\"PassMap\" w=\"960\"><event function=\"door_loaded\" type=\"onLoaded\"/><event function=\"closeUI door_select1.xml\" type=\"onClose\"/><panel anchor=\"15\" h=\"640\" skin=\"\" w=\"960\" x=\"-480\" y=\"-320\"><progress anchor=\"14\" baseID=\"prog\" h=\"20\" name=\"prog\" skin=\"SysStroll\" value=\"100\" w=\"650\" x=\"-325\" y=\"-65\"/></panel></panel></BoloUI>

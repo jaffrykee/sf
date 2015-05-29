@@ -44,8 +44,8 @@ namespace UIEditor
 				m_openedFile.m_xmlDoc = new XmlDocument();
 				m_openedFile.m_xmlDoc.Load(path);
 				XmlNode xn = m_openedFile.m_xmlDoc.SelectSingleNode("BoloUI");
-				string buffer = m_openedFile.m_xmlDoc.InnerXml;
-				this.m_parentWindow.updateGL(buffer);
+// 				string buffer = m_openedFile.m_xmlDoc.InnerXml;
+// 				this.m_parentWindow.updateGL(buffer);
 
 				m_openedFile = m_parentWindow.m_mapOpenedFiles[m_parent.m_filePath];
 				//清空上次打开遗留的TreeViewItem

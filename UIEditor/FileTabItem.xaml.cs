@@ -35,6 +35,7 @@ namespace UIEditor
 			if (m_filePath == "")
 			{
 				UserControl tabContent;
+				MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
 
 				m_filePath = ((ToolTip)((TabItem)this.Parent).ToolTip).Content.ToString();
 				this.filePath.Text = m_filePath;

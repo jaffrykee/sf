@@ -277,10 +277,10 @@ namespace UIEditor.BoloUI
 			}
 			#endregion
 
-			if (m_xe.GetAttribute("baseID") == "soulitemLP")
-			{
-				int a = 0;
-			}
+// 			if (m_xe.GetAttribute("baseID") == "soulitemLP")
+// 			{
+// 				int a = 0;
+// 			}
 
 			#region anchorSelf
 			if (m_xe.GetAttribute("anchorSelf") != "")

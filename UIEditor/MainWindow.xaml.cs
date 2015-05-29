@@ -89,7 +89,28 @@ namespace UIEditor
 			}
 			string path = openFolderDialog.SelectedPath;
 
+			refreshSkin(path + "\\skin");
 			refreshProjTree(path, this.mx_treePro, true);
+		}
+
+		private void refreshSkin(string path)
+		{
+			DirectoryInfo di = new DirectoryInfo(path);
+
+
+			foreach (var dri in di.GetFiles("*.xml"))
+			{
+				XmlDocument xmlDoc = new XmlDocument();
+				xmlDoc = new XmlDocument();
+				xmlDoc.Load(path + "\\" + dri.Name);
+				XmlNode xn = xmlDoc.SelectSingleNode("BoloUI");
+
+				if (xn != null)
+				{
+					string buffer = xmlDoc.InnerXml;
+					updateGL(buffer, true);
+				}
+			}
 		}
 
 		private void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
@@ -266,8 +287,9 @@ namespace UIEditor
 			public IntPtr lpData;
 		}
 
-		public void updateGL(string buffer)
+		public void updateGL(string buffer, bool isSkin = false)
 		{
+			ControlHostElement.Visibility = System.Windows.Visibility.Visible;
 			if (mx_hwndDebug.Text != "")
 			{
 				m_hwndGL = (IntPtr)long.Parse(mx_hwndDebug.Text);
@@ -280,7 +302,14 @@ namespace UIEditor
 
 				fixed (byte* tmpBuff = utfArr)
 				{
-					msgData.dwData = (IntPtr)100;
+					if (isSkin != true)
+					{
+						msgData.dwData = (IntPtr)SEND_NORMAL;
+					}
+					else
+					{
+						msgData.dwData = (IntPtr)SEND_SKIN;
+					}
 					msgData.lpData = (IntPtr)tmpBuff;
 					msgData.cbData = lenUtf8 + 1;
 					SendMessage(m_hwndGL, WM_COPYDATA, 0, ref msgData);
@@ -330,7 +359,7 @@ namespace UIEditor
 					unsafe
 					{
 						COPYDATASTRUCT msgData = *(COPYDATASTRUCT*)lParam;
-						if ((int)((COPYDATASTRUCT*)lParam)->dwData == SEND_HWND)
+						if ((int)((COPYDATASTRUCT*)lParam)->dwData == GET_HWND)
 						{
 							m_hwndGL = wParam;
 						}
@@ -358,7 +387,7 @@ namespace UIEditor
 				case WM_COPYDATA:
 					COPYDATASTRUCT msgData = (COPYDATASTRUCT)Marshal.PtrToStructure(lParam, typeof(COPYDATASTRUCT));
 					string strData = Marshal.PtrToStringAnsi(msgData.lpData, msgData.cbData);
-					if ((int)msgData.dwData == SEND_HWND)
+					if ((int)msgData.dwData == GET_HWND)
 					{
 						this.m_hwndGL = hwnd;
 					}
@@ -374,7 +403,10 @@ namespace UIEditor
 		}
 
 		internal const int
-		  SEND_HWND = 0x00000000,
+		  GET_HWND = 0x0000,
+
+		  SEND_NORMAL = 0x0001,
+		  SEND_SKIN = 0x0002,
 
 		  WM_CLOSE = 0x0010,
 		  WM_QUIT = 0x0012,
@@ -442,6 +474,11 @@ namespace UIEditor
 						xmlDoc.Load(tabPath);
 						string buffer = xmlDoc.InnerXml;
 						this.updateGL(buffer);
+						ControlHostElement.Visibility = System.Windows.Visibility.Visible;
+					}
+					else
+					{
+						ControlHostElement.Visibility = System.Windows.Visibility.Collapsed;
 					}
 				}
 			}
