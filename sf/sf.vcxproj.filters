@@ -44,9 +44,6 @@
     </Xsd>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="doc\Text.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="sfMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

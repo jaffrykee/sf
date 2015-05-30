@@ -16,12 +16,12 @@ using System.IO;
 using System.Xml;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
-
 namespace UIEditor
 {
 	/// <summary>
 	/// MainWindow.xaml 的交互逻辑
 	/// </summary>
+
 
 	public struct OpenedFile
 	{
@@ -38,6 +38,7 @@ namespace UIEditor
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
 		public Dictionary<string, AttrList> m_mapStrAttrList;
+		public Dictionary<string, Dictionary<string, MapAttrDef_T>> m_mapCtrlDef;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
 		public IntPtr m_hwndGLParent;
@@ -57,6 +58,7 @@ namespace UIEditor
 			m_mapStrAttrList = new Dictionary<string, AttrList>();
 			m_dpiSysX = 96.0f;
 			m_dpiSysY = 96.0f;
+			initXmlValueDef();
 		}
 
 		private void openProj(object sender, RoutedEventArgs e)
@@ -261,7 +263,7 @@ namespace UIEditor
 
 
 
-//============================================================
+		//============================================================
 
 
 		int selectedItem;
@@ -271,7 +273,7 @@ namespace UIEditor
 		Window myWindow;
 
 		const int WM_COPYDATA = 0x004A;
-		
+
 		public struct COPYDATASTRUCT_SEND
 		{
 			public IntPtr dwData;
@@ -461,14 +463,14 @@ namespace UIEditor
 
 		private void mx_workTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if(((TabItem)mx_workTabs.SelectedItem) != null)
+			if (((TabItem)mx_workTabs.SelectedItem) != null)
 			{
-				if(((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip) != null)
+				if (((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip) != null)
 				{
 					string tabPath = ((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip).Content.ToString();
 					string fileType = tabPath.Substring(tabPath.LastIndexOf(".") + 1, (tabPath.Length - tabPath.LastIndexOf(".") - 1));
 
-					if(fileType == "xml")
+					if (fileType == "xml")
 					{
 						XmlDocument xmlDoc = new XmlDocument();
 						xmlDoc.Load(tabPath);
@@ -482,6 +484,419 @@ namespace UIEditor
 					}
 				}
 			}
+		}
+
+		public class MapAttrDef_T
+		{
+			public string m_type;
+			public string m_defValue;
+			public bool m_isEnum;
+			public List<string> m_enumValue;
+
+			public MapAttrDef_T(string type, string defValue)
+			{
+				m_type = type;
+				m_defValue = defValue;
+				m_isEnum = false;
+				m_enumValue = null;
+			}
+
+			public MapAttrDef_T(string type)
+				: this(type, null)
+			{
+			}
+
+			public MapAttrDef_T()
+				: this("int", null)
+			{
+			}
+		}
+
+		public struct MapCtrlDef_T
+		{
+			public Dictionary<string, MapAttrDef_T> m_mapAttrDef;
+		}
+
+
+		Dictionary<string, MapAttrDef_T> conf_mapBaseAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				#region base
+				{"name", new MapAttrDef_T("string")},
+				{"baseID", new MapAttrDef_T("string")},
+				{"text", new MapAttrDef_T("string")},
+				{"alpha", new MapAttrDef_T("int")},
+				{"x", new MapAttrDef_T("int")},
+				{"y", new MapAttrDef_T("int")},
+				{"w", new MapAttrDef_T("int")},
+				{"h", new MapAttrDef_T("int")},
+				{"maxWidth", new MapAttrDef_T("int")},
+				{"maxHeight", new MapAttrDef_T("int")},
+				{"minWidth", new MapAttrDef_T("int")},
+				{"minHeight", new MapAttrDef_T("int")},
+				{"leftBorder", new MapAttrDef_T("int")},
+				{"rightBorder", new MapAttrDef_T("int")},
+				{"topBorder", new MapAttrDef_T("int")},
+				{"bottomBorder", new MapAttrDef_T("int")},
+				{"visible", new MapAttrDef_T("bool")},
+				{"enable", new MapAttrDef_T("bool")},
+				{"dock", new MapAttrDef_T("int")},
+				{"docklayer", new MapAttrDef_T("int")},
+				{"anchor", new MapAttrDef_T("int")},
+				{"anchorSelf", new MapAttrDef_T("int")},
+				{"canFocus", new MapAttrDef_T("bool")},
+				{"skin", new MapAttrDef_T("string")},
+				{"tips", new MapAttrDef_T("bool")},
+				{"tipCx", new MapAttrDef_T("int")},
+				{"tipCy", new MapAttrDef_T("int")},
+				{"tipMaxWidth", new MapAttrDef_T("int")},
+				{"tipText", new MapAttrDef_T("string")},
+				{"showStyle", new MapAttrDef_T("int")},
+				{"movieSpe", new MapAttrDef_T("int")},
+				{"angle", new MapAttrDef_T("int")},
+				{"rotateType", new MapAttrDef_T("int")},
+				{"movieLayer", new MapAttrDef_T("int")},
+				{"scalePerX", new MapAttrDef_T("int")},
+				{"scalePerY", new MapAttrDef_T("int")},
+				{"onSelectByKey", new MapAttrDef_T("bool")},
+				{"canSelectByKey", new MapAttrDef_T("bool")},
+				{"canAutoBuildTopKey", new MapAttrDef_T("bool")},
+				{"canAutoBuildLeftKey", new MapAttrDef_T("bool")},
+				{"assignTopKeyBaseID", new MapAttrDef_T("string")},
+				{"assignBottomKeyBaseID", new MapAttrDef_T("string")},
+				{"assignLeftKeyBaseID", new MapAttrDef_T("string")},
+				{"assignRightKeyBaseID", new MapAttrDef_T("string")},
+				{"scrollBorder", new MapAttrDef_T("int")},
+				{"hScrollHeight", new MapAttrDef_T("int")},
+				{"vScrollWidth", new MapAttrDef_T("int")},
+				{"vScrollSliderHeight", new MapAttrDef_T("int")},
+				{"hScrollSliderWidth", new MapAttrDef_T("int")},
+				{"scrollSliderBorder", new MapAttrDef_T("int")},
+				{"scrollSliderAutosize", new MapAttrDef_T("bool")},
+				{"scrollDecay", new MapAttrDef_T("int")},
+				{"scrollPickupInterval", new MapAttrDef_T("int")},
+				{"scrollSpeed", new MapAttrDef_T("int")},
+				{"scrollInitPos", new MapAttrDef_T("int")},
+				{"rememberScrollPos", new MapAttrDef_T("bool")},
+				{"scrollParentLayerWhenGetFocus", new MapAttrDef_T("int")},
+				{"isMaskAreaByKey", new MapAttrDef_T("bool")},
+				{"ownEvt", new MapAttrDef_T("bool")},
+				{"isEffectParentAutosize", new MapAttrDef_T("bool")},
+				{"canUsedEvent", new MapAttrDef_T("bool")},
+				{"canHandleEvent", new MapAttrDef_T("bool")}
+				#endregion
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapPanelAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"isEnableScroll", new MapAttrDef_T("bool")},
+				{"own", new MapAttrDef_T("bool")},
+				{"autoSize", new MapAttrDef_T("bool")},
+				{"backSpeed", new MapAttrDef_T("int")},
+				{"bkH_T", new MapAttrDef_T("int")},
+				{"bkH_B", new MapAttrDef_T("int")},
+				{"bkW_L", new MapAttrDef_T("int")},
+				{"bkW_R", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapLabelAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"bgColor", new MapAttrDef_T("intx16")},
+				{"speed", new MapAttrDef_T("int")},
+				{"autoSize", new MapAttrDef_T("bool")},
+				{"autoFontSize", new MapAttrDef_T("bool")},
+				{"scrollcountType", new MapAttrDef_T("int")},
+				{"scrollTime", new MapAttrDef_T("int")},
+				{"scrollRate", new MapAttrDef_T("int")},
+				{"scrollRateHalf", new MapAttrDef_T("int")},
+				{"scrollTimeMax", new MapAttrDef_T("int")},
+				{"startXPer", new MapAttrDef_T("int")},
+				{"defaultMsgTime", new MapAttrDef_T("int")},
+				{"nextUIevent", new MapAttrDef_T("bool")},
+				{"nextUIeventType", new MapAttrDef_T("int")},
+				{"drawType", new MapAttrDef_T("int")},
+				{"ellipsisWhenTooLong", new MapAttrDef_T("bool")},
+				{"reelScrollDerection", new MapAttrDef_T("int")},
+				{"reelScrollSpeed", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapButtonAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"wordWhole", new MapAttrDef_T("bool")},
+				{"interval", new MapAttrDef_T("int")},
+				{"blinktimes", new MapAttrDef_T("int")},
+				{"blinkTextAreaX", new MapAttrDef_T("int")},
+				{"blinkTextAreaY", new MapAttrDef_T("int")},
+				{"blinkTextAreaW", new MapAttrDef_T("int")},
+				{"blinkTextAreaH", new MapAttrDef_T("int")},
+				{"slideOri", new MapAttrDef_T("int")},
+				{"pressedEndBlink", new MapAttrDef_T("bool")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapSkillButtonAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"cdStyle", new MapAttrDef_T("int")},
+				{"cdTime", new MapAttrDef_T("int")},
+				{"cdRange", new MapAttrDef_T("int")},
+				{"cdRGB", new MapAttrDef_T("intx16")},
+				{"cdEx", new MapAttrDef_T("int")},
+				{"cdEy", new MapAttrDef_T("int")},
+				{"cdExN", new MapAttrDef_T("int")},
+				{"cdEyN", new MapAttrDef_T("int")},
+				{"showCdTime", new MapAttrDef_T("bool")},
+				{"clockwiseRad", new MapAttrDef_T("int")},
+				{"clockwiseOffsetx", new MapAttrDef_T("int")},
+				{"clockwiseOffsety", new MapAttrDef_T("int")},
+				{"clockwiseAngle", new MapAttrDef_T("int")},
+				{"clockwiseOriginAngle", new MapAttrDef_T("int")},
+				{"progressIncrease", new MapAttrDef_T("bool")},
+				{"disableWhenBeginCold", new MapAttrDef_T("bool")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapProgressAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"min", new MapAttrDef_T("int")},
+				{"max", new MapAttrDef_T("int")},
+				{"value", new MapAttrDef_T("int")},
+				{"ori", new MapAttrDef_T("int")},
+				{"track", new MapAttrDef_T("bool")},
+				{"sliderWidth", new MapAttrDef_T("int")},
+				{"sliderHeight", new MapAttrDef_T("int")},
+				{"changeSpeed", new MapAttrDef_T("int")},
+				{"changeRate", new MapAttrDef_T("int")},
+				{"clockwiseRad", new MapAttrDef_T("int")},
+				{"clockwiseOffsetx", new MapAttrDef_T("int")},
+				{"clockwiseOffsety", new MapAttrDef_T("int")},
+				{"clockwiseAngle", new MapAttrDef_T("int")},
+				{"clockwiseOriginAngle", new MapAttrDef_T("int")},
+				{"sliderShowType", new MapAttrDef_T("int")},
+				{"fillHeadTailShowType", new MapAttrDef_T("int")},
+				{"preGrowthValue", new MapAttrDef_T("int")},
+				{"decaySpeed", new MapAttrDef_T("int")},
+				{"beginDecay", new MapAttrDef_T("bool")},
+				{"sliderLeftFill", new MapAttrDef_T("bool")},
+				{"delayValueRate", new MapAttrDef_T("int")},
+				{"gridValue", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapRadioAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"select", new MapAttrDef_T("bool")},
+				{"ntw", new MapAttrDef_T("int")},
+				{"wordWhole", new MapAttrDef_T("bool")},
+				{"checkLayer", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapCheckAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"select", new MapAttrDef_T("bool")},
+				{"ntw", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapListPanelAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"lineHeight", new MapAttrDef_T("int")},
+				{"own", new MapAttrDef_T("bool")},
+				{"cel", new MapAttrDef_T("int")},
+				{"celCountMax", new MapAttrDef_T("int")},
+				{"select", new MapAttrDef_T("int")},
+				{"autoSize", new MapAttrDef_T("bool")},
+				{"maxSize", new MapAttrDef_T("int")},
+				{"bkH_T", new MapAttrDef_T("int")},
+				{"bkH_B", new MapAttrDef_T("int")},
+				{"backSpeed", new MapAttrDef_T("int")},
+				{"appendOri", new MapAttrDef_T("int")},
+				{"lineSpace", new MapAttrDef_T("int")},
+				{"removeExceedFromHead", new MapAttrDef_T("bool")},
+				{"onBottomEventPercent", new MapAttrDef_T("int")},
+				{"middleSelect", new MapAttrDef_T("int")},
+				{"isMiddleCardList", new MapAttrDef_T("bool")},
+				{"middleCardBorder", new MapAttrDef_T("int")},
+				{"middleCardZoomValue", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapTabPanelAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"cascadeOrder", new MapAttrDef_T("int")},
+				{"alignment", new MapAttrDef_T("int")},
+				{"tabIndent", new MapAttrDef_T("int")},
+				{"tabInterval", new MapAttrDef_T("int")},
+				{"tabPageSpacing", new MapAttrDef_T("int")},
+				{"tabWidth", new MapAttrDef_T("int")},
+				{"tabHeight", new MapAttrDef_T("int")},
+				{"own", new MapAttrDef_T("bool")},
+				{"duiqi", new MapAttrDef_T("int")},
+				{"wordWhole", new MapAttrDef_T("bool")},
+				{"tabChangeTime", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapPagePanelAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"speed", new MapAttrDef_T("int")},
+				{"own", new MapAttrDef_T("bool")},
+				{"switchType", new MapAttrDef_T("int")},
+				{"controlRotateType", new MapAttrDef_T("int")},
+				{"turnEnable", new MapAttrDef_T("bool")},
+				{"switchPageNeedlen", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapVirtualPadAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"vStyle", new MapAttrDef_T("int")},
+				{"fingerpadr", new MapAttrDef_T("int")},
+				{"pf", new MapAttrDef_T("int")},
+				{"areaMaxWidthPer", new MapAttrDef_T("int")},
+				{"areaMaxHeightPer", new MapAttrDef_T("int")},
+				{"setAx", new MapAttrDef_T("int")},
+				{"setAy", new MapAttrDef_T("int")},
+				{"backTime", new MapAttrDef_T("int")},
+				{"clickTime", new MapAttrDef_T("int")},
+				{"interval", new MapAttrDef_T("int")},
+				{"blinktimes", new MapAttrDef_T("int")},
+				{"padToFingerDistanceMax", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapRichTextAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"maxLength", new MapAttrDef_T("int")},
+				{"maxLine", new MapAttrDef_T("int")},
+				{"readOnly", new MapAttrDef_T("bool")},
+				{"passwordChar", new MapAttrDef_T("bool")},
+				{"wrodWrap", new MapAttrDef_T("bool")},
+				{"vScrollBoarder", new MapAttrDef_T("int")},
+				{"lineSpacing", new MapAttrDef_T("int")},
+				{"speed", new MapAttrDef_T("int")},
+				{"wordWhole", new MapAttrDef_T("bool")},
+				{"autoSize", new MapAttrDef_T("bool")},
+				{"richTips", new MapAttrDef_T("string")},
+				{"convertIndex", new MapAttrDef_T("int")},
+				{"inputType", new MapAttrDef_T("int")},
+				{"bkH_T", new MapAttrDef_T("int")},
+				{"bkH_B", new MapAttrDef_T("int")},
+				{"beforeSkins", new MapAttrDef_T("string")},
+				{"scrollTime", new MapAttrDef_T("int")},
+				{"scrollTextSpeed", new MapAttrDef_T("int")},
+				{"scrollText", new MapAttrDef_T("bool")},
+				{"scrollcountType", new MapAttrDef_T("int")},
+				{"backSpeed", new MapAttrDef_T("int")},
+				{"textAnchorType", new MapAttrDef_T("int")},
+				{"independentDrawSub", new MapAttrDef_T("bool")},
+				{"alignBottomText", new MapAttrDef_T("bool")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapPageTextAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"pressedWidth", new MapAttrDef_T("int")},
+				{"pressedHeight", new MapAttrDef_T("int")},
+				{"PageNumHeight", new MapAttrDef_T("int")},
+				{"PageNumWidth", new MapAttrDef_T("int")},
+				{"PageNumIndent", new MapAttrDef_T("int")},
+				{"lineSpacing", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapScriptPanelAttrDef = new Dictionary<string, MapAttrDef_T>
+		{
+		};
+
+		Dictionary<string, MapAttrDef_T> conf_mapCountDownAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"start", new MapAttrDef_T("bool")},
+				{"unit", new MapAttrDef_T("int")},
+				{"days", new MapAttrDef_T("int")},
+				{"hours", new MapAttrDef_T("int")},
+				{"minutes", new MapAttrDef_T("int")},
+				{"seconds", new MapAttrDef_T("int")},
+				{"milliseconds", new MapAttrDef_T("int")},
+				{"countType", new MapAttrDef_T("int")},
+				{"timeout", new MapAttrDef_T("int")},
+				{"countChangeRate", new MapAttrDef_T("float")},
+				{"autoShowLength", new MapAttrDef_T("int")},
+				{"timePreset", new MapAttrDef_T("time")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapApartPanelAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"own", new MapAttrDef_T("bool")},
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapDraggedPanelAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"canDraggedCopy", new MapAttrDef_T("bool")},
+				{"getInfoIndex", new MapAttrDef_T("int")},
+				{"copyTime", new MapAttrDef_T("int")},
+				{"own", new MapAttrDef_T("bool")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapTurnTableAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"tableCount", new MapAttrDef_T("int")},
+				{"resultIndexString", new MapAttrDef_T("string")},
+				{"interval", new MapAttrDef_T("int")},
+				{"turnTime", new MapAttrDef_T("int")},
+				{"maxTurntime", new MapAttrDef_T("int")},
+				{"turnType", new MapAttrDef_T("int")},
+				{"defaultRun", new MapAttrDef_T("bool")},
+				{"maxSpeed", new MapAttrDef_T("int")},
+				{"runAcceleration", new MapAttrDef_T("int")},
+				{"backAcceleration", new MapAttrDef_T("int")},
+				{"tableInterval", new MapAttrDef_T("int")},
+				{"lineSpace", new MapAttrDef_T("int")},
+				{"backTime", new MapAttrDef_T("int")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapDrawModelAttrDef = new Dictionary<string, MapAttrDef_T>
+		{
+		};
+
+		Dictionary<string, MapAttrDef_T> conf_mapDropListAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"appendOri", new MapAttrDef_T("int")},
+				{"packWidth", new MapAttrDef_T("int")},
+				{"packHeight", new MapAttrDef_T("int")},
+				{"expansionWidth", new MapAttrDef_T("int")},
+				{"expansionHeight", new MapAttrDef_T("int")},
+				{"lineSpace", new MapAttrDef_T("int")},
+				{"ignoreParentClip", new MapAttrDef_T("bool")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapEventAttrDef = new Dictionary<string, MapAttrDef_T>
+			{
+				{"type", new MapAttrDef_T("string")},
+				{"function", new MapAttrDef_T("string")},
+				{"sound", new MapAttrDef_T("string")}
+			};
+
+		Dictionary<string, MapAttrDef_T> conf_mapToolTipAttrDef = new Dictionary<string, MapAttrDef_T>
+		{
+		};
+
+		public void initXmlValueDef()
+		{
+			m_mapCtrlDef = new Dictionary<string, Dictionary<string, MapAttrDef_T>>
+			{
+				{ "basic", conf_mapBaseAttrDef },
+				{ "panel", conf_mapPanelAttrDef },
+				{ "label", conf_mapLabelAttrDef },
+				{ "button", conf_mapButtonAttrDef },
+				{ "skillbutton", conf_mapSkillButtonAttrDef },
+				{ "progress", conf_mapProgressAttrDef },
+				{ "radio", conf_mapRadioAttrDef },
+				{ "check", conf_mapCheckAttrDef },
+				{ "listPanel", conf_mapListPanelAttrDef },
+				{ "tabPanel", conf_mapTabPanelAttrDef },
+				{ "pagePanel", conf_mapPagePanelAttrDef},
+				{ "virtualpad", conf_mapVirtualPadAttrDef},
+				{ "richText", conf_mapRichTextAttrDef},
+				{ "pageText", conf_mapPageTextAttrDef},
+				{ "scriptPanel", conf_mapScriptPanelAttrDef },
+				{ "countDown", conf_mapCountDownAttrDef},
+				{ "apartPanel", conf_mapApartPanelAttrDef},
+				{ "draggedPanel", conf_mapDraggedPanelAttrDef},
+				{ "turnTable", conf_mapTurnTableAttrDef},
+				{ "drawModel", conf_mapDrawModelAttrDef },
+				{ "dropList", conf_mapDropListAttrDef},
+				{ "event", conf_mapEventAttrDef},
+				{ "tooltip", conf_mapToolTipAttrDef}
+			};
 		}
 	}
 }
