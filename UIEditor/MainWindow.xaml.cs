@@ -324,8 +324,6 @@ namespace UIEditor
 		{
 			app = System.Windows.Application.Current;
 			myWindow = app.MainWindow;
-			//myWindow.SizeToContent = SizeToContent.WidthAndHeight;
-			//listControl = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
 			listControl = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
 			ControlHostElement.Child = listControl;
 			listControl.MessageHook += new HwndSourceHook(ControlMsgFilter);
@@ -397,6 +395,12 @@ namespace UIEditor
 				case WM_CLOSE:
 					SendMessage(m_hwndGL, WM_QUIT, IntPtr.Zero, IntPtr.Zero);
 					break;
+				case WM_QUIT:
+					SendMessage(m_hwndGL, WM_QUIT, IntPtr.Zero, IntPtr.Zero);
+					break;
+				case WM_DESTROY:
+					SendMessage(m_hwndGL, WM_QUIT, IntPtr.Zero, IntPtr.Zero);
+					break;
 				default:
 					break;
 			}
@@ -410,6 +414,7 @@ namespace UIEditor
 		  SEND_NORMAL = 0x0001,
 		  SEND_SKIN = 0x0002,
 
+		  WM_DESTROY = 0x0002,
 		  WM_CLOSE = 0x0010,
 		  WM_QUIT = 0x0012,
 		  WM_COMMAND = 0x00000111,
@@ -486,6 +491,7 @@ namespace UIEditor
 			}
 		}
 
+		#region xml控件名、属性名、默认值、取值范围等。
 		public class MapAttrDef_T
 		{
 			public string m_type;
@@ -520,7 +526,7 @@ namespace UIEditor
 
 		Dictionary<string, MapAttrDef_T> conf_mapBaseAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
-				#region base
+				#region Base
 				{"name", new MapAttrDef_T("string")},
 				{"baseID", new MapAttrDef_T("string")},
 				{"text", new MapAttrDef_T("string")},
@@ -588,6 +594,7 @@ namespace UIEditor
 
 		Dictionary<string, MapAttrDef_T> conf_mapPanelAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region Panel
 				{"isEnableScroll", new MapAttrDef_T("bool")},
 				{"own", new MapAttrDef_T("bool")},
 				{"autoSize", new MapAttrDef_T("bool")},
@@ -596,10 +603,12 @@ namespace UIEditor
 				{"bkH_B", new MapAttrDef_T("int")},
 				{"bkW_L", new MapAttrDef_T("int")},
 				{"bkW_R", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapLabelAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region Label
 				{"bgColor", new MapAttrDef_T("intx16")},
 				{"speed", new MapAttrDef_T("int")},
 				{"autoSize", new MapAttrDef_T("bool")},
@@ -617,10 +626,12 @@ namespace UIEditor
 				{"ellipsisWhenTooLong", new MapAttrDef_T("bool")},
 				{"reelScrollDerection", new MapAttrDef_T("int")},
 				{"reelScrollSpeed", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapButtonAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region Button
 				{"wordWhole", new MapAttrDef_T("bool")},
 				{"interval", new MapAttrDef_T("int")},
 				{"blinktimes", new MapAttrDef_T("int")},
@@ -630,10 +641,12 @@ namespace UIEditor
 				{"blinkTextAreaH", new MapAttrDef_T("int")},
 				{"slideOri", new MapAttrDef_T("int")},
 				{"pressedEndBlink", new MapAttrDef_T("bool")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapSkillButtonAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region SkillButton
 				{"cdStyle", new MapAttrDef_T("int")},
 				{"cdTime", new MapAttrDef_T("int")},
 				{"cdRange", new MapAttrDef_T("int")},
@@ -650,10 +663,12 @@ namespace UIEditor
 				{"clockwiseOriginAngle", new MapAttrDef_T("int")},
 				{"progressIncrease", new MapAttrDef_T("bool")},
 				{"disableWhenBeginCold", new MapAttrDef_T("bool")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapProgressAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region Progress
 				{"min", new MapAttrDef_T("int")},
 				{"max", new MapAttrDef_T("int")},
 				{"value", new MapAttrDef_T("int")},
@@ -676,24 +691,30 @@ namespace UIEditor
 				{"sliderLeftFill", new MapAttrDef_T("bool")},
 				{"delayValueRate", new MapAttrDef_T("int")},
 				{"gridValue", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapRadioAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region Radio
 				{"select", new MapAttrDef_T("bool")},
 				{"ntw", new MapAttrDef_T("int")},
 				{"wordWhole", new MapAttrDef_T("bool")},
 				{"checkLayer", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapCheckAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region Check
 				{"select", new MapAttrDef_T("bool")},
 				{"ntw", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapListPanelAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region ListPanel
 				{"lineHeight", new MapAttrDef_T("int")},
 				{"own", new MapAttrDef_T("bool")},
 				{"cel", new MapAttrDef_T("int")},
@@ -712,10 +733,12 @@ namespace UIEditor
 				{"isMiddleCardList", new MapAttrDef_T("bool")},
 				{"middleCardBorder", new MapAttrDef_T("int")},
 				{"middleCardZoomValue", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapTabPanelAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region TabPanel
 				{"cascadeOrder", new MapAttrDef_T("int")},
 				{"alignment", new MapAttrDef_T("int")},
 				{"tabIndent", new MapAttrDef_T("int")},
@@ -727,20 +750,24 @@ namespace UIEditor
 				{"duiqi", new MapAttrDef_T("int")},
 				{"wordWhole", new MapAttrDef_T("bool")},
 				{"tabChangeTime", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapPagePanelAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region PagePanel
 				{"speed", new MapAttrDef_T("int")},
 				{"own", new MapAttrDef_T("bool")},
 				{"switchType", new MapAttrDef_T("int")},
 				{"controlRotateType", new MapAttrDef_T("int")},
 				{"turnEnable", new MapAttrDef_T("bool")},
 				{"switchPageNeedlen", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapVirtualPadAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region VirtualPad
 				{"vStyle", new MapAttrDef_T("int")},
 				{"fingerpadr", new MapAttrDef_T("int")},
 				{"pf", new MapAttrDef_T("int")},
@@ -753,10 +780,12 @@ namespace UIEditor
 				{"interval", new MapAttrDef_T("int")},
 				{"blinktimes", new MapAttrDef_T("int")},
 				{"padToFingerDistanceMax", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapRichTextAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region RichText
 				{"maxLength", new MapAttrDef_T("int")},
 				{"maxLine", new MapAttrDef_T("int")},
 				{"readOnly", new MapAttrDef_T("bool")},
@@ -781,16 +810,19 @@ namespace UIEditor
 				{"textAnchorType", new MapAttrDef_T("int")},
 				{"independentDrawSub", new MapAttrDef_T("bool")},
 				{"alignBottomText", new MapAttrDef_T("bool")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapPageTextAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region PageText
 				{"pressedWidth", new MapAttrDef_T("int")},
 				{"pressedHeight", new MapAttrDef_T("int")},
 				{"PageNumHeight", new MapAttrDef_T("int")},
 				{"PageNumWidth", new MapAttrDef_T("int")},
 				{"PageNumIndent", new MapAttrDef_T("int")},
 				{"lineSpacing", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapScriptPanelAttrDef = new Dictionary<string, MapAttrDef_T>
@@ -799,6 +831,7 @@ namespace UIEditor
 
 		Dictionary<string, MapAttrDef_T> conf_mapCountDownAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region CountDown
 				{"start", new MapAttrDef_T("bool")},
 				{"unit", new MapAttrDef_T("int")},
 				{"days", new MapAttrDef_T("int")},
@@ -811,23 +844,29 @@ namespace UIEditor
 				{"countChangeRate", new MapAttrDef_T("float")},
 				{"autoShowLength", new MapAttrDef_T("int")},
 				{"timePreset", new MapAttrDef_T("time")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapApartPanelAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region ApartPanel
 				{"own", new MapAttrDef_T("bool")},
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapDraggedPanelAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region DraggedPanel
 				{"canDraggedCopy", new MapAttrDef_T("bool")},
 				{"getInfoIndex", new MapAttrDef_T("int")},
 				{"copyTime", new MapAttrDef_T("int")},
 				{"own", new MapAttrDef_T("bool")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapTurnTableAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region TurnTable
 				{"tableCount", new MapAttrDef_T("int")},
 				{"resultIndexString", new MapAttrDef_T("string")},
 				{"interval", new MapAttrDef_T("int")},
@@ -841,6 +880,7 @@ namespace UIEditor
 				{"tableInterval", new MapAttrDef_T("int")},
 				{"lineSpace", new MapAttrDef_T("int")},
 				{"backTime", new MapAttrDef_T("int")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapDrawModelAttrDef = new Dictionary<string, MapAttrDef_T>
@@ -849,6 +889,7 @@ namespace UIEditor
 
 		Dictionary<string, MapAttrDef_T> conf_mapDropListAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region DropList
 				{"appendOri", new MapAttrDef_T("int")},
 				{"packWidth", new MapAttrDef_T("int")},
 				{"packHeight", new MapAttrDef_T("int")},
@@ -856,13 +897,16 @@ namespace UIEditor
 				{"expansionHeight", new MapAttrDef_T("int")},
 				{"lineSpace", new MapAttrDef_T("int")},
 				{"ignoreParentClip", new MapAttrDef_T("bool")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapEventAttrDef = new Dictionary<string, MapAttrDef_T>
 			{
+				#region Event
 				{"type", new MapAttrDef_T("string")},
 				{"function", new MapAttrDef_T("string")},
 				{"sound", new MapAttrDef_T("string")}
+				#endregion
 			};
 
 		Dictionary<string, MapAttrDef_T> conf_mapToolTipAttrDef = new Dictionary<string, MapAttrDef_T>
@@ -873,6 +917,7 @@ namespace UIEditor
 		{
 			m_mapCtrlDef = new Dictionary<string, Dictionary<string, MapAttrDef_T>>
 			{
+				#region boloUIControls
 				{ "basic", conf_mapBaseAttrDef },
 				{ "panel", conf_mapPanelAttrDef },
 				{ "label", conf_mapLabelAttrDef },
@@ -896,7 +941,10 @@ namespace UIEditor
 				{ "dropList", conf_mapDropListAttrDef},
 				{ "event", conf_mapEventAttrDef},
 				{ "tooltip", conf_mapToolTipAttrDef}
+				#endregion
 			};
 		}
+		#endregion
+
 	}
 }
