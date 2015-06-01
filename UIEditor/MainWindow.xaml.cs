@@ -29,6 +29,7 @@ namespace UIEditor
 		public TabItem m_tab;
 		public TreeViewItem m_treeUI;
 		public XmlDocument m_xmlDoc;
+		public bool m_isDrawed;
 	}
 
 	public partial class MainWindow : Window
@@ -91,28 +92,60 @@ namespace UIEditor
 			}
 			string path = openFolderDialog.SelectedPath;
 
+			sendPathToGL(path);
+			//refreshImage(path + "\\images");
 			refreshSkin(path + "\\skin");
 			refreshProjTree(path, this.mx_treePro, true);
 		}
 
-		private void refreshSkin(string path)
+		private void sendPathToGL(string path)
 		{
-			DirectoryInfo di = new DirectoryInfo(path);
+			updateGL(path, SendTag.SEND_PATH);
+		}
 
+		private void refreshImage(string path)
+		{
+			//todo
+			DirectoryInfo di = new DirectoryInfo(path);
 
 			foreach (var dri in di.GetFiles("*.xml"))
 			{
 				XmlDocument xmlDoc = new XmlDocument();
-				xmlDoc = new XmlDocument();
 				xmlDoc.Load(path + "\\" + dri.Name);
-				XmlNode xn = xmlDoc.SelectSingleNode("BoloUI");
+				string buffer = xmlDoc.InnerXml;
 
-				if (xn != null)
-				{
-					string buffer = xmlDoc.InnerXml;
-					updateGL(buffer, true);
-				}
+				updateGL(buffer, SendTag.SEND_IMGRES_DATA);
 			}
+		}
+
+		private void refreshSkin(string path)
+		{
+			XmlDocument xmlDoc = new XmlDocument();
+			xmlDoc.Load(path + "\\publicskin.xml");
+			XmlNode xn = xmlDoc.SelectSingleNode("BoloUI");
+
+			if (xn != null)
+			{
+				string buffer = xmlDoc.InnerXml;
+				updateGL("publicskin.xml", SendTag.SEND_SKIN_NAME);
+				updateGL(buffer, SendTag.SEND_SKIN_DATA);
+			}
+// 			DirectoryInfo di = new DirectoryInfo(path);
+// 
+// 			foreach (var dri in di.GetFiles("*.xml"))
+// 			{
+// 				XmlDocument xmlDoc = new XmlDocument();
+// 				xmlDoc.Load(path + "\\" + dri.Name);
+// 				XmlNode xn = xmlDoc.SelectSingleNode("BoloUI");
+// 
+// 				if (xn != null)
+// 				{
+// 					string buffer = xmlDoc.InnerXml;
+// 					//string firstName = dri.Name.Substring(0, dri.Name.LastIndexOf("."));
+// 					updateGL(dri.Name, SendTag.SEND_SKIN_NAME);
+// 					updateGL(buffer, SendTag.SEND_SKIN_DATA);
+// 				}
+// 			}
 		}
 
 		private void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
@@ -289,7 +322,18 @@ namespace UIEditor
 			public IntPtr lpData;
 		}
 
-		public void updateGL(string buffer, bool isSkin = false)
+		public enum SendTag
+		{
+			SEND_PATH = 0x0000,
+			SEND_NORMAL_NAME = 0x0001,
+			SEND_NORMAL_DATA = 0x0011,
+			SEND_SKIN_NAME = 0x0002,
+			SEND_SKIN_DATA = 0x0012,
+			SEND_IMGRES_NAME = 0x0003,
+			SEND_IMGRES_DATA = 0x0013,
+		};
+
+		public void updateGL(string buffer, SendTag msgTag = SendTag.SEND_NORMAL_DATA)
 		{
 			ControlHostElement.Visibility = System.Windows.Visibility.Visible;
 			if (mx_hwndDebug.Text != "")
@@ -304,14 +348,17 @@ namespace UIEditor
 
 				fixed (byte* tmpBuff = utfArr)
 				{
-					if (isSkin != true)
-					{
-						msgData.dwData = (IntPtr)SEND_NORMAL;
-					}
-					else
-					{
-						msgData.dwData = (IntPtr)SEND_SKIN;
-					}
+// 					switch (msgTag)
+// 					{
+// 							//TODO SEND_UpdateUI
+// 						case SendTag.SEND_PATH:
+// 						case SendTag.SEND_NORMAL_DATA:
+// 						case SendTag.SEND_SKIN_DATA:
+// 						case SendTag.SEND_IMGRES_DATA:
+// 						default:
+// 							break;
+// 					}
+					msgData.dwData = (IntPtr)msgTag;
 					msgData.lpData = (IntPtr)tmpBuff;
 					msgData.cbData = lenUtf8 + 1;
 					SendMessage(m_hwndGL, WM_COPYDATA, 0, ref msgData);
@@ -411,8 +458,6 @@ namespace UIEditor
 		internal const int
 		  GET_HWND = 0x0000,
 
-		  SEND_NORMAL = 0x0001,
-		  SEND_SKIN = 0x0002,
 
 		  WM_DESTROY = 0x0002,
 		  WM_CLOSE = 0x0010,
@@ -480,7 +525,20 @@ namespace UIEditor
 						XmlDocument xmlDoc = new XmlDocument();
 						xmlDoc.Load(tabPath);
 						string buffer = xmlDoc.InnerXml;
-						this.updateGL(buffer);
+						string firstName = tabPath.Substring(0, tabPath.LastIndexOf("."));
+						string fileName = tabPath.Substring(tabPath.LastIndexOf("\\") + 1, (tabPath.Length - tabPath.LastIndexOf("\\") - 1));
+
+						updateGL(fileName, SendTag.SEND_NORMAL_NAME);
+						OpenedFile openFile;
+						if(m_mapOpenedFiles.TryGetValue(tabPath, out openFile))
+						{
+							if (openFile.m_isDrawed == null || openFile.m_isDrawed == false)
+							{
+								updateGL(buffer, SendTag.SEND_NORMAL_DATA);
+								openFile.m_isDrawed = true;
+								m_mapOpenedFiles[tabPath] = openFile;
+							}
+						}
 						ControlHostElement.Visibility = System.Windows.Visibility.Visible;
 					}
 					else
