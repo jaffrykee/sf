@@ -5,16 +5,16 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	mc:Ignorable="d"
 	HorizontalAlignment="Center"
-	Width="auto"
 	Name="mx_root"
 	Margin="2,2,2,2"
-	Loaded="mx_root_Loaded">
+	Loaded="mx_root_Loaded"
+	MinWidth="300">
 	<Grid.ColumnDefinitions>
-		<ColumnDefinition Name="mx_c0" Width="*"/>
-		<ColumnDefinition Name="mx_c1" Width="*"/>
+		<ColumnDefinition Name="mx_c0" Width="1*"/>
+		<ColumnDefinition Name="mx_c1" Width="1.6*"/>
 	</Grid.ColumnDefinitions>
-	<Label Name="mx_name" Grid.Column="0" MinWidth="50" Foreground="#ffffffff" HorizontalAlignment="Right">width:</Label>
+	<Label Name="mx_name" Grid.Column="0" Foreground="#ffffffff" HorizontalAlignment="Right">width:</Label>
 	<Grid Grid.Column="1" Background="#ffffffff"></Grid>
-	<Label Name="mx_valueDef" Grid.Column="1" MinWidth="100" Foreground="#ffaaaaaa">default</Label>
-	<TextBox Name="mx_value" Grid.Column="1" CaretBrush="Black" TextChanged="mx_value_TextChanged" MinWidth="100" Background="#00000000"></TextBox>
+	<Label Name="mx_valueDef" Grid.Column="1" Foreground="#ffaaaaaa">default</Label>
+	<TextBox Name="mx_value" Grid.Column="1" CaretBrush="Black" TextChanged="mx_value_TextChanged" Background="#00000000"></TextBox>
 </Grid>

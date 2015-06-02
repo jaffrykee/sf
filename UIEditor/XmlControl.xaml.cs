@@ -57,12 +57,6 @@ namespace UIEditor
 					TreeViewItem skinFolder = new TreeViewItem();
 					TreeViewItem BoloUIEventFolder = new TreeViewItem();
 					TreeViewItem skingroupFolder = new TreeViewItem();
-					bool had_publicresource = false;
-					bool had_publicskin = false;
-					bool had_resource = false;
-					bool had_skin = false;
-					bool had_BoloUIEvent = false;
-					bool had_skingroup = false;
 
 					this.textContent.Text += ("未被解析的项目：" + "\r\n");
 					foreach (XmlNode xnf in xnl)
@@ -74,115 +68,14 @@ namespace UIEditor
 							switch (xe.Name)
 							{
 								case "publicresource":
-									#region
-									{
-										if(had_publicresource == false)
-										{
-											publicresFolder.Header = "publicresource";
-											this.m_openedFile.m_treeUI.Items.Add(publicresFolder);
-											had_publicresource = true;
-										}
-										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.PublicResource"), xe, this) as TreeViewItem;
-										publicresFolder.Items.Add(treeChild);
-									}
-									#endregion
-									break;
 								case "publicskin":
-									#region
-									{
-										if(had_publicskin == false)
-										{
-											publicskinFolder.Header = "publicskin";
-											this.m_openedFile.m_treeUI.Items.Add(publicskinFolder);
-											had_publicskin = true;
-										}
-										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.PublicSkin"), xe, this) as TreeViewItem;
-										publicskinFolder.Items.Add(treeChild);
-										m_parentWindow.m_mapStrSkin[xe.GetAttribute("Name")] = xe;
-									}
-									#endregion
-									break;
 								case "resource":
-									#region
-									{
-										if (had_resource == false)
-										{
-											resFolder.Header = "resource";
-											this.m_openedFile.m_treeUI.Items.Add(resFolder);
-											had_resource = true;
-										}
-										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Resource"), xe, this) as TreeViewItem;
-										resFolder.Items.Add(treeChild);
-									}
-									#endregion
-									break;
 								case "skin":
-									#region
-									{
-										if (had_skin == false)
-										{
-											skinFolder.Header = "skin";
-											this.m_openedFile.m_treeUI.Items.Add(skinFolder);
-											had_skin = true;
-										}
-										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Skin"), xe, this) as TreeViewItem;
-										skinFolder.Items.Add(treeChild);
-										m_parentWindow.m_mapStrSkin[xe.GetAttribute("Name")] = xe;
-									}
-									#endregion
-									break;
 								case "skingroup":
-									#region
-									{
-										if (had_skingroup == false)
-										{
-											skingroupFolder.Header = "skingroup";
-											this.m_openedFile.m_treeUI.Items.Add(skingroupFolder);
-											had_skingroup = true;
-										}
-										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.SkinGroup"), xe, this) as TreeViewItem;
-										skingroupFolder.Items.Add(treeChild);
-									}
-									#endregion
-									break;
 								case "BoloUIEvent":
-									#region
-									{
-										if (had_BoloUIEvent == false)
-										{
-											BoloUIEventFolder.Header = "BoloUIEvent";
-											this.m_openedFile.m_treeUI.Items.Add(BoloUIEventFolder);
-											had_BoloUIEvent = true;
-										}
-										XmlNodeList xnl1 = xe.ChildNodes;
-										foreach (XmlNode xnf1 in xnl1)
-										{
-											XmlElement xe1 = (XmlElement)xnf1;
-											switch(xe1.Name)
-											{
-												case "event":
-													#region
-													{
-														var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Event"), xe1, this) as TreeViewItem;
-														BoloUIEventFolder.Items.Add(treeChild);
-													}
-													#endregion
-													break;
-												default:
-													this.textContent.Text += (xe1.Name + ":" + xe1.GetAttribute("Name") + "\r\n");
-													break;
-											}
-										}
-									}
-									#endregion
-									break;
 								case "panel":
-									#region
-									{
-										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.panel"), xe, this, this.mx_workSpace) as TreeViewItem;
-										this.m_openedFile.m_treeUI.Items.Add(treeChild);
-									}
-									#endregion
+									var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
+									this.m_openedFile.m_treeUI.Items.Add(treeChild);
 									break;
 								default:
 									{
@@ -211,13 +104,6 @@ namespace UIEditor
 				 */
 
 				m_parentWindow.mx_toolArea.Children.Clear();
-				m_parentWindow.m_mapStrAttrList.Clear();
-				m_parentWindow.m_mapStrAttrList["normal"] = new UIEditor.AttrList("基本");
-				m_parentWindow.m_mapStrAttrList["view"] = new UIEditor.AttrList("显示相关");
-				m_parentWindow.m_mapStrAttrList["other"] = new UIEditor.AttrList("其他");
-				m_parentWindow.mx_toolArea.Children.Add(m_parentWindow.m_mapStrAttrList["normal"]);
-				m_parentWindow.mx_toolArea.Children.Add(m_parentWindow.m_mapStrAttrList["view"]);
-				m_parentWindow.mx_toolArea.Children.Add(m_parentWindow.m_mapStrAttrList["other"]);
 
 				m_loaded = true;
 			}

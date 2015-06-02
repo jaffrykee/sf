@@ -59,63 +59,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BoloRes\Animation.cs" />
-    <Compile Include="BoloRes\DrawImg.xaml.cs">
-      <DependentUpon>DrawImg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BoloRes\DrawText.xaml.cs">
-      <DependentUpon>DrawText.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BoloRes\SkinGroup.cs" />
-    <Compile Include="BoloRes\TextShape.cs" />
-    <Compile Include="BoloRes\Skin.cs" />
-    <Compile Include="BoloRes\Resource.cs" />
-    <Compile Include="BoloRes\PublicSkin.cs" />
-    <Compile Include="BoloRes\PublicResource.cs" />
-    <Compile Include="BoloRes\ImageShape.cs" />
-    <Compile Include="BoloRes\Apperance.cs" />
-    <Compile Include="BoloRes\AniFrame.cs" />
-    <Compile Include="BoloRes\resBasic.xaml.cs">
-      <DependentUpon>resBasic.xaml</DependentUpon>
-    </Compile>
     <Compile Include="BoloUI\Basic.xaml.cs">
       <DependentUpon>Basic.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BoloUI\check.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BoloUI\apartPanel.cs" />
-    <Compile Include="BoloUI\tabPanel.cs" />
-    <Compile Include="BoloUI\radio.cs" />
-    <Compile Include="BoloUI\richText.cs" />
-    <Compile Include="BoloUI\scriptPanel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BoloUI\countDown.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BoloUI\button.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BoloUI\skillbutton.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BoloUI\SkinCanvas.xaml.cs">
-      <DependentUpon>SkinCanvas.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BoloUI\virtualpad.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BoloUI\progress.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BoloUI\listPanel.cs" />
-    <Compile Include="BoloUI\label.cs" />
-    <Compile Include="BoloUI\panel.cs" />
-    <Compile Include="BoloUI\Event.xaml.cs">
-      <DependentUpon>Event.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ControlHost.cs" />
+    <Compile Include="FileControl.cs" />
     <Compile Include="FileTabItem.xaml.cs">
       <DependentUpon>FileTabItem.xaml</DependentUpon>
     </Compile>
@@ -135,29 +83,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="BoloRes\DrawImg.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="BoloRes\DrawText.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="BoloRes\resBasic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="BoloUI\Basic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="BoloUI\Event.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="BoloUI\SkinCanvas.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FileTabItem.xaml">
       <SubType>Designer</SubType>
