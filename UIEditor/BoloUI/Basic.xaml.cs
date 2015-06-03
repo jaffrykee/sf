@@ -24,8 +24,6 @@ namespace UIEditor.BoloUI
 		public XmlControl m_rootControl;
 		public XmlElement m_xe;
 		public MainWindow m_pW;
-		public Dictionary<string, AttrList> m_mapAttrList;
-		public Dictionary<string, Dictionary<string, AttrRow>> m_mapAttrRow;
 
 		public Basic()
 		{
@@ -37,8 +35,6 @@ namespace UIEditor.BoloUI
 			InitializeComponent();
 			m_rootControl = rootControl;
 			m_xe = xe;
-			m_mapAttrList = new Dictionary<string, AttrList>();
-			m_mapAttrRow = new Dictionary<string, Dictionary<string, AttrRow>>();
 		}
 
 		protected void addChild()
@@ -63,7 +59,18 @@ namespace UIEditor.BoloUI
 
 		protected void initHeader()
 		{
-			mx_text.Content = m_xe.Name;
+			string ctrlTip;
+
+			StringDic.m_control.TryGetValue(m_xe.Name, out ctrlTip);
+			if (ctrlTip != null && ctrlTip != "")
+			{
+				mx_text.Content = "<" + ctrlTip + ">";
+				mx_text.ToolTip = m_xe.Name;
+			}
+			else
+			{
+				mx_text.Content = "<" + m_xe.Name + ">";
+			}
 			string name = "", id = "";
 			if (m_xe.GetAttribute("name") != "")
 			{
@@ -77,7 +84,7 @@ namespace UIEditor.BoloUI
 			{
 				name = m_xe.GetAttribute("type");
 			}
-			mx_text.Content += ":" + name;
+			mx_text.Content += name;
 			if (m_xe.GetAttribute("baseID") != "")
 			{
 				id = m_xe.GetAttribute("baseID");
@@ -95,122 +102,74 @@ namespace UIEditor.BoloUI
 
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			Dictionary<string, MainWindow.AttrDef_T> AttrDefPtr;
-			string ctrlName;
-			bool isHad = false;
 			m_pW = Window.GetWindow(this) as MainWindow;
-
-			ctrlName = m_xe.Name;
-			if (m_pW.m_mapCtrlDef.TryGetValue(ctrlName, out AttrDefPtr))
-			{
-				isHad = true;
-				m_mapAttrList.Add(ctrlName, new AttrList(ctrlName));
-				m_mapAttrRow.Add(ctrlName, new Dictionary<string, AttrRow>());
-				List<KeyValuePair<string, MainWindow.AttrDef_T>> lstAttrDef = AttrDefPtr.ToList();
-				foreach (KeyValuePair<string, MainWindow.AttrDef_T> attrPair in lstAttrDef)
-				{
-					m_mapAttrRow[ctrlName][attrPair.Key] = new AttrRow(attrPair.Key);
-				}
-			}
-
-			if (isHad && m_xe.Name != "event")
-			{
-				ctrlName = "basic";
-				if (m_pW.m_mapCtrlDef.TryGetValue(ctrlName, out AttrDefPtr))
-				{
-					m_mapAttrList.Add(ctrlName, new AttrList(ctrlName));
-					m_mapAttrRow.Add(ctrlName, new Dictionary<string, AttrRow>());
-					List<KeyValuePair<string, MainWindow.AttrDef_T>> lstAttrDef = AttrDefPtr.ToList();
-					foreach (KeyValuePair<string, MainWindow.AttrDef_T> attrPair in lstAttrDef)
-					{
-						m_mapAttrRow[ctrlName][attrPair.Key] = new AttrRow(attrPair.Key);
-					}
-				}
-			}
-
-			ctrlName = "other";
-			m_mapAttrList.Add(ctrlName, new AttrList(ctrlName));
-			m_mapAttrRow.Add(ctrlName, new Dictionary<string, AttrRow>());
-
-			ctrlName = m_xe.Name;
-			foreach (XmlAttribute att in m_xe.Attributes)
-			{
-				AttrRow attrRow;
-
-				if (isHad && m_xe.Name != "event")
-				{
-					if (m_mapAttrRow["basic"].TryGetValue(att.Name, out attrRow))
-					{
-						attrRow.m_value = att.Value;
-					}
-					else
-					{
-						if (m_mapAttrRow[ctrlName].TryGetValue(att.Name, out attrRow))
-						{
-							attrRow.m_value = att.Value;
-						}
-						else
-						{
-							m_mapAttrRow["other"][att.Name] = new AttrRow(att.Name, att.Value);
-						}
-					}
-				}
-				else if (m_xe.Name == "event")
-				{
-					if (m_mapAttrRow[ctrlName].TryGetValue(att.Name, out attrRow))
-					{
-						attrRow.m_value = att.Value;
-					}
-					else
-					{
-						m_mapAttrRow["other"][att.Name] = new AttrRow(att.Name, att.Value);
-					}
-				}
-				else
-				{
-					m_mapAttrRow["other"][att.Name] = new AttrRow(att.Name, att.Value);
-				}
-			}
-
-			List<KeyValuePair<string, AttrRow>> lstAttrRow;
-
-			if(isHad && m_xe.Name != "event")
-			{
-				ctrlName = "basic";
-				lstAttrRow = m_mapAttrRow[ctrlName].ToList();
-				foreach(KeyValuePair<string, AttrRow> attrRowPair in lstAttrRow)
-				{
-					m_mapAttrList[ctrlName].mx_frame.Children.Add(attrRowPair.Value);
-				}
-			}
-
-			if (isHad)
-			{
-				ctrlName = m_xe.Name;
-				lstAttrRow = m_mapAttrRow[ctrlName].ToList();
-				foreach (KeyValuePair<string, AttrRow> attrRowPair in lstAttrRow)
-				{
-					m_mapAttrList[ctrlName].mx_frame.Children.Add(attrRowPair.Value);
-				}
-			}
-
-			ctrlName = "other";
-			lstAttrRow = m_mapAttrRow[ctrlName].ToList();
-			foreach (KeyValuePair<string, AttrRow> attrRowPair in lstAttrRow)
-			{
-				m_mapAttrList[ctrlName].mx_frame.Children.Add(attrRowPair.Value);
-			}
-
 			initHeader();
 			addChild();
 		}
 
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			m_pW.mx_toolArea.Children.Clear();
-			foreach(KeyValuePair<string, AttrList> attrListPair in m_mapAttrList.ToList())
+			m_pW.hiddenAllAttr();
+
+			MainWindow.CtrlDef_T ctrlDef;
+			bool isHad = false;
+			if(m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
 			{
-				m_pW.mx_toolArea.Children.Add(attrListPair.Value);
+				isHad = true;
+
+				if (m_xe.Name != "event")
+				{
+					m_pW.m_mapCtrlDef["basic"].m_attrListUI.Visibility = Visibility.Visible;
+					m_pW.m_mapCtrlDef["basic"].m_attrListUI.clearRowValue();
+				}
+				ctrlDef.m_attrListUI.Visibility = Visibility.Visible;
+				ctrlDef.m_attrListUI.clearRowValue();
+			}
+
+			foreach (XmlAttribute attr in m_xe.Attributes)
+			{
+				bool isOther = false;
+
+				if(isHad)
+				{
+					MainWindow.AttrDef_T attrDef;
+					if (m_pW.m_mapCtrlDef["basic"].m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
+					{
+						attrDef.m_attrRowUI.m_value = attr.Value;
+					}
+					else if (ctrlDef.m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
+					{
+						attrDef.m_attrRowUI.m_value = attr.Value;
+					}
+					else
+					{
+						isOther = true;
+					}
+				}
+				else
+				{
+					isOther = true;
+				}
+
+				if(isOther)
+				{
+					if (m_pW.m_otherAttrList == null)
+					{
+						m_pW.m_otherAttrList = new AttrList("other");
+						m_pW.mx_toolArea.Children.Add(m_pW.m_otherAttrList);
+					}
+					m_pW.m_otherAttrList.mx_frame.Children.Add(new AttrRow("string", attr.Name, attr.Value));
+				}
+			}
+			if(isHad)
+			{
+				m_pW.m_mapCtrlDef["basic"].m_attrListUI.refreshRowVisible();
+				ctrlDef.m_attrListUI.refreshRowVisible();
+			}
+			if (m_pW.m_otherAttrList != null)
+			{
+				m_pW.m_otherAttrList.refreshRowVisible();
+				m_pW.m_otherAttrList.Visibility = Visibility.Visible;
 			}
 		}
 	}

@@ -103,8 +103,6 @@ namespace UIEditor
 					}
 				 */
 
-				m_parentWindow.mx_toolArea.Children.Clear();
-
 				m_loaded = true;
 			}
 		}

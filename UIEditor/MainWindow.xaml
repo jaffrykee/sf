@@ -21,7 +21,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="250" MinWidth="100" MaxWidth="400"/>
 			<ColumnDefinition Width="*" MinWidth="50"/>
-			<ColumnDefinition Width="300" MinWidth="200" MaxWidth="400"/>
+			<ColumnDefinition Width="325" MinWidth="325"/>
 		</Grid.ColumnDefinitions>
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
 			<MenuItem Header="文件">
@@ -57,10 +57,24 @@
 			</ToolBar>
 		</DockPanel>
 		<DockPanel Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Background="#ffdddddd" Margin="0,0,5,0">
-            <TreeView BorderThickness="0">
-                <TreeViewItem Name="mx_treePro">
-                </TreeViewItem>
-            </TreeView>
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Grid Background="#ff333333">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="100"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<CheckBox IsEnabled="False" IsChecked="True" Foreground="#ffaaaaaa" Grid.Column="0" VerticalAlignment="Center" Margin="10,0,0,0">显示name</CheckBox>
+					<CheckBox IsEnabled="False" IsChecked="True" Foreground="#ffaaaaaa" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">显示id</CheckBox>
+				</Grid>
+				<TreeView BorderThickness="0" Grid.Row="1">
+					<TreeViewItem Name="mx_treePro">
+					</TreeViewItem>
+				</TreeView>
+			</Grid>
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5"></GridSplitter>
 		<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Background="#ffdddddd" Margin="5,0,0,0">

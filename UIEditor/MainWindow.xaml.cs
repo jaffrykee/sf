@@ -38,11 +38,12 @@ namespace UIEditor
 		public string m_curFile;
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
-		public Dictionary<string, Dictionary<string, AttrDef_T>> m_mapCtrlDef;
+		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
 		public IntPtr m_hwndGLParent;
 		public IntPtr m_hwndGL;
+		public AttrList m_otherAttrList;
 
 		private int m_dep;
 
@@ -58,7 +59,6 @@ namespace UIEditor
 			m_dpiSysX = 96.0f;
 			m_dpiSysY = 96.0f;
 			m_curFile = "";
-			initXmlValueDef();
 		}
 
 		private void openProj(object sender, RoutedEventArgs e)
@@ -92,6 +92,7 @@ namespace UIEditor
 			string path = openFolderDialog.SelectedPath;
 
 			sendPathToGL(path);
+			initXmlValueDef();
 			//refreshImage(path + "\\images");
 			refreshSkin(path + "\\skin");
 			refreshProjTree(path, this.mx_treePro, true);
@@ -558,33 +559,32 @@ namespace UIEditor
 		#region xml控件名、属性名、默认值、取值范围等。
 		public class AttrDef_T
 		{
+			public AttrRow m_attrRowUI;
 			public string m_type;
 			public string m_defValue;
 			public bool m_isEnum;
 			public List<string> m_enumValue;
 
-			public AttrDef_T(string type, string defValue)
+			public AttrDef_T(string type = "int", string defValue = null, AttrRow rowUI = null)
 			{
+				m_attrRowUI = rowUI;
 				m_type = type;
 				m_defValue = defValue;
 				m_isEnum = false;
 				m_enumValue = null;
 			}
-
-			public AttrDef_T(string type)
-				: this(type, null)
-			{
-			}
-
-			public AttrDef_T()
-				: this("int", null)
-			{
-			}
 		}
 
-		public struct MapAttrDef_T
+		public class CtrlDef_T
 		{
 			public Dictionary<string, AttrDef_T> m_mapAttrDef;
+			public AttrList m_attrListUI;
+
+			public CtrlDef_T(Dictionary<string, AttrDef_T> mapAttrDef, AttrList attrListUI)
+			{
+				m_mapAttrDef = mapAttrDef;
+				m_attrListUI = attrListUI;
+			}
 		}
 
 
@@ -979,34 +979,53 @@ namespace UIEditor
 
 		public void initXmlValueDef()
 		{
-			m_mapCtrlDef = new Dictionary<string, Dictionary<string, AttrDef_T>>
+			m_mapCtrlDef = new Dictionary<string, CtrlDef_T>
 			{
 				#region boloUIControls
-				{ "basic", conf_mapBaseAttrDef },
-				{ "panel", conf_mapPanelAttrDef },
-				{ "label", conf_mapLabelAttrDef },
-				{ "button", conf_mapButtonAttrDef },
-				{ "skillbutton", conf_mapSkillButtonAttrDef },
-				{ "progress", conf_mapProgressAttrDef },
-				{ "radio", conf_mapRadioAttrDef },
-				{ "check", conf_mapCheckAttrDef },
-				{ "listPanel", conf_mapListPanelAttrDef },
-				{ "tabPanel", conf_mapTabPanelAttrDef },
-				{ "pagePanel", conf_mapPagePanelAttrDef},
-				{ "virtualpad", conf_mapVirtualPadAttrDef},
-				{ "richText", conf_mapRichTextAttrDef},
-				{ "pageText", conf_mapPageTextAttrDef},
-				{ "scriptPanel", conf_mapScriptPanelAttrDef },
-				{ "countDown", conf_mapCountDownAttrDef},
-				{ "apartPanel", conf_mapApartPanelAttrDef},
-				{ "draggedPanel", conf_mapDraggedPanelAttrDef},
-				{ "turnTable", conf_mapTurnTableAttrDef},
-				{ "drawModel", conf_mapDrawModelAttrDef },
-				{ "dropList", conf_mapDropListAttrDef},
-				{ "event", conf_mapEventAttrDef},
-				{ "tooltip", conf_mapToolTipAttrDef}
+				{ "basic", new CtrlDef_T(conf_mapBaseAttrDef, null)},
+				{ "panel", new CtrlDef_T(conf_mapPanelAttrDef, null)},
+				{ "label", new CtrlDef_T(conf_mapLabelAttrDef, null)},
+				{ "button", new CtrlDef_T(conf_mapButtonAttrDef, null)},
+				{ "skillbutton", new CtrlDef_T(conf_mapSkillButtonAttrDef, null)},
+				{ "progress", new CtrlDef_T(conf_mapProgressAttrDef, null)},
+				{ "radio", new CtrlDef_T(conf_mapRadioAttrDef, null)},
+				{ "check", new CtrlDef_T(conf_mapCheckAttrDef, null)},
+				{ "listPanel", new CtrlDef_T(conf_mapListPanelAttrDef, null)},
+				{ "tabPanel", new CtrlDef_T(conf_mapTabPanelAttrDef, null)},
+				{ "pagePanel", new CtrlDef_T(conf_mapPagePanelAttrDef, null)},
+				{ "virtualpad", new CtrlDef_T(conf_mapVirtualPadAttrDef, null)},
+				{ "richText", new CtrlDef_T(conf_mapRichTextAttrDef, null)},
+				{ "pageText", new CtrlDef_T(conf_mapPageTextAttrDef, null)},
+				{ "scriptPanel", new CtrlDef_T(conf_mapScriptPanelAttrDef, null)},
+				{ "countDown", new CtrlDef_T(conf_mapCountDownAttrDef, null)},
+				{ "apartPanel", new CtrlDef_T(conf_mapApartPanelAttrDef, null)},
+				{ "draggedPanel", new CtrlDef_T(conf_mapDraggedPanelAttrDef, null)},
+				{ "turnTable", new CtrlDef_T(conf_mapTurnTableAttrDef, null)},
+				{ "drawModel", new CtrlDef_T(conf_mapDrawModelAttrDef, null)},
+				{ "dropList", new CtrlDef_T(conf_mapDropListAttrDef, null)},
+				{ "event", new CtrlDef_T(conf_mapEventAttrDef, null)},
+				{ "tooltip", new CtrlDef_T(conf_mapToolTipAttrDef, null)}
 				#endregion
 			};
+
+			foreach(KeyValuePair<string, CtrlDef_T> pairCtrlDef in m_mapCtrlDef.ToList())
+			{
+				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI = new AttrList(pairCtrlDef.Key));
+				m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI.Visibility = Visibility.Collapsed;
+			}
+		}
+
+		public void hiddenAllAttr()
+		{
+			if (m_otherAttrList != null)
+			{
+				mx_toolArea.Children.Remove(m_otherAttrList);
+				m_otherAttrList = null;
+			}
+			foreach(AttrList attrList in mx_toolArea.Children)
+			{
+				attrList.Visibility = Visibility.Collapsed;
+			}
 		}
 		#endregion
 

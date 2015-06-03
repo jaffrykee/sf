@@ -73,6 +73,7 @@
     <Compile Include="Public\AttrRow.xaml.cs">
       <DependentUpon>AttrRow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringDic.cs" />
     <Compile Include="UnknownControl.xaml.cs">
       <DependentUpon>UnknownControl.xaml</DependentUpon>
     </Compile>
