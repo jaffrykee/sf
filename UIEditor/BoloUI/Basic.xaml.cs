@@ -24,6 +24,7 @@ namespace UIEditor.BoloUI
 		public XmlControl m_rootControl;
 		public XmlElement m_xe;
 		public MainWindow m_pW;
+		public bool m_isCtrl;
 
 		public Basic()
 		{
@@ -35,6 +36,14 @@ namespace UIEditor.BoloUI
 			InitializeComponent();
 			m_rootControl = rootControl;
 			m_xe = xe;
+			m_isCtrl = false;
+		}
+
+		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
+		{
+			m_pW = Window.GetWindow(this) as MainWindow;
+			initHeader();
+			addChild();
 		}
 
 		protected void addChild()
@@ -57,10 +66,16 @@ namespace UIEditor.BoloUI
 			}
 		}
 
-		protected void initHeader()
+		public void initHeader(bool isUpdate = false)
 		{
 			string ctrlTip;
+			string name = "", id = "";
+			MainWindow.CtrlDef_T ctrlDef;
 
+			if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
+			{
+				m_isCtrl = true;
+			}
 			StringDic.m_control.TryGetValue(m_xe.Name, out ctrlTip);
 			if (ctrlTip != null && ctrlTip != "")
 			{
@@ -71,52 +86,72 @@ namespace UIEditor.BoloUI
 			{
 				mx_text.Content = "<" + m_xe.Name + ">";
 			}
-			string name = "", id = "";
-			if (m_xe.GetAttribute("name") != "")
+			if (m_isCtrl && m_xe.Name != "event")
 			{
-				name = m_xe.GetAttribute("name");
-			}
-			else if (m_xe.GetAttribute("Name") != "")
-			{
-				name = m_xe.GetAttribute("Name");
-			}
-			else if (m_xe.GetAttribute("type") != "")
-			{
-				name = m_xe.GetAttribute("type");
-			}
-			mx_text.Content += name;
-			if (m_xe.GetAttribute("baseID") != "")
-			{
+				if (m_xe.GetAttribute("name") != "")
+				{
+					name = m_xe.GetAttribute("name");
+				}
+				if (m_xe.GetAttribute("baseID") == "")
+				{
+					//m_xe.SetAttribute("baseID", StringDic.getRandString());
+					m_xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32/2));
+					m_pW.mx_debug.Text += "<警告>baseID没有赋值，已经将其替换为随机值：" + m_xe.GetAttribute("baseID") + "\r\n";
+				}
+
+				if(isUpdate == false)
+				{
+					Basic ctrl;
+					id = m_xe.GetAttribute("baseID");
+					if (m_rootControl.m_mapCtrlUI.TryGetValue(id, out ctrl))
+					{
+						//baseId重复了
+						m_xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
+						m_pW.mx_debug.Text += "<警告>baseID(" + id + ")重复，已经将其替换为随机值：" + m_xe.GetAttribute("baseID") + "\r\n";
+					}
+				}
+				else
+				{
+					id = m_xe.GetAttribute("baseID");
+				}
+				m_rootControl.m_mapCtrlUI[id] = this;
+
 				id = m_xe.GetAttribute("baseID");
 			}
-			else if(m_xe.GetAttribute("id") != "")
+			else
 			{
-				id = m_xe.GetAttribute("id");
-			}
-			else if (m_xe.GetAttribute("function") != "")
-			{
-				id = m_xe.GetAttribute("function");
-			}
-			mx_text.Content += "(" + id + ")";
-		}
+				if (m_xe.GetAttribute("Name") != "")
+				{
+					name = m_xe.GetAttribute("Name");
+				}
+				else if (m_xe.GetAttribute("type") != "")
+				{
+					name = m_xe.GetAttribute("type");
+				}
 
-		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
-		{
-			m_pW = Window.GetWindow(this) as MainWindow;
-			initHeader();
-			addChild();
+				if (m_xe.GetAttribute("id") != "")
+				{
+					id = m_xe.GetAttribute("id");
+				}
+				else if (m_xe.GetAttribute("function") != "")
+				{
+					id = m_xe.GetAttribute("function");
+				}
+			}
+			mx_text.Content += name;
+			mx_text.Content += "(" + id + ")";
 		}
 
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			m_pW.hiddenAllAttr();
+			bool tmp = m_pW.m_attrBinding;
+			m_pW.m_attrBinding = false;
 
+			m_pW.hiddenAllAttr();
 			MainWindow.CtrlDef_T ctrlDef;
-			bool isHad = false;
+
 			if(m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
 			{
-				isHad = true;
-
 				if (m_xe.Name != "event")
 				{
 					m_pW.m_mapCtrlDef["basic"].m_attrListUI.Visibility = Visibility.Visible;
@@ -130,16 +165,18 @@ namespace UIEditor.BoloUI
 			{
 				bool isOther = false;
 
-				if(isHad)
+				if (m_isCtrl)
 				{
 					MainWindow.AttrDef_T attrDef;
 					if (m_pW.m_mapCtrlDef["basic"].m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
 					{
 						attrDef.m_attrRowUI.m_value = attr.Value;
+						attrDef.m_attrRowUI.m_elmUI = this;
 					}
 					else if (ctrlDef.m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
 					{
 						attrDef.m_attrRowUI.m_value = attr.Value;
+						attrDef.m_attrRowUI.m_elmUI = this;
 					}
 					else
 					{
@@ -158,10 +195,10 @@ namespace UIEditor.BoloUI
 						m_pW.m_otherAttrList = new AttrList("other");
 						m_pW.mx_toolArea.Children.Add(m_pW.m_otherAttrList);
 					}
-					m_pW.m_otherAttrList.mx_frame.Children.Add(new AttrRow("string", attr.Name, attr.Value));
+					m_pW.m_otherAttrList.mx_frame.Children.Add(new AttrRow("string", attr.Name, attr.Value, this));
 				}
 			}
-			if(isHad)
+			if (m_isCtrl)
 			{
 				m_pW.m_mapCtrlDef["basic"].m_attrListUI.refreshRowVisible();
 				ctrlDef.m_attrListUI.refreshRowVisible();
@@ -171,6 +208,8 @@ namespace UIEditor.BoloUI
 				m_pW.m_otherAttrList.refreshRowVisible();
 				m_pW.m_otherAttrList.Visibility = Visibility.Visible;
 			}
+
+			m_pW.m_attrBinding = tmp;
 		}
 	}
 }

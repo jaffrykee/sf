@@ -23,12 +23,48 @@ namespace UIEditor
 	/// </summary>
 
 
-	public struct OpenedFile
+	public class OpenedFile
 	{
 		public string m_path;
 		public TabItem m_tab;
 		public TreeViewItem m_treeUI;
 		public XmlDocument m_xmlDoc;
+		public UserControl m_frame;
+
+		public OpenedFile(TreeViewItem treeUI)
+		{
+			MainWindow pW = Window.GetWindow(treeUI) as MainWindow;
+			string fileType;
+
+			m_path = ((ToolTip)treeUI.ToolTip).Content.ToString();
+			fileType = m_path.Substring(m_path.LastIndexOf(".") + 1, (m_path.Length - m_path.LastIndexOf(".") - 1));   //扩展名
+			m_tab = new TabItem();
+			m_treeUI = treeUI;
+
+			if (fileType == "xml")
+			{
+				m_xmlDoc = new XmlDocument();
+				m_xmlDoc.Load(m_path);
+				string buffer = m_xmlDoc.InnerXml;
+				string firstName = m_path.Substring(0, m_path.LastIndexOf("."));
+				string fileName = m_path.Substring(m_path.LastIndexOf("\\") + 1, (m_path.Length - m_path.LastIndexOf("\\") - 1));
+
+				pW.updateGL(fileName, MainWindow.SendTag.SEND_NORMAL_NAME);
+				pW.updateGL(buffer, MainWindow.SendTag.SEND_NORMAL_DATA);
+			}
+
+			m_tab.Unloaded += new RoutedEventHandler(pW.eventCloseFile);
+			ToolTip tabTip = new ToolTip();
+			Button close = new Button();
+			tabTip.Content = m_path;
+			m_tab.Header = treeUI.Header.ToString();
+			m_tab.ToolTip = tabTip;
+			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
+			m_tab.Content = tabContent;
+
+			pW.mx_workTabs.Items.Add(m_tab);
+			pW.mx_workTabs.SelectedItem = m_tab;
+		}
 	}
 
 	public partial class MainWindow : Window
@@ -44,6 +80,7 @@ namespace UIEditor
 		public IntPtr m_hwndGLParent;
 		public IntPtr m_hwndGL;
 		public AttrList m_otherAttrList;
+		public bool m_attrBinding;		//xml属性绑定用，上锁和解锁必须成对出现
 
 		private int m_dep;
 
@@ -53,6 +90,7 @@ namespace UIEditor
 			m_hwndGL = IntPtr.Zero;
 			m_hwndGLParent = IntPtr.Zero;
 			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
+			m_attrBinding = true;
 			InitializeComponent();
 			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
 			m_mapStrSkin = new Dictionary<string, XmlElement>();
@@ -274,39 +312,11 @@ namespace UIEditor
 			}
 			else
 			{
-				ToolTip tabTip = new ToolTip();
-				Button close = new Button();
-
-				openedFile.m_tab = new TabItem();
-				openedFile.m_tab.Unloaded += new RoutedEventHandler(eventCloseFile);
-				tabTip.Content = tabPath;
-				openedFile.m_tab.Header = treeUI.Header.ToString();
-				openedFile.m_tab.ToolTip = tabTip;
-
-				var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
-				openedFile.m_tab.Content = tabContent;
-				openedFile.m_path = tabPath;
-				openedFile.m_treeUI = treeUI;
-
-				this.mx_workTabs.Items.Add(openedFile.m_tab);
-				m_mapOpenedFiles[tabPath] = openedFile;
-				this.mx_workTabs.SelectedItem = openedFile.m_tab;
-
-				if (fileType == "xml")
-				{
-					XmlDocument xmlDoc = new XmlDocument();
-					xmlDoc.Load(tabPath);
-					string buffer = xmlDoc.InnerXml;
-					string firstName = tabPath.Substring(0, tabPath.LastIndexOf("."));
-					string fileName = tabPath.Substring(tabPath.LastIndexOf("\\") + 1, (tabPath.Length - tabPath.LastIndexOf("\\") - 1));
-
-					updateGL(fileName, SendTag.SEND_NORMAL_NAME);
-					updateGL(buffer, SendTag.SEND_NORMAL_DATA);
-				}
+				m_mapOpenedFiles[tabPath] = new OpenedFile(treeUI);
 			}
 		}
 
-		private void eventCloseFile(object sender, RoutedEventArgs e)
+		public void eventCloseFile(object sender, RoutedEventArgs e)
 		{
 		}
 
@@ -387,28 +397,28 @@ namespace UIEditor
 			}
 			unsafe
 			{
-				byte[] utfArr = Encoding.UTF8.GetBytes(buffer);
-				int lenUtf8 = utfArr.Length;
+				int len;
+				byte[] charArr;
 				COPYDATASTRUCT_SENDEX msgData;
 
-				fixed (byte* tmpBuff = utfArr)
+				if (msgTag == SendTag.SEND_PATH)
 				{
-// 					switch (msgTag)
-// 					{
-// 							//TODO SEND_UpdateUI
-// 						case SendTag.SEND_PATH:
-// 						case SendTag.SEND_NORMAL_DATA:
-// 						case SendTag.SEND_SKIN_DATA:
-// 						case SendTag.SEND_IMGRES_DATA:
-// 						default:
-// 							break;
-// 					}
-					msgData.dwData = (IntPtr)msgTag;
-					msgData.lpData = (IntPtr)tmpBuff;
-					msgData.cbData = lenUtf8 + 1;
-					SendMessage(m_hwndGL, WM_COPYDATA, 0, ref msgData);
+					charArr = Encoding.Default.GetBytes(buffer);
+					len = charArr.Length;
+				}
+				else
+				{
+					charArr = Encoding.UTF8.GetBytes(buffer);
+					len = charArr.Length;
 				}
 
+				fixed (byte* tmpBuff = charArr)
+				{
+					msgData.dwData = (IntPtr)msgTag;
+					msgData.lpData = (IntPtr)tmpBuff;
+					msgData.cbData = len + 1;
+					SendMessage(m_hwndGL, WM_COPYDATA, 0, ref msgData);
+				}
 			}
 		}
 
@@ -416,7 +426,7 @@ namespace UIEditor
 		{
 			app = System.Windows.Application.Current;
 			myWindow = app.MainWindow;
-			listControl = new ControlHost(ControlHostElement.ActualHeight, ControlHostElement.ActualWidth);
+			listControl = new ControlHost();
 			ControlHostElement.Child = listControl;
 			listControl.MessageHook += new HwndSourceHook(ControlMsgFilter);
 
@@ -1029,5 +1039,14 @@ namespace UIEditor
 		}
 		#endregion
 
+		private void mx_bClearDebug_Click(object sender, RoutedEventArgs e)
+		{
+			mx_debug.Text = "";
+		}
+
+		private void mx_debug_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			mx_debug.ScrollToEnd();
+		}
 	}
 }

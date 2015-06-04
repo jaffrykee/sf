@@ -52,6 +52,9 @@ namespace UIEditor
 
 		public void clearRowValue()
 		{
+			bool tmp = m_pW.m_attrBinding;
+			m_pW.m_attrBinding = false;
+
 			foreach(object row in mx_frame.Children)
 			{
 				if (row.GetType() == Type.GetType("UIEditor.AttrRow"))
@@ -59,6 +62,7 @@ namespace UIEditor
 					((AttrRow)row).m_value = "";
 				}
 			}
+			m_pW.m_attrBinding = tmp;
 		}
 
 		public void refreshRowVisible()

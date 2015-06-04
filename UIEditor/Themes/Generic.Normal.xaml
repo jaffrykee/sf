@@ -12,6 +12,14 @@
 		<Setter Property="FontFamily" Value="Consolas"/>
 		<Setter Property="FontSize" Value="12"/>
 	</Style>
+	<Style TargetType="{x:Type TextBox}">
+		<Setter Property="FontFamily" Value="Consolas"/>
+		<Setter Property="FontSize" Value="12"/>
+	</Style>
+	<Style TargetType="{x:Type Label}">
+		<Setter Property="FontFamily" Value="Consolas"/>
+		<Setter Property="FontSize" Value="12"/>
+	</Style>
 	<Style TargetType="{x:Type GridSplitter}">
 		<Setter Property="Background" Value="#ffdddddd"/>
 	</Style>

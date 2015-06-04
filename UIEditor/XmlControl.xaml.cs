@@ -26,28 +26,29 @@ namespace UIEditor
 		public bool m_loaded;
 		public MainWindow m_parentWindow;
 		public OpenedFile m_openedFile;
+		//以baseID为索引的UI们
+		public Dictionary<string, BoloUI.Basic> m_mapCtrlUI;
 
 		public XmlControl(FileTabItem parent)
 		{
 			InitializeComponent();
 			m_parent = parent;
 			m_loaded = false;
+			m_mapCtrlUI = new Dictionary<string, BoloUI.Basic>();
 		}
 
 		private void tabFrameLoaded(object sender, RoutedEventArgs e)
 		{
 			if (m_loaded == false)
 			{
-				string path = this.m_parent.m_filePath;
-
 				m_parentWindow = Window.GetWindow(this) as MainWindow;
-				m_openedFile.m_xmlDoc = new XmlDocument();
-				m_openedFile.m_xmlDoc.Load(path);
-				XmlNode xn = m_openedFile.m_xmlDoc.SelectSingleNode("BoloUI");
-
 				m_openedFile = m_parentWindow.m_mapOpenedFiles[m_parent.m_filePath];
-				//清空上次打开遗留的TreeViewItem
-				this.m_openedFile.m_treeUI.Items.Clear();
+				m_openedFile.m_frame = this;
+				m_openedFile.m_treeUI.Items.Clear();
+
+				m_parentWindow.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
+
+				XmlNode xn = m_openedFile.m_xmlDoc.SelectSingleNode("BoloUI");
 				if (xn != null)
 				{
 					XmlNodeList xnl = xn.ChildNodes;
@@ -58,7 +59,7 @@ namespace UIEditor
 					TreeViewItem BoloUIEventFolder = new TreeViewItem();
 					TreeViewItem skingroupFolder = new TreeViewItem();
 
-					this.textContent.Text += ("未被解析的项目：" + "\r\n");
+					this.textContent.Text += ("未被解析的项目：\r\n");
 					foreach (XmlNode xnf in xnl)
 					{
 						if (xnf.NodeType == XmlNodeType.Element)

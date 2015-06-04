@@ -8,7 +8,7 @@ namespace UIEditor
 {
 	class StringDic
 	{
-		static public Dictionary<string, string> m_control = new Dictionary<string, string>
+		public static Dictionary<string, string> m_control = new Dictionary<string, string>
 		{
 			{ "basic", "基本"},
 			{ "panel", "面板"},
@@ -34,5 +34,19 @@ namespace UIEditor
 			{ "event", "事件"},
 			{ "tooltip", "说明"}
 		};
+
+		public static string getRandString(int pwdlen = 16, string pwdchars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+		{
+			string tmpstr = "";
+			int iRandNum;
+			Random rnd = new Random();
+
+			for (int i = 0; i < pwdlen; i++)
+			{
+				iRandNum = rnd.Next(pwdchars.Length);
+				tmpstr += pwdchars[iRandNum];
+			}
+			return tmpstr;
+		}
 	}
 }
