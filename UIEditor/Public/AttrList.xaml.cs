@@ -20,7 +20,6 @@ namespace UIEditor
 	public partial class AttrList : Grid
 	{
 		public string m_name;
-		public string m_curXml;
 		public MainWindow m_pW;
 
 		public AttrList(string name = "")
@@ -38,7 +37,7 @@ namespace UIEditor
 			{
 				foreach (KeyValuePair<string, MainWindow.AttrDef_T> listAttr in ctrlDef.m_mapAttrDef.ToList())
 				{
-					listAttr.Value.m_attrRowUI = new AttrRow(listAttr.Value.m_type, listAttr.Key);
+					listAttr.Value.m_attrRowUI = new AttrRow(listAttr.Value.m_type, listAttr.Key, "", this);
 					mx_frame.Children.Add(listAttr.Value.m_attrRowUI);
 				}
 			}

@@ -45,12 +45,11 @@ namespace UIEditor
 			{
 				m_xmlDoc = new XmlDocument();
 				m_xmlDoc.Load(m_path);
-				string buffer = m_xmlDoc.InnerXml;
 				string firstName = m_path.Substring(0, m_path.LastIndexOf("."));
 				string fileName = m_path.Substring(m_path.LastIndexOf("\\") + 1, (m_path.Length - m_path.LastIndexOf("\\") - 1));
 
 				pW.updateGL(fileName, MainWindow.SendTag.SEND_NORMAL_NAME);
-				pW.updateGL(buffer, MainWindow.SendTag.SEND_NORMAL_DATA);
+				pW.updateXmlToGL(m_xmlDoc);
 			}
 
 			m_tab.Unloaded += new RoutedEventHandler(pW.eventCloseFile);
@@ -71,7 +70,6 @@ namespace UIEditor
 	{
 		public string m_rootPath;
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
-		public string m_curFile;
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
 		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
@@ -81,6 +79,9 @@ namespace UIEditor
 		public IntPtr m_hwndGL;
 		public AttrList m_otherAttrList;
 		public bool m_attrBinding;		//xml属性绑定用，上锁和解锁必须成对出现
+
+		public string m_curFile;	//todo
+		public BoloUI.Basic m_curCtrl;
 
 		private int m_dep;
 
@@ -387,6 +388,58 @@ namespace UIEditor
 			SEND_IMGRES_NAME = 0x0003,
 			SEND_IMGRES_DATA = 0x0013,
 		};
+
+		public void updateXmlToGL(XmlDocument doc)
+		{
+			XmlDocument newDoc = new XmlDocument();
+			newDoc.LoadXml(doc.InnerXml);
+			XmlNodeList nodeList;
+			XmlNode root = newDoc.DocumentElement;
+
+			nodeList = root.SelectNodes("descendant::event");
+
+			foreach(XmlNode xnEvent in nodeList)
+			{
+				xnEvent.ParentNode.RemoveChild(xnEvent);
+			}
+
+			XmlNode xn = newDoc.SelectSingleNode("BoloUI");
+			if (xn.NodeType == XmlNodeType.Element)
+			{
+				addTmpEvent(newDoc, (XmlElement)xn);
+			}
+
+			string buffer = newDoc.InnerXml;
+			updateGL(buffer, MainWindow.SendTag.SEND_NORMAL_DATA);
+		}
+
+		private void addTmpEvent(XmlDocument doc, XmlElement xeParent)
+		{
+			XmlNodeList xnl = xeParent.ChildNodes;
+
+			foreach (XmlNode xnf in xnl)
+			{
+				if (xnf.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xe = (XmlElement)xnf;
+					CtrlDef_T ctrlDef;
+
+					if (xe.Name != "event")
+					{
+						if (m_mapCtrlDef.TryGetValue(xe.Name, out ctrlDef))
+						{
+							XmlElement elemEvent = doc.CreateElement("event");
+
+							elemEvent.SetAttribute("function", "clickUI");
+							//用于让GL端的UI相应事件的脚本
+							elemEvent.SetAttribute("type", "onClick");
+							xe.AppendChild(elemEvent);
+							addTmpEvent(doc, xe);
+						}
+					}
+				}
+			}
+		}
 
 		public void updateGL(string buffer, SendTag msgTag = SendTag.SEND_NORMAL_DATA)
 		{

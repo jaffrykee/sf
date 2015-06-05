@@ -25,7 +25,7 @@ namespace UIEditor
 		private string mt_value;
 		private string mt_type;
 		public MainWindow m_pW;
-		public BoloUI.Basic m_elmUI;
+		public AttrList m_parent;
 
 		public string m_name
 		{
@@ -42,54 +42,6 @@ namespace UIEditor
 			get { return mt_value; }
 			set
 			{
-				if (m_pW.m_attrBinding && m_elmUI != null && m_elmUI.m_xe != null)
-				{
-					if (mt_value != value)
-					{
-						bool isWrong = false;
-
-						if (m_name == "baseID")
-						{
-							BoloUI.Basic ctrl;
-
-							if (m_elmUI.m_rootControl.m_mapCtrlUI.TryGetValue(value, out ctrl))
-							{
-								isWrong = true;
-							}
-							else
-							{
-								if (m_elmUI.m_rootControl.m_mapCtrlUI.TryGetValue(mt_value, out ctrl))
-								{
-									m_elmUI.m_rootControl.m_mapCtrlUI.Remove(mt_value);
-									//m_elmUI.m_rootControl.m_mapCtrlUI[value] = ctrl;
-								}
-							}
-						}
-						if (isWrong == false)
-						{
-							if (mt_value != "" && value == "")
-							{
-								m_elmUI.m_xe.RemoveAttribute(m_name);
-							}
-							else
-							{
-								m_elmUI.m_xe.SetAttribute(m_name, value);
-							}
-							m_elmUI.initHeader(true);
-
-							string buffer = m_elmUI.m_xe.OwnerDocument.InnerXml;
-							m_pW.updateGL(m_elmUI.m_rootControl.m_openedFile.m_path, MainWindow.SendTag.SEND_NORMAL_NAME);
-							m_pW.updateGL(buffer, MainWindow.SendTag.SEND_NORMAL_DATA);
-						}
-						else
-						{
-							//todo 其它错误也在这里显示
-							m_pW.mx_debug.Text += "<警告>baseID不可重复\r\n";
-						}
-					}
-				}
-				mt_value = value;
-				mx_value.Text = value;
 				if (m_type == "bool")
 				{
 					if (value == "")
@@ -114,6 +66,55 @@ namespace UIEditor
 						}
 					}
 				}
+				BoloUI.Basic elmUI = m_pW.m_curCtrl;
+				if (m_pW.m_attrBinding && elmUI != null && elmUI.m_xe != null)
+				{
+					if (mt_value != value)
+					{
+						bool isWrong = false;
+
+						if (m_name == "baseID")
+						{
+							BoloUI.Basic ctrl;
+
+							if (elmUI.m_rootControl.m_mapCtrlUI.TryGetValue(value, out ctrl))
+							{
+								isWrong = true;
+							}
+							else
+							{
+								if (elmUI.m_rootControl.m_mapCtrlUI.TryGetValue(mt_value, out ctrl))
+								{
+									elmUI.m_rootControl.m_mapCtrlUI.Remove(mt_value);
+									//elmUI.m_rootControl.m_mapCtrlUI[value] = ctrl;
+								}
+							}
+						}
+						if (isWrong == false)
+						{
+							if (mt_value != "" && value == "")
+							{
+								elmUI.m_xe.RemoveAttribute(m_name);
+							}
+							else
+							{
+								elmUI.m_xe.SetAttribute(m_name, value);
+							}
+							elmUI.initHeader(true);
+
+							string buffer = elmUI.m_xe.OwnerDocument.InnerXml;
+							m_pW.updateGL(elmUI.m_rootControl.m_openedFile.m_path, MainWindow.SendTag.SEND_NORMAL_NAME);
+							m_pW.updateXmlToGL(elmUI.m_xe.OwnerDocument);
+						}
+						else
+						{
+							//todo 其它错误也在这里显示
+							m_pW.mx_debug.Text += "<警告>baseID不可重复\r\n";
+						}
+					}
+				}
+				mt_value = value;
+				mx_value.Text = value;
 			}
 		}
 
@@ -136,13 +137,13 @@ namespace UIEditor
 			}
 		}
 
-		public AttrRow(string type = "string", string name = "", string value = "", BoloUI.Basic elmUI = null)
+		public AttrRow(string type = "string", string name = "", string value = "", AttrList parent = null)
 		{
 			InitializeComponent();
 			mt_name = name;
 			mt_value = value;
 			mt_type = type;
-			m_elmUI = elmUI;
+			m_parent = parent;
 		}
 
 		private void mx_root_Loaded(object sender, RoutedEventArgs e)

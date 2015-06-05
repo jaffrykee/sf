@@ -147,6 +147,7 @@ namespace UIEditor.BoloUI
 			bool tmp = m_pW.m_attrBinding;
 			m_pW.m_attrBinding = false;
 
+			m_pW.m_curCtrl = this;
 			m_pW.hiddenAllAttr();
 			MainWindow.CtrlDef_T ctrlDef;
 
@@ -171,12 +172,10 @@ namespace UIEditor.BoloUI
 					if (m_pW.m_mapCtrlDef["basic"].m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
 					{
 						attrDef.m_attrRowUI.m_value = attr.Value;
-						attrDef.m_attrRowUI.m_elmUI = this;
 					}
 					else if (ctrlDef.m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
 					{
 						attrDef.m_attrRowUI.m_value = attr.Value;
-						attrDef.m_attrRowUI.m_elmUI = this;
 					}
 					else
 					{
@@ -195,7 +194,7 @@ namespace UIEditor.BoloUI
 						m_pW.m_otherAttrList = new AttrList("other");
 						m_pW.mx_toolArea.Children.Add(m_pW.m_otherAttrList);
 					}
-					m_pW.m_otherAttrList.mx_frame.Children.Add(new AttrRow("string", attr.Name, attr.Value, this));
+					m_pW.m_otherAttrList.mx_frame.Children.Add(new AttrRow("string", attr.Name, attr.Value, m_pW.m_otherAttrList));
 				}
 			}
 			if (m_isCtrl)
