@@ -37,11 +37,18 @@ namespace UIEditor.BoloUI
 			m_rootControl = rootControl;
 			m_xe = xe;
 			m_isCtrl = false;
+			m_pW = rootControl.m_pW;
+			m_rootControl.m_mapCtrlUI[m_xe.GetAttribute("baseID")] = this;
+
+			MainWindow.CtrlDef_T ctrlDef;
+			if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
+			{
+				m_isCtrl = true;
+			}
 		}
 
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-			m_pW = Window.GetWindow(this) as MainWindow;
 			initHeader();
 			addChild();
 		}
@@ -66,18 +73,53 @@ namespace UIEditor.BoloUI
 			}
 		}
 
-		public void initHeader(bool isUpdate = false)
+		static public void checkBaseId(Basic elmUI, bool isUpdate = false)
 		{
-			string ctrlTip;
 			string name = "", id = "";
 			MainWindow.CtrlDef_T ctrlDef;
 
-			if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
+			if (elmUI.m_pW.m_mapCtrlDef.TryGetValue(elmUI.m_xe.Name, out ctrlDef))
 			{
-				m_isCtrl = true;
+				elmUI.m_isCtrl = true;
 			}
-			StringDic.m_control.TryGetValue(m_xe.Name, out ctrlTip);
-			if (ctrlTip != null && ctrlTip != "")
+
+			if (elmUI.m_isCtrl && elmUI.m_xe.Name != "event")
+			{
+				name = elmUI.m_xe.GetAttribute("name");
+				if (elmUI.m_xe.GetAttribute("baseID") == "")
+				{
+					//m_xe.SetAttribute("baseID", StringDic.getRandString());
+					elmUI.m_xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
+					elmUI.m_pW.mx_debug.Text += "<警告>baseID没有赋值，已经将其替换为随机值：" + elmUI.m_xe.GetAttribute("baseID") + "\r\n";
+				}
+
+				if (isUpdate == false)
+				{
+					Basic ctrl;
+					id = elmUI.m_xe.GetAttribute("baseID");
+					if (elmUI.m_rootControl.m_mapCtrlUI.TryGetValue(id, out ctrl))
+					{
+						//baseId重复了
+						elmUI.m_xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
+						elmUI.m_pW.mx_debug.Text += "<警告>baseID(" + id + ")重复，已经将其替换为随机值：" + elmUI.m_xe.GetAttribute("baseID") + "\r\n";
+					}
+				}
+				else
+				{
+					id = elmUI.m_xe.GetAttribute("baseID");
+				}
+				elmUI.m_rootControl.m_mapCtrlUI[id] = elmUI;
+
+				id = elmUI.m_xe.GetAttribute("baseID");
+			}
+		}
+
+		public void initHeader()
+		{
+			string ctrlTip;
+			string name = "", id = "";
+
+			if (StringDic.m_control.TryGetValue(m_xe.Name, out ctrlTip))
 			{
 				mx_text.Content = "<" + ctrlTip + ">";
 				mx_text.ToolTip = m_xe.Name;
@@ -88,38 +130,12 @@ namespace UIEditor.BoloUI
 			}
 			if (m_isCtrl && m_xe.Name != "event")
 			{
-				if (m_xe.GetAttribute("name") != "")
-				{
-					name = m_xe.GetAttribute("name");
-				}
-				if (m_xe.GetAttribute("baseID") == "")
-				{
-					//m_xe.SetAttribute("baseID", StringDic.getRandString());
-					m_xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32/2));
-					m_pW.mx_debug.Text += "<警告>baseID没有赋值，已经将其替换为随机值：" + m_xe.GetAttribute("baseID") + "\r\n";
-				}
-
-				if(isUpdate == false)
-				{
-					Basic ctrl;
-					id = m_xe.GetAttribute("baseID");
-					if (m_rootControl.m_mapCtrlUI.TryGetValue(id, out ctrl))
-					{
-						//baseId重复了
-						m_xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
-						m_pW.mx_debug.Text += "<警告>baseID(" + id + ")重复，已经将其替换为随机值：" + m_xe.GetAttribute("baseID") + "\r\n";
-					}
-				}
-				else
-				{
-					id = m_xe.GetAttribute("baseID");
-				}
-				m_rootControl.m_mapCtrlUI[id] = this;
-
+				name = m_xe.GetAttribute("name");
 				id = m_xe.GetAttribute("baseID");
 			}
 			else
 			{
+				mx_text.Content = "<" + m_xe.Name + ">";
 				if (m_xe.GetAttribute("Name") != "")
 				{
 					name = m_xe.GetAttribute("Name");
@@ -142,7 +158,7 @@ namespace UIEditor.BoloUI
 			mx_text.Content += "(" + id + ")";
 		}
 
-		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
+		public void changeSelectCtrl()
 		{
 			bool tmp = m_pW.m_attrBinding;
 			m_pW.m_attrBinding = false;
@@ -151,7 +167,7 @@ namespace UIEditor.BoloUI
 			m_pW.hiddenAllAttr();
 			MainWindow.CtrlDef_T ctrlDef;
 
-			if(m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
+			if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
 			{
 				if (m_xe.Name != "event")
 				{
@@ -187,7 +203,7 @@ namespace UIEditor.BoloUI
 					isOther = true;
 				}
 
-				if(isOther)
+				if (isOther)
 				{
 					if (m_pW.m_otherAttrList == null)
 					{
@@ -209,6 +225,15 @@ namespace UIEditor.BoloUI
 			}
 
 			m_pW.m_attrBinding = tmp;
+		}
+
+		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (m_xe.GetAttribute("baseID") != "")
+			{
+				m_pW.updateGL(m_xe.GetAttribute("baseID"), MainWindow.SendTag.SEND_SELECT_UI);
+			}
+			changeSelectCtrl();
 		}
 	}
 }

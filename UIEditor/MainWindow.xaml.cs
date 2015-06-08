@@ -16,6 +16,8 @@ using System.IO;
 using System.Xml;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using System.Text.RegularExpressions;
+
 namespace UIEditor
 {
 	/// <summary>
@@ -28,29 +30,17 @@ namespace UIEditor
 		public string m_path;
 		public TabItem m_tab;
 		public TreeViewItem m_treeUI;
-		public XmlDocument m_xmlDoc;
 		public UserControl m_frame;
+		public string m_fileType;
 
 		public OpenedFile(TreeViewItem treeUI)
 		{
 			MainWindow pW = Window.GetWindow(treeUI) as MainWindow;
-			string fileType;
 
 			m_path = ((ToolTip)treeUI.ToolTip).Content.ToString();
-			fileType = m_path.Substring(m_path.LastIndexOf(".") + 1, (m_path.Length - m_path.LastIndexOf(".") - 1));   //扩展名
+			m_fileType = m_path.Substring(m_path.LastIndexOf(".") + 1, (m_path.Length - m_path.LastIndexOf(".") - 1));   //扩展名
 			m_tab = new TabItem();
 			m_treeUI = treeUI;
-
-			if (fileType == "xml")
-			{
-				m_xmlDoc = new XmlDocument();
-				m_xmlDoc.Load(m_path);
-				string firstName = m_path.Substring(0, m_path.LastIndexOf("."));
-				string fileName = m_path.Substring(m_path.LastIndexOf("\\") + 1, (m_path.Length - m_path.LastIndexOf("\\") - 1));
-
-				pW.updateGL(fileName, MainWindow.SendTag.SEND_NORMAL_NAME);
-				pW.updateXmlToGL(m_xmlDoc);
-			}
 
 			m_tab.Unloaded += new RoutedEventHandler(pW.eventCloseFile);
 			ToolTip tabTip = new ToolTip();
@@ -140,21 +130,6 @@ namespace UIEditor
 		private void sendPathToGL(string path)
 		{
 			updateGL(path, SendTag.SEND_PATH);
-		}
-
-		private void refreshImage(string path)
-		{
-			//todo
-			DirectoryInfo di = new DirectoryInfo(path);
-
-			foreach (var dri in di.GetFiles("*.xml"))
-			{
-				XmlDocument xmlDoc = new XmlDocument();
-				xmlDoc.Load(path + "\\" + dri.Name);
-				string buffer = xmlDoc.InnerXml;
-
-				updateGL(buffer, SendTag.SEND_IMGRES_DATA);
-			}
 		}
 
 		private void refreshSkin(string path)
@@ -330,6 +305,7 @@ namespace UIEditor
 					string tabPath = ((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip).Content.ToString();
 					string fileType = tabPath.Substring(tabPath.LastIndexOf(".") + 1, (tabPath.Length - tabPath.LastIndexOf(".") - 1));
 
+					m_curFile = tabPath;
 					if (fileType == "xml")
 					{
 						string fileName = tabPath.Substring(tabPath.LastIndexOf("\\") + 1, (tabPath.Length - tabPath.LastIndexOf("\\") - 1));
@@ -377,6 +353,28 @@ namespace UIEditor
 			public IntPtr lpData;
 		}
 
+		public struct COPYDATASTRUCT
+		{
+			public IntPtr dwData;
+			public int cbData;
+			[MarshalAs(UnmanagedType.LPStr)]
+			public IntPtr lpData;
+		}
+
+		internal const int
+		  WM_DESTROY = 0x0002,
+		  WM_CLOSE = 0x0010,
+		  WM_QUIT = 0x0012,
+		  WM_COMMAND = 0x00000111,
+
+		  LBN_SELCHANGE = 0x00000001,
+		  LB_GETCURSEL = 0x00000188,
+		  LB_GETTEXTLEN = 0x0000018A,
+		  LB_ADDSTRING = 0x00000180,
+		  LB_GETTEXT = 0x00000189,
+		  LB_DELETESTRING = 0x00000182,
+		  LB_GETCOUNT = 0x0000018B;
+
 		public enum SendTag
 		{
 			SEND_PATH = 0x0000,
@@ -385,9 +383,135 @@ namespace UIEditor
 			SEND_NORMAL_TURN = 0x0101,
 			SEND_SKIN_NAME = 0x0002,
 			SEND_SKIN_DATA = 0x0012,
-			SEND_IMGRES_NAME = 0x0003,
-			SEND_IMGRES_DATA = 0x0013,
+			SEND_SELECT_UI = 0x0003,
 		};
+
+		public enum GetTag
+		{
+			GET_HWND = 0x0000,
+			GET_EVENT = 0x0001,
+		};
+
+		public void updateGL(string buffer, SendTag msgTag = SendTag.SEND_NORMAL_DATA)
+		{
+			ControlHostElement.Visibility = System.Windows.Visibility.Visible;
+			if (mx_hwndDebug.Text != "")
+			{
+				m_hwndGL = (IntPtr)long.Parse(mx_hwndDebug.Text);
+			}
+			unsafe
+			{
+				int len;
+				byte[] charArr;
+				COPYDATASTRUCT_SENDEX msgData;
+
+				if (msgTag == SendTag.SEND_PATH)
+				{
+					charArr = Encoding.Default.GetBytes(buffer);
+					len = charArr.Length;
+				}
+				else
+				{
+					charArr = Encoding.UTF8.GetBytes(buffer);
+					len = charArr.Length;
+				}
+
+				fixed (byte* tmpBuff = charArr)
+				{
+					msgData.dwData = (IntPtr)msgTag;
+					msgData.lpData = (IntPtr)tmpBuff;
+					msgData.cbData = len + 1;
+					SendMessage(m_hwndGL, WM_COPYDATA, (int)m_hwndGLParent, ref msgData);
+				}
+			}
+		}
+
+		//响应主逻辑
+		private IntPtr ControlMsgFilter(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			int textLength;
+
+			handled = false;
+			switch (msg)
+			{
+				case WM_COMMAND:
+					switch ((uint)wParam.ToInt32() >> 16 & 0xFFFF) //extract the HIWORD
+					{
+						case LBN_SELCHANGE: //Get the item text and display it
+							selectedItem = SendMessage(listControl.hwndListBox, LB_GETCURSEL, IntPtr.Zero, IntPtr.Zero);
+							textLength = SendMessage(listControl.hwndListBox, LB_GETTEXTLEN, IntPtr.Zero, IntPtr.Zero);
+							StringBuilder itemText = new StringBuilder();
+							SendMessage(hwndListBox, LB_GETTEXT, selectedItem, itemText);
+							handled = true;
+							break;
+					}
+					break;
+				case WM_COPYDATA:
+					unsafe
+					{
+						COPYDATASTRUCT msgData = *(COPYDATASTRUCT*)lParam;
+						string strData = Marshal.PtrToStringAnsi(msgData.lpData, msgData.cbData);
+						switch ((GetTag)((COPYDATASTRUCT*)lParam)->dwData)
+						{
+							case GetTag.GET_HWND:
+								m_hwndGL = wParam;
+								break;
+							case GetTag.GET_EVENT:
+								{
+									string[] sArray = Regex.Split(strData, ":", RegexOptions.IgnoreCase);
+									if (sArray.Length >= 2)
+									{
+										string id = sArray[0];
+										string ent = sArray[1];
+
+										switch(ent)
+										{
+											case "click":
+												if(((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.TryGetValue(id, out m_curCtrl))
+												{
+													m_curCtrl.changeSelectCtrl();
+												}
+												break;
+											default:
+												break;
+										}
+									}
+								}
+								break;
+							default:
+								break;
+						}
+					}
+					break;
+				default:
+					break;
+			}
+
+			return IntPtr.Zero;
+		}
+
+		//根窗体消息相应
+		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			switch (msg)
+			{
+				case WM_COPYDATA:
+					break;
+				case WM_CLOSE:
+					SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
+					break;
+				case WM_QUIT:
+					SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
+					break;
+				case WM_DESTROY:
+					SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
+					break;
+				default:
+					break;
+			}
+
+			return hwnd;
+		}
 
 		public void updateXmlToGL(XmlDocument doc)
 		{
@@ -441,40 +565,6 @@ namespace UIEditor
 			}
 		}
 
-		public void updateGL(string buffer, SendTag msgTag = SendTag.SEND_NORMAL_DATA)
-		{
-			ControlHostElement.Visibility = System.Windows.Visibility.Visible;
-			if (mx_hwndDebug.Text != "")
-			{
-				m_hwndGL = (IntPtr)long.Parse(mx_hwndDebug.Text);
-			}
-			unsafe
-			{
-				int len;
-				byte[] charArr;
-				COPYDATASTRUCT_SENDEX msgData;
-
-				if (msgTag == SendTag.SEND_PATH)
-				{
-					charArr = Encoding.Default.GetBytes(buffer);
-					len = charArr.Length;
-				}
-				else
-				{
-					charArr = Encoding.UTF8.GetBytes(buffer);
-					len = charArr.Length;
-				}
-
-				fixed (byte* tmpBuff = charArr)
-				{
-					msgData.dwData = (IntPtr)msgTag;
-					msgData.lpData = (IntPtr)tmpBuff;
-					msgData.cbData = len + 1;
-					SendMessage(m_hwndGL, WM_COPYDATA, 0, ref msgData);
-				}
-			}
-		}
-
 		private void On_UIReady(object sender, EventArgs e)
 		{
 			app = System.Windows.Application.Current;
@@ -490,95 +580,6 @@ namespace UIEditor
 				source.AddHook(WndProc);
 			}
 		}
-
-		private IntPtr ControlMsgFilter(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-		{
-			int textLength;
-
-			handled = false;
-			switch (msg)
-			{
-				case WM_COMMAND:
-					switch ((uint)wParam.ToInt32() >> 16 & 0xFFFF) //extract the HIWORD
-					{
-						case LBN_SELCHANGE: //Get the item text and display it
-							selectedItem = SendMessage(listControl.hwndListBox, LB_GETCURSEL, IntPtr.Zero, IntPtr.Zero);
-							textLength = SendMessage(listControl.hwndListBox, LB_GETTEXTLEN, IntPtr.Zero, IntPtr.Zero);
-							StringBuilder itemText = new StringBuilder();
-							SendMessage(hwndListBox, LB_GETTEXT, selectedItem, itemText);
-							handled = true;
-							break;
-					}
-					break;
-				case WM_COPYDATA:
-					unsafe
-					{
-						COPYDATASTRUCT msgData = *(COPYDATASTRUCT*)lParam;
-						if ((int)((COPYDATASTRUCT*)lParam)->dwData == GET_HWND)
-						{
-							m_hwndGL = wParam;
-						}
-					}
-					break;
-				default:
-					break;
-			}
-
-			return IntPtr.Zero;
-		}
-
-		public struct COPYDATASTRUCT
-		{
-			public IntPtr dwData;
-			public int cbData;
-			[MarshalAs(UnmanagedType.LPStr)]
-			public IntPtr lpData;
-		}
-
-		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-		{
-			switch (msg)
-			{
-				case WM_COPYDATA:
-					COPYDATASTRUCT msgData = (COPYDATASTRUCT)Marshal.PtrToStructure(lParam, typeof(COPYDATASTRUCT));
-					string strData = Marshal.PtrToStringAnsi(msgData.lpData, msgData.cbData);
-					if ((int)msgData.dwData == GET_HWND)
-					{
-						this.m_hwndGL = hwnd;
-					}
-					break;
-				case WM_CLOSE:
-					SendMessage(m_hwndGL, WM_QUIT, IntPtr.Zero, IntPtr.Zero);
-					break;
-				case WM_QUIT:
-					SendMessage(m_hwndGL, WM_QUIT, IntPtr.Zero, IntPtr.Zero);
-					break;
-				case WM_DESTROY:
-					SendMessage(m_hwndGL, WM_QUIT, IntPtr.Zero, IntPtr.Zero);
-					break;
-				default:
-					break;
-			}
-
-			return hwnd;
-		}
-
-		internal const int
-		  GET_HWND = 0x0000,
-
-
-		  WM_DESTROY = 0x0002,
-		  WM_CLOSE = 0x0010,
-		  WM_QUIT = 0x0012,
-		  WM_COMMAND = 0x00000111,
-
-		  LBN_SELCHANGE = 0x00000001,
-		  LB_GETCURSEL = 0x00000188,
-		  LB_GETTEXTLEN = 0x0000018A,
-		  LB_ADDSTRING = 0x00000180,
-		  LB_GETTEXT = 0x00000189,
-		  LB_DELETESTRING = 0x00000182,
-		  LB_GETCOUNT = 0x0000018B;
 
 		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]
 		internal static extern int SendMessage(IntPtr hwnd,

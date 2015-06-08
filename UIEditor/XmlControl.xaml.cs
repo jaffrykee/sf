@@ -24,10 +24,11 @@ namespace UIEditor
 	{
 		public FileTabItem m_parent;
 		public bool m_loaded;
-		public MainWindow m_parentWindow;
+		public MainWindow m_pW;
 		public OpenedFile m_openedFile;
 		//以baseID为索引的UI们
 		public Dictionary<string, BoloUI.Basic> m_mapCtrlUI;
+		public XmlDocument m_xmlDoc;
 
 		public XmlControl(FileTabItem parent)
 		{
@@ -37,28 +38,69 @@ namespace UIEditor
 			m_mapCtrlUI = new Dictionary<string, BoloUI.Basic>();
 		}
 
+		public void checkBaseId(XmlNode xn)
+		{
+			if (xn != null)
+			{
+				XmlNodeList xnl = xn.ChildNodes;
+				foreach (XmlNode xnf in xnl)
+				{
+					if (xnf.NodeType == XmlNodeType.Element)
+					{
+						XmlElement xe = (XmlElement)xnf;
+
+						MainWindow.CtrlDef_T ctrlDef;
+
+						if(xe.Name != "event" && m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlDef))
+						{
+							if(xe.GetAttribute("baseID") == "")
+							{
+								xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
+								m_pW.mx_debug.Text += "<警告>baseID没有赋值，已经将其替换为随机值：" + xe.GetAttribute("baseID") + "\r\n";
+							}
+
+							BoloUI.Basic tmpNull;
+							string id = xe.GetAttribute("baseID");
+
+							if (m_mapCtrlUI.TryGetValue(id, out tmpNull))
+							{
+								//baseId重复了
+								xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
+								m_pW.mx_debug.Text += "<警告>baseID(" + id + ")重复，已经将其替换为随机值：" + xe.GetAttribute("baseID") + "\r\n";
+								id = xe.GetAttribute("baseID");
+							}
+							m_mapCtrlUI[id] = null;
+							checkBaseId(xnf);
+						}
+					}
+				}
+			}
+		}
+
 		private void tabFrameLoaded(object sender, RoutedEventArgs e)
 		{
 			if (m_loaded == false)
 			{
-				m_parentWindow = Window.GetWindow(this) as MainWindow;
-				m_openedFile = m_parentWindow.m_mapOpenedFiles[m_parent.m_filePath];
+				m_pW = Window.GetWindow(this) as MainWindow;
+				m_openedFile = m_pW.m_mapOpenedFiles[m_parent.m_filePath];
 				m_openedFile.m_frame = this;
 				m_openedFile.m_treeUI.Items.Clear();
+				string firstName = m_openedFile.m_path.Substring(0, m_openedFile.m_path.LastIndexOf("."));
+				string fileName = m_openedFile.m_path.Substring(
+					m_openedFile.m_path.LastIndexOf("\\") + 1,
+					(m_openedFile.m_path.Length - m_openedFile.m_path.LastIndexOf("\\") - 1)
+				);
 
-				m_parentWindow.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
+				m_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
 
-				XmlNode xn = m_openedFile.m_xmlDoc.SelectSingleNode("BoloUI");
+				m_xmlDoc = new XmlDocument();
+				m_xmlDoc.Load(m_openedFile.m_path);
+				XmlNode xn = m_xmlDoc.SelectSingleNode("BoloUI");
 				if (xn != null)
 				{
 					XmlNodeList xnl = xn.ChildNodes;
-					TreeViewItem publicresFolder = new TreeViewItem();
-					TreeViewItem publicskinFolder = new TreeViewItem();
-					TreeViewItem resFolder = new TreeViewItem();
-					TreeViewItem skinFolder = new TreeViewItem();
-					TreeViewItem BoloUIEventFolder = new TreeViewItem();
-					TreeViewItem skingroupFolder = new TreeViewItem();
 
+					checkBaseId(xn);
 					this.textContent.Text += ("未被解析的项目：\r\n");
 					foreach (XmlNode xnf in xnl)
 					{
@@ -75,13 +117,9 @@ namespace UIEditor
 								case "skingroup":
 								case "BoloUIEvent":
 								case "panel":
+								default:
 									var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
 									this.m_openedFile.m_treeUI.Items.Add(treeChild);
-									break;
-								default:
-									{
-										this.textContent.Text += (xe.Name + ":" + xe.GetAttribute("Name") + "\r\n");
-									}
 									break;
 							}
 						}
@@ -91,19 +129,8 @@ namespace UIEditor
 				{
 					this.textContent.Text += ("这不是一个有效的BoloUI文件。" + "\r\n");
 				}
-				/*
-					using (StreamReader sr = new StreamReader(path, Encoding.UTF8))
-					{
-						int lineCount = 0;
-						while (sr.Peek() > 0)
-						{
-							lineCount++;
-							string temp = sr.ReadLine();
-							this.textContent.Text += (temp + "\r\n");
-						}
-					}
-				 */
-
+				m_pW.updateGL(fileName, MainWindow.SendTag.SEND_NORMAL_NAME);
+				m_pW.updateXmlToGL(m_xmlDoc);
 				m_loaded = true;
 			}
 		}

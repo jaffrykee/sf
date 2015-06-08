@@ -100,7 +100,8 @@ namespace UIEditor
 							{
 								elmUI.m_xe.SetAttribute(m_name, value);
 							}
-							elmUI.initHeader(true);
+							BoloUI.Basic.checkBaseId(elmUI, true);
+							elmUI.initHeader();
 
 							string buffer = elmUI.m_xe.OwnerDocument.InnerXml;
 							m_pW.updateGL(elmUI.m_rootControl.m_openedFile.m_path, MainWindow.SendTag.SEND_NORMAL_NAME);
