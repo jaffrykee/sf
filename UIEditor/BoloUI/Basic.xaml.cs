@@ -26,6 +26,11 @@ namespace UIEditor.BoloUI
 		public MainWindow m_pW;
 		public bool m_isCtrl;
 
+		public int m_selX;
+		public int m_selY;
+		public int m_selW;
+		public int m_selH;
+
 		public Basic()
 		{
 			InitializeComponent();
@@ -160,6 +165,11 @@ namespace UIEditor.BoloUI
 
 		public void changeSelectCtrl()
 		{
+			if (m_xe.GetAttribute("baseID") != "")
+			{
+				m_pW.updateGL(m_xe.GetAttribute("baseID"), MainWindow.W2GTag.W2G_SELECT_UI);
+			}
+
 			bool tmp = m_pW.m_attrBinding;
 			m_pW.m_attrBinding = false;
 
@@ -229,10 +239,6 @@ namespace UIEditor.BoloUI
 
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			if (m_xe.GetAttribute("baseID") != "")
-			{
-				m_pW.updateGL(m_xe.GetAttribute("baseID"), MainWindow.SendTag.SEND_SELECT_UI);
-			}
 			changeSelectCtrl();
 		}
 	}

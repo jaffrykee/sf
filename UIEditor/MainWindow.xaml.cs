@@ -65,6 +65,7 @@ namespace UIEditor
 		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
+		public IntPtr m_hwndGLFrame;
 		public IntPtr m_hwndGLParent;
 		public IntPtr m_hwndGL;
 		public AttrList m_otherAttrList;
@@ -129,7 +130,7 @@ namespace UIEditor
 
 		private void sendPathToGL(string path)
 		{
-			updateGL(path, SendTag.SEND_PATH);
+			updateGL(path, W2GTag.W2G_PATH);
 		}
 
 		private void refreshSkin(string path)
@@ -141,25 +142,9 @@ namespace UIEditor
 			if (xn != null)
 			{
 				string buffer = xmlDoc.InnerXml;
-				updateGL("publicskin.xml", SendTag.SEND_SKIN_NAME);
-				updateGL(buffer, SendTag.SEND_SKIN_DATA);
+				updateGL("publicskin.xml", W2GTag.W2G_SKIN_NAME);
+				updateGL(buffer, W2GTag.W2G_SKIN_DATA);
 			}
-// 			DirectoryInfo di = new DirectoryInfo(path);
-// 
-// 			foreach (var dri in di.GetFiles("*.xml"))
-// 			{
-// 				XmlDocument xmlDoc = new XmlDocument();
-// 				xmlDoc.Load(path + "\\" + dri.Name);
-// 				XmlNode xn = xmlDoc.SelectSingleNode("BoloUI");
-// 
-// 				if (xn != null)
-// 				{
-// 					string buffer = xmlDoc.InnerXml;
-// 					//string firstName = dri.Name.Substring(0, dri.Name.LastIndexOf("."));
-// 					updateGL(dri.Name, SendTag.SEND_SKIN_NAME);
-// 					updateGL(buffer, SendTag.SEND_SKIN_DATA);
-// 				}
-// 			}
 		}
 
 		private void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
@@ -313,28 +298,21 @@ namespace UIEditor
 						OpenedFile openFile;
 						if (m_mapOpenedFiles.TryGetValue(tabPath, out openFile))
 						{
-							updateGL(fileName, SendTag.SEND_NORMAL_TURN);
+							updateGL(fileName, W2GTag.W2G_NORMAL_TURN);
 						}
-						ControlHostElement.Visibility = System.Windows.Visibility.Visible;
+						mx_GLCtrl.Visibility = System.Windows.Visibility.Visible;
 					}
 					else
 					{
-						ControlHostElement.Visibility = System.Windows.Visibility.Collapsed;
+						mx_GLCtrl.Visibility = System.Windows.Visibility.Collapsed;
 					}
 				}
 			}
 		}
 
-
-
 		//============================================================
 
-
-		int selectedItem;
-		IntPtr hwndListBox;
-		ControlHost listControl;
-		Application app;
-		Window myWindow;
+		ControlHost mx_GLHost;
 
 		const int WM_COPYDATA = 0x004A;
 
@@ -375,26 +353,28 @@ namespace UIEditor
 		  LB_DELETESTRING = 0x00000182,
 		  LB_GETCOUNT = 0x0000018B;
 
-		public enum SendTag
+		public enum W2GTag
 		{
-			SEND_PATH = 0x0000,
-			SEND_NORMAL_NAME = 0x0001,
-			SEND_NORMAL_DATA = 0x0011,
-			SEND_NORMAL_TURN = 0x0101,
-			SEND_SKIN_NAME = 0x0002,
-			SEND_SKIN_DATA = 0x0012,
-			SEND_SELECT_UI = 0x0003,
+			W2G_PATH = 0x0000,
+			W2G_NORMAL_NAME = 0x0001,
+			W2G_NORMAL_DATA = 0x0011,
+			W2G_NORMAL_TURN = 0x0101,
+			W2G_SKIN_NAME = 0x0002,
+			W2G_SKIN_DATA = 0x0012,
+			W2G_SELECT_UI = 0x0003,
+			W2G_UI_VRECT = 0x0004,
 		};
 
-		public enum GetTag
+		public enum G2WTag
 		{
-			GET_HWND = 0x0000,
-			GET_EVENT = 0x0001,
+			G2W_HWND = 0x0000,
+			G2W_EVENT = 0x0003,
+			G2W_UI_VRECT = 0x0004,
 		};
 
-		public void updateGL(string buffer, SendTag msgTag = SendTag.SEND_NORMAL_DATA)
+		public void updateGL(string buffer, W2GTag msgTag = W2GTag.W2G_NORMAL_DATA)
 		{
-			ControlHostElement.Visibility = System.Windows.Visibility.Visible;
+			mx_GLCtrl.Visibility = System.Windows.Visibility.Visible;
 			if (mx_hwndDebug.Text != "")
 			{
 				m_hwndGL = (IntPtr)long.Parse(mx_hwndDebug.Text);
@@ -405,7 +385,7 @@ namespace UIEditor
 				byte[] charArr;
 				COPYDATASTRUCT_SENDEX msgData;
 
-				if (msgTag == SendTag.SEND_PATH)
+				if (msgTag == W2GTag.W2G_PATH)
 				{
 					charArr = Encoding.Default.GetBytes(buffer);
 					len = charArr.Length;
@@ -429,34 +409,20 @@ namespace UIEditor
 		//响应主逻辑
 		private IntPtr ControlMsgFilter(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
-			int textLength;
-
 			handled = false;
 			switch (msg)
 			{
-				case WM_COMMAND:
-					switch ((uint)wParam.ToInt32() >> 16 & 0xFFFF) //extract the HIWORD
-					{
-						case LBN_SELCHANGE: //Get the item text and display it
-							selectedItem = SendMessage(listControl.hwndListBox, LB_GETCURSEL, IntPtr.Zero, IntPtr.Zero);
-							textLength = SendMessage(listControl.hwndListBox, LB_GETTEXTLEN, IntPtr.Zero, IntPtr.Zero);
-							StringBuilder itemText = new StringBuilder();
-							SendMessage(hwndListBox, LB_GETTEXT, selectedItem, itemText);
-							handled = true;
-							break;
-					}
-					break;
 				case WM_COPYDATA:
 					unsafe
 					{
 						COPYDATASTRUCT msgData = *(COPYDATASTRUCT*)lParam;
 						string strData = Marshal.PtrToStringAnsi(msgData.lpData, msgData.cbData);
-						switch ((GetTag)((COPYDATASTRUCT*)lParam)->dwData)
+						switch ((G2WTag)((COPYDATASTRUCT*)lParam)->dwData)
 						{
-							case GetTag.GET_HWND:
+							case G2WTag.G2W_HWND:
 								m_hwndGL = wParam;
 								break;
-							case GetTag.GET_EVENT:
+							case G2WTag.G2W_EVENT:
 								{
 									string[] sArray = Regex.Split(strData, ":", RegexOptions.IgnoreCase);
 									if (sArray.Length >= 2)
@@ -470,11 +436,26 @@ namespace UIEditor
 												if(((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.TryGetValue(id, out m_curCtrl))
 												{
 													m_curCtrl.changeSelectCtrl();
+													m_curCtrl.IsSelected = true;
 												}
 												break;
 											default:
 												break;
 										}
+									}
+								}
+								break;
+							case G2WTag.G2W_UI_VRECT:
+								{
+									string[] sArray = Regex.Split(strData, ":", RegexOptions.IgnoreCase);
+									for(int i = 5; i < sArray.Length; i+=5)
+									{
+										string baseId = sArray[i - 5];
+										BoloUI.Basic curCtrl = ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI[baseId];
+										curCtrl.m_selX = int.Parse(sArray[i - 4]);
+										curCtrl.m_selY = int.Parse(sArray[i - 3]);
+										curCtrl.m_selW = int.Parse(sArray[i - 2]);
+										curCtrl.m_selH = int.Parse(sArray[i - 1]);
 									}
 								}
 								break;
@@ -534,7 +515,8 @@ namespace UIEditor
 			}
 
 			string buffer = newDoc.InnerXml;
-			updateGL(buffer, MainWindow.SendTag.SEND_NORMAL_DATA);
+			updateGL(buffer, MainWindow.W2GTag.W2G_NORMAL_DATA);
+			((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).refreshVRect();
 		}
 
 		private void addTmpEvent(XmlDocument doc, XmlElement xeParent)
@@ -567,18 +549,16 @@ namespace UIEditor
 
 		private void On_UIReady(object sender, EventArgs e)
 		{
-			app = System.Windows.Application.Current;
-			myWindow = app.MainWindow;
-			listControl = new ControlHost();
-			ControlHostElement.Child = listControl;
-			listControl.MessageHook += new HwndSourceHook(ControlMsgFilter);
-
 			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
 
 			if (source != null)
 			{
 				source.AddHook(WndProc);
 			}
+
+			mx_GLHost = new ControlHost();
+			mx_GLCtrl.Child = mx_GLHost;
+			mx_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
 		}
 
 		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]

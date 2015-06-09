@@ -73,6 +73,9 @@
     <Compile Include="Public\AttrRow.xaml.cs">
       <DependentUpon>AttrRow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Public\SelectRect.xaml.cs">
+      <DependentUpon>SelectRect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Public\StringDic.cs" />
     <Compile Include="UnknownControl.xaml.cs">
       <DependentUpon>UnknownControl.xaml</DependentUpon>
@@ -116,6 +119,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Public\AttrRow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Public\SelectRect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

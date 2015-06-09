@@ -77,6 +77,17 @@ namespace UIEditor
 			}
 		}
 
+		public void refreshVRect()
+		{
+			string msgData = "";
+
+			foreach(KeyValuePair<string, BoloUI.Basic> pairCtrlUI in m_mapCtrlUI.ToList())
+			{
+				msgData += pairCtrlUI.Key + ":";
+			}
+			m_pW.updateGL(msgData, MainWindow.W2GTag.W2G_UI_VRECT);
+		}
+
 		private void tabFrameLoaded(object sender, RoutedEventArgs e)
 		{
 			if (m_loaded == false)
@@ -129,7 +140,7 @@ namespace UIEditor
 				{
 					this.textContent.Text += ("这不是一个有效的BoloUI文件。" + "\r\n");
 				}
-				m_pW.updateGL(fileName, MainWindow.SendTag.SEND_NORMAL_NAME);
+				m_pW.updateGL(fileName, MainWindow.W2GTag.W2G_NORMAL_NAME);
 				m_pW.updateXmlToGL(m_xmlDoc);
 				m_loaded = true;
 			}

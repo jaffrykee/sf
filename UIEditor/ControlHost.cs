@@ -78,7 +78,9 @@ namespace UIEditor
 			MainWindow pW = Window.GetWindow(this) as MainWindow;
 			pW.m_hwndGLParent = (IntPtr)m_hwndHost;
 			m_hwndControl = pW.m_hwndGLParent;
-			String path = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
+			String path;
+			path = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
+			//path = @".\dsuieditor.exe";
 			System.Diagnostics.Process.Start(path, pW.m_hwndGLParent.ToString() + " " + m_hostWidth.ToString() + " " + m_hostHeight.ToString());
 
 			return new HandleRef(this, m_hwndHost);

@@ -104,7 +104,7 @@ namespace UIEditor
 							elmUI.initHeader();
 
 							string buffer = elmUI.m_xe.OwnerDocument.InnerXml;
-							m_pW.updateGL(elmUI.m_rootControl.m_openedFile.m_path, MainWindow.SendTag.SEND_NORMAL_NAME);
+							m_pW.updateGL(elmUI.m_rootControl.m_openedFile.m_path, MainWindow.W2GTag.W2G_NORMAL_NAME);
 							m_pW.updateXmlToGL(elmUI.m_xe.OwnerDocument);
 						}
 						else

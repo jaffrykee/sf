@@ -21,7 +21,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="250" MinWidth="100" MaxWidth="400"/>
 			<ColumnDefinition Width="*" MinWidth="50"/>
-			<ColumnDefinition Width="350" MinWidth="350"/>
+			<ColumnDefinition Width="300" MinWidth="300"/>
 		</Grid.ColumnDefinitions>
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
 			<MenuItem Header="文件">
@@ -88,8 +88,9 @@
 			<TabControl Name="mx_workTabs" SelectionChanged="mx_workTabs_SelectionChanged">
 			</TabControl>
 		</DockPanel>
-		<Border Grid.Row="3" Grid.Column="1" Name="ControlHostElement">
-		</Border>
+		<Grid Grid.Row="3" Grid.Column="1" Name="mx_drawFrame">
+			<Border Name="mx_GLCtrl"></Border>
+		</Grid>
 		<GridSplitter Grid.Row="3" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"></GridSplitter>
 		<DockPanel Grid.Row="4" Grid.Column="1">
 			<Grid>

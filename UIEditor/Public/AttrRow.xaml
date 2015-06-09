@@ -8,16 +8,16 @@
 	Name="mx_root"
 	Margin="2,2,2,2"
 	Loaded="mx_root_Loaded"
-	MinWidth="300">
+	MinWidth="200">
 	<Grid Name="mx_normalFrame">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Name="mx_c0" Width="100"/>
-			<ColumnDefinition Name="mx_c1" Width="*"/>
+			<ColumnDefinition Name="mx_c0" Width="*"/>
+			<ColumnDefinition Name="mx_c1" Width="100"/>
 		</Grid.ColumnDefinitions>
 		<Label Name="mx_name" Grid.Column="0" Foreground="#ffffffff" HorizontalAlignment="Right">width:</Label>
 		<Grid Grid.Column="1" Background="#ffffffff"></Grid>
 		<Label Name="mx_valueDef" Grid.Column="1" Foreground="#ffaaaaaa">default</Label>
-		<TextBox Name="mx_value" Grid.Column="1" CaretBrush="Black" TextChanged="mx_value_TextChanged" Background="#00000000"></TextBox>
+		<TextBox Name="mx_value" Width="100" Grid.Column="1" CaretBrush="Black" TextChanged="mx_value_TextChanged" Background="#00000000"></TextBox>
 	</Grid>
 	<Grid Name="mx_boolFrame" Visibility="Hidden">
 		<Grid.ColumnDefinitions>
