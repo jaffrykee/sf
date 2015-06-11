@@ -54,7 +54,7 @@ namespace UIEditor
 			bool tmp = m_pW.m_attrBinding;
 			m_pW.m_attrBinding = false;
 
-			foreach(object row in mx_frame.Children)
+			foreach (object row in mx_frame.Children)
 			{
 				if (row.GetType() == Type.GetType("UIEditor.AttrRow"))
 				{

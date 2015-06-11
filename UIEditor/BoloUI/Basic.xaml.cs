@@ -50,12 +50,12 @@ namespace UIEditor.BoloUI
 			{
 				m_isCtrl = true;
 			}
+			addChild();
 		}
 
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			initHeader();
-			addChild();
 		}
 
 		protected void addChild()
@@ -66,13 +66,20 @@ namespace UIEditor.BoloUI
 				if (xnf.NodeType == XmlNodeType.Element)
 				{
 					XmlElement xe = (XmlElement)xnf;
+					MainWindow.CtrlDef_T ctrlPtr;
 
-					switch (xe.Name)
+					if (m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
 					{
-						default:
-							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, m_rootControl) as TreeViewItem;
-							this.Items.Add(treeChild);
-							break;
+						var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, m_rootControl) as TreeViewItem;
+						this.Items.Add(treeChild);
+					}
+					else
+					{
+						switch (xe.Name)
+						{
+							default:
+								break;
+						}
 					}
 				}
 			}
@@ -159,24 +166,49 @@ namespace UIEditor.BoloUI
 					id = m_xe.GetAttribute("function");
 				}
 			}
-			mx_text.Content += name;
-			mx_text.Content += "(" + id + ")";
+
+			if (m_pW.m_vCtrlName)
+			{
+				mx_text.Content += name;
+			}
+			if (m_pW.m_vCtrlId)
+			{
+				mx_text.Content += "(" + id + ")";
+			}
+		}
+
+		public bool checkPointInFence(int x, int y)
+		{
+			if(x >= m_selX && y >= m_selY)
+			{
+				if(x <= m_selX + m_selW && y <= m_selY + m_selH)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		public void changeSelectCtrl()
 		{
 			if (m_xe.GetAttribute("baseID") != "")
 			{
-				m_pW.updateGL(m_xe.GetAttribute("baseID"), MainWindow.W2GTag.W2G_SELECT_UI);
+				m_pW.updateGL(StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_xe.GetAttribute("baseID"), MainWindow.W2GTag.W2G_SELECT_UI);
+				m_pW.m_curFile = m_rootControl.m_openedFile.m_path;
 			}
 
 			bool tmp = m_pW.m_attrBinding;
 			m_pW.m_attrBinding = false;
 
+			if (m_pW.m_curCtrl != null)
+			{
+				m_pW.m_curCtrl.mx_text.Background = (SolidColorBrush)m_pW.FindResource("BKBack");
+			}
 			m_pW.m_curCtrl = this;
 			m_pW.hiddenAllAttr();
 			MainWindow.CtrlDef_T ctrlDef;
 
+			m_pW.m_curCtrl.mx_text.Background = (SolidColorBrush)m_pW.FindResource("BKBackSel");
 			if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
 			{
 				if (m_xe.Name != "event")
@@ -240,6 +272,14 @@ namespace UIEditor.BoloUI
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			changeSelectCtrl();
+		}
+
+		private void mx_root_Selected(object sender, RoutedEventArgs e)
+		{
+		}
+
+		private void mx_root_Unselected(object sender, RoutedEventArgs e)
+		{
 		}
 	}
 }

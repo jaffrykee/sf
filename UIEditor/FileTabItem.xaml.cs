@@ -40,7 +40,7 @@ namespace UIEditor
 				m_filePath = ((ToolTip)((TabItem)this.Parent).ToolTip).Content.ToString();
 				this.filePath.Text = m_filePath;
 
-				m_fileType = m_filePath.Substring(m_filePath.LastIndexOf(".") + 1, (m_filePath.Length - m_filePath.LastIndexOf(".") - 1));
+				m_fileType = StringDic.getFileType(m_filePath);
 				if (m_fileType == "png")
 				{
 					tabContent = Activator.CreateInstance(Type.GetType("UIEditor.PngControl"), this) as UserControl;

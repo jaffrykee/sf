@@ -7,8 +7,8 @@
 	Name="mx_root"
 	Loaded="TreeViewItem_Loaded"
 	IsExpanded="True"
-	Margin="0"
-	Padding="0">
+	Selected="mx_root_Selected"
+	Unselected="mx_root_Unselected">
 	<TreeViewItem.Header>
 		<Label Name="mx_text" MouseDown="mx_text_MouseDown" Margin="0" Padding="0"></Label>
 	</TreeViewItem.Header>

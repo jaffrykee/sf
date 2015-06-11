@@ -38,7 +38,7 @@ namespace UIEditor
 			MainWindow pW = Window.GetWindow(treeUI) as MainWindow;
 
 			m_path = ((ToolTip)treeUI.ToolTip).Content.ToString();
-			m_fileType = m_path.Substring(m_path.LastIndexOf(".") + 1, (m_path.Length - m_path.LastIndexOf(".") - 1));   //扩展名
+			m_fileType = StringDic.getFileType(m_path);
 			m_tab = new TabItem();
 			m_treeUI = treeUI;
 
@@ -70,6 +70,8 @@ namespace UIEditor
 		public IntPtr m_hwndGL;
 		public AttrList m_otherAttrList;
 		public bool m_attrBinding;		//xml属性绑定用，上锁和解锁必须成对出现
+		public bool m_vCtrlName;
+		public bool m_vCtrlId;
 
 		public string m_curFile;	//todo
 		public BoloUI.Basic m_curCtrl;
@@ -89,27 +91,12 @@ namespace UIEditor
 			m_dpiSysX = 96.0f;
 			m_dpiSysY = 96.0f;
 			m_curFile = "";
+			m_vCtrlName = true;
+			m_vCtrlId = true;
 		}
 
 		private void openProj(object sender, RoutedEventArgs e)
 		{
-			/*
-			OpenFileDialog openFileDialog = new OpenFileDialog();
-			openFileDialog.Title = "选择文件";
-			openFileDialog.Filter = "ryrp文件|*.ryrp|所有文件|*.*";
-			openFileDialog.FileName = string.Empty;
-			openFileDialog.FilterIndex = 1;
-			openFileDialog.RestoreDirectory = true;
-			openFileDialog.DefaultExt = "ryrp";
-			DialogResult result = openFileDialog.ShowDialog();
-			if (result == System.Windows.Forms.DialogResult.Cancel)
-			{
-				return;
-			}
-			string fileName = openFileDialog.FileName;
-			this.pro.Content = fileName;
-			//this.textBox1.Text = fileName;
-			*/
 			System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			openFolderDialog.Description = "选择UI所在文件夹";
 			openFolderDialog.SelectedPath = @"E:\mmo2013001\artist\client_resouce\ui\free";
@@ -174,89 +161,25 @@ namespace UIEditor
 				refreshProjTree(path + "\\" + dri.Name, treeUIChild, false);
 				m_dep--;
 			}
-			if (m_dep == 1 && rootItem.Header.ToString() == "skin")
+			foreach (var dri in di.GetFiles("*"))
 			{
-				foreach (var dri in di.GetFiles("*.xml"))
-				{
-					//皮肤组们
-					TreeViewItem treeUIChild = new TreeViewItem();
-					ToolTip treeTip = new ToolTip();
+				TreeViewItem treeUIChild = new TreeViewItem();
+				ToolTip treeTip = new ToolTip();
 
-					XmlDocument xmlDoc = new XmlDocument();
-					xmlDoc = new XmlDocument();
-					xmlDoc.Load(path + "\\" + dri.Name);
-					XmlNode xn = xmlDoc.SelectSingleNode("BoloUI");
-
-					if (xn != null)
-					{
-						j++;
-						treeTip.Content = path + "\\" + dri.Name;
-						treeUIChild.ToolTip = treeTip;
-						treeUIChild.Header = dri.Name;
-						treeUIChild.MouseDoubleClick += new MouseButtonEventHandler(openFileTab);
-						rootItem.Items.Add(treeUIChild);
-
-						XmlNodeList xnl = xn.ChildNodes;
-						string frontName = dri.Name.Substring(dri.Name.LastIndexOf("\\") + 1, (dri.Name.LastIndexOf(".") - dri.Name.LastIndexOf("\\") - 1));
-						m_mapStrSkinGroup[frontName] = xmlDoc;
-
-						foreach (XmlNode xnf in xnl)
-						{
-							//皮肤们
-							if (xnf.NodeType == XmlNodeType.Element)
-							{
-								XmlElement xe = (XmlElement)xnf;
-
-								switch (xe.Name)
-								{
-									case "publicskin":
-										#region
-										{
-											m_mapStrSkin[xe.GetAttribute("Name")] = xe;
-										}
-										#endregion
-										break;
-									case "skin":
-										#region
-										{
-											m_mapStrSkin[xe.GetAttribute("Name")] = xe;
-										}
-										#endregion
-										break;
-									default:
-										break;
-								}
-							}
-						}
-					}
-					else
-					{
-					}
-				}
+				j++;
+				treeTip.Content = path + "\\" + dri.Name;
+				treeUIChild.ToolTip = treeTip;
+				treeUIChild.Header = dri.Name;
+				treeUIChild.MouseDoubleClick += new MouseButtonEventHandler(openFileTab);
+				rootItem.Items.Add(treeUIChild);
 			}
-			else
+			if (rootNode == true)
 			{
-				foreach (var dri in di.GetFiles("*"))
-				{
-					TreeViewItem treeUIChild = new TreeViewItem();
-					ToolTip treeTip = new ToolTip();
-
-					j++;
-					treeTip.Content = path + "\\" + dri.Name;
-					treeUIChild.ToolTip = treeTip;
-					treeUIChild.Header = dri.Name;
-					treeUIChild.MouseDoubleClick += new MouseButtonEventHandler(openFileTab);
-					rootItem.Items.Add(treeUIChild);
-				}
-
-				if (rootNode == true)
-				{
-					ToolTip rootTip = new ToolTip();
-					rootTip.Content = path;
-					rootItem.ToolTip = rootTip;
-					rootItem.IsExpanded = false;
-					rootItem.Header = "UI工程目录(" + i + "个目录和" + j + "个项目)";
-				}
+				ToolTip rootTip = new ToolTip();
+				rootTip.Content = path;
+				rootItem.ToolTip = rootTip;
+				rootItem.IsExpanded = false;
+				rootItem.Header = "UI工程目录(" + i + "个目录和" + j + "个项目)";
 			}
 		}
 
@@ -265,7 +188,7 @@ namespace UIEditor
 			TreeViewItem treeUI = (TreeViewItem)sender;
 			OpenedFile openedFile;
 			string tabPath = ((ToolTip)treeUI.ToolTip).Content.ToString();
-			string fileType = tabPath.Substring(tabPath.LastIndexOf(".") + 1, (tabPath.Length - tabPath.LastIndexOf(".") - 1));   //扩展名
+			string fileType = StringDic.getFileType(tabPath);
 
 			if (m_mapOpenedFiles.TryGetValue(tabPath, out openedFile))
 			{
@@ -288,12 +211,12 @@ namespace UIEditor
 				if (((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip) != null)
 				{
 					string tabPath = ((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip).Content.ToString();
-					string fileType = tabPath.Substring(tabPath.LastIndexOf(".") + 1, (tabPath.Length - tabPath.LastIndexOf(".") - 1));
+					string fileType = StringDic.getFileType(tabPath);
 
 					m_curFile = tabPath;
 					if (fileType == "xml")
 					{
-						string fileName = tabPath.Substring(tabPath.LastIndexOf("\\") + 1, (tabPath.Length - tabPath.LastIndexOf("\\") - 1));
+						string fileName = StringDic.getFileNameWithoutPath(tabPath);
 
 						OpenedFile openFile;
 						if (m_mapOpenedFiles.TryGetValue(tabPath, out openFile))
@@ -340,18 +263,30 @@ namespace UIEditor
 		}
 
 		internal const int
-		  WM_DESTROY = 0x0002,
-		  WM_CLOSE = 0x0010,
-		  WM_QUIT = 0x0012,
-		  WM_COMMAND = 0x00000111,
-
-		  LBN_SELCHANGE = 0x00000001,
-		  LB_GETCURSEL = 0x00000188,
-		  LB_GETTEXTLEN = 0x0000018A,
-		  LB_ADDSTRING = 0x00000180,
-		  LB_GETTEXT = 0x00000189,
-		  LB_DELETESTRING = 0x00000182,
-		  LB_GETCOUNT = 0x0000018B;
+			WM_DESTROY			= 0x0002,
+			WM_CLOSE			= 0x0010,
+			WM_QUIT				= 0x0012,
+			WM_COMMAND			= 0x0111,
+			
+			WM_MOUSEFIRST		= 0x0200,
+			WM_MOUSEMOVE		= 0x0200,
+			WM_LBUTTONDOWN		= 0x0201,
+			WM_LBUTTONUP		= 0x0202,
+			WM_LBUTTONDBLCLK	= 0x0203,
+			WM_RBUTTONDOWN		= 0x0204,
+			WM_RBUTTONUP		= 0x0205,
+			WM_RBUTTONDBLCLK	= 0x0206,
+			WM_MBUTTONDOWN		= 0x0207,
+			WM_MBUTTONUP		= 0x0208,
+			WM_MBUTTONDBLCLK	= 0x0209,
+			
+			LBN_SELCHANGE		= 0x0001,
+			LB_GETCURSEL		= 0x0188,
+			LB_GETTEXTLEN		= 0x018A,
+			LB_ADDSTRING		= 0x0180,
+			LB_GETTEXT			= 0x0189,
+			LB_DELETESTRING		= 0x0182,
+			LB_GETCOUNT			= 0x018B;
 
 		public enum W2GTag
 		{
@@ -363,6 +298,7 @@ namespace UIEditor
 			W2G_SKIN_DATA = 0x0012,
 			W2G_SELECT_UI = 0x0003,
 			W2G_UI_VRECT = 0x0004,
+			W2G_DRAWRECT = 0x0014,
 		};
 
 		public enum G2WTag
@@ -412,6 +348,59 @@ namespace UIEditor
 			handled = false;
 			switch (msg)
 			{
+				case WM_MOUSEMOVE:
+					break;
+				case WM_LBUTTONDOWN:
+					{
+						List<BoloUI.Basic> lstSelCtrl = new List<BoloUI.Basic>();
+						int pX = (int)lParam & 0xFFFF;
+						int pY = ((int)lParam >> 16) & 0xFFFF;
+						bool hadCurCtrl = false;
+						BoloUI.Basic selCtrl = null;
+
+						foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
+						{
+							if(pairCtrlDef.Value.checkPointInFence(pX, pY))
+							{
+								lstSelCtrl.Add(pairCtrlDef.Value);
+								if(hadCurCtrl)
+								{
+									hadCurCtrl = false;
+									selCtrl = pairCtrlDef.Value;
+								}
+								if(m_curCtrl == pairCtrlDef.Value)
+								{
+									hadCurCtrl = true;
+									selCtrl = m_curCtrl;
+								}
+							}
+						}
+						if (lstSelCtrl.Count > 0)
+						{
+							if (selCtrl == null || selCtrl == m_curCtrl)
+							{
+								selCtrl = lstSelCtrl.First();
+							}
+							selCtrl.changeSelectCtrl();
+						}
+					}
+					break;
+				case WM_LBUTTONUP:
+					break;
+				case WM_LBUTTONDBLCLK:
+					break;
+				case WM_RBUTTONDOWN:
+					break;
+				case WM_RBUTTONUP:
+					break;
+				case WM_RBUTTONDBLCLK:
+					break;
+				case WM_MBUTTONDOWN:
+					break;
+				case WM_MBUTTONUP:
+					break;
+				case WM_MBUTTONDBLCLK:
+					break;
 				case WM_COPYDATA:
 					unsafe
 					{
@@ -433,10 +422,11 @@ namespace UIEditor
 										switch(ent)
 										{
 											case "click":
-												if(((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.TryGetValue(id, out m_curCtrl))
+												BoloUI.Basic tmpCtrl;
+												if (((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.TryGetValue(id, out tmpCtrl))
 												{
-													m_curCtrl.changeSelectCtrl();
-													m_curCtrl.IsSelected = true;
+													tmpCtrl.changeSelectCtrl();
+													tmpCtrl.IsSelected = true;
 												}
 												break;
 											default:
@@ -501,6 +491,7 @@ namespace UIEditor
 			XmlNodeList nodeList;
 			XmlNode root = newDoc.DocumentElement;
 
+			//去掉所有事件(<event>)
 			nodeList = root.SelectNodes("descendant::event");
 
 			foreach(XmlNode xnEvent in nodeList)
@@ -508,12 +499,13 @@ namespace UIEditor
 				xnEvent.ParentNode.RemoveChild(xnEvent);
 			}
 
+			/*因为机制变化，不再由脚本来触发
 			XmlNode xn = newDoc.SelectSingleNode("BoloUI");
 			if (xn.NodeType == XmlNodeType.Element)
 			{
 				addTmpEvent(newDoc, (XmlElement)xn);
 			}
-
+			*/
 			string buffer = newDoc.InnerXml;
 			updateGL(buffer, MainWindow.W2GTag.W2G_NORMAL_DATA);
 			((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).refreshVRect();
@@ -1047,7 +1039,7 @@ namespace UIEditor
 				{ "turnTable", new CtrlDef_T(conf_mapTurnTableAttrDef, null)},
 				{ "drawModel", new CtrlDef_T(conf_mapDrawModelAttrDef, null)},
 				{ "dropList", new CtrlDef_T(conf_mapDropListAttrDef, null)},
-				{ "event", new CtrlDef_T(conf_mapEventAttrDef, null)},
+				//{ "event", new CtrlDef_T(conf_mapEventAttrDef, null)},
 				{ "tooltip", new CtrlDef_T(conf_mapToolTipAttrDef, null)}
 				#endregion
 			};
@@ -1081,6 +1073,44 @@ namespace UIEditor
 		private void mx_debug_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			mx_debug.ScrollToEnd();
+		}
+
+		public void refreshAllCtrlUIHeader()
+		{
+			foreach (KeyValuePair<string, OpenedFile> pairOpenedFile in m_mapOpenedFiles.ToList())
+			{
+				if (pairOpenedFile.Value.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+				{
+					foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlUI in ((XmlControl)pairOpenedFile.Value.m_frame).m_mapCtrlUI.ToList())
+					{
+						pairCtrlUI.Value.initHeader();
+					}
+				}
+			}
+		}
+
+		private void mx_checkVName_Checked(object sender, RoutedEventArgs e)
+		{
+			m_vCtrlName = true;
+			refreshAllCtrlUIHeader();
+		}
+
+		private void mx_checkVName_Unchecked(object sender, RoutedEventArgs e)
+		{
+			m_vCtrlName = false;
+			refreshAllCtrlUIHeader();
+		}
+
+		private void mx_checkVId_Checked(object sender, RoutedEventArgs e)
+		{
+			m_vCtrlId = true;
+			refreshAllCtrlUIHeader();
+		}
+
+		private void mx_checkVId_Unchecked(object sender, RoutedEventArgs e)
+		{
+			m_vCtrlId = false;
+			refreshAllCtrlUIHeader();
 		}
 	}
 }

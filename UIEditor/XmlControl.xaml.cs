@@ -96,11 +96,7 @@ namespace UIEditor
 				m_openedFile = m_pW.m_mapOpenedFiles[m_parent.m_filePath];
 				m_openedFile.m_frame = this;
 				m_openedFile.m_treeUI.Items.Clear();
-				string firstName = m_openedFile.m_path.Substring(0, m_openedFile.m_path.LastIndexOf("."));
-				string fileName = m_openedFile.m_path.Substring(
-					m_openedFile.m_path.LastIndexOf("\\") + 1,
-					(m_openedFile.m_path.Length - m_openedFile.m_path.LastIndexOf("\\") - 1)
-				);
+				string fileName = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
 
 				m_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
 
@@ -118,20 +114,26 @@ namespace UIEditor
 						if (xnf.NodeType == XmlNodeType.Element)
 						{
 							XmlElement xe = (XmlElement)xnf;
+							MainWindow.CtrlDef_T ctrlPtr;
 
-							switch (xe.Name)
+							if (m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
 							{
-								case "publicresource":
-								case "publicskin":
-								case "resource":
-								case "skin":
-								case "skingroup":
-								case "BoloUIEvent":
-								case "panel":
-								default:
-									var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
-									this.m_openedFile.m_treeUI.Items.Add(treeChild);
-									break;
+								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
+								this.m_openedFile.m_treeUI.Items.Add(treeChild);
+							}
+							else
+							{
+								switch (xe.Name)
+								{
+									case "publicresource":
+									case "publicskin":
+									case "resource":
+									case "skin":
+									case "skingroup":
+									case "BoloUIEvent":
+									default:
+										break;
+								}
 							}
 						}
 					}

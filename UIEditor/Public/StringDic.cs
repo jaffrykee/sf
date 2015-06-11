@@ -48,5 +48,22 @@ namespace UIEditor
 			}
 			return tmpstr;
 		}
+
+		public static string getFileType(string filePath)
+		{
+			return filePath.Substring(filePath.LastIndexOf(".") + 1, (filePath.Length - filePath.LastIndexOf(".") - 1));
+		}
+
+		public static string getFileNameWithoutPath(string filePath)
+		{
+			return filePath.Substring(filePath.LastIndexOf("\\") + 1, (filePath.Length - filePath.LastIndexOf("\\") - 1));
+		}
+
+		public static string getFileNameWithoutType(string filePath)
+		{
+			string fileName = getFileNameWithoutPath(filePath);
+
+			return fileName.Substring(0, fileName.LastIndexOf("."));
+		}
 	}
 }

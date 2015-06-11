@@ -21,7 +21,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="250" MinWidth="100" MaxWidth="400"/>
 			<ColumnDefinition Width="*" MinWidth="50"/>
-			<ColumnDefinition Width="300" MinWidth="300"/>
+			<ColumnDefinition Width="275" MinWidth="275"/>
 		</Grid.ColumnDefinitions>
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
 			<MenuItem Header="文件">
@@ -41,34 +41,54 @@
 				<MenuItem Header="MenuItem"/>
 			</MenuItem>
 		</Menu>
-		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="#ffdddddd">
-            <ToolBar HorizontalAlignment="Left">
-                <Button>新建</Button>
-                <Button Click="openProj">打开</Button>
-                <Button>保存</Button>
-                <Button>全部保存</Button>
-                <Separator/>
-                <Button>撤销</Button>
-                <Button>重复</Button>
-			</ToolBar>
-			<ToolBar HorizontalAlignment="Left">
-				<Label>调试模式：</Label>
-				<TextBox MinWidth="100" Name="mx_hwndDebug"></TextBox>
-			</ToolBar>
+		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+			<ToolBarTray>
+				<ToolBar HorizontalAlignment="Left">
+					<Button>新建</Button>
+					<Button Click="openProj">打开</Button>
+					<Button>保存</Button>
+					<Button>全部保存</Button>
+					<Separator/>
+					<Button>撤销</Button>
+					<Button>重复</Button>
+				</ToolBar>
+				<ToolBar HorizontalAlignment="Left">
+					<Label>调试模式：</Label>
+					<TextBox MinWidth="100" Name="mx_hwndDebug"></TextBox>
+				</ToolBar>
+			</ToolBarTray>
 		</DockPanel>
-		<DockPanel Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Background="#ffdddddd" Margin="0,0,5,0">
+		<DockPanel Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Margin="0,0,5,0">
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="auto"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<Grid Background="#ff333333">
+				<Grid Background="{StaticResource BKLightBack}">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="100"/>
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
-					<CheckBox IsEnabled="False" IsChecked="True" Foreground="#ffaaaaaa" Grid.Column="0" VerticalAlignment="Center" Margin="10,0,0,0">显示name</CheckBox>
-					<CheckBox IsEnabled="False" IsChecked="True" Foreground="#ffaaaaaa" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">显示id</CheckBox>
+					<CheckBox
+						Name="mx_checkVName"
+						Grid.Column="0"
+						IsChecked="True"
+						Foreground="#ffaaaaaa"
+						VerticalAlignment="Center"
+						Margin="10,0,0,0"
+						Content="显示name"
+						Checked="mx_checkVName_Checked"
+						Unchecked="mx_checkVName_Unchecked"/>
+					<CheckBox
+						Name="mx_checkVId"
+						Grid.Column="1"
+						IsChecked="True"
+						Foreground="#ffaaaaaa"
+						VerticalAlignment="Center"
+						Margin="10,0,0,0"
+						Content="显示id"
+						Checked="mx_checkVId_Checked"
+						Unchecked="mx_checkVId_Unchecked"/>
 				</Grid>
 				<TreeView BorderThickness="0" Grid.Row="1">
 					<TreeViewItem Name="mx_treePro">
@@ -77,22 +97,22 @@
 			</Grid>
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5"></GridSplitter>
-		<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Background="#ffdddddd" Margin="5,0,0,0">
+		<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Margin="5,0,0,0">
 			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
 				<StackPanel Name="mx_toolArea" Width="auto">
 				</StackPanel>
 			</ScrollViewer>
 		</Grid>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="2" Width="5" HorizontalAlignment="Left"></GridSplitter>
-		<DockPanel Grid.Row="2" Grid.Column="1" Background="#ffeeeeee" Margin="0,0,0,5">
+		<DockPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,5">
 			<TabControl Name="mx_workTabs" SelectionChanged="mx_workTabs_SelectionChanged">
 			</TabControl>
 		</DockPanel>
 		<Grid Grid.Row="3" Grid.Column="1" Name="mx_drawFrame">
 			<Border Name="mx_GLCtrl"></Border>
 		</Grid>
-		<GridSplitter Grid.Row="3" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"></GridSplitter>
-		<DockPanel Grid.Row="4" Grid.Column="1">
+		<GridSplitter Grid.Row="4" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top"></GridSplitter>
+		<DockPanel Grid.Row="4" Grid.Column="1" Margin="0,5,0,0">
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="auto"/>

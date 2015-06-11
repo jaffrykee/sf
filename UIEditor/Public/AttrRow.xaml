@@ -12,12 +12,22 @@
 	<Grid Name="mx_normalFrame">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Name="mx_c0" Width="*"/>
-			<ColumnDefinition Name="mx_c1" Width="100"/>
+			<ColumnDefinition Name="mx_c1" Width="10"/>
+			<ColumnDefinition Name="mx_c2" Width="125"/>
 		</Grid.ColumnDefinitions>
 		<Label Name="mx_name" Grid.Column="0" Foreground="#ffffffff" HorizontalAlignment="Right">width:</Label>
-		<Grid Grid.Column="1" Background="#ffffffff"></Grid>
-		<Label Name="mx_valueDef" Grid.Column="1" Foreground="#ffaaaaaa">default</Label>
-		<TextBox Name="mx_value" Width="100" Grid.Column="1" CaretBrush="Black" TextChanged="mx_value_TextChanged" Background="#00000000"></TextBox>
+		<Grid Grid.Column="2"  Background="#ffffffff"></Grid>
+		<Label Name="mx_valueDef" Grid.Column="2" Foreground="#ffaaaaaa" Background="#ffffffff">default</Label>
+		<TextBox
+			Name="mx_value"
+			Width="{Binding ElementName=mx_c2, Path=Width}"
+			Grid.Column="2"
+			CaretBrush="Black"
+			TextChanged="mx_value_TextChanged"
+			Background="#00000000"
+			Foreground="{StaticResource BKForeText}"
+			BorderBrush="{StaticResource BKBorderText}"
+			/>
 	</Grid>
 	<Grid Name="mx_boolFrame" Visibility="Hidden">
 		<Grid.ColumnDefinitions>

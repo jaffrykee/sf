@@ -6,7 +6,7 @@
             mc:Ignorable="d"
 			Loaded="tabFrameLoaded"
 			 Width="0" Height="0">
-	<Grid Background="#ffcccccc">
+	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" MinHeight="50"/>
 			<RowDefinition Height="200" MinHeight="50"/>
@@ -16,24 +16,9 @@
 		</Grid.ColumnDefinitions>
 		<ScrollViewer HorizontalScrollBarVisibility="Visible" Margin="0,0,0,5">
 			<Canvas Name="mx_workSpace" Width="960" Height="640">
-				<!--<Canvas.Background>
-					<ImageBrush
-						x:Name="mx_wsBckBrush"
-						ImageSource=".\Image\hyaline.png"
-						Viewport="0,0,32,32"
-						ViewportUnits="Absolute"
-						Stretch="None"
-						TileMode="Tile"
-						>
-					</ImageBrush>
-				</Canvas.Background>-->
 			</Canvas>
 		</ScrollViewer>
 		<GridSplitter VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="5"></GridSplitter>
-		<!-- 960 640         720 480 -->
-		<!--
-		<ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Margin="0,0,0,5">
-		</ScrollViewer>-->
 		<TextBox
 			Grid.Row="1"
 			Grid.Column="0"

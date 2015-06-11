@@ -7,14 +7,13 @@
 	mc:Ignorable="d"
 	x:Class="UIEditor.AttrList"
 	x:Name="mx_root"
-	Loaded="mx_root_Loaded"
-	Background="#ff666666">
+	Loaded="mx_root_Loaded">
 	<StackPanel Margin="2,2,2,2">
-		<Border BorderThickness="1" BorderBrush="#ffffffff" CornerRadius="2" Background="#ff444444">
-			<Label Foreground="#ffffffff" Margin="0,0,0,0" Padding="5,1,0,1" Name="mx_title"></Label>
+		<Border BorderThickness="1" BorderBrush="#ffffffff" CornerRadius="2">
+			<Label Margin="0,0,0,0" Padding="5,1,0,1" Name="mx_title"></Label>
 		</Border>
 		<StackPanel Name="mx_frame">
-			<Grid Name="mx_setting" HorizontalAlignment="Center" Margin="2,2,2,2" MinWidth="300">
+			<Grid Name="mx_setting" HorizontalAlignment="Center" Margin="2,2,2,2" MinWidth="250">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Name="mx_cs0" Width="125"/>
 					<ColumnDefinition Name="mx_cs1" Width="*"/>

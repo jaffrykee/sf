@@ -1,11 +1,28 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-<!--
-	<ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/UIEditor;component/Themes/Generic.Dark.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-	-->
-	<ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/UIEditor;component/Themes/Generic.Normal.xaml" />
-    </ResourceDictionary.MergedDictionaries>
+	<Color x:Key="CKBack">#ff383838</Color>
+	<Color x:Key="CKBackTextRO">#ff222222</Color>
+	<Color x:Key="CKLightBack">#ff111111</Color>
+	<Color x:Key="CKDarkBack">#ff606060</Color>
+	<Color x:Key="CKBackSel">#ff336699</Color>
+	<Color x:Key="CKBackText">#ffffffff</Color>
+	<SolidColorBrush x:Key="BKBack" Color="{StaticResource CKBack}"/>
+	<SolidColorBrush x:Key="BKBackSel" Color="{StaticResource CKBackSel}"/>
+	<SolidColorBrush x:Key="BKBackText" Color="{StaticResource CKBackText}"/>
+	<SolidColorBrush x:Key="BKBackTextRO" Color="{StaticResource CKBackTextRO}"/>
+	<SolidColorBrush x:Key="BKLightBack" Color="{StaticResource CKLightBack}"/>
+	<SolidColorBrush x:Key="BKDarkBack" Color="{StaticResource CKDarkBack}"/>
+
+	<Color x:Key="CKFore">#ffffffff</Color>
+	<Color x:Key="CKForeText">#ff000000</Color>
+	<SolidColorBrush x:Key="BKFore" Color="{StaticResource CKFore}"/>
+	<SolidColorBrush x:Key="BKForeSel" Color="{StaticResource CKFore}"/>
+	<SolidColorBrush x:Key="BKForeText" Color="{StaticResource CKForeText}"/>
+	<SolidColorBrush x:Key="BKForeTextRO" Color="{StaticResource CKFore}"/>
+
+	<Color x:Key="CKBorder">#ff888888</Color>
+	<SolidColorBrush x:Key="BKBorder" Color="{StaticResource CKBorder}"/>
+	<SolidColorBrush x:Key="BKBorderSel" Color="{StaticResource CKBorder}"/>
+	<SolidColorBrush x:Key="BKBorderText" Color="{StaticResource CKBorder}"/>
+	<SolidColorBrush x:Key="BKBorderTextRO" Color="{StaticResource CKBorder}"/>
 </ResourceDictionary>
