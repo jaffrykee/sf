@@ -62,6 +62,9 @@
     <Compile Include="BoloUI\Basic.xaml.cs">
       <DependentUpon>Basic.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoloUI\SelButton.xaml.cs">
+      <DependentUpon>SelButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ControlHost.cs" />
     <Compile Include="FileManager.xaml.cs">
       <DependentUpon>FileManager.xaml</DependentUpon>
@@ -72,6 +75,8 @@
     <Compile Include="FileTabItem.xaml.cs">
       <DependentUpon>FileTabItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OpenedFile.cs" />
+    <Compile Include="XmlOperation\OperationHistoryList.cs" />
     <Compile Include="Public\AttrList.xaml.cs">
       <DependentUpon>AttrList.xaml</DependentUpon>
     </Compile>
@@ -88,6 +93,7 @@
     <Compile Include="XmlControl.xaml.cs">
       <DependentUpon>XmlControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XmlOperation\OperationNode.cs" />
     <Page Include="ani.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -95,6 +101,10 @@
     <Page Include="BoloUI\Basic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BoloUI\SelButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FileManager.xaml">
       <SubType>Designer</SubType>

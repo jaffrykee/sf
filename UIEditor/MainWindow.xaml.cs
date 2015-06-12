@@ -20,42 +20,6 @@ using System.Text.RegularExpressions;
 
 namespace UIEditor
 {
-	/// <summary>
-	/// MainWindow.xaml 的交互逻辑
-	/// </summary>
-
-
-	public class OpenedFile
-	{
-		public string m_path;
-		public TabItem m_tab;
-		public TreeViewItem m_treeUI;
-		public UserControl m_frame;
-		public string m_fileType;
-
-		public OpenedFile(TreeViewItem treeUI)
-		{
-			MainWindow pW = Window.GetWindow(treeUI) as MainWindow;
-
-			m_path = ((ToolTip)treeUI.ToolTip).Content.ToString();
-			m_fileType = StringDic.getFileType(m_path);
-			m_tab = new TabItem();
-			m_treeUI = treeUI;
-
-			m_tab.Unloaded += new RoutedEventHandler(pW.eventCloseFile);
-			ToolTip tabTip = new ToolTip();
-			Button close = new Button();
-			tabTip.Content = m_path;
-			m_tab.Header = treeUI.Header.ToString();
-			m_tab.ToolTip = tabTip;
-			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
-			m_tab.Content = tabContent;
-
-			pW.mx_workTabs.Items.Add(m_tab);
-			pW.mx_workTabs.SelectedItem = m_tab;
-		}
-	}
-
 	public partial class MainWindow : Window
 	{
 		public string m_rootPath;
@@ -358,6 +322,7 @@ namespace UIEditor
 						bool hadCurCtrl = false;
 						BoloUI.Basic selCtrl = null;
 
+						mx_selCtrlLstFrame.Children.Clear();
 						foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
 						{
 							if(pairCtrlDef.Value.checkPointInFence(pX, pY))
@@ -373,6 +338,10 @@ namespace UIEditor
 									hadCurCtrl = true;
 									selCtrl = m_curCtrl;
 								}
+
+								BoloUI.SelButton selCtrlButton = new BoloUI.SelButton(this, pairCtrlDef.Value);
+								selCtrlButton.mx_root.Content = pairCtrlDef.Value.mx_text.Content;
+								mx_selCtrlLstFrame.Children.Add(selCtrlButton);
 							}
 						}
 						if (lstSelCtrl.Count > 0)
@@ -484,12 +453,18 @@ namespace UIEditor
 			return hwnd;
 		}
 
-		public void updateXmlToGL(XmlDocument doc)
+		public void updateXmlToGL(string path, XmlDocument doc, bool isOpt = true)
 		{
 			XmlDocument newDoc = new XmlDocument();
 			newDoc.LoadXml(doc.InnerXml);
 			XmlNodeList nodeList;
 			XmlNode root = newDoc.DocumentElement;
+
+			if (isOpt)
+			{
+				//添加到事件列表
+				m_mapOpenedFiles[path].m_lstOpt.addOperation(doc);
+			}
 
 			//去掉所有事件(<event>)
 			nodeList = root.SelectNodes("descendant::event");
@@ -1046,7 +1021,7 @@ namespace UIEditor
 
 			foreach(KeyValuePair<string, CtrlDef_T> pairCtrlDef in m_mapCtrlDef.ToList())
 			{
-				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI = new AttrList(pairCtrlDef.Key));
+				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI = new AttrList(pairCtrlDef.Key, this));
 				m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI.Visibility = Visibility.Collapsed;
 			}
 		}
@@ -1111,6 +1086,35 @@ namespace UIEditor
 		{
 			m_vCtrlId = false;
 			refreshAllCtrlUIHeader();
+		}
+
+		private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			mx_toolScroll.ScrollToRightEnd();
+		}
+
+		private void selCtrlBybutton(object sender, RoutedEventArgs e)
+		{
+		}
+
+		private void mx_toolSave_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void mx_toolSaveAll_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void mx_toolUndo_Click(object sender, RoutedEventArgs e)
+		{
+			m_mapOpenedFiles[m_curFile].m_lstOpt.undo();
+		}
+
+		private void mx_toolRedo_Click(object sender, RoutedEventArgs e)
+		{
+			m_mapOpenedFiles[m_curFile].m_lstOpt.redo();
 		}
 	}
 }

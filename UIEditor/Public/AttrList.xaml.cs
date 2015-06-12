@@ -22,9 +22,10 @@ namespace UIEditor
 		public string m_name;
 		public MainWindow m_pW;
 
-		public AttrList(string name = "")
+		public AttrList(string name = "", MainWindow pW = null)
 		{
 			m_name = name;
+			m_pW = pW;
 			this.InitializeComponent();
 		}
 
@@ -103,6 +104,7 @@ namespace UIEditor
 					}
 				}
 			}
+			m_pW.mx_toolScroll.ScrollToRightEnd();
 		}
 
 		private void mx_onlySetted_Checked(object sender, RoutedEventArgs e)

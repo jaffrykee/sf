@@ -143,7 +143,7 @@ namespace UIEditor
 					this.textContent.Text += ("这不是一个有效的BoloUI文件。" + "\r\n");
 				}
 				m_pW.updateGL(fileName, MainWindow.W2GTag.W2G_NORMAL_NAME);
-				m_pW.updateXmlToGL(m_xmlDoc);
+				m_pW.updateXmlToGL(m_openedFile.m_path, m_xmlDoc);
 				m_loaded = true;
 			}
 		}

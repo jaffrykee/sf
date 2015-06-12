@@ -193,8 +193,10 @@ namespace UIEditor.BoloUI
 		{
 			if (m_xe.GetAttribute("baseID") != "")
 			{
-				m_pW.updateGL(StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_xe.GetAttribute("baseID"), MainWindow.W2GTag.W2G_SELECT_UI);
 				m_pW.m_curFile = m_rootControl.m_openedFile.m_path;
+				m_pW.mx_workTabs.SelectedItem = m_rootControl.m_openedFile.m_tab;
+				m_pW.updateGL(StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_xe.GetAttribute("baseID"),
+					MainWindow.W2GTag.W2G_SELECT_UI);
 			}
 
 			bool tmp = m_pW.m_attrBinding;
@@ -249,7 +251,7 @@ namespace UIEditor.BoloUI
 				{
 					if (m_pW.m_otherAttrList == null)
 					{
-						m_pW.m_otherAttrList = new AttrList("other");
+						m_pW.m_otherAttrList = new AttrList("other", m_pW);
 						m_pW.mx_toolArea.Children.Add(m_pW.m_otherAttrList);
 					}
 					m_pW.m_otherAttrList.mx_frame.Children.Add(new AttrRow("string", attr.Name, attr.Value, m_pW.m_otherAttrList));

@@ -75,11 +75,10 @@
 		<Setter Property="CornerRadius" Value="0"/>
 	</Style>
 	<Style TargetType="{x:Type TextBlock}">
-		<Setter Property="Foreground" Value="{StaticResource BKFore}"/>
+		<Setter Property="FontFamily" Value="Consolas"/>
+		<Setter Property="FontSize" Value="12"/>
 	</Style>
 	<Style TargetType="{x:Type Block}">
-		<Setter Property="Foreground" Value="{StaticResource BKFore}"/>
-		<Setter Property="BorderBrush" Value="{StaticResource BKBorder}"/>
 	</Style>
 	<Style TargetType="{x:Type ToolTip}">
 		<Setter Property="FontFamily" Value="Consolas"/>
@@ -93,7 +92,6 @@
 		<Setter Property="Background" Value="{StaticResource BKBack}"/>
 	</Style>
 	<Style TargetType="{x:Type ToolBar}">
-		<Setter Property="FontSize" Value="12"/>
 	</Style>
 	<Style TargetType="{x:Type ScrollBar}">
 		<Setter Property="Background" Value="{StaticResource BKBack}"/>

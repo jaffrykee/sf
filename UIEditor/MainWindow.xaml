@@ -7,7 +7,6 @@
 	mc:Ignorable="d"
 	xmlns:userView="clr-namespace:UIEditor"
 	Title="MainWindow" Width="1280" Height="800"
-	WindowState="Maximized"
 	Loaded="On_UIReady"
 	>
 	<Grid>
@@ -42,21 +41,29 @@
 			</MenuItem>
 		</Menu>
 		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
-			<ToolBarTray>
-				<ToolBar HorizontalAlignment="Left">
-					<Button>新建</Button>
-					<Button Click="openProj">打开</Button>
-					<Button>保存</Button>
-					<Button>全部保存</Button>
-					<Separator/>
-					<Button>撤销</Button>
-					<Button>重复</Button>
-				</ToolBar>
-				<ToolBar HorizontalAlignment="Left">
-					<Label>调试模式：</Label>
-					<TextBox MinWidth="100" Name="mx_hwndDebug"></TextBox>
-				</ToolBar>
-			</ToolBarTray>
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<ToolBarTray Grid.Row="0">
+					<ToolBar HorizontalAlignment="Left">
+						<Button Name="mx_toolNew" Foreground="{StaticResource BKFore}">新建</Button>
+						<Button Name="mx_toolOpen" Foreground="{StaticResource BKFore}" Click="openProj">打开</Button>
+						<Button Name="mx_toolSave" Foreground="{StaticResource BKFore}" Click="mx_toolSave_Click">保存</Button>
+						<Button Name="mx_toolSaveAll" Foreground="{StaticResource BKFore}" Click="mx_toolSaveAll_Click">全部保存</Button>
+						<Separator/>
+						<Button Name="mx_toolUndo" Foreground="{StaticResource BKFore}" Click="mx_toolUndo_Click">撤销</Button>
+						<Button Name="mx_toolRedo" Foreground="{StaticResource BKFore}" Click="mx_toolRedo_Click">重复</Button>
+					</ToolBar>
+					<ToolBar HorizontalAlignment="Left">
+						<Label>调试模式：</Label>
+						<TextBox MinWidth="100" Name="mx_hwndDebug"></TextBox>
+					</ToolBar>
+				</ToolBarTray>
+				<WrapPanel Name="mx_selCtrlLstFrame" Orientation="Horizontal" Grid.Row="1">
+				</WrapPanel>
+			</Grid>
 		</DockPanel>
 		<DockPanel Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Margin="0,0,5,0">
 			<Grid>
@@ -98,7 +105,7 @@
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5"></GridSplitter>
 		<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Margin="5,0,0,0">
-			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+			<ScrollViewer Name="mx_toolScroll" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" SizeChanged="ScrollViewer_SizeChanged">
 				<StackPanel Name="mx_toolArea" Width="auto">
 				</StackPanel>
 			</ScrollViewer>
@@ -109,23 +116,39 @@
 			</TabControl>
 		</DockPanel>
 		<Grid Grid.Row="3" Grid.Column="1" Name="mx_drawFrame">
-			<Border Name="mx_GLCtrl"></Border>
+			<Grid.RowDefinitions>
+				<RowDefinition Name="mx_glR0" Height="*"/>
+				<RowDefinition Name="mx_glR1" Height="17"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Name="mx_glC0" Width="*"/>
+				<ColumnDefinition Name="mx_glC1" Width="{Binding ElementName=mx_glR1, Path=Height}"/>
+			</Grid.ColumnDefinitions>
+			<Border Name="mx_GLCtrl" Background="{StaticResource BKBack}"></Border>
+			<ScrollViewer
+					Grid.ColumnSpan="2"
+					Grid.RowSpan="2"
+					HorizontalScrollBarVisibility="Visible"
+					VerticalScrollBarVisibility="Visible">
+				<Grid Width="960" Height="640"></Grid>
+			</ScrollViewer>
 		</Grid>
 		<GridSplitter Grid.Row="4" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top"></GridSplitter>
 		<DockPanel Grid.Row="4" Grid.Column="1" Margin="0,5,0,0">
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="auto"/>
+					<RowDefinition Height="auto"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<StackPanel Grid.Row="0" Orientation="Horizontal">
+				<StackPanel Grid.Row="1" Orientation="Horizontal">
 					<Button Width="auto" Margin="10,2,2,2" Padding="2" Click="mx_bClearDebug_Click">
 						clear
 					</Button>
 				</StackPanel>
 				<TextBox
 					Name="mx_debug"
-					Grid.Row="1"
+					Grid.Row="2"
 					TextWrapping="Wrap"
 					AcceptsReturn="True"
 					VerticalScrollBarVisibility="Visible"
