@@ -12,7 +12,8 @@ namespace UIEditor.XmlOperation
 	{
 		NODE_INSERT,
 		NODE_DELETE,
-		NODE_UPDATE,
+		NODE_REPLACE,
+		//NODE_UPDATE,
 		ATTR_INSERT,
 		ATTR_DELETE,
 		ATTR_UPDATE,
@@ -22,85 +23,191 @@ namespace UIEditor.XmlOperation
 	public class XmlOperationList
 	{
 		public MainWindow m_pW;
-		public OpenedFile m_openedFile;
-		public LinkedList<XmlDocument> m_lstDoc;
-		public LinkedListNode<XmlDocument> m_curNode;
-		public LinkedListNode<XmlDocument> m_headNode;
+		public XmlControl m_xmlCtrl;
 		public int m_maxSize;
-		//public List<XmlOperationNode> m_lstOpt;
-		//public XmlOperationNode m_curNode;
+		public LinkedList<XmlOperationNode> m_lstOpt;
+		public LinkedListNode<XmlOperationNode> m_curNode;
+		public LinkedListNode<XmlOperationNode> m_headNode;
+		public LinkedListNode<XmlOperationNode> m_saveNode;
 
-		public XmlOperationList(MainWindow pW, OpenedFile openedFile, int maxSize = 10)
+		public XmlOperationList(MainWindow pW, XmlControl xmlCtrl, int maxSize = 10)
 		{
 			m_pW = pW;
-			m_lstDoc = new LinkedList<XmlDocument>();
-			m_curNode = null;
-			m_maxSize = 10;
-			m_openedFile = openedFile;
+			m_xmlCtrl = xmlCtrl;
+			m_maxSize = maxSize;
+			m_lstOpt = new LinkedList<XmlOperationNode>();
+			m_curNode = new LinkedListNode<XmlOperationNode>(null);
+			m_saveNode = m_curNode;
+			m_headNode = m_curNode;
+			m_lstOpt.AddLast(m_curNode);
 		}
 
-		public void addOperation(XmlDocument newDoc)
+		public void addOperation(XmlOperationNode optNode)
 		{
-			if(m_curNode == null)
+			for (LinkedListNode<XmlOperationNode> iNode = m_curNode.Next; iNode != m_headNode && iNode != null; iNode = m_curNode.Next)
 			{
-				m_curNode = new LinkedListNode<XmlDocument>(newDoc);
-				m_headNode = m_curNode;
-				m_lstDoc.AddLast(m_curNode);
+				iNode.List.Remove(iNode);
 			}
-			else
+			if (m_lstOpt.Count() >= m_maxSize)
 			{
-				for (LinkedListNode<XmlDocument> iNode = m_curNode.Next; iNode != m_headNode && iNode != null; iNode = iNode.Next)
-				{
-					iNode.List.Remove(iNode);
-				}
-				if (m_lstDoc.Count() >= m_maxSize)
-				{
-					m_headNode = m_headNode.Next;
-					m_headNode.List.Remove(m_headNode.Previous);
-				}
-				m_curNode = new LinkedListNode<XmlDocument>(newDoc);
-				m_lstDoc.AddLast(m_curNode);
+				m_headNode = m_headNode.Next;
+				m_headNode.List.Remove(m_headNode.Previous);
 			}
+			m_curNode = new LinkedListNode<XmlOperationNode>(optNode);
+			m_lstOpt.AddLast(m_curNode);
+			redoOperation();
+			m_xmlCtrl.m_openedFile.updateSaveStatus();
 		}
 
-		public XmlDocument undo()
+		public void redoOperation()
 		{
-			if (m_curNode != null && m_curNode != m_headNode && m_curNode.Previous != null)
+			switch (m_curNode.Value.m_optType)
 			{
-				m_curNode = m_curNode.Previous;
-				m_pW.updateXmlToGL(m_openedFile.m_path, m_curNode.Value, false);
-
-				return m_curNode.Value;
-			}
-
-			return null;
-		}
-
-		public XmlDocument redo()
-		{
-			if (m_curNode != null && m_curNode.Next != m_headNode && m_curNode.Next != null)
-			{
-				m_curNode = m_curNode.Next;
-
-				return m_curNode.Value;
-			}
-
-			return null;
-		}
-
-		public void addOperationEX(XmlOptType type, XmlNode xeDst, XmlNode xeNew, string dstAttrName, string oldValue, string newValue)
-		{
-			//todo
-			switch(type)
-			{
+				case XmlOptType.NODE_INSERT:
+					{
+						XmlOperationNode.insertXmlNode(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_srcElm);
+					}
+					break;
+				case XmlOptType.NODE_DELETE:
+					{
+						XmlOperationNode.deleteXmlNode(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstCtrlId);
+					}
+					break;
+				case XmlOptType.NODE_REPLACE:
+					{
+						//todo
+					}
+					break;
 				case XmlOptType.ATTR_INSERT:
+					{
+						XmlOperationNode.insertXmlAttr(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_attrName,
+							m_curNode.Value.m_newValue);
+					}
 					break;
 				case XmlOptType.ATTR_DELETE:
+					{
+						XmlOperationNode.deleteXmlAttr(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_attrName);
+					}
 					break;
 				case XmlOptType.ATTR_UPDATE:
+					{
+						XmlOperationNode.setXmlAttr(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_attrName,
+							m_curNode.Value.m_newValue);
+					}
+					break;
+				case XmlOptType.TEXT:
+					{
+						//todo
+					}
 					break;
 				default:
+					return;
 					break;
+			}
+			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
+		}
+		public void undoOperation()
+		{
+			switch (m_curNode.Value.m_optType)
+			{
+				case XmlOptType.NODE_INSERT:
+					{
+						XmlOperationNode.deleteXmlNode(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_srcCtrlId);
+					}
+					break;
+				case XmlOptType.NODE_DELETE:
+					{
+						XmlOperationNode.insertXmlNode(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_srcCtrlId,
+							m_curNode.Value.m_dstElm);
+					}
+					break;
+				case XmlOptType.NODE_REPLACE:
+					{
+						//todo
+					}
+					break;
+				case XmlOptType.ATTR_INSERT:
+					{
+						XmlOperationNode.deleteXmlAttr(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_attrName);
+					}
+					break;
+				case XmlOptType.ATTR_DELETE:
+					{
+						XmlOperationNode.insertXmlAttr(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_attrName,
+							m_curNode.Value.m_oldValue);
+					}
+					break;
+				case XmlOptType.ATTR_UPDATE:
+					{
+						XmlOperationNode.setXmlAttr(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_attrName,
+							m_curNode.Value.m_oldValue);
+					}
+					break;
+				case XmlOptType.TEXT:
+					{
+						//todo
+					}
+					break;
+				default:
+					return;
+					break;
+			}
+			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
+		}
+
+		public void undo()
+		{
+			if (m_curNode.Previous != null && m_curNode != null && m_curNode != m_headNode)
+			{
+				undoOperation();
+				m_curNode = m_curNode.Previous;
+				m_xmlCtrl.m_openedFile.updateSaveStatus();
+			}
+		}
+		public void redo()
+		{
+			if (m_curNode.Next != null && m_curNode != null && m_curNode.Next != m_headNode)
+			{
+				m_curNode = m_curNode.Next;
+				redoOperation();
+				m_xmlCtrl.m_openedFile.updateSaveStatus();
 			}
 		}
 	}

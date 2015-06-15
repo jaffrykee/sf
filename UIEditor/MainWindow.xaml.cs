@@ -39,7 +39,6 @@ namespace UIEditor
 
 		public string m_curFile;	//todo
 		public BoloUI.Basic m_curCtrl;
-
 		private int m_dep;
 
 		public MainWindow()
@@ -78,12 +77,10 @@ namespace UIEditor
 			refreshSkin(path + "\\skin");
 			refreshProjTree(path, this.mx_treePro, true);
 		}
-
 		private void sendPathToGL(string path)
 		{
 			updateGL(path, W2GTag.W2G_PATH);
 		}
-
 		private void refreshSkin(string path)
 		{
 			XmlDocument xmlDoc = new XmlDocument();
@@ -97,7 +94,6 @@ namespace UIEditor
 				updateGL(buffer, W2GTag.W2G_SKIN_DATA);
 			}
 		}
-
 		private void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
 		{
 			m_rootPath = path;
@@ -163,11 +159,9 @@ namespace UIEditor
 				m_mapOpenedFiles[tabPath] = new OpenedFile(treeUI);
 			}
 		}
-
 		public void eventCloseFile(object sender, RoutedEventArgs e)
 		{
 		}
-
 		private void mx_workTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (((TabItem)mx_workTabs.SelectedItem) != null)
@@ -226,6 +220,7 @@ namespace UIEditor
 			public IntPtr lpData;
 		}
 
+		#region WIN32消息相关
 		internal const int
 			WM_DESTROY			= 0x0002,
 			WM_CLOSE			= 0x0010,
@@ -251,6 +246,51 @@ namespace UIEditor
 			LB_GETTEXT			= 0x0189,
 			LB_DELETESTRING		= 0x0182,
 			LB_GETCOUNT			= 0x018B;
+
+
+
+		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]
+		internal static extern int SendMessage(
+			IntPtr hwnd,
+			int msg,
+			IntPtr wParam,
+			IntPtr lParam);
+
+		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]
+		internal static extern int SendMessage(
+			IntPtr hwnd,
+			int msg,
+			int wParam,
+			[MarshalAs(UnmanagedType.LPWStr)] StringBuilder lParam);
+
+		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]
+		internal static extern IntPtr SendMessage(
+			IntPtr hwnd,
+			int msg,
+			IntPtr wParam,
+			String lParam);
+
+		[DllImport("User32.dll")]
+		public static extern int SendMessage(
+			IntPtr hwnd,
+			int msg,
+			int wParam,
+			ref COPYDATASTRUCT IParam);
+
+		[DllImport("User32.dll")]
+		public static extern int SendMessage(
+			IntPtr hwnd,
+			int msg,
+			int wParam,
+			ref COPYDATASTRUCT_SEND IParam);
+
+		[DllImport("User32.dll")]
+		public static extern int SendMessage(
+			IntPtr hwnd,
+			int msg,
+			int wParam,
+			ref COPYDATASTRUCT_SENDEX IParam);
+		#endregion
 
 		public enum W2GTag
 		{
@@ -453,18 +493,14 @@ namespace UIEditor
 			return hwnd;
 		}
 
-		public void updateXmlToGL(string path, XmlDocument doc, bool isOpt = true)
+		public void updateXmlToGL(string path, XmlDocument doc)
 		{
 			XmlDocument newDoc = new XmlDocument();
+			string fileName = StringDic.getFileNameWithoutPath(path);
+
 			newDoc.LoadXml(doc.InnerXml);
 			XmlNodeList nodeList;
 			XmlNode root = newDoc.DocumentElement;
-
-			if (isOpt)
-			{
-				//添加到事件列表
-				m_mapOpenedFiles[path].m_lstOpt.addOperation(doc);
-			}
 
 			//去掉所有事件(<event>)
 			nodeList = root.SelectNodes("descendant::event");
@@ -482,6 +518,7 @@ namespace UIEditor
 			}
 			*/
 			string buffer = newDoc.InnerXml;
+			updateGL(fileName, MainWindow.W2GTag.W2G_NORMAL_NAME);
 			updateGL(buffer, MainWindow.W2GTag.W2G_NORMAL_DATA);
 			((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).refreshVRect();
 		}
@@ -527,45 +564,6 @@ namespace UIEditor
 			mx_GLCtrl.Child = mx_GLHost;
 			mx_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
 		}
-
-		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]
-		internal static extern int SendMessage(IntPtr hwnd,
-											   int msg,
-											   IntPtr wParam,
-											   IntPtr lParam);
-
-		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]
-		internal static extern int SendMessage(IntPtr hwnd,
-											   int msg,
-											   int wParam,
-											   [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lParam);
-
-		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]
-		internal static extern IntPtr SendMessage(IntPtr hwnd,
-												  int msg,
-												  IntPtr wParam,
-												  String lParam);
-
-		[DllImport("User32.dll")]
-		public static extern int SendMessage(
-			IntPtr hwnd,
-			int msg,
-			int wParam,
-			ref COPYDATASTRUCT IParam);
-
-		[DllImport("User32.dll")]
-		public static extern int SendMessage(
-			IntPtr hwnd,
-			int msg,
-			int wParam,
-			ref COPYDATASTRUCT_SEND IParam);
-
-		[DllImport("User32.dll")]
-		public static extern int SendMessage(
-			IntPtr hwnd,
-			int msg,
-			int wParam,
-			ref COPYDATASTRUCT_SENDEX IParam);
 
 		#region xml控件名、属性名、默认值、取值范围等。
 		public class AttrDef_T
@@ -1044,7 +1042,6 @@ namespace UIEditor
 		{
 			mx_debug.Text = "";
 		}
-
 		private void mx_debug_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			mx_debug.ScrollToEnd();
@@ -1069,19 +1066,16 @@ namespace UIEditor
 			m_vCtrlName = true;
 			refreshAllCtrlUIHeader();
 		}
-
 		private void mx_checkVName_Unchecked(object sender, RoutedEventArgs e)
 		{
 			m_vCtrlName = false;
 			refreshAllCtrlUIHeader();
 		}
-
 		private void mx_checkVId_Checked(object sender, RoutedEventArgs e)
 		{
 			m_vCtrlId = true;
 			refreshAllCtrlUIHeader();
 		}
-
 		private void mx_checkVId_Unchecked(object sender, RoutedEventArgs e)
 		{
 			m_vCtrlId = false;
@@ -1099,22 +1093,38 @@ namespace UIEditor
 
 		private void mx_toolSave_Click(object sender, RoutedEventArgs e)
 		{
-
+			if(m_mapOpenedFiles[m_curFile].frameIsXmlCtrl())
+			{
+				((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_xmlDoc.Save(m_curFile);
+				m_mapOpenedFiles[m_curFile].m_lstOpt.m_saveNode = m_mapOpenedFiles[m_curFile].m_lstOpt.m_curNode;
+				m_mapOpenedFiles[m_curFile].updateSaveStatus();
+			}
 		}
-
 		private void mx_toolSaveAll_Click(object sender, RoutedEventArgs e)
 		{
-
+			foreach(KeyValuePair<string, OpenedFile> pairFile in m_mapOpenedFiles.ToList())
+			{
+				if(pairFile.Value.frameIsXmlCtrl())
+				{
+					((XmlControl)pairFile.Value.m_frame).m_xmlDoc.Save(pairFile.Key);
+					pairFile.Value.m_lstOpt.m_saveNode = pairFile.Value.m_lstOpt.m_curNode;
+					pairFile.Value.updateSaveStatus();
+				}
+			}
 		}
-
 		private void mx_toolUndo_Click(object sender, RoutedEventArgs e)
 		{
-			m_mapOpenedFiles[m_curFile].m_lstOpt.undo();
+			if (m_mapOpenedFiles[m_curFile].m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+			{
+				m_mapOpenedFiles[m_curFile].m_lstOpt.undo();
+			}
 		}
-
 		private void mx_toolRedo_Click(object sender, RoutedEventArgs e)
 		{
-			m_mapOpenedFiles[m_curFile].m_lstOpt.redo();
+			if (m_mapOpenedFiles[m_curFile].m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+			{
+				m_mapOpenedFiles[m_curFile].m_lstOpt.redo();
+			}
 		}
 	}
 }

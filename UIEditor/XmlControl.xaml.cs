@@ -38,41 +38,71 @@ namespace UIEditor
 			m_mapCtrlUI = new Dictionary<string, BoloUI.Basic>();
 		}
 
+		public void deleteBaseId(XmlNode xn)
+		{
+			if (xn != null)
+			{
+				if (xn.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xe = (XmlElement)xn;
+
+					MainWindow.CtrlDef_T ctrlDef;
+
+					if (xe.Name != "event" && m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlDef))
+					{
+						if (xe.GetAttribute("baseID") != "")
+						{
+							m_mapCtrlUI.Remove(xe.GetAttribute("baseID"));
+						}
+					}
+				}
+
+				XmlNodeList xnl = xn.ChildNodes;
+				foreach (XmlNode xnf in xnl)
+				{
+					deleteBaseId(xnf);
+				}
+			}
+		}
+
 		public void checkBaseId(XmlNode xn)
 		{
 			if (xn != null)
 			{
+				if (xn.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xe = (XmlElement)xn;
+
+					MainWindow.CtrlDef_T ctrlDef;
+
+					if (xe.Name != "event" && m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlDef))
+					{
+						if (xe.GetAttribute("baseID") == "")
+						{
+							xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
+							m_pW.mx_debug.Text += "<警告>baseID没有赋值，已经将其替换为随机值：" + xe.GetAttribute("baseID") + "\r\n";
+							//m_openedFile.updateSaveStatus();
+						}
+
+						BoloUI.Basic tmpNull;
+						string id = xe.GetAttribute("baseID");
+
+						if (m_mapCtrlUI.TryGetValue(id, out tmpNull))
+						{
+							//baseId重复了
+							xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
+							m_pW.mx_debug.Text += "<警告>baseID(" + id + ")重复，已经将其替换为随机值：" + xe.GetAttribute("baseID") + "\r\n";
+							id = xe.GetAttribute("baseID");
+							//m_openedFile.updateSaveStatus();
+						}
+						m_mapCtrlUI[id] = null;
+					}
+				}
+
 				XmlNodeList xnl = xn.ChildNodes;
 				foreach (XmlNode xnf in xnl)
 				{
-					if (xnf.NodeType == XmlNodeType.Element)
-					{
-						XmlElement xe = (XmlElement)xnf;
-
-						MainWindow.CtrlDef_T ctrlDef;
-
-						if(xe.Name != "event" && m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlDef))
-						{
-							if(xe.GetAttribute("baseID") == "")
-							{
-								xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
-								m_pW.mx_debug.Text += "<警告>baseID没有赋值，已经将其替换为随机值：" + xe.GetAttribute("baseID") + "\r\n";
-							}
-
-							BoloUI.Basic tmpNull;
-							string id = xe.GetAttribute("baseID");
-
-							if (m_mapCtrlUI.TryGetValue(id, out tmpNull))
-							{
-								//baseId重复了
-								xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
-								m_pW.mx_debug.Text += "<警告>baseID(" + id + ")重复，已经将其替换为随机值：" + xe.GetAttribute("baseID") + "\r\n";
-								id = xe.GetAttribute("baseID");
-							}
-							m_mapCtrlUI[id] = null;
-							checkBaseId(xnf);
-						}
-					}
+					checkBaseId(xnf);
 				}
 			}
 		}
@@ -88,63 +118,67 @@ namespace UIEditor
 			m_pW.updateGL(msgData, MainWindow.W2GTag.W2G_UI_VRECT);
 		}
 
-		private void tabFrameLoaded(object sender, RoutedEventArgs e)
+		public void refreshControl()
 		{
-			if (m_loaded == false)
+			m_pW = Window.GetWindow(this) as MainWindow;
+			m_openedFile = m_pW.m_mapOpenedFiles[m_parent.m_filePath];
+			m_openedFile.m_frame = this;
+			m_openedFile.m_lstOpt = new XmlOperation.XmlOperationList(m_pW, this, 50);
+			m_openedFile.m_treeUI.Items.Clear();
+
+			m_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
+
+			m_xmlDoc = new XmlDocument();
+			m_xmlDoc.Load(m_openedFile.m_path);
+			XmlNode xn = m_xmlDoc.SelectSingleNode("BoloUI");
+			if (xn != null)
 			{
-				m_pW = Window.GetWindow(this) as MainWindow;
-				m_openedFile = m_pW.m_mapOpenedFiles[m_parent.m_filePath];
-				m_openedFile.m_frame = this;
-				m_openedFile.m_treeUI.Items.Clear();
-				string fileName = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+				XmlNodeList xnl = xn.ChildNodes;
 
-				m_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
-
-				m_xmlDoc = new XmlDocument();
-				m_xmlDoc.Load(m_openedFile.m_path);
-				XmlNode xn = m_xmlDoc.SelectSingleNode("BoloUI");
-				if (xn != null)
+				checkBaseId(xn);
+				this.textContent.Text += ("未被解析的项目：\r\n");
+				foreach (XmlNode xnf in xnl)
 				{
-					XmlNodeList xnl = xn.ChildNodes;
-
-					checkBaseId(xn);
-					this.textContent.Text += ("未被解析的项目：\r\n");
-					foreach (XmlNode xnf in xnl)
+					if (xnf.NodeType == XmlNodeType.Element)
 					{
-						if (xnf.NodeType == XmlNodeType.Element)
-						{
-							XmlElement xe = (XmlElement)xnf;
-							MainWindow.CtrlDef_T ctrlPtr;
+						XmlElement xe = (XmlElement)xnf;
+						MainWindow.CtrlDef_T ctrlPtr;
 
-							if (m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
+						if (m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
+						{
+							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
+							this.m_openedFile.m_treeUI.Items.Add(treeChild);
+						}
+						else
+						{
+							switch (xe.Name)
 							{
-								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
-								this.m_openedFile.m_treeUI.Items.Add(treeChild);
-							}
-							else
-							{
-								switch (xe.Name)
-								{
-									case "publicresource":
-									case "publicskin":
-									case "resource":
-									case "skin":
-									case "skingroup":
-									case "BoloUIEvent":
-									default:
-										break;
-								}
+								case "publicresource":
+								case "publicskin":
+								case "resource":
+								case "skin":
+								case "skingroup":
+								case "BoloUIEvent":
+								default:
+									break;
 							}
 						}
 					}
 				}
-				else
-				{
-					this.textContent.Text += ("这不是一个有效的BoloUI文件。" + "\r\n");
-				}
-				m_pW.updateGL(fileName, MainWindow.W2GTag.W2G_NORMAL_NAME);
-				m_pW.updateXmlToGL(m_openedFile.m_path, m_xmlDoc);
-				m_loaded = true;
+			}
+			else
+			{
+				this.textContent.Text += ("这不是一个有效的BoloUI文件。" + "\r\n");
+			}
+			m_pW.updateXmlToGL(m_openedFile.m_path, m_xmlDoc);
+			m_loaded = true;
+		}
+
+		private void tabFrameLoaded(object sender, RoutedEventArgs e)
+		{
+			if (m_loaded == false)
+			{
+				refreshControl();
 			}
 		}
 	}

@@ -92,20 +92,7 @@ namespace UIEditor
 						}
 						if (isWrong == false)
 						{
-							if (mt_value != "" && value == "")
-							{
-								elmUI.m_xe.RemoveAttribute(m_name);
-							}
-							else
-							{
-								elmUI.m_xe.SetAttribute(m_name, value);
-							}
-							BoloUI.Basic.checkBaseId(elmUI, true);
-							elmUI.initHeader();
-
-							string buffer = elmUI.m_xe.OwnerDocument.InnerXml;
-							m_pW.updateGL(elmUI.m_rootControl.m_openedFile.m_path, MainWindow.W2GTag.W2G_NORMAL_NAME);
-							m_pW.updateXmlToGL(elmUI.m_rootControl.m_openedFile.m_path, elmUI.m_xe.OwnerDocument);
+							elmUI.m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.XmlOperationNode(elmUI.m_xe, m_name, mt_value, value));
 						}
 						else
 						{

@@ -16,9 +16,6 @@ using System.Xml;
 
 namespace UIEditor.BoloUI
 {
-	/// <summary>
-	/// Event.xaml 的交互逻辑
-	/// </summary>
 	public partial class Basic : TreeViewItem
 	{
 		public XmlControl m_rootControl;
@@ -35,7 +32,6 @@ namespace UIEditor.BoloUI
 		{
 			InitializeComponent();
 		}
-
 		public Basic(XmlElement xe, XmlControl rootControl)
 		{
 			InitializeComponent();
@@ -52,7 +48,6 @@ namespace UIEditor.BoloUI
 			}
 			addChild();
 		}
-
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			initHeader();
@@ -84,7 +79,6 @@ namespace UIEditor.BoloUI
 				}
 			}
 		}
-
 		static public void checkBaseId(Basic elmUI, bool isUpdate = false)
 		{
 			string name = "", id = "";
@@ -125,7 +119,6 @@ namespace UIEditor.BoloUI
 				id = elmUI.m_xe.GetAttribute("baseID");
 			}
 		}
-
 		public void initHeader()
 		{
 			string ctrlTip;
@@ -176,7 +169,6 @@ namespace UIEditor.BoloUI
 				mx_text.Content += "(" + id + ")";
 			}
 		}
-
 		public bool checkPointInFence(int x, int y)
 		{
 			if(x >= m_selX && y >= m_selY)
@@ -188,7 +180,6 @@ namespace UIEditor.BoloUI
 			}
 			return false;
 		}
-
 		public void changeSelectCtrl()
 		{
 			if (m_xe.GetAttribute("baseID") != "")
@@ -275,11 +266,9 @@ namespace UIEditor.BoloUI
 		{
 			changeSelectCtrl();
 		}
-
 		private void mx_root_Selected(object sender, RoutedEventArgs e)
 		{
 		}
-
 		private void mx_root_Unselected(object sender, RoutedEventArgs e)
 		{
 		}

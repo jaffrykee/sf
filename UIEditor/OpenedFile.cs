@@ -50,8 +50,46 @@ namespace UIEditor
 
 			pW.mx_workTabs.Items.Add(m_tab);
 			pW.mx_workTabs.SelectedItem = m_tab;
+		}
 
-			m_lstOpt = new XmlOperationList(pW, this, 50);
+		public bool frameIsXmlCtrl()
+		{
+			if (m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public void updateSaveStatus()
+		{
+			string ec = m_tab.Header.ToString().Substring(m_tab.Header.ToString().Length - 1, 1);
+			if(m_lstOpt.m_saveNode == m_lstOpt.m_curNode)
+			{
+				//去掉*
+				if(ec == "*")
+				{
+					m_tab.Header = m_tab.Header.ToString().Substring(0, m_tab.Header.ToString().Length - 1);
+				}
+			}
+			else
+			{
+				//加上*
+				if (ec != "*")
+				{
+					m_tab.Header = m_tab.Header.ToString() + "*";
+				}
+			}
+		}
+		public void deleteAsterisk()
+		{
+		}
+		public void insertAsterisk()
+		{
+
 		}
 	}
 }

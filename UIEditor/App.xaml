@@ -10,5 +10,5 @@
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>
-<!--<ResourceDictionary Source="Themes/Generic.xaml"/>-->
+<!--<ResourceDictionary Source="Themes/Generic.Light.xaml"/>-->
 <!--<ResourceDictionary Source="Themes/Generic.Dark.xaml"/>-->
