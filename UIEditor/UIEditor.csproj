@@ -76,6 +76,9 @@
       <DependentUpon>FileTabItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="OpenedFile.cs" />
+    <Compile Include="Public\SaveConfirm.xaml.cs">
+      <DependentUpon>SaveConfirm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XmlOperation\OperationHistoryList.cs" />
     <Compile Include="Public\AttrList.xaml.cs">
       <DependentUpon>AttrList.xaml</DependentUpon>
@@ -142,6 +145,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Public\AttrRow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Public\SaveConfirm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

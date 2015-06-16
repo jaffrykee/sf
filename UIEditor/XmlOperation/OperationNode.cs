@@ -115,7 +115,7 @@ namespace UIEditor.XmlOperation
 		}
 
 		//直接和xml打交道的处理和部分对于显示的刷新。
-		static public void insertXmlNode(MainWindow pW, string path, string dstCtrlId, XmlElement srcXe)
+		static public bool insertXmlNode(MainWindow pW, string path, string dstCtrlId, XmlElement srcXe)
 		{
 			MainWindow.CtrlDef_T ctrlPtr;
 			OpenedFile fileT;
@@ -135,12 +135,14 @@ namespace UIEditor.XmlOperation
 						{
 							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), srcXe, xmlCtrl) as System.Windows.Controls.TreeViewItem;
 							uiCtrl.Items.Add(treeChild);
+							return true;
 						}
 					}
 				}
 			}
+			return false;
 		}
-		static public void deleteXmlNode(MainWindow pW, string path, string dstCtrlId)
+		static public bool deleteXmlNode(MainWindow pW, string path, string dstCtrlId)
 		{
 			OpenedFile fileT;
 
@@ -155,11 +157,13 @@ namespace UIEditor.XmlOperation
 					{
 						xmlCtrl.deleteBaseId(uiCtrl.m_xe);
 						((TreeViewItem)uiCtrl.Parent).Items.Remove(uiCtrl);
+						return true;
 					}
 				}
 			}
+			return false;
 		}
-		static public void setXmlAttr(MainWindow pW, string path, string dstCtrlId, string attrName, string newValue)
+		static public bool setXmlAttr(MainWindow pW, string path, string dstCtrlId, string attrName, string newValue)
 		{
 			OpenedFile fileT;
 
@@ -173,19 +177,17 @@ namespace UIEditor.XmlOperation
 					if (xmlCtrl.m_mapCtrlUI.TryGetValue(dstCtrlId, out uiCtrl))
 					{
 						uiCtrl.m_xe.SetAttribute(attrName, newValue);
-						if (uiCtrl == pW.m_curCtrl)
-						{
-							uiCtrl.changeSelectCtrl();
-						}
+						return true;
 					}
 				}
 			}
+			return false;
 		}
-		static public void insertXmlAttr(MainWindow pW, string path, string dstCtrlId, string attrName, string newValue)
+		static public bool insertXmlAttr(MainWindow pW, string path, string dstCtrlId, string attrName, string newValue)
 		{
-			setXmlAttr(pW, path, dstCtrlId, attrName, newValue);
+			return setXmlAttr(pW, path, dstCtrlId, attrName, newValue);
 		}
-		static public void deleteXmlAttr(MainWindow pW, string path, string dstCtrlId, string attrName)
+		static public bool deleteXmlAttr(MainWindow pW, string path, string dstCtrlId, string attrName)
 		{
 			OpenedFile fileT;
 
@@ -202,10 +204,12 @@ namespace UIEditor.XmlOperation
 						if (uiCtrl == pW.m_curCtrl)
 						{
 							uiCtrl.changeSelectCtrl();
+							return true;
 						}
 					}
 				}
 			}
+			return false;
 		}
 	}
 }

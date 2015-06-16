@@ -161,6 +161,10 @@ namespace UIEditor
 		}
 		public void eventCloseFile(object sender, RoutedEventArgs e)
 		{
+			if(m_mapOpenedFiles.Count == 0)
+			{
+				mx_GLCtrl.Visibility = System.Windows.Visibility.Collapsed;
+			}
 		}
 		private void mx_workTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
@@ -194,37 +198,12 @@ namespace UIEditor
 		//============================================================
 
 		ControlHost mx_GLHost;
-
-		const int WM_COPYDATA = 0x004A;
-
-		public struct COPYDATASTRUCT_SEND
-		{
-			public IntPtr dwData;
-			public int cbData;
-			[MarshalAs(UnmanagedType.LPStr)]
-			public string lpData;
-		}
-
-		public struct COPYDATASTRUCT_SENDEX
-		{
-			public IntPtr dwData;
-			public int cbData;
-			public IntPtr lpData;
-		}
-
-		public struct COPYDATASTRUCT
-		{
-			public IntPtr dwData;
-			public int cbData;
-			[MarshalAs(UnmanagedType.LPStr)]
-			public IntPtr lpData;
-		}
-
 		#region WIN32消息相关
 		internal const int
 			WM_DESTROY			= 0x0002,
 			WM_CLOSE			= 0x0010,
 			WM_QUIT				= 0x0012,
+			WM_COPYDATA			= 0x004A,
 			WM_COMMAND			= 0x0111,
 			
 			WM_MOUSEFIRST		= 0x0200,
@@ -304,13 +283,32 @@ namespace UIEditor
 			W2G_UI_VRECT = 0x0004,
 			W2G_DRAWRECT = 0x0014,
 		};
-
 		public enum G2WTag
 		{
 			G2W_HWND = 0x0000,
 			G2W_EVENT = 0x0003,
 			G2W_UI_VRECT = 0x0004,
 		};
+		public struct COPYDATASTRUCT_SEND
+		{
+			public IntPtr dwData;
+			public int cbData;
+			[MarshalAs(UnmanagedType.LPStr)]
+			public string lpData;
+		}
+		public struct COPYDATASTRUCT_SENDEX
+		{
+			public IntPtr dwData;
+			public int cbData;
+			public IntPtr lpData;
+		}
+		public struct COPYDATASTRUCT
+		{
+			public IntPtr dwData;
+			public int cbData;
+			[MarshalAs(UnmanagedType.LPStr)]
+			public IntPtr lpData;
+		}
 
 		public void updateGL(string buffer, W2GTag msgTag = W2GTag.W2G_NORMAL_DATA)
 		{
@@ -345,7 +343,6 @@ namespace UIEditor
 				}
 			}
 		}
-
 		//响应主逻辑
 		private IntPtr ControlMsgFilter(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
@@ -469,7 +466,6 @@ namespace UIEditor
 
 			return IntPtr.Zero;
 		}
-
 		//根窗体消息相应
 		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
@@ -492,7 +488,6 @@ namespace UIEditor
 
 			return hwnd;
 		}
-
 		public void updateXmlToGL(string path, XmlDocument doc)
 		{
 			XmlDocument newDoc = new XmlDocument();
@@ -522,7 +517,6 @@ namespace UIEditor
 			updateGL(buffer, MainWindow.W2GTag.W2G_NORMAL_DATA);
 			((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).refreshVRect();
 		}
-
 		private void addTmpEvent(XmlDocument doc, XmlElement xeParent)
 		{
 			XmlNodeList xnl = xeParent.ChildNodes;
@@ -550,7 +544,6 @@ namespace UIEditor
 				}
 			}
 		}
-
 		private void On_UIReady(object sender, EventArgs e)
 		{
 			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
@@ -572,15 +565,15 @@ namespace UIEditor
 			public string m_type;
 			public string m_defValue;
 			public bool m_isEnum;
-			public List<string> m_enumValue;
+			public List<string> m_lstEnumValue;
 
-			public AttrDef_T(string type = "int", string defValue = null, AttrRow rowUI = null)
+			public AttrDef_T(string type = "int", string defValue = null, AttrRow rowUI = null, bool isEnum = false, List<string> lstEnumValue = null)
 			{
 				m_attrRowUI = rowUI;
 				m_type = type;
 				m_defValue = defValue;
-				m_isEnum = false;
-				m_enumValue = null;
+				m_isEnum = isEnum;
+				m_lstEnumValue = lstEnumValue;
 			}
 		}
 
@@ -1038,15 +1031,6 @@ namespace UIEditor
 		}
 		#endregion
 
-		private void mx_bClearDebug_Click(object sender, RoutedEventArgs e)
-		{
-			mx_debug.Text = "";
-		}
-		private void mx_debug_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			mx_debug.ScrollToEnd();
-		}
-
 		public void refreshAllCtrlUIHeader()
 		{
 			foreach (KeyValuePair<string, OpenedFile> pairOpenedFile in m_mapOpenedFiles.ToList())
@@ -1060,7 +1044,22 @@ namespace UIEditor
 				}
 			}
 		}
+		private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			mx_toolScroll.ScrollToRightEnd();
+		}
+		private void selCtrlBybutton(object sender, RoutedEventArgs e)
+		{
+		}
 
+		private void mx_bClearDebug_Click(object sender, RoutedEventArgs e)
+		{
+			mx_debug.Text = "";
+		}
+		private void mx_debug_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			mx_debug.ScrollToEnd();
+		}
 		private void mx_checkVName_Checked(object sender, RoutedEventArgs e)
 		{
 			m_vCtrlName = true;
@@ -1081,16 +1080,6 @@ namespace UIEditor
 			m_vCtrlId = false;
 			refreshAllCtrlUIHeader();
 		}
-
-		private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			mx_toolScroll.ScrollToRightEnd();
-		}
-
-		private void selCtrlBybutton(object sender, RoutedEventArgs e)
-		{
-		}
-
 		private void mx_toolSave_Click(object sender, RoutedEventArgs e)
 		{
 			if(m_mapOpenedFiles[m_curFile].frameIsXmlCtrl())

@@ -38,7 +38,7 @@ namespace UIEditor
 			{
 				foreach (KeyValuePair<string, MainWindow.AttrDef_T> listAttr in ctrlDef.m_mapAttrDef.ToList())
 				{
-					listAttr.Value.m_attrRowUI = new AttrRow(listAttr.Value.m_type, listAttr.Key, "", this);
+					listAttr.Value.m_attrRowUI = new AttrRow(listAttr.Value, listAttr.Key, "", this);
 					mx_frame.Children.Add(listAttr.Value.m_attrRowUI);
 				}
 			}

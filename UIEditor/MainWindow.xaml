@@ -24,20 +24,17 @@
 		</Grid.ColumnDefinitions>
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
 			<MenuItem Header="文件">
-                <MenuItem Header="新建">
-                </MenuItem>
-                <MenuItem Header="打开" Click="openProj">
-				</MenuItem>
+				<MenuItem Header="新建" IsEnabled="False"/>
+				<MenuItem Header="打开" Click="openProj"/>
 				<Separator/>
-				<MenuItem Header="保存"/>
-				<MenuItem Header="全部保存"/>
+				<MenuItem Header="保存" Click="mx_toolSave_Click"/>
+				<MenuItem Header="全部保存" Click="mx_toolSaveAll_Click"/>
 				<Separator/>
-				<MenuItem Header="退出"/>
+				<MenuItem Header="退出" IsEnabled="False"/>
 			</MenuItem>
 			<MenuItem Header="编辑">
-				<MenuItem Header="MenuItem"/>
-				<MenuItem Header="MenuItem"/>
-				<MenuItem Header="MenuItem"/>
+				<MenuItem Header="撤销" Click="mx_toolUndo_Click"/>
+				<MenuItem Header="重复" Click="mx_toolRedo_Click"/>
 			</MenuItem>
 		</Menu>
 		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
@@ -48,7 +45,7 @@
 				</Grid.RowDefinitions>
 				<ToolBarTray Grid.Row="0">
 					<ToolBar HorizontalAlignment="Left">
-						<Button Name="mx_toolNew" Foreground="{StaticResource BKFore}">新建</Button>
+						<Button Name="mx_toolNew" IsEnabled="False" Foreground="{StaticResource BKFore}">新建</Button>
 						<Button Name="mx_toolOpen" Foreground="{StaticResource BKFore}" Click="openProj">打开</Button>
 						<Button Name="mx_toolSave" Foreground="{StaticResource BKFore}" Click="mx_toolSave_Click">保存</Button>
 						<Button Name="mx_toolSaveAll" Foreground="{StaticResource BKFore}" Click="mx_toolSaveAll_Click">全部保存</Button>
@@ -80,7 +77,6 @@
 						Name="mx_checkVName"
 						Grid.Column="0"
 						IsChecked="True"
-						Foreground="#ffaaaaaa"
 						VerticalAlignment="Center"
 						Margin="10,0,0,0"
 						Content="显示name"
@@ -90,7 +86,6 @@
 						Name="mx_checkVId"
 						Grid.Column="1"
 						IsChecked="True"
-						Foreground="#ffaaaaaa"
 						VerticalAlignment="Center"
 						Margin="10,0,0,0"
 						Content="显示id"
@@ -124,7 +119,7 @@
 				<ColumnDefinition Name="mx_glC0" Width="*"/>
 				<ColumnDefinition Name="mx_glC1" Width="{Binding ElementName=mx_glR1, Path=Height}"/>
 			</Grid.ColumnDefinitions>
-			<Border Name="mx_GLCtrl" Background="{StaticResource BKBack}"></Border>
+			<Border Name="mx_GLCtrl" Background="{StaticResource BKBack}" Visibility="Collapsed"></Border>
 			<ScrollViewer
 					Grid.ColumnSpan="2"
 					Grid.RowSpan="2"

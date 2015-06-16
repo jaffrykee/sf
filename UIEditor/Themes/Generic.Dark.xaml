@@ -69,6 +69,14 @@
 		<Setter Property="Foreground" Value="{StaticResource BKFore}"/>
 		<Setter Property="BorderBrush" Value="{StaticResource BKBorder}"/>
 	</Style>
+	<Style TargetType="{x:Type CheckBox}">
+		<Setter Property="FontFamily" Value="Consolas"/>
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="Background" Value="{StaticResource BKBack}"/>
+		<Setter Property="Foreground" Value="{StaticResource BKFore}"/>
+		<Setter Property="BorderBrush" Value="{StaticResource BKBorder}"/>
+	</Style>
 	<Style TargetType="{x:Type Border}">
 		<Setter Property="Background" Value="{StaticResource BKBack}"/>
 		<Setter Property="BorderBrush" Value="{StaticResource BKBorder}"/>
@@ -104,6 +112,7 @@
 		<Setter Property="Background" Value="{StaticResource BKBack}"/>
 		<Setter Property="Foreground" Value="{StaticResource BKFore}"/>
 		<Setter Property="BorderBrush" Value="{StaticResource BKBorder}"/>
+		<Setter Property="BorderThickness" Value="0"/>
 	</Style>
 	<Style TargetType="{x:Type MenuItem}">
 		<Setter Property="FontFamily" Value="微软雅黑"/>
@@ -111,6 +120,7 @@
 		<Setter Property="Background" Value="{StaticResource BKBack}"/>
 		<Setter Property="Foreground" Value="{StaticResource BKFore}"/>
 		<Setter Property="BorderBrush" Value="{StaticResource BKBorder}"/>
+		<Setter Property="BorderThickness" Value="0"/>
 	</Style>
 	<Style TargetType="{x:Type TabControl}">
 		<Setter Property="FontFamily" Value="Consolas"/>

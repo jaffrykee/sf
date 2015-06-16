@@ -26,7 +26,6 @@ namespace UIEditor
 		private string mt_type;
 		public MainWindow m_pW;
 		public AttrList m_parent;
-
 		public string m_name
 		{
 			get { return mt_name; }
@@ -36,7 +35,6 @@ namespace UIEditor
 				mx_name.Content = value;
 			}
 		}
-
 		public string m_value
 		{
 			get { return mt_value; }
@@ -105,25 +103,42 @@ namespace UIEditor
 				mx_value.Text = value;
 			}
 		}
-
 		public string m_type
 		{
 			get{return mt_type;}
 			set
 			{
 				mt_type = value;
-				if (value == "bool")
+				if(!m_isEnum)
 				{
-					mx_boolFrame.Visibility = Visibility.Visible;
-					mx_normalFrame.Visibility = Visibility.Hidden;
+					switch (value)
+					{
+						case "bool":
+							{
+								mx_boolFrame.Visibility = Visibility.Visible;
+								mx_normalFrame.Visibility = Visibility.Collapsed;
+								mx_enumFrame.Visibility = Visibility.Collapsed;
+							}
+							break;
+						default:
+							{
+								mx_boolFrame.Visibility = Visibility.Collapsed;
+								mx_normalFrame.Visibility = Visibility.Visible;
+								mx_enumFrame.Visibility = Visibility.Collapsed;
+							}
+							break;
+					}
 				}
 				else
 				{
-					mx_boolFrame.Visibility = Visibility.Hidden;
-					mx_normalFrame.Visibility = Visibility.Visible;
+					mx_boolFrame.Visibility = Visibility.Collapsed;
+					mx_normalFrame.Visibility = Visibility.Collapsed;
+					mx_enumFrame.Visibility = Visibility.Visible;
 				}
 			}
 		}
+		public bool m_isEnum;
+		public List<string> m_lstEnumValue;
 
 		public AttrRow(string type = "string", string name = "", string value = "", AttrList parent = null)
 		{
@@ -132,8 +147,19 @@ namespace UIEditor
 			mt_value = value;
 			mt_type = type;
 			m_parent = parent;
+			m_isEnum = false;
+			m_lstEnumValue = null;
 		}
-
+		public AttrRow(MainWindow.AttrDef_T attrDef, string name = "", string value = "", AttrList parent = null)
+		{
+			InitializeComponent();
+			mt_name = name;
+			mt_value = value;
+			mt_type = attrDef.m_type;
+			m_parent = parent;
+			m_isEnum = attrDef.m_isEnum;
+			m_lstEnumValue = attrDef.m_lstEnumValue;
+		}
 		private void mx_root_Loaded(object sender, RoutedEventArgs e)
 		{
 			m_pW = Window.GetWindow(this) as MainWindow;
@@ -157,7 +183,6 @@ namespace UIEditor
 			}
 			m_value = mx_value.Text;
 		}
-
 		private void mx_defaultBool_Unchecked(object sender, RoutedEventArgs e)
 		{
 			mx_valueBool.IsEnabled = true;
@@ -171,23 +196,19 @@ namespace UIEditor
 				m_value = "false";
 			}
 		}
-
 		private void mx_defaultBool_Checked(object sender, RoutedEventArgs e)
 		{
 			mx_valueBool.IsEnabled = false;
 			m_value = "";
 		}
-
 		private void mx_valueBool_Checked(object sender, RoutedEventArgs e)
 		{
 			m_value = "true";
 		}
-
 		private void mx_valueBool_Unchecked(object sender, RoutedEventArgs e)
 		{
 			m_value = "false";
 		}
-
 		private void mx_valueBool_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			if(mx_valueBool.IsEnabled == true)
@@ -198,6 +219,11 @@ namespace UIEditor
 			{
 				mx_valueBool.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xbb, 0xbb, 0xbb));
 			}
+		}
+
+		private void mx_valueEnum_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			((ComboBox)sender).SelectedItem
 		}
 	}
 }

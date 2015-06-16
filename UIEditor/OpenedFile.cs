@@ -54,28 +54,44 @@ namespace UIEditor
 
 		public bool frameIsXmlCtrl()
 		{
-			if (m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+			if (m_frame != null)
 			{
-				return true;
+				if (m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 			else
 			{
 				return false;
 			}
 		}
-
-		public void updateSaveStatus()
+		public bool haveDiffToFile()
 		{
-			string ec = m_tab.Header.ToString().Substring(m_tab.Header.ToString().Length - 1, 1);
-			if(m_lstOpt.m_saveNode == m_lstOpt.m_curNode)
+			if (frameIsXmlCtrl())
 			{
-				//去掉*
-				if(ec == "*")
+				if (m_lstOpt.m_saveNode == m_lstOpt.m_curNode)
 				{
-					m_tab.Header = m_tab.Header.ToString().Substring(0, m_tab.Header.ToString().Length - 1);
+					return false;
+				}
+				else
+				{
+					return true;
 				}
 			}
 			else
+			{
+				return false;
+			}
+		}
+		public void updateSaveStatus()
+		{
+			string ec = m_tab.Header.ToString().Substring(m_tab.Header.ToString().Length - 1, 1);
+			if (haveDiffToFile())
 			{
 				//加上*
 				if (ec != "*")
@@ -83,13 +99,14 @@ namespace UIEditor
 					m_tab.Header = m_tab.Header.ToString() + "*";
 				}
 			}
-		}
-		public void deleteAsterisk()
-		{
-		}
-		public void insertAsterisk()
-		{
-
+			else
+			{
+				//去掉*
+				if (ec == "*")
+				{
+					m_tab.Header = m_tab.Header.ToString().Substring(0, m_tab.Header.ToString().Length - 1);
+				}
+			}
 		}
 	}
 }
