@@ -144,26 +144,15 @@ namespace UIEditor
 					{
 						XmlElement xe = (XmlElement)xnf;
 						MainWindow.CtrlDef_T ctrlPtr;
+						MainWindow.SkinDef_T skinPtr;
 
 						if (m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
 						{
 							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
 							this.m_openedFile.m_treeUI.Items.Add(treeChild);
 						}
-						else if (m_pW.m_mapSkinResDef.TryGetValue(xe.Name, out ctrlPtr))
+						else if (m_pW.m_mapSkinResDef.TryGetValue(xe.Name, out skinPtr))
 						{
-// 							switch (xe.Name)
-// 							{
-// 
-// 								case "publicresource":
-// 								case "publicskin":
-// 								case "resource":
-// 								case "skin":
-// 								case "skingroup":
-// 								case "BoloUIEvent":
-// 								default:
-// 									break;
-// 							}
 						}
 					}
 				}

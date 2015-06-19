@@ -59,6 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoloRes\ResBasic.xaml.cs">
+      <DependentUpon>ResBasic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BoloUI\Basic.xaml.cs">
       <DependentUpon>Basic.xaml</DependentUpon>
     </Compile>
@@ -100,6 +103,10 @@
     <Page Include="ani.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BoloRes\ResBasic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BoloUI\Basic.xaml">
       <Generator>MSBuild:Compile</Generator>
