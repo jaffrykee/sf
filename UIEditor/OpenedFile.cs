@@ -30,26 +30,30 @@ namespace UIEditor
 		public string m_fileType;
 		public XmlOperationList m_lstOpt;
 
-		public OpenedFile(TreeViewItem treeUI)
+		public OpenedFile(TreeView treeUIFrame, string path)
 		{
-			MainWindow pW = Window.GetWindow(treeUI) as MainWindow;
+			MainWindow pW = Window.GetWindow(treeUIFrame) as MainWindow;
 
-			m_path = ((ToolTip)treeUI.ToolTip).Content.ToString();
+			m_path = path;
 			m_fileType = StringDic.getFileType(m_path);
 			m_tab = new TabItem();
-			m_treeUI = treeUI;
+			m_treeUI = new TreeViewItem();
 
 			m_tab.Unloaded += new RoutedEventHandler(pW.eventCloseFile);
 			ToolTip tabTip = new ToolTip();
-			Button close = new Button();
 			tabTip.Content = m_path;
-			m_tab.Header = treeUI.Header.ToString();
+			m_tab.Header = StringDic.getFileNameWithoutPath(path);
 			m_tab.ToolTip = tabTip;
 			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
 			m_tab.Content = tabContent;
 
 			pW.mx_workTabs.Items.Add(m_tab);
 			pW.mx_workTabs.SelectedItem = m_tab;
+
+			treeUIFrame.Items.Add(m_treeUI);
+			m_treeUI.Header = StringDic.getFileNameWithoutPath(path);
+			m_treeUI.ToolTip = tabTip;
+			m_treeUI.IsExpanded = true;
 		}
 
 		public bool frameIsXmlCtrl()

@@ -27,6 +27,9 @@ namespace UIEditor
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
 		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
+		public Dictionary<string, SkinDef_T> m_mapShapeChildDef;
+		public Dictionary<string, SkinDef_T> m_mapSkinChildDef;
+		public Dictionary<string, SkinDef_T> m_mapSkinResDef;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
 		public IntPtr m_hwndGLFrame;
@@ -58,7 +61,7 @@ namespace UIEditor
 			m_vCtrlId = true;
 		}
 
-		private void openProj(object sender, RoutedEventArgs e)
+		private void openProj(object sender, RoutedEventArgs e)//打开工程
 		{
 			System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			openFolderDialog.Description = "选择UI所在文件夹";
@@ -77,7 +80,7 @@ namespace UIEditor
 			refreshSkin(path + "\\skin");
 			refreshProjTree(path, this.mx_treePro, true);
 		}
-		private void sendPathToGL(string path)
+		private void sendPathToGL(string path)//告知GL端工程根目录
 		{
 			updateGL(path, W2GTag.W2G_PATH);
 		}
@@ -145,18 +148,19 @@ namespace UIEditor
 
 		private void openFileTab(object sender, MouseEventArgs e)
 		{
-			TreeViewItem treeUI = (TreeViewItem)sender;
 			OpenedFile openedFile;
-			string tabPath = ((ToolTip)treeUI.ToolTip).Content.ToString();
+			TreeViewItem fileItem = (TreeViewItem)sender;
+			string tabPath = ((ToolTip)fileItem.ToolTip).Content.ToString();
 			string fileType = StringDic.getFileType(tabPath);
 
 			if (m_mapOpenedFiles.TryGetValue(tabPath, out openedFile))
 			{
 				this.mx_workTabs.SelectedItem = openedFile.m_tab;
+				mx_treeCtrlFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeUI);
 			}
 			else
 			{
-				m_mapOpenedFiles[tabPath] = new OpenedFile(treeUI);
+				m_mapOpenedFiles[tabPath] = new OpenedFile(mx_treeCtrlFrame, tabPath);
 			}
 		}
 		public void eventCloseFile(object sender, RoutedEventArgs e)
@@ -176,6 +180,7 @@ namespace UIEditor
 					string fileType = StringDic.getFileType(tabPath);
 
 					m_curFile = tabPath;
+					mx_treeCtrlFrame.Items.Clear();
 					if (fileType == "xml")
 					{
 						string fileName = StringDic.getFileNameWithoutPath(tabPath);
@@ -184,6 +189,7 @@ namespace UIEditor
 						if (m_mapOpenedFiles.TryGetValue(tabPath, out openFile))
 						{
 							updateGL(fileName, W2GTag.W2G_NORMAL_TURN);
+							mx_treeCtrlFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeUI);
 						}
 						mx_GLCtrl.Visibility = System.Windows.Visibility.Visible;
 					}
@@ -343,8 +349,7 @@ namespace UIEditor
 				}
 			}
 		}
-		//响应主逻辑
-		private IntPtr ControlMsgFilter(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		private IntPtr ControlMsgFilter(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)//响应主逻辑
 		{
 			handled = false;
 			switch (msg)
@@ -466,8 +471,7 @@ namespace UIEditor
 
 			return IntPtr.Zero;
 		}
-		//根窗体消息相应
-		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)//根窗体消息相应
 		{
 			switch (msg)
 			{
@@ -576,7 +580,6 @@ namespace UIEditor
 				m_lstEnumValue = lstEnumValue;
 			}
 		}
-
 		public class CtrlDef_T
 		{
 			public Dictionary<string, AttrDef_T> m_mapAttrDef;
@@ -588,7 +591,17 @@ namespace UIEditor
 				m_attrListUI = attrListUI;
 			}
 		}
+		public class SkinDef_T
+		{
+			public Dictionary<string, SkinDef_T> m_mapEnChild;
+			public Dictionary<string, AttrDef_T> m_mapAttrDef;
 
+			public SkinDef_T(Dictionary<string, SkinDef_T> mapChild, Dictionary<string, AttrDef_T> mapAttrDef)
+			{
+				m_mapEnChild = mapChild;
+				m_mapAttrDef = mapAttrDef;
+			}
+		}
 
 		Dictionary<string, AttrDef_T> conf_mapBaseAttrDef = new Dictionary<string, AttrDef_T>
 			{
@@ -657,7 +670,6 @@ namespace UIEditor
 				{"canHandleEvent", new AttrDef_T("bool")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapPanelAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region Panel
@@ -671,11 +683,10 @@ namespace UIEditor
 				{"bkW_R", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapLabelAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region Label
-				{"bgColor", new AttrDef_T("intx16")},
+				{"bgColor", new AttrDef_T("color")},
 				{"speed", new AttrDef_T("int")},
 				{"autoSize", new AttrDef_T("bool")},
 				{"autoFontSize", new AttrDef_T("bool")},
@@ -694,7 +705,6 @@ namespace UIEditor
 				{"reelScrollSpeed", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapButtonAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region Button
@@ -709,14 +719,13 @@ namespace UIEditor
 				{"pressedEndBlink", new AttrDef_T("bool")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapSkillButtonAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region SkillButton
 				{"cdStyle", new AttrDef_T("int")},
 				{"cdTime", new AttrDef_T("int")},
 				{"cdRange", new AttrDef_T("int")},
-				{"cdRGB", new AttrDef_T("intx16")},
+				{"cdRGB", new AttrDef_T("color")},
 				{"cdEx", new AttrDef_T("int")},
 				{"cdEy", new AttrDef_T("int")},
 				{"cdExN", new AttrDef_T("int")},
@@ -731,7 +740,6 @@ namespace UIEditor
 				{"disableWhenBeginCold", new AttrDef_T("bool")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapProgressAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region Progress
@@ -759,7 +767,6 @@ namespace UIEditor
 				{"gridValue", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapRadioAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region Radio
@@ -769,7 +776,6 @@ namespace UIEditor
 				{"checkLayer", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapCheckAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region Check
@@ -777,7 +783,6 @@ namespace UIEditor
 				{"ntw", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapListPanelAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region ListPanel
@@ -801,7 +806,6 @@ namespace UIEditor
 				{"middleCardZoomValue", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapTabPanelAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region TabPanel
@@ -818,7 +822,6 @@ namespace UIEditor
 				{"tabChangeTime", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapPagePanelAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region PagePanel
@@ -830,7 +833,6 @@ namespace UIEditor
 				{"switchPageNeedlen", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapVirtualPadAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region VirtualPad
@@ -848,7 +850,6 @@ namespace UIEditor
 				{"padToFingerDistanceMax", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapRichTextAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region RichText
@@ -878,7 +879,6 @@ namespace UIEditor
 				{"alignBottomText", new AttrDef_T("bool")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapPageTextAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region PageText
@@ -890,11 +890,9 @@ namespace UIEditor
 				{"lineSpacing", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapScriptPanelAttrDef = new Dictionary<string, AttrDef_T>
-		{
-		};
-
+			{
+			};
 		Dictionary<string, AttrDef_T> conf_mapCountDownAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region CountDown
@@ -912,14 +910,12 @@ namespace UIEditor
 				{"timePreset", new AttrDef_T("time")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapApartPanelAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region ApartPanel
 				{"own", new AttrDef_T("bool")},
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapDraggedPanelAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region DraggedPanel
@@ -929,7 +925,6 @@ namespace UIEditor
 				{"own", new AttrDef_T("bool")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapTurnTableAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region TurnTable
@@ -948,11 +943,9 @@ namespace UIEditor
 				{"backTime", new AttrDef_T("int")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapDrawModelAttrDef = new Dictionary<string, AttrDef_T>
-		{
-		};
-
+			{
+			};
 		Dictionary<string, AttrDef_T> conf_mapDropListAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region DropList
@@ -965,7 +958,6 @@ namespace UIEditor
 				{"ignoreParentClip", new AttrDef_T("bool")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapEventAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region Event
@@ -974,16 +966,36 @@ namespace UIEditor
 				{"sound", new AttrDef_T("string")}
 				#endregion
 			};
-
 		Dictionary<string, AttrDef_T> conf_mapToolTipAttrDef = new Dictionary<string, AttrDef_T>
-		{
-		};
+			{
+			};
+
+		Dictionary<string, AttrDef_T> conf_mapResAttrDef = new Dictionary<string, AttrDef_T>
+			{
+				#region 资源
+				{"name", new AttrDef_T("string")}
+				#endregion
+			};
+		Dictionary<string, AttrDef_T> conf_mapSkinGroupAttrDef = new Dictionary<string, AttrDef_T>
+			{
+				#region 皮肤组
+				{"Name", new AttrDef_T("string")}
+				#endregion
+			};
+		Dictionary<string, AttrDef_T> conf_mapSkinAttrDef = new Dictionary<string, AttrDef_T>
+			{
+				#region 皮肤
+				{"Name", new AttrDef_T("string")},
+				{"Width", new AttrDef_T("int")},
+				{"Height", new AttrDef_T("int")},
+				#endregion
+			};
 
 		public void initXmlValueDef()
 		{
 			m_mapCtrlDef = new Dictionary<string, CtrlDef_T>
 			{
-				#region boloUIControls
+				#region boloUI控件的定义
 				{ "basic", new CtrlDef_T(conf_mapBaseAttrDef, null)},
 				{ "panel", new CtrlDef_T(conf_mapPanelAttrDef, null)},
 				{ "label", new CtrlDef_T(conf_mapLabelAttrDef, null)},
@@ -1007,6 +1019,176 @@ namespace UIEditor
 				{ "dropList", new CtrlDef_T(conf_mapDropListAttrDef, null)},
 				//{ "event", new CtrlDef_T(conf_mapEventAttrDef, null)},
 				{ "tooltip", new CtrlDef_T(conf_mapToolTipAttrDef, null)}
+				#endregion
+			};
+
+			m_mapShapeChildDef = new Dictionary<string, SkinDef_T>
+			{
+				#region shape的子节点
+				{"animation",
+					new SkinDef_T(
+						new Dictionary<string, SkinDef_T>
+						{
+							{"frame",
+								new SkinDef_T(
+									new Dictionary<string, SkinDef_T>(),
+									new Dictionary<string, AttrDef_T>
+									{
+										{"image", new AttrDef_T("string")},
+										{"time", new AttrDef_T("int")},
+										{"x", new AttrDef_T("int")},
+										{"y", new AttrDef_T("int")},
+										{"w", new AttrDef_T("int")},
+										{"h", new AttrDef_T("int")},
+										{"topBorder", new AttrDef_T("int")},
+										{"bottomBorder", new AttrDef_T("int")},
+										{"leftBorder", new AttrDef_T("int")},
+										{"rightBorder", new AttrDef_T("int")},
+										{"Anchor", new AttrDef_T("int")},
+										{"angle", new AttrDef_T("int")},
+										{"rotateType", new AttrDef_T("int")},
+										{"mirrorType", new AttrDef_T("int")},
+										{"NineGrid", new AttrDef_T("bool")},
+										{"NGX", new AttrDef_T("int")},
+										{"NGY", new AttrDef_T("int")},
+										{"NGWidth", new AttrDef_T("int")},
+										{"NGHeight", new AttrDef_T("int")},
+										{"LIGHT", new AttrDef_T("bool")},
+										{"Color", new AttrDef_T("color")},
+
+										{"Font", new AttrDef_T("int")},
+										{"Color0", new AttrDef_T("color")},
+										{"Color1", new AttrDef_T("color")},
+										{"Color2", new AttrDef_T("color")},
+										{"Style", new AttrDef_T("int")},
+										{"fontSize", new AttrDef_T("int")},
+									}
+								)
+							}
+						},
+						new Dictionary<string, AttrDef_T>
+						{
+							{"loop", new AttrDef_T("bool")}
+						}
+					)
+				}
+				#endregion
+			};
+
+			m_mapSkinChildDef = new Dictionary<string, SkinDef_T>
+			{
+				#region skin的子节点
+				{"apperance",
+					new SkinDef_T(
+						new Dictionary<string, SkinDef_T>
+						{
+							{"imageShape",
+								new SkinDef_T(
+									m_mapShapeChildDef,
+									new Dictionary<string, AttrDef_T>
+									{
+										{"ImageName", new AttrDef_T("string")},
+										{"Dock", new AttrDef_T("int")},
+										{"NineGrid", new AttrDef_T("bool")},
+										{"NGX", new AttrDef_T("int")},
+										{"NGY", new AttrDef_T("int")},
+										{"NGWidth", new AttrDef_T("int")},
+										{"NGHeight", new AttrDef_T("int")},
+										{"LIGHT", new AttrDef_T("bool")},
+										{"Color", new AttrDef_T("color")},
+										
+										{"X", new AttrDef_T("int")},
+										{"Y", new AttrDef_T("int")},
+										{"Width", new AttrDef_T("int")},
+										{"Height", new AttrDef_T("int")},
+										{"topBorder", new AttrDef_T("int")},
+										{"bottomBorder", new AttrDef_T("int")},
+										{"leftBorder", new AttrDef_T("int")},
+										{"rightBorder", new AttrDef_T("int")},
+										{"Anchor", new AttrDef_T("int")},
+										{"angle", new AttrDef_T("int")},
+										{"rotateType", new AttrDef_T("int")},
+										{"mirrorType", new AttrDef_T("int")}
+									}
+								)
+							},
+							{"textShape",
+								new SkinDef_T(
+									m_mapShapeChildDef,
+									new Dictionary<string, AttrDef_T>
+									{
+										{"Font", new AttrDef_T("int")},
+										{"Color", new AttrDef_T("color")},
+										{"Color0", new AttrDef_T("color")},
+										{"Color1", new AttrDef_T("color")},
+										{"Color2", new AttrDef_T("color")},
+										{"Style", new AttrDef_T("int")},
+										{"fontSize", new AttrDef_T("int")},
+										
+										{"X", new AttrDef_T("int")},
+										{"Y", new AttrDef_T("int")},
+										{"Width", new AttrDef_T("int")},
+										{"Height", new AttrDef_T("int")},
+										{"topBorder", new AttrDef_T("int")},
+										{"bottomBorder", new AttrDef_T("int")},
+										{"leftBorder", new AttrDef_T("int")},
+										{"rightBorder", new AttrDef_T("int")},
+										{"Anchor", new AttrDef_T("int")},
+										{"angle", new AttrDef_T("int")},
+										{"rotateType", new AttrDef_T("int")},
+										{"mirrorType", new AttrDef_T("int")}
+									}
+								)
+							}
+						},
+						new Dictionary<string, AttrDef_T>
+						{
+							{"id", new AttrDef_T("string")}
+						}
+					)
+				}
+				#endregion
+			};
+
+			m_mapSkinResDef = new Dictionary<string, SkinDef_T>
+			{
+				#region 皮肤与资源等的定义
+				{"BoloUIEvent",
+					new SkinDef_T(
+						new Dictionary<string, SkinDef_T>(null,null),
+						new Dictionary<string, AttrDef_T>()
+					)
+				},
+				{"skingroup",
+					new SkinDef_T(
+						new Dictionary<string, SkinDef_T>(null,null),
+						conf_mapSkinGroupAttrDef
+					)
+				},
+				{"resource",
+					new SkinDef_T(
+						new Dictionary<string, SkinDef_T>(null,null),
+						conf_mapResAttrDef
+					)
+				},
+				{"publicresource",
+					new SkinDef_T(
+						new Dictionary<string, SkinDef_T>(null,null),
+						conf_mapResAttrDef
+					)
+				},
+				{"skin",
+					new SkinDef_T(
+						m_mapSkinChildDef,
+						conf_mapSkinAttrDef
+					)
+				},
+				{"publicskin",
+					new SkinDef_T(
+						m_mapSkinChildDef,
+						conf_mapSkinAttrDef
+					)
+				}
 				#endregion
 			};
 

@@ -223,7 +223,7 @@ namespace UIEditor
 
 		private void mx_valueEnum_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			((ComboBox)sender).SelectedItem
+			//((ComboBox)sender).SelectedItem
 		}
 	}
 }

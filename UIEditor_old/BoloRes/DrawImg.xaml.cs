@@ -59,10 +59,11 @@ namespace UIEditor.BoloUI
 
 			string fileName = ImageName.Substring(ImageName.LastIndexOf(".") + 1, (ImageName.Length - ImageName.LastIndexOf(".") - 1));
 			string folderName = ImageName.Substring(ImageName.LastIndexOf("\\") + 1, (ImageName.LastIndexOf(".") - ImageName.LastIndexOf("\\") - 1));
+			string proPath = rootPath.Substring(0, rootPath.LastIndexOf("\\"));
 			fileName += ".png";
-			string path = rootPath + "\\" + "images" + "\\" + folderName + "\\" + fileName;
+			m_path = proPath + "\\" + "images" + "\\" + folderName + "\\" + fileName;
 			AniNode aniNode = new AniNode();
-			aniNode.aniPath = path;
+			aniNode.aniPath = m_path;
 			aniNode.aniXe = m_xe;
 			m_aniNodes.Add(aniNode);
 
@@ -121,7 +122,6 @@ namespace UIEditor.BoloUI
 					}
 				}
 			}
-			m_path = path;
 			m_aniFrameTime = 0.17f;
 		}
 

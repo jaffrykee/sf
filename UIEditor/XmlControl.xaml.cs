@@ -29,6 +29,7 @@ namespace UIEditor
 		//以baseID为索引的UI们
 		public Dictionary<string, BoloUI.Basic> m_mapCtrlUI;
 		public XmlDocument m_xmlDoc;
+		public TreeViewItem m_treeCtrl;
 
 		public XmlControl(FileTabItem parent)
 		{
@@ -149,19 +150,20 @@ namespace UIEditor
 							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
 							this.m_openedFile.m_treeUI.Items.Add(treeChild);
 						}
-						else
+						else if (m_pW.m_mapSkinResDef.TryGetValue(xe.Name, out ctrlPtr))
 						{
-							switch (xe.Name)
-							{
-								case "publicresource":
-								case "publicskin":
-								case "resource":
-								case "skin":
-								case "skingroup":
-								case "BoloUIEvent":
-								default:
-									break;
-							}
+// 							switch (xe.Name)
+// 							{
+// 
+// 								case "publicresource":
+// 								case "publicskin":
+// 								case "resource":
+// 								case "skin":
+// 								case "skingroup":
+// 								case "BoloUIEvent":
+// 								default:
+// 									break;
+// 							}
 						}
 					}
 				}

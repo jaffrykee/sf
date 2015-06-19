@@ -64,38 +64,52 @@
 		</DockPanel>
 		<DockPanel Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Margin="0,0,5,0">
 			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto"/>
-					<RowDefinition Height="*"/>
-				</Grid.RowDefinitions>
-				<Grid Background="{StaticResource BKLightBack}">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="100"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-					<CheckBox
-						Name="mx_checkVName"
-						Grid.Column="0"
-						IsChecked="True"
-						VerticalAlignment="Center"
-						Margin="10,0,0,0"
-						Content="显示name"
-						Checked="mx_checkVName_Checked"
-						Unchecked="mx_checkVName_Unchecked"/>
-					<CheckBox
-						Name="mx_checkVId"
-						Grid.Column="1"
-						IsChecked="True"
-						VerticalAlignment="Center"
-						Margin="10,0,0,0"
-						Content="显示id"
-						Checked="mx_checkVId_Checked"
-						Unchecked="mx_checkVId_Unchecked"/>
-				</Grid>
-				<TreeView BorderThickness="0" Grid.Row="1">
-					<TreeViewItem Name="mx_treePro">
-					</TreeViewItem>
-				</TreeView>
+				<TabControl BorderThickness="0" Padding="0">
+					<TabItem Header="工程目录">
+						<TreeView>
+							<TreeViewItem Name="mx_treePro">
+							</TreeViewItem>
+						</TreeView>
+					</TabItem>
+					<TabItem Header="控件">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<Grid Background="{StaticResource BKLightBack}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="100"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<CheckBox Name="mx_checkVName"
+									Grid.Column="0"
+									IsChecked="True"
+									VerticalAlignment="Center"
+									Margin="10,0,0,0"
+									Content="显示name"
+									Checked="mx_checkVName_Checked"
+									Unchecked="mx_checkVName_Unchecked"/>
+								<CheckBox Name="mx_checkVId"
+									Grid.Column="1"
+									IsChecked="True"
+									VerticalAlignment="Center"
+									Margin="10,0,0,0"
+									Content="显示id"
+									Checked="mx_checkVId_Checked"
+									Unchecked="mx_checkVId_Unchecked"/>
+							</Grid>
+							<TreeView Grid.Row="1" Name="mx_treeCtrlFrame">
+							</TreeView>
+						</Grid>
+					</TabItem>
+					<TabItem Header="皮肤">
+						<TreeView>
+							<TreeViewItem Name="mx_treeSkin">
+							</TreeViewItem>
+						</TreeView>
+					</TabItem>
+				</TabControl>
 			</Grid>
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5"></GridSplitter>
