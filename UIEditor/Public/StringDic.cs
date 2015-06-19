@@ -35,6 +35,10 @@ namespace UIEditor
 			{ "tooltip", "说明"}
 		};
 
+		public static Dictionary<string, string> m_res = new Dictionary<string, string>
+		{
+		};
+
 		public static string getRandString(int pwdlen = 16, string pwdchars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 		{
 			string tmpstr = "";

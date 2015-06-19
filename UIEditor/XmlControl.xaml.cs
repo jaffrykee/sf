@@ -126,6 +126,7 @@ namespace UIEditor
 			m_openedFile.m_frame = this;
 			m_openedFile.m_lstOpt = new XmlOperation.XmlOperationList(m_pW, this, 50);
 			m_openedFile.m_treeUI.Items.Clear();
+			m_openedFile.m_treeSkin.Items.Clear();
 
 			m_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
 
@@ -153,6 +154,8 @@ namespace UIEditor
 						}
 						else if (m_pW.m_mapSkinResDef.TryGetValue(xe.Name, out skinPtr))
 						{
+							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), xe, this, skinPtr) as TreeViewItem;
+							this.m_openedFile.m_treeSkin.Items.Add(treeChild);
 						}
 					}
 				}

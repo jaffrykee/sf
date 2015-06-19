@@ -36,10 +36,10 @@ namespace UIEditor
 			MainWindow.CtrlDef_T ctrlDef;
 			if (m_pW.m_mapCtrlDef.TryGetValue(m_name, out ctrlDef))
 			{
-				foreach (KeyValuePair<string, MainWindow.AttrDef_T> listAttr in ctrlDef.m_mapAttrDef.ToList())
+				foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in ctrlDef.m_mapAttrDef.ToList())
 				{
-					listAttr.Value.m_attrRowUI = new AttrRow(listAttr.Value, listAttr.Key, "", this);
-					mx_frame.Children.Add(listAttr.Value.m_attrRowUI);
+					pairAttrDef.Value.m_attrRowUI = new AttrRow(pairAttrDef.Value, pairAttrDef.Key, "", this);
+					mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);
 				}
 			}
 			else

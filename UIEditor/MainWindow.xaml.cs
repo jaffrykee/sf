@@ -157,10 +157,11 @@ namespace UIEditor
 			{
 				this.mx_workTabs.SelectedItem = openedFile.m_tab;
 				mx_treeCtrlFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeUI);
+				mx_treeSkinFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeSkin);
 			}
 			else
 			{
-				m_mapOpenedFiles[tabPath] = new OpenedFile(mx_treeCtrlFrame, tabPath);
+				m_mapOpenedFiles[tabPath] = new OpenedFile(mx_treeCtrlFrame, mx_treeSkinFrame, tabPath);
 			}
 		}
 		public void eventCloseFile(object sender, RoutedEventArgs e)
@@ -181,6 +182,7 @@ namespace UIEditor
 
 					m_curFile = tabPath;
 					mx_treeCtrlFrame.Items.Clear();
+					mx_treeSkinFrame.Items.Clear();
 					if (fileType == "xml")
 					{
 						string fileName = StringDic.getFileNameWithoutPath(tabPath);
@@ -190,6 +192,7 @@ namespace UIEditor
 						{
 							updateGL(fileName, W2GTag.W2G_NORMAL_TURN);
 							mx_treeCtrlFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeUI);
+							mx_treeSkinFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeSkin);
 						}
 						mx_GLCtrl.Visibility = System.Windows.Visibility.Visible;
 					}
@@ -562,7 +565,7 @@ namespace UIEditor
 			mx_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
 		}
 
-		#region xml控件名、属性名、默认值、取值范围等。
+	#region xml控件名、属性名、默认值、取值范围等。
 		public class AttrDef_T
 		{
 			public AttrRow m_attrRowUI;
@@ -1155,25 +1158,25 @@ namespace UIEditor
 				#region 皮肤与资源等的定义
 				{"BoloUIEvent",
 					new SkinDef_T(
-						new Dictionary<string, SkinDef_T>(null,null),
-						new Dictionary<string, AttrDef_T>()
+						null,
+						null
 					)
 				},
 				{"skingroup",
 					new SkinDef_T(
-						new Dictionary<string, SkinDef_T>(null,null),
+						null,
 						conf_mapSkinGroupAttrDef
 					)
 				},
 				{"resource",
 					new SkinDef_T(
-						new Dictionary<string, SkinDef_T>(null,null),
+						null,
 						conf_mapResAttrDef
 					)
 				},
 				{"publicresource",
 					new SkinDef_T(
-						new Dictionary<string, SkinDef_T>(null,null),
+						null,
 						conf_mapResAttrDef
 					)
 				},
@@ -1198,7 +1201,6 @@ namespace UIEditor
 				m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI.Visibility = Visibility.Collapsed;
 			}
 		}
-
 		public void hiddenAllAttr()
 		{
 			if (m_otherAttrList != null)
@@ -1211,7 +1213,7 @@ namespace UIEditor
 				attrList.Visibility = Visibility.Collapsed;
 			}
 		}
-		#endregion
+	#endregion
 
 		public void refreshAllCtrlUIHeader()
 		{

@@ -104,7 +104,7 @@
 						</Grid>
 					</TabItem>
 					<TabItem Header="皮肤">
-						<TreeView>
+						<TreeView Name="mx_treeSkinFrame">
 							<TreeViewItem Name="mx_treeSkin">
 							</TreeViewItem>
 						</TreeView>
