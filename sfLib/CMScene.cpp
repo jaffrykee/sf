@@ -50,11 +50,12 @@ UINT CMScene::initSingleArea(
 			m_arrArrMap[i][j].m_pListArea = new list<CMSDArea_T>;
 		}
 		m_arrArrMap[i][j].m_pListArea->insert(m_arrArrMap[i][j].m_pListArea->end(), {});
+		CHECK_WIN_KILLED;
 		hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 			*ppPathD,
 			D2D1::Matrix3x2F::Translation(
-				(3 * m_viewLen + sqrt(3) / 2 * m_viewMar) * i,
-				(2 * sqrt(3) * m_viewLen + m_viewMar) * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
+				m_lenCellX * i,
+				m_lenCellY * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
 			),
 			&m_arrArrMap[i][j].m_pListArea->rbegin()->m_geo
 		);
@@ -153,7 +154,7 @@ UINT CMScene::initSingleCell(
 		gPath[3] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
 		gPath[4] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
 		gPath[5] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
-		initData.m_pScene->initSingleArea(gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath), i, j, &initData.m_pScene->m_pPathG, pBrush, true);
+		initData.m_pScene->initSingleArea(gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath), i, j, &initData.m_pScene->m_pPathG, pBrush, initData.m_pScene->m_enBorder);
 #pragma endregion
 	}
 
@@ -165,11 +166,6 @@ UINT CMScene::initSingleCell(
 DWORD WINAPI CMScene::threadInitDraw(LPVOID lpParam)
 {
 	CMDInit_T initData = *(CMDInit_T*)lpParam;
-
-	FLOAT lenX = initData.m_pScene->m_viewLen;
-	FLOAT lenY = initData.m_pScene->m_viewLen;
-	FLOAT marX = initData.m_pScene->m_viewMar;
-	FLOAT marY = initData.m_pScene->m_viewMar;
 
 	#pragma region 图形相关
 	for (UINT i = 0; i < initData.m_pScene->m_arrArrMap.size(); i++)
@@ -194,28 +190,38 @@ Scene()
 	m_pMapEvent = &g_pConf->m_mapCmEvent;
 	m_viewScaleX = 1.6;
 	m_viewScaleY = 1;
-	m_viewWheelScale = 1.1;
-	m_viewLen = 5;
-	m_viewMar = 0;
+	m_viewWheelScale = 0;
+	m_viewLen = 7;
+	m_viewMar = 1;
+	m_lenCellX = m_viewLen * 3 + sqrt(3) / 2 * m_viewMar;
+	m_lenCellY = m_viewLen * 2 * sqrt(3) + m_viewMar;
+
 	m_mx0 = -1;
 	m_my0 = -1;
 	m_border = 1.0f;
 
 	m_maxX = 1000;
 	m_maxY = 1000;
+	m_enBorder = false;
 	m_perEn = 1;
 	m_rugged = m_viewLen;
 	m_perRug = 0.5;
 	m_maxH = 0;
 	m_minH = 0;
 
-	m_cX = m_maxX * m_viewScaleX * m_viewLen * 3 - 300;
-	m_cY = m_maxY * m_viewScaleY * m_viewLen * 2 * sqrt(3) - 300;
+	m_cX = m_maxX * m_viewScaleX * m_lenCellX - 300;
+	m_cY = m_maxY * m_viewScaleY * m_lenCellY - 300;
 	m_cX = 0;
 	m_cY = 0;
 
 	m_viewMouseScaleX = 1;
 	m_viewMouseScaleY = 1;
+
+	m_wheelScale = 0.00000005;
+	m_wheelTime = 20;
+	m_initWheelCount = 0x1ff;
+	m_dWheelCount = 0x1ff;
+	m_maxWheelCount = 0x355;
 	#pragma endregion
 
 	#pragma region 生成随机地图
@@ -384,13 +390,9 @@ void CMScene::onDrawByCell(UINT x, UINT y)
 	double sW = g_pConf->m_pWin->m_pRenderTarget->GetSize().width;
 	double sH = g_pConf->m_pWin->m_pRenderTarget->GetSize().height;
 
-	FLOAT lenX = m_viewLen;
-	FLOAT lenY = m_viewLen;
-	FLOAT marX = m_viewMar;
-	FLOAT marY = m_viewMar;
-
-	FLOAT dx = (3 * lenX + sqrt(3) / 2 * marX) * x - (sW - lenX * 4) / 2;
-	FLOAT dy = ((2 * sqrt(3) * lenY + marY) * (y - 0.5 * (y % 2 ? 1 : 0)) - m_arrArrMap[x][y].m_height) - (sH - lenY * 2 * sqrt(3)) / 2;
+	//FLOAT dx = m_lenCellX * x - (sW - m_viewLen * 4) / 2;
+	FLOAT dx = m_lenCellX * x - (sW - m_lenCellX) / 2;
+	FLOAT dy = (m_lenCellY * (y - 0.5 * (y % 2 ? 1 : 0)) - m_arrArrMap[x][y].m_height) - (sH - m_lenCellY) / 2;
 
 	m_cX = dx;
 	m_cY = dy;
@@ -429,10 +431,11 @@ void CMScene::drawWorld()
 {
 	FLOAT sW = m_screenSize.width;
 	FLOAT sH = m_screenSize.height;
-	INT i0 = m_cX / (3 * m_viewLen) - m_prereadWidth;
-	INT j0 = m_cY / (2 * sqrt(3) * m_viewLen) - m_prereadHeight;
-	INT iMax = sW / (3 * m_viewLen * m_viewScaleX) + i0 + m_prereadWidth * 2;
-	INT jMax = sH / (2 * sqrt(3) * m_viewLen * m_viewScaleY) + j0 + m_prereadHeight * 2;
+
+	INT i0 = m_cX / m_lenCellX - m_prereadWidth;
+	INT j0 = m_cY / m_lenCellY - m_prereadHeight;
+	INT iMax = sW / (m_lenCellX * m_viewScaleX) + i0 + m_prereadWidth * 2;
+	INT jMax = sH / (m_lenCellY * m_viewScaleY) + j0 + m_prereadHeight * 2;
 
 	i0 = i0 < 0 ? 0 : i0;
 	j0 = j0 < 0 ? 0 : j0;
@@ -447,6 +450,7 @@ void CMScene::drawWorld()
 	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY) * D2D1::Matrix3x2F::Scale(m_viewScaleX, m_viewScaleY));
 	for (UINT j = j0; j < jMax; j++)
 	{
+		//todo变成线程处理，超过16列的用8线程
 		for (UINT i = i01; i < iMax; i += 2)
 		{
 			drawSingleCell(i, j);
@@ -469,8 +473,8 @@ void CMScene::drawMiniMap()
 	FLOAT rdw = sW - sH * (1 - perRd);
 	FLOAT rdh = sH * perRd;
 
-	FLOAT maxPoiX = m_maxX * m_viewScaleX * m_viewLen * 3;
-	FLOAT maxPoiY = m_maxY * m_viewScaleY * m_viewLen * 2 * sqrt(3);
+	FLOAT maxPoiX = m_maxX * m_viewScaleX * m_lenCellX;
+	FLOAT maxPoiY = m_maxY * m_viewScaleY * m_lenCellY;
 
 	m_miniMap = D2D1::RectF(rdw, rdh, sW, sH);
 	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
@@ -503,8 +507,8 @@ void CMScene::drawMiniMap()
 #pragma endregion
 
 #pragma region 地图定位
-	FLOAT vMaxX = m_maxX * m_viewLen * 3;
-	FLOAT vMaxY = m_maxY * m_viewLen * 2 * sqrt(3);
+	FLOAT vMaxX = m_maxX * m_lenCellX;
+	FLOAT vMaxY = m_maxY * m_lenCellY;
 	FLOAT perVl = m_cX / vMaxX;
 	FLOAT perVt = m_cY / vMaxY;
 	FLOAT perVr = (m_cX + sW / m_viewScaleX) / vMaxX;
@@ -544,6 +548,42 @@ void CMScene::drawMiniMap()
 //渲染
 void CMScene::onDraw()
 {
+	if (m_viewWheelScale != 0)
+	{
+		if (m_viewWheelScale > 0)
+		{
+			m_viewScaleX *= (1 + m_wheelScale * m_viewWheelScale * m_viewWheelScale);
+			m_viewScaleY *= (1 + m_wheelScale * m_viewWheelScale * m_viewWheelScale);
+		}
+		else
+		{
+			m_viewScaleX *= (1 - m_wheelScale * m_viewWheelScale * m_viewWheelScale);
+			m_viewScaleY *= (1 - m_wheelScale * m_viewWheelScale * m_viewWheelScale);
+		}
+
+		if (m_viewWheelScale > 0)
+		{
+			if (m_viewWheelScale >= m_wheelTime * 3 / 2)
+			{
+				m_viewWheelScale = m_viewWheelScale * m_wheelTime / (m_wheelTime + 1);
+			}
+			else
+			{
+				m_viewWheelScale = 0;
+			}
+		}
+		else
+		{
+			if (m_viewWheelScale <= -m_wheelTime * 3 / 2)
+			{
+				m_viewWheelScale = m_viewWheelScale * m_wheelTime / (m_wheelTime + 1);
+			}
+			else
+			{
+				m_viewWheelScale = 0;
+			}
+		}
+	}
 	m_screenSize = g_pConf->m_pWin->m_pRenderTarget->GetSize();
 	FLOAT sW = m_screenSize.width;
 	FLOAT sH = m_screenSize.height;
@@ -585,8 +625,8 @@ bool CMScene::doEvent(SF_TEV event)
 void CMScene::moveToPosByMiniMap(INT xPos, INT yPos)
 {
 	FLOAT perCx, perCy;
-	FLOAT vMaxX = m_maxX * m_viewLen * 3;
-	FLOAT vMaxY = m_maxY * m_viewLen * 2 * sqrt(3);
+	FLOAT vMaxX = m_maxX * m_lenCellX;
+	FLOAT vMaxY = m_maxY * m_lenCellY;
 	FLOAT sW = m_screenSize.width;
 	FLOAT sH = m_screenSize.height;
 
@@ -651,15 +691,37 @@ bool CMScene::doMouseEvent(UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		break;
 	case WM_MOUSEWHEEL:
-		if ((INT)wParam > 0)
 		{
-			m_viewScaleX *= m_viewWheelScale;
-			m_viewScaleY *= m_viewWheelScale;
-		}
-		else if ((INT)wParam < 0)
-		{
-			m_viewScaleX /= m_viewWheelScale;
-			m_viewScaleY /= m_viewWheelScale;
+			if ((INT)wParam > 0)
+			{
+				if (m_viewWheelScale <= 0)
+				{
+					m_viewWheelScale = m_initWheelCount;
+				}
+				else
+				{
+					m_viewWheelScale = m_viewWheelScale + m_dWheelCount;
+					if (m_viewWheelScale > m_maxWheelCount)
+					{
+						m_viewWheelScale = m_maxWheelCount;
+					}
+				}
+			}
+			else if ((INT)wParam < 0)
+			{
+				if (m_viewWheelScale >= 0)
+				{
+					m_viewWheelScale = -m_initWheelCount;
+				}
+				else
+				{
+					m_viewWheelScale = m_viewWheelScale - m_dWheelCount;
+					if (m_viewWheelScale < -m_maxWheelCount)
+					{
+						m_viewWheelScale = -m_maxWheelCount;
+					}
+				}
+			}
 		}
 		break;
 	default:

@@ -26,9 +26,24 @@ public:
 	vector<vector<CMSCell_T>> m_arrArrMap;
 	FLOAT m_viewScaleX;
 	FLOAT m_viewScaleY;
-	FLOAT m_viewWheelScale;
+	//滚动计数
+	INT m_viewWheelScale;
+	//滚动缩放倍数
+	FLOAT m_wheelScale;
+	//滚动延时
+	INT m_wheelTime;
+	//滚轮初始计数
+	INT m_initWheelCount;
+	//滚轮计数差
+	INT m_dWheelCount;
+	//最大计数
+	INT m_maxWheelCount;
+
 	FLOAT m_viewLen;
 	FLOAT m_viewMar;
+	FLOAT m_lenCellX;
+	FLOAT m_lenCellY;
+	
 	FLOAT m_cX;
 	FLOAT m_cY;
 	FLOAT m_border;
@@ -60,6 +75,7 @@ public:
 	FLOAT m_prereadHeight;
 	//六边形
 	ID2D1PathGeometry* m_pPathG;
+	bool m_enBorder;
 
 	CMScene();
 	~CMScene();
