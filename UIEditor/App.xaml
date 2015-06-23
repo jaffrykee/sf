@@ -3,7 +3,11 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		StartupUri="MainWindow.xaml">
 	<Application.Resources>
-		<ResourceDictionary Source="Themes/Generic.Dark.xaml" x:Name="mx_res"/>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Themes/Generic.Dark.xaml" x:Name="mx_res"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
 	</Application.Resources>
 </Application>
 <!--<ResourceDictionary Source="Themes/Generic.Light.xaml"/>-->

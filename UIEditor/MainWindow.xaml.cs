@@ -27,6 +27,7 @@ namespace UIEditor
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
 		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
+		public Dictionary<string, SkinDef_T> m_mapEventDef;
 		public Dictionary<string, SkinDef_T> m_mapShapeChildDef;
 		public Dictionary<string, SkinDef_T> m_mapSkinChildDef;
 		public Dictionary<string, SkinDef_T> m_mapSkinResDef;
@@ -43,6 +44,9 @@ namespace UIEditor
 		public string m_curFile;	//todo
 		public BoloUI.Basic m_curCtrl;
 		private int m_dep;
+
+		public string conf_pathGlApp = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
+		//public static const string conf_pathGlApp = @".\dsuieditor.exe";
 
 		public MainWindow()
 		{
@@ -193,6 +197,7 @@ namespace UIEditor
 							updateGL(fileName, W2GTag.W2G_NORMAL_TURN);
 							mx_treeCtrlFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeUI);
 							mx_treeSkinFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeSkin);
+							((XmlControl)openFile.m_frame).refreshBoloUIView(true);
 						}
 						mx_GLCtrl.Visibility = System.Windows.Visibility.Visible;
 					}
@@ -1025,6 +1030,16 @@ namespace UIEditor
 				#endregion
 			};
 
+			m_mapEventDef = new Dictionary<string, SkinDef_T>
+			{
+				#region event
+				{
+					"event",
+					new SkinDef_T(null, conf_mapEventAttrDef)
+				}
+				#endregion
+			};
+
 			m_mapShapeChildDef = new Dictionary<string, SkinDef_T>
 			{
 				#region shape的子节点
@@ -1158,7 +1173,7 @@ namespace UIEditor
 				#region 皮肤与资源等的定义
 				{"BoloUIEvent",
 					new SkinDef_T(
-						null,
+						m_mapEventDef,
 						null
 					)
 				},

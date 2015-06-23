@@ -111,17 +111,14 @@ namespace UIEditor
 		{
 			refreshRowVisible();
 		}
-
 		private void mx_onlySetted_Unchecked(object sender, RoutedEventArgs e)
 		{
 			refreshRowVisible();
 		}
-
 		private void mx_onlyMain_Checked(object sender, RoutedEventArgs e)
 		{
 			//todo
 		}
-
 		private void mx_onlyMain_Unchecked(object sender, RoutedEventArgs e)
 		{
 			//todo

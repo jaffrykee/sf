@@ -9,6 +9,13 @@
 	Title="MainWindow" Width="1280" Height="800"
 	Loaded="On_UIReady"
 	>
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Themes/Generic.Dark.xaml" x:Name="mx_res"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -64,14 +71,14 @@
 		</DockPanel>
 		<DockPanel Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Margin="0,0,5,0">
 			<Grid>
-				<TabControl BorderThickness="0" Padding="0">
-					<TabItem Header="工程目录">
+				<TabControl Name="mx_leftToolFrame" BorderThickness="0" Padding="0">
+					<TabItem Name="mx_proFrame" Header="工程目录">
 						<TreeView>
 							<TreeViewItem Name="mx_treePro">
 							</TreeViewItem>
 						</TreeView>
 					</TabItem>
-					<TabItem Header="控件">
+					<TabItem Name="mx_ctrlFrame" Header="控件">
 						<Grid>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="auto"/>
@@ -103,10 +110,8 @@
 							</TreeView>
 						</Grid>
 					</TabItem>
-					<TabItem Header="皮肤">
+					<TabItem Name="mx_skinFrame" Header="皮肤">
 						<TreeView Name="mx_treeSkinFrame">
-							<TreeViewItem Name="mx_treeSkin">
-							</TreeViewItem>
 						</TreeView>
 					</TabItem>
 				</TabControl>

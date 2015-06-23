@@ -61,14 +61,13 @@ namespace UIEditor.BoloRes
 				}
 			}
 		}
-
 		public void initHeader()
 		{
 			string ctrlTip;
 			string name = "";
 			//string id = "";
 
-			if (StringDic.m_res.TryGetValue(m_xe.Name, out ctrlTip))
+			if (StringDic.m_mapStrNode.TryGetValue(m_xe.Name, out ctrlTip))
 			{
 				mx_text.Content = "<" + ctrlTip + ">";
 				mx_text.ToolTip = m_xe.Name;
@@ -84,9 +83,9 @@ namespace UIEditor.BoloRes
 
 			mx_text.Content += name;
 		}
-
-		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
+		public void changeSelectSkin()
 		{
+			m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
 			m_pW.hiddenAllAttr();
 
 			if (m_pW.m_otherAttrList == null)
@@ -94,11 +93,20 @@ namespace UIEditor.BoloRes
 				m_pW.m_otherAttrList = new AttrList("基本", m_pW);
 				m_pW.mx_toolArea.Children.Add(m_pW.m_otherAttrList);
 			}
-			foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in m_curDeepDef.m_mapAttrDef.ToList())
+			if (m_curDeepDef.m_mapAttrDef != null)
 			{
-				pairAttrDef.Value.m_attrRowUI = new AttrRow(pairAttrDef.Value, pairAttrDef.Key, m_xe.GetAttribute(pairAttrDef.Key), m_pW.m_otherAttrList);
-				m_pW.m_otherAttrList.mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);
+				foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in m_curDeepDef.m_mapAttrDef.ToList())
+				{
+					pairAttrDef.Value.m_attrRowUI = new AttrRow(pairAttrDef.Value, pairAttrDef.Key, m_xe.GetAttribute(pairAttrDef.Key), m_pW.m_otherAttrList);
+					m_pW.m_otherAttrList.mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);
+				}
 			}
+			m_pW.m_otherAttrList.refreshRowVisible();
+		}
+
+		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			changeSelectSkin();
 		}
 		private void mx_root_Selected(object sender, RoutedEventArgs e)
 		{

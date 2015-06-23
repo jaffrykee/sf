@@ -97,7 +97,7 @@
     <Compile Include="Public\SaveConfirm.xaml.cs">
       <DependentUpon>SaveConfirm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XmlOperation\OperationHistoryList.cs" />
+    <Compile Include="XmlOperation\HistoryList.cs" />
     <Compile Include="Public\AttrList.xaml.cs">
       <DependentUpon>AttrList.xaml</DependentUpon>
     </Compile>
@@ -114,7 +114,7 @@
     <Compile Include="XmlControl.xaml.cs">
       <DependentUpon>XmlControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XmlOperation\OperationNode.cs" />
+    <Compile Include="XmlOperation\HistoryNode.cs" />
     <Page Include="ani.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

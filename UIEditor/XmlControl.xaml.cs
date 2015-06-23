@@ -17,9 +17,6 @@ using System.Xml;
 
 namespace UIEditor
 {
-	/// <summary>
-	/// XmlControl.xaml 的交互逻辑
-	/// </summary>
 	public partial class XmlControl : UserControl
 	{
 		public FileTabItem m_parent;
@@ -30,6 +27,7 @@ namespace UIEditor
 		public Dictionary<string, BoloUI.Basic> m_mapCtrlUI;
 		public XmlDocument m_xmlDoc;
 		public TreeViewItem m_treeCtrl;
+		public bool m_isOnlySkin;
 
 		public XmlControl(FileTabItem parent)
 		{
@@ -37,6 +35,7 @@ namespace UIEditor
 			m_parent = parent;
 			m_loaded = false;
 			m_mapCtrlUI = new Dictionary<string, BoloUI.Basic>();
+			m_isOnlySkin = true;
 		}
 
 		public void deleteBaseId(XmlNode xn)
@@ -65,7 +64,6 @@ namespace UIEditor
 				}
 			}
 		}
-
 		public void checkBaseId(XmlNode xn)
 		{
 			if (xn != null)
@@ -108,6 +106,32 @@ namespace UIEditor
 			}
 		}
 
+		public void refreshBoloUIView(bool changeItem = false)
+		{
+			if (m_isOnlySkin)
+			{
+				m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
+				m_pW.mx_ctrlFrame.IsEnabled = false;
+				if (m_pW.Resources["CKForeDis"] != null &&
+					m_pW.Resources["CKForeDis"].GetType().ToString() == "System.Windows.Media.Color")
+				{
+					m_pW.mx_ctrlFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKForeDis"]);
+				}
+			}
+			else
+			{
+				if (changeItem)
+				{
+					m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_ctrlFrame;
+				}
+				m_pW.mx_ctrlFrame.IsEnabled = true;
+				if (m_pW.Resources["CKFore"] != null &&
+					m_pW.Resources["CKFore"].GetType().ToString() == "System.Windows.Media.Color")
+				{
+					m_pW.mx_ctrlFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKFore"]);
+				}
+			}
+		}
 		public void refreshVRect()
 		{
 			string msgData = "";
@@ -118,7 +142,6 @@ namespace UIEditor
 			}
 			m_pW.updateGL(msgData, MainWindow.W2GTag.W2G_UI_VRECT);
 		}
-
 		public void refreshControl()
 		{
 			m_pW = Window.GetWindow(this) as MainWindow;
@@ -151,6 +174,7 @@ namespace UIEditor
 						{
 							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
 							this.m_openedFile.m_treeUI.Items.Add(treeChild);
+							m_isOnlySkin = false;
 						}
 						else if (m_pW.m_mapSkinResDef.TryGetValue(xe.Name, out skinPtr))
 						{
@@ -159,6 +183,7 @@ namespace UIEditor
 						}
 					}
 				}
+				refreshBoloUIView(true);
 			}
 			else
 			{
@@ -168,11 +193,25 @@ namespace UIEditor
 			m_loaded = true;
 		}
 
-		private void tabFrameLoaded(object sender, RoutedEventArgs e)
+		private void mx_root_Loaded(object sender, RoutedEventArgs e)
 		{
 			if (m_loaded == false)
 			{
 				refreshControl();
+			}
+		}
+		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
+		{
+			m_pW.mx_selCtrlLstFrame.Children.Clear();
+			if (m_pW.mx_treeCtrlFrame.Items[0] != null)
+			{
+				TreeViewItem firstItem = (TreeViewItem)m_pW.mx_treeCtrlFrame.Items[0];
+
+				if(firstItem.Header.ToString() == StringDic.getFileNameWithoutPath(m_openedFile.m_path))
+				{
+					m_pW.mx_treeCtrlFrame.Items.Clear();
+					m_pW.mx_treeSkinFrame.Items.Clear();
+				}
 			}
 		}
 	}
