@@ -32,7 +32,18 @@ namespace UIEditor
 			set
 			{
 				mt_name = value;
-				mx_name.Content = value;
+
+				string outStr;
+				if(StringDic.m_mapStrAttr.TryGetValue(value, out outStr) && outStr != "")
+				{
+					mx_name.Content = outStr;
+					mx_name.ToolTip = value;
+				}
+				else
+				{
+					mx_name.Content = value;
+					mx_name.ToolTip = "";
+				}
 			}
 		}
 		public string m_value

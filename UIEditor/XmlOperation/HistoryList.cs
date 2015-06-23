@@ -8,31 +8,40 @@ using System.Xml;
 
 namespace UIEditor.XmlOperation
 {
-	public class XmlOperationList
+	public enum XmlOptType
+	{
+		NODE_INSERT,
+		NODE_DELETE,
+		NODE_REPLACE,
+		NODE_UPDATE,
+		TEXT,
+	}
+
+	public class HistoryList
 	{
 		public MainWindow m_pW;
 		public XmlControl m_xmlCtrl;
 		public int m_maxSize;
-		public LinkedList<XmlOperationNode> m_lstOpt;
-		public LinkedListNode<XmlOperationNode> m_curNode;
-		public LinkedListNode<XmlOperationNode> m_headNode;
-		public LinkedListNode<XmlOperationNode> m_saveNode;
+		public LinkedList<HistoryNode> m_lstOpt;
+		public LinkedListNode<HistoryNode> m_curNode;
+		public LinkedListNode<HistoryNode> m_headNode;
+		public LinkedListNode<HistoryNode> m_saveNode;
 
-		public XmlOperationList(MainWindow pW, XmlControl xmlCtrl, int maxSize = 10)
+		public HistoryList(MainWindow pW, XmlControl xmlCtrl, int maxSize = 10)
 		{
 			m_pW = pW;
 			m_xmlCtrl = xmlCtrl;
 			m_maxSize = maxSize;
-			m_lstOpt = new LinkedList<XmlOperationNode>();
-			m_curNode = new LinkedListNode<XmlOperationNode>(null);
+			m_lstOpt = new LinkedList<HistoryNode>();
+			m_curNode = new LinkedListNode<HistoryNode>(null);
 			m_saveNode = m_curNode;
 			m_headNode = m_curNode;
 			m_lstOpt.AddLast(m_curNode);
 		}
 
-		public void addOperation(XmlOperationNode optNode)
+		public void addOperation(HistoryNode optNode)
 		{
-			for (LinkedListNode<XmlOperationNode> iNode = m_curNode.Next; iNode != m_headNode && iNode != null; iNode = m_curNode.Next)
+			for (LinkedListNode<HistoryNode> iNode = m_curNode.Next; iNode != m_headNode && iNode != null; iNode = m_curNode.Next)
 			{
 				iNode.List.Remove(iNode);
 			}
@@ -41,7 +50,7 @@ namespace UIEditor.XmlOperation
 				m_headNode = m_headNode.Next;
 				m_headNode.List.Remove(m_headNode.Previous);
 			}
-			m_curNode = new LinkedListNode<XmlOperationNode>(optNode);
+			m_curNode = new LinkedListNode<HistoryNode>(optNode);
 			m_lstOpt.AddLast(m_curNode);
 			redoOperation(true);
 			m_xmlCtrl.m_openedFile.updateSaveStatus();
@@ -52,19 +61,19 @@ namespace UIEditor.XmlOperation
 			{
 				case XmlOptType.NODE_INSERT:
 					{
-						XmlOperationNode.insertXmlNode(
+						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_dstElm,
 							m_curNode.Value.m_srcElm);
 					}
 					break;
 				case XmlOptType.NODE_DELETE:
 					{
-						XmlOperationNode.deleteXmlNode(
+						HistoryNode.deleteXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstCtrlId);
+							m_curNode.Value.m_dstElm);
 					}
 					break;
 				case XmlOptType.NODE_REPLACE:
@@ -74,7 +83,7 @@ namespace UIEditor.XmlOperation
 					break;
 				case XmlOptType.ATTR_INSERT:
 					{
-						if(XmlOperationNode.insertXmlAttr(
+						if (HistoryNode.insertXmlAttr(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_dstCtrlId,
@@ -93,7 +102,7 @@ namespace UIEditor.XmlOperation
 					break;
 				case XmlOptType.ATTR_DELETE:
 					{
-						if(XmlOperationNode.deleteXmlAttr(
+						if (HistoryNode.deleteXmlAttr(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_dstCtrlId,
@@ -111,7 +120,7 @@ namespace UIEditor.XmlOperation
 					break;
 				case XmlOptType.ATTR_UPDATE:
 					{
-						if(XmlOperationNode.setXmlAttr(
+						if (HistoryNode.setXmlAttr(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_dstCtrlId,
@@ -135,7 +144,6 @@ namespace UIEditor.XmlOperation
 					break;
 				default:
 					return;
-					break;
 			}
 			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
 		}
@@ -145,7 +153,7 @@ namespace UIEditor.XmlOperation
 			{
 				case XmlOptType.NODE_INSERT:
 					{
-						XmlOperationNode.deleteXmlNode(
+						HistoryNode.deleteXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_srcCtrlId);
@@ -153,7 +161,7 @@ namespace UIEditor.XmlOperation
 					break;
 				case XmlOptType.NODE_DELETE:
 					{
-						XmlOperationNode.insertXmlNode(
+						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_srcCtrlId,
@@ -167,7 +175,7 @@ namespace UIEditor.XmlOperation
 					break;
 				case XmlOptType.ATTR_INSERT:
 					{
-						if(XmlOperationNode.deleteXmlAttr(
+						if (HistoryNode.deleteXmlAttr(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_dstCtrlId,
@@ -182,7 +190,7 @@ namespace UIEditor.XmlOperation
 					break;
 				case XmlOptType.ATTR_DELETE:
 					{
-						if(XmlOperationNode.insertXmlAttr(
+						if (HistoryNode.insertXmlAttr(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_dstCtrlId,
@@ -198,7 +206,7 @@ namespace UIEditor.XmlOperation
 					break;
 				case XmlOptType.ATTR_UPDATE:
 					{
-						if(XmlOperationNode.setXmlAttr(
+						if (HistoryNode.setXmlAttr(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_dstCtrlId,

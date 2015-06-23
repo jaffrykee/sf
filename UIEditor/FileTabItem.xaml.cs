@@ -74,32 +74,18 @@ namespace UIEditor
 							((XmlControl)pW.m_mapOpenedFiles[m_filePath].m_frame).m_xmlDoc.Save(m_filePath);
 							pW.m_mapOpenedFiles[m_filePath].m_lstOpt.m_saveNode = pW.m_mapOpenedFiles[m_filePath].m_lstOpt.m_curNode;
 							pW.m_mapOpenedFiles[m_filePath].updateSaveStatus();
-							pW.updateGL(m_filePath, MainWindow.W2GTag.W2G_NORMAL_NAME);
-							pW.m_mapOpenedFiles.Remove(tabPath);
-							pW.mx_workTabs.Items.Remove(tabItem);
 						}
 						break;
 					case MessageBoxResult.No:
-						{
-							pW.updateGL(m_filePath, MainWindow.W2GTag.W2G_NORMAL_NAME);
-							pW.m_mapOpenedFiles.Remove(tabPath);
-							pW.mx_workTabs.Items.Remove(tabItem);
-						}
 						break;
 					case MessageBoxResult.Cancel:
 					default:
-						{
-
-						}
-						break;
+						return;
 				}
 			}
-			else
-			{
-				pW.updateGL(m_filePath, MainWindow.W2GTag.W2G_NORMAL_NAME);
-				pW.m_mapOpenedFiles.Remove(tabPath);
-				pW.mx_workTabs.Items.Remove(tabItem);
-			}
+			pW.updateGL(m_filePath, MainWindow.W2GTag.W2G_NORMAL_NAME);
+			pW.m_mapOpenedFiles.Remove(tabPath);
+			pW.mx_workTabs.Items.Remove(tabItem);
 		}
 	}
 }

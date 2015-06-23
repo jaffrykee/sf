@@ -124,7 +124,7 @@ namespace UIEditor.BoloUI
 			string ctrlTip;
 			string name = "", id = "";
 
-			if (StringDic.m_control.TryGetValue(m_xe.Name, out ctrlTip))
+			if (StringDic.m_mapStrControl.TryGetValue(m_xe.Name, out ctrlTip))
 			{
 				mx_text.Content = "<" + ctrlTip + ">";
 				mx_text.ToolTip = m_xe.Name;
@@ -182,12 +182,15 @@ namespace UIEditor.BoloUI
 		}
 		public void changeSelectCtrl()
 		{
+			m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_ctrlFrame;
 			if (m_xe.GetAttribute("baseID") != "")
 			{
 				m_pW.m_curFile = m_rootControl.m_openedFile.m_path;
 				m_pW.mx_workTabs.SelectedItem = m_rootControl.m_openedFile.m_tab;
-				m_pW.updateGL(StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_xe.GetAttribute("baseID"),
-					MainWindow.W2GTag.W2G_SELECT_UI);
+				m_pW.updateGL(
+					StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_xe.GetAttribute("baseID"),
+					MainWindow.W2GTag.W2G_SELECT_UI
+				);
 			}
 
 			bool tmp = m_pW.m_attrBinding;
