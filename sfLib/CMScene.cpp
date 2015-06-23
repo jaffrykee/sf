@@ -51,13 +51,13 @@ UINT CMScene::initSingleArea(
 		}
 		m_arrArrMap[i][j].m_pListArea->insert(m_arrArrMap[i][j].m_pListArea->end(), {});
 		hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
-				*ppPathD,
-				D2D1::Matrix3x2F::Translation(
-					(3 * m_viewLen + sqrt(3) / 2 * m_viewMar) * i,
-					(2 * sqrt(3) * m_viewLen + m_viewMar) * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
-				),
-				&m_arrArrMap[i][j].m_pListArea->rbegin()->m_geo
-			);
+			*ppPathD,
+			D2D1::Matrix3x2F::Translation(
+				(3 * m_viewLen + sqrt(3) / 2 * m_viewMar) * i,
+				(2 * sqrt(3) * m_viewLen + m_viewMar) * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
+			),
+			&m_arrArrMap[i][j].m_pListArea->rbegin()->m_geo
+		);
 		m_arrArrMap[i][j].m_pListArea->rbegin()->m_brush = pBrush;
 		m_arrArrMap[i][j].m_pListArea->rbegin()->m_enBorder = enBorder;
 	}
