@@ -255,17 +255,20 @@ namespace UIEditor.BoloUI
 			{
 				m_pW.m_mapCtrlDef["basic"].m_attrListUI.refreshRowVisible();
 				m_pW.m_mapCtrlDef["basic"].m_attrListUI.m_xmlCtrl = m_rootControl;
+				m_pW.m_mapCtrlDef["basic"].m_attrListUI.m_basic = this;
 				m_pW.m_mapCtrlDef["basic"].m_attrListUI.m_xe = m_xe;
 				ctrlDef.m_attrListUI.refreshRowVisible();
 				ctrlDef.m_attrListUI.m_xmlCtrl = m_rootControl;
+				ctrlDef.m_attrListUI.m_basic = this;
 				ctrlDef.m_attrListUI.m_xe = m_xe;
 			}
 			if (m_pW.m_otherAttrList != null)
 			{
 				m_pW.m_otherAttrList.refreshRowVisible();
 				m_pW.m_otherAttrList.Visibility = Visibility.Visible;
-				m_pW.m_otherAttrList.m_xe = m_xe;
 				m_pW.m_otherAttrList.m_xmlCtrl = m_rootControl;
+				m_pW.m_otherAttrList.m_basic = this;
+				m_pW.m_otherAttrList.m_xe = m_xe;
 			}
 
 			m_pW.m_attrBinding = tmp;

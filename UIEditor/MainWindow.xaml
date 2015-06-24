@@ -78,7 +78,7 @@
 							</TreeViewItem>
 						</TreeView>
 					</TabItem>
-					<TabItem Name="mx_ctrlFrame" Header="控件">
+					<TabItem Name="mx_ctrlFrame" Header="控件" IsEnabled="False" Foreground="{StaticResource BKForeDis}">
 						<Grid>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="auto"/>
@@ -110,7 +110,7 @@
 							</TreeView>
 						</Grid>
 					</TabItem>
-					<TabItem Name="mx_skinFrame" Header="皮肤">
+					<TabItem Name="mx_skinFrame" Header="资源" IsEnabled="False" Foreground="{StaticResource BKForeDis}">
 						<TreeView Name="mx_treeSkinFrame">
 						</TreeView>
 					</TabItem>

@@ -41,12 +41,19 @@ namespace UIEditor
 		public bool m_vCtrlName;
 		public bool m_vCtrlId;
 
+		public XmlDocument m_xdTest;
+		public XmlElement m_xeTest;
+		public string m_strTestXml;
+
 		public string m_curFile;	//todo
 		public BoloUI.Basic m_curCtrl;
+		public BoloRes.ResBasic m_curRes;
 		private int m_dep;
 
-		public string conf_pathGlApp = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
-		//public static const string conf_pathGlApp = @".\dsuieditor.exe";
+		//debug
+		//public string conf_pathGlApp = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
+		//release
+		public string conf_pathGlApp = @".\dsuieditor.exe";
 
 		public MainWindow()
 		{
@@ -63,6 +70,13 @@ namespace UIEditor
 			m_curFile = "";
 			m_vCtrlName = true;
 			m_vCtrlId = true;
+
+			m_xdTest = new XmlDocument();
+			// w=\"400\" h=\"300\"
+			m_strTestXml = "<panel w=\"960\" h=\"640\" baseID=\"testCtrl\" text=\"Test\"/>";
+
+			m_xdTest.LoadXml(m_strTestXml);
+			m_xeTest = m_xdTest.DocumentElement;
 		}
 
 		private void openProj(object sender, RoutedEventArgs e)//打开工程
@@ -150,23 +164,34 @@ namespace UIEditor
 			}
 		}
 
-		private void openFileTab(object sender, MouseEventArgs e)
+		public void openFileByPath(string path)
 		{
 			OpenedFile openedFile;
-			TreeViewItem fileItem = (TreeViewItem)sender;
-			string tabPath = ((ToolTip)fileItem.ToolTip).Content.ToString();
-			string fileType = StringDic.getFileType(tabPath);
+			string fileType = StringDic.getFileType(path);
 
-			if (m_mapOpenedFiles.TryGetValue(tabPath, out openedFile))
+			if (m_mapOpenedFiles.TryGetValue(path, out openedFile))
 			{
-				this.mx_workTabs.SelectedItem = openedFile.m_tab;
-				mx_treeCtrlFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeUI);
-				mx_treeSkinFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeSkin);
+				mx_workTabs.SelectedItem = openedFile.m_tab;
 			}
 			else
 			{
-				m_mapOpenedFiles[tabPath] = new OpenedFile(mx_treeCtrlFrame, mx_treeSkinFrame, tabPath);
+				if (File.Exists(path))
+				{
+					m_mapOpenedFiles[path] = new OpenedFile(mx_treeCtrlFrame, mx_treeSkinFrame, path);
+				}
+				else
+				{
+					//不存在
+					mx_debug.Text += "<错误>文件：\"" + path + "\"不存在，请检查路径。";
+				}
 			}
+		}
+		private void openFileTab(object sender, MouseEventArgs e)
+		{
+			TreeViewItem fileItem = (TreeViewItem)sender;
+			string tabPath = ((ToolTip)fileItem.ToolTip).Content.ToString();
+
+			openFileByPath(tabPath);
 		}
 		public void eventCloseFile(object sender, RoutedEventArgs e)
 		{
@@ -500,7 +525,7 @@ namespace UIEditor
 
 			return hwnd;
 		}
-		public void updateXmlToGL(string path, XmlDocument doc)
+		public void updateXmlToGL(string path, XmlDocument doc, XmlElement xePlus = null)
 		{
 			XmlDocument newDoc = new XmlDocument();
 			string fileName = StringDic.getFileNameWithoutPath(path);
@@ -509,6 +534,16 @@ namespace UIEditor
 			XmlNodeList nodeList;
 			XmlNode root = newDoc.DocumentElement;
 
+			if (xePlus != null)
+			{
+				string strTmp = "<panel dock=\"4\" w=\"960\" h=\"640\" name=\"background\" skin=\"BackPure\"></panel>";
+
+				XmlElement xeTmp = newDoc.CreateElement("tmp");
+				xeTmp.InnerXml = strTmp;
+				//xePlus.OuterXml
+				xeTmp.FirstChild.InnerXml = xePlus.OuterXml;
+				root.AppendChild(xeTmp.FirstChild);
+			}
 			//去掉所有事件(<event>)
 			nodeList = root.SelectNodes("descendant::event");
 
@@ -1025,7 +1060,7 @@ namespace UIEditor
 				{ "turnTable", new CtrlDef_T(conf_mapTurnTableAttrDef, null)},
 				{ "drawModel", new CtrlDef_T(conf_mapDrawModelAttrDef, null)},
 				{ "dropList", new CtrlDef_T(conf_mapDropListAttrDef, null)},
-				//{ "event", new CtrlDef_T(conf_mapEventAttrDef, null)},
+				{ "event", new CtrlDef_T(conf_mapEventAttrDef, null)},
 				{ "tooltip", new CtrlDef_T(conf_mapToolTipAttrDef, null)}
 				#endregion
 			};

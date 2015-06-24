@@ -18,6 +18,7 @@ namespace UIEditor.XmlOperation
 		public string m_newValue;
 		public XmlDocument m_oldDoc;
 		public XmlDocument m_newDoc;
+		public object m_dstBasic;
 
 		public HistoryNode(XmlOptType optType, XmlElement dstXe, XmlElement srcXe = null)
 		{
@@ -33,14 +34,29 @@ namespace UIEditor.XmlOperation
 				m_srcElm = srcXe;
 			}
 		}
-		public HistoryNode(XmlElement dstXe, string attrName, string oldValue, string newValue)
+		public HistoryNode(object dstBasic, string attrName, string oldValue, string newValue)
 		{
 			//NODE_UPDATE
 			m_optType = XmlOptType.NODE_UPDATE;
-			m_dstElm = dstXe;
 			m_attrName = attrName;
 			m_oldValue = oldValue;
 			m_newValue = newValue;
+			m_dstBasic = dstBasic;
+			if (m_dstBasic != null)
+			{
+				switch(m_dstBasic.GetType().ToString())
+				{
+					case "UIEditor.BoloUI.Basic":
+						m_dstElm = ((BoloUI.Basic)m_dstBasic).m_xe;
+						break;
+					case "UIEditor.BoloRes.ResBasic":
+						m_dstElm = ((BoloRes.ResBasic)m_dstBasic).m_xe;
+						break;
+					default:
+						m_dstElm = null;
+						break;
+				}
+			}
 		}
 		public HistoryNode(XmlOptType optType, XmlDocument oldDoc, XmlDocument newDoc)
 		{

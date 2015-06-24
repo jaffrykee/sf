@@ -98,7 +98,7 @@ namespace UIEditor
 				{
 					if (m_pW.m_attrBinding && m_parent != null && m_parent.m_xmlCtrl != null && m_parent.m_xe != null && mt_value != value)
 					{
-						m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_xe, m_name, mt_value, value));
+						m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_basic, m_name, mt_value, value));
 					}
 				}
 				else

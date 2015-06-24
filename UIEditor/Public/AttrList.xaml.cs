@@ -26,6 +26,7 @@ namespace UIEditor
 		public MainWindow m_pW;
 		public XmlElement m_xe;
 		public XmlControl m_xmlCtrl;
+		public object m_basic;
 
 		public AttrList(string name = "", MainWindow pW = null)
 		{

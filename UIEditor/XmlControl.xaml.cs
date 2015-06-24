@@ -112,10 +112,12 @@ namespace UIEditor
 			{
 				m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
 				m_pW.mx_ctrlFrame.IsEnabled = false;
+				m_pW.mx_skinFrame.IsEnabled = true;
 				if (m_pW.Resources["CKForeDis"] != null &&
 					m_pW.Resources["CKForeDis"].GetType().ToString() == "System.Windows.Media.Color")
 				{
 					m_pW.mx_ctrlFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKForeDis"]);
+					m_pW.mx_skinFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKFore"]);
 				}
 			}
 			else
@@ -125,10 +127,12 @@ namespace UIEditor
 					m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_ctrlFrame;
 				}
 				m_pW.mx_ctrlFrame.IsEnabled = true;
+				m_pW.mx_skinFrame.IsEnabled = true;
 				if (m_pW.Resources["CKFore"] != null &&
 					m_pW.Resources["CKFore"].GetType().ToString() == "System.Windows.Media.Color")
 				{
 					m_pW.mx_ctrlFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKFore"]);
+					m_pW.mx_skinFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKFore"]);
 				}
 			}
 		}
@@ -179,6 +183,7 @@ namespace UIEditor
 						else if (m_pW.m_mapSkinResDef.TryGetValue(xe.Name, out skinPtr))
 						{
 							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), xe, this, skinPtr) as TreeViewItem;
+							treeChild.IsExpanded = false;
 							this.m_openedFile.m_treeSkin.Items.Add(treeChild);
 						}
 					}

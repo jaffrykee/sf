@@ -10,6 +10,6 @@
 	Selected="mx_root_Selected"
 	Unselected="mx_root_Unselected">
 	<TreeViewItem.Header>
-		<Label Name="mx_text" MouseDown="mx_text_MouseDown" Margin="0" Padding="0"></Label>
+		<Label Name="mx_text" MouseDown="mx_text_MouseDown" MouseDoubleClick="mx_text_MouseDoubleClick" Margin="0" Padding="0"></Label>
 	</TreeViewItem.Header>
 </TreeViewItem>

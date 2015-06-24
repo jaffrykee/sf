@@ -83,10 +83,16 @@ namespace UIEditor.BoloRes
 
 			mx_text.Content += name;
 		}
-		public void changeSelectSkin()
+		public void changeSelectSkin(XmlElement xeView = null)
 		{
 			m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
+			if (m_pW.m_curRes != null)
+			{
+				m_pW.m_curRes.mx_text.Background = (SolidColorBrush)m_pW.FindResource("BKBack");
+			}
+			m_pW.m_curRes = this;
 			m_pW.hiddenAllAttr();
+			m_pW.m_curRes.mx_text.Background = (SolidColorBrush)m_pW.FindResource("BKBackSel");
 
 			if (m_pW.m_otherAttrList == null)
 			{
@@ -103,12 +109,58 @@ namespace UIEditor.BoloRes
 			}
 			m_pW.m_otherAttrList.refreshRowVisible();
 			m_pW.m_otherAttrList.m_xmlCtrl = m_rootControl;
+			m_pW.m_otherAttrList.m_basic = this;
 			m_pW.m_otherAttrList.m_xe = m_xe;
+
+			//预览皮肤
+			XmlElement xeSkin = null;
+			XmlElement xeTmp = m_xe;
+
+			for (int i = 0; i < 7 && xeSkin == null && xeTmp != null; i++)
+			{
+				if (xeTmp.Name == "skin" || xeTmp.Name == "publicskin")
+				{
+					xeSkin = xeTmp;
+				}
+				else
+				{
+					if (xeTmp.ParentNode.GetType().ToString() == "System.Xml.XmlElement")
+					{
+						xeTmp = (XmlElement)xeTmp.ParentNode;
+					}
+					else
+					{
+						xeTmp = null;
+					}
+				}
+			}
+			if (xeSkin != null)
+			{
+				if (m_rootControl.m_isOnlySkin)
+				{
+					if (xeView == null)
+					{
+						xeView = m_pW.m_xeTest;
+					}
+					((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
+					m_pW.updateXmlToGL(m_rootControl.m_openedFile.m_path, m_rootControl.m_xmlDoc, xeView);
+				}
+				//todo 更改皮肤预览
+			}
 		}
 
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			changeSelectSkin();
+		}
+		private void mx_text_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			if (m_xe.Name == "skingroup")
+			{
+				string path = m_pW.m_rootPath + "\\" + m_xe.GetAttribute("Name") + ".xml";
+
+				m_pW.openFileByPath(path);
+			}
 		}
 		private void mx_root_Selected(object sender, RoutedEventArgs e)
 		{

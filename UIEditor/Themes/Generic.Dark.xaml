@@ -18,6 +18,7 @@
 	<Color x:Key="CKForeDis">#ff888888</Color>
 	<Color x:Key="CKForeText">#ff000000</Color>
 	<SolidColorBrush x:Key="BKFore" Color="{StaticResource CKFore}"/>
+	<SolidColorBrush x:Key="BKForeDis" Color="{StaticResource CKForeDis}"/>
 	<SolidColorBrush x:Key="BKForeSel" Color="{StaticResource CKFore}"/>
 	<SolidColorBrush x:Key="BKForeText" Color="{StaticResource CKForeText}"/>
 	<SolidColorBrush x:Key="BKForeTextRO" Color="{StaticResource CKFore}"/>

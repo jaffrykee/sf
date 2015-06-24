@@ -57,8 +57,6 @@ namespace UIEditor.XmlOperation
 		}
 		public void redoOperation(bool isAddOpt = false)
 		{
-			BoloUI.Basic ctrlUI = null;
-
 			switch (m_curNode.Value.m_optType)
 			{
 				case XmlOptType.NODE_INSERT:
@@ -85,25 +83,12 @@ namespace UIEditor.XmlOperation
 					break;
 				case XmlOptType.NODE_UPDATE:
 					{
-						if (HistoryNode.updateXmlNode(
+						HistoryNode.updateXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_dstElm,
 							m_curNode.Value.m_attrName,
-							m_curNode.Value.m_newValue))
-						{
-							if (!isAddOpt)
-							{
-								if (m_curNode.Value.m_attrName != "baseID")
-								{
-									m_xmlCtrl.m_mapCtrlUI.TryGetValue(m_curNode.Value.m_dstElm.GetAttribute("baseID"), out ctrlUI);
-								}
-								else
-								{
-									m_xmlCtrl.m_mapCtrlUI.TryGetValue(m_curNode.Value.m_newValue, out ctrlUI);
-								}
-							}
-						}
+							m_curNode.Value.m_newValue);
 					}
 					break;
 				case XmlOptType.TEXT:
@@ -115,19 +100,28 @@ namespace UIEditor.XmlOperation
 					return;
 			}
 			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
-			if (ctrlUI != null)
+			if (!isAddOpt)
 			{
-				ctrlUI.changeSelectCtrl();
-				if(m_curNode.Value.m_attrName == "baseID" || m_curNode.Value.m_attrName == "name")
+				if (m_curNode.Value.m_dstBasic != null)
 				{
-					m_pW.refreshAllCtrlUIHeader();
+					switch (m_curNode.Value.m_dstBasic.GetType().ToString())
+					{
+						case "UIEditor.BoloUI.Basic":
+							((BoloUI.Basic)m_curNode.Value.m_dstBasic).changeSelectCtrl();
+							m_pW.refreshAllCtrlUIHeader();
+							break;
+						case "UIEditor.BoloRes.ResBasic":
+							((BoloRes.ResBasic)m_curNode.Value.m_dstBasic).changeSelectSkin();
+							m_pW.refreshAllCtrlUIHeader();
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		}
 		public void undoOperation()
 		{
-			BoloUI.Basic ctrlUI = null;
-
 			switch (m_curNode.Value.m_optType)
 			{
 				case XmlOptType.NODE_INSERT:
@@ -154,22 +148,12 @@ namespace UIEditor.XmlOperation
 					break;
 				case XmlOptType.NODE_UPDATE:
 					{
-						if (HistoryNode.updateXmlNode(
+						HistoryNode.updateXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
 							m_curNode.Value.m_dstElm,
 							m_curNode.Value.m_attrName,
-							m_curNode.Value.m_oldValue))
-						{
-							if (m_curNode.Value.m_attrName != "baseID")
-							{
-								m_xmlCtrl.m_mapCtrlUI.TryGetValue(m_curNode.Value.m_dstElm.GetAttribute("baseID"), out ctrlUI);
-							}
-							else
-							{
-								m_xmlCtrl.m_mapCtrlUI.TryGetValue(m_curNode.Value.m_oldValue, out ctrlUI);
-							}
-						}
+							m_curNode.Value.m_oldValue);
 					}
 					break;
 				case XmlOptType.TEXT:
@@ -181,12 +165,21 @@ namespace UIEditor.XmlOperation
 					return;
 			}
 			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
-			if(ctrlUI != null)
+
+			if (m_curNode.Value.m_dstBasic != null)
 			{
-				ctrlUI.changeSelectCtrl();
-				if (m_curNode.Value.m_attrName == "baseID" || m_curNode.Value.m_attrName == "name")
+				switch (m_curNode.Value.m_dstBasic.GetType().ToString())
 				{
-					m_pW.refreshAllCtrlUIHeader();
+					case "UIEditor.BoloUI.Basic":
+						((BoloUI.Basic)m_curNode.Value.m_dstBasic).changeSelectCtrl();
+						m_pW.refreshAllCtrlUIHeader();
+						break;
+					case "UIEditor.BoloRes.ResBasic":
+						((BoloRes.ResBasic)m_curNode.Value.m_dstBasic).changeSelectSkin();
+						m_pW.refreshAllCtrlUIHeader();
+						break;
+					default:
+						break;
 				}
 			}
 		}
