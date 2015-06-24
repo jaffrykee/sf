@@ -102,6 +102,8 @@ namespace UIEditor.BoloRes
 				}
 			}
 			m_pW.m_otherAttrList.refreshRowVisible();
+			m_pW.m_otherAttrList.m_xmlCtrl = m_rootControl;
+			m_pW.m_otherAttrList.m_xe = m_xe;
 		}
 
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)

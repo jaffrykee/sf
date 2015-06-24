@@ -57,6 +57,8 @@ namespace UIEditor.XmlOperation
 		}
 		public void redoOperation(bool isAddOpt = false)
 		{
+			BoloUI.Basic ctrlUI = null;
+
 			switch (m_curNode.Value.m_optType)
 			{
 				case XmlOptType.NODE_INSERT:
@@ -81,57 +83,24 @@ namespace UIEditor.XmlOperation
 						//todo
 					}
 					break;
-				case XmlOptType.ATTR_INSERT:
+				case XmlOptType.NODE_UPDATE:
 					{
-						if (HistoryNode.insertXmlAttr(
+						if (HistoryNode.updateXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_dstElm,
 							m_curNode.Value.m_attrName,
 							m_curNode.Value.m_newValue))
 						{
 							if (!isAddOpt)
 							{
-								if (m_xmlCtrl.m_mapCtrlUI[m_curNode.Value.m_dstCtrlId] == m_pW.m_curCtrl)
+								if (m_curNode.Value.m_attrName != "baseID")
 								{
-									m_pW.m_curCtrl.changeSelectCtrl();
+									m_xmlCtrl.m_mapCtrlUI.TryGetValue(m_curNode.Value.m_dstElm.GetAttribute("baseID"), out ctrlUI);
 								}
-							}
-						}
-					}
-					break;
-				case XmlOptType.ATTR_DELETE:
-					{
-						if (HistoryNode.deleteXmlAttr(
-							m_pW,
-							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstCtrlId,
-							m_curNode.Value.m_attrName))
-						{
-							if (!isAddOpt)
-							{
-								if (m_xmlCtrl.m_mapCtrlUI[m_curNode.Value.m_dstCtrlId] == m_pW.m_curCtrl)
+								else
 								{
-									m_pW.m_curCtrl.changeSelectCtrl();
-								}
-							}
-						}
-					}
-					break;
-				case XmlOptType.ATTR_UPDATE:
-					{
-						if (HistoryNode.setXmlAttr(
-							m_pW,
-							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstCtrlId,
-							m_curNode.Value.m_attrName,
-							m_curNode.Value.m_newValue))
-						{
-							if (!isAddOpt)
-							{
-								if (m_xmlCtrl.m_mapCtrlUI[m_curNode.Value.m_dstCtrlId] == m_pW.m_curCtrl)
-								{
-									m_pW.m_curCtrl.changeSelectCtrl();
+									m_xmlCtrl.m_mapCtrlUI.TryGetValue(m_curNode.Value.m_newValue, out ctrlUI);
 								}
 							}
 						}
@@ -146,9 +115,19 @@ namespace UIEditor.XmlOperation
 					return;
 			}
 			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
+			if (ctrlUI != null)
+			{
+				ctrlUI.changeSelectCtrl();
+				if(m_curNode.Value.m_attrName == "baseID" || m_curNode.Value.m_attrName == "name")
+				{
+					m_pW.refreshAllCtrlUIHeader();
+				}
+			}
 		}
 		public void undoOperation()
 		{
+			BoloUI.Basic ctrlUI = null;
+
 			switch (m_curNode.Value.m_optType)
 			{
 				case XmlOptType.NODE_INSERT:
@@ -156,7 +135,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.deleteXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_srcCtrlId);
+							m_curNode.Value.m_dstElm);
 					}
 					break;
 				case XmlOptType.NODE_DELETE:
@@ -164,8 +143,8 @@ namespace UIEditor.XmlOperation
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_srcCtrlId,
-							m_curNode.Value.m_dstElm);
+							m_curNode.Value.m_dstElm,
+							m_curNode.Value.m_srcElm);
 					}
 					break;
 				case XmlOptType.NODE_REPLACE:
@@ -173,49 +152,22 @@ namespace UIEditor.XmlOperation
 						//todo
 					}
 					break;
-				case XmlOptType.ATTR_INSERT:
+				case XmlOptType.NODE_UPDATE:
 					{
-						if (HistoryNode.deleteXmlAttr(
+						if (HistoryNode.updateXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstCtrlId,
-							m_curNode.Value.m_attrName))
-						{
-							if (m_xmlCtrl.m_mapCtrlUI[m_curNode.Value.m_dstCtrlId] == m_pW.m_curCtrl)
-							{
-								m_pW.m_curCtrl.changeSelectCtrl();
-							}
-						}
-					}
-					break;
-				case XmlOptType.ATTR_DELETE:
-					{
-						if (HistoryNode.insertXmlAttr(
-							m_pW,
-							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstCtrlId,
+							m_curNode.Value.m_dstElm,
 							m_curNode.Value.m_attrName,
 							m_curNode.Value.m_oldValue))
 						{
-							if (m_xmlCtrl.m_mapCtrlUI[m_curNode.Value.m_dstCtrlId] == m_pW.m_curCtrl)
+							if (m_curNode.Value.m_attrName != "baseID")
 							{
-								m_pW.m_curCtrl.changeSelectCtrl();
+								m_xmlCtrl.m_mapCtrlUI.TryGetValue(m_curNode.Value.m_dstElm.GetAttribute("baseID"), out ctrlUI);
 							}
-						}
-					}
-					break;
-				case XmlOptType.ATTR_UPDATE:
-					{
-						if (HistoryNode.setXmlAttr(
-							m_pW,
-							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstCtrlId,
-							m_curNode.Value.m_attrName,
-							m_curNode.Value.m_oldValue))
-						{
-							if (m_xmlCtrl.m_mapCtrlUI[m_curNode.Value.m_dstCtrlId] == m_pW.m_curCtrl)
+							else
 							{
-								m_pW.m_curCtrl.changeSelectCtrl();
+								m_xmlCtrl.m_mapCtrlUI.TryGetValue(m_curNode.Value.m_oldValue, out ctrlUI);
 							}
 						}
 					}
@@ -227,9 +179,16 @@ namespace UIEditor.XmlOperation
 					break;
 				default:
 					return;
-					break;
 			}
 			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
+			if(ctrlUI != null)
+			{
+				ctrlUI.changeSelectCtrl();
+				if (m_curNode.Value.m_attrName == "baseID" || m_curNode.Value.m_attrName == "name")
+				{
+					m_pW.refreshAllCtrlUIHeader();
+				}
+			}
 		}
 		public void undo()
 		{

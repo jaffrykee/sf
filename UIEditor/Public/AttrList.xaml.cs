@@ -11,16 +11,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace UIEditor
 {
-	/// <summary>
-	/// AttrList.xaml 的交互逻辑
-	/// </summary>
+	public enum AttrType
+	{
+		boloCtrl,
+		boloRes
+	};
 	public partial class AttrList : Grid
 	{
 		public string m_name;
 		public MainWindow m_pW;
+		public XmlElement m_xe;
+		public XmlControl m_xmlCtrl;
 
 		public AttrList(string name = "", MainWindow pW = null)
 		{

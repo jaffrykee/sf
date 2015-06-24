@@ -147,7 +147,7 @@ namespace UIEditor
 			m_pW = Window.GetWindow(this) as MainWindow;
 			m_openedFile = m_pW.m_mapOpenedFiles[m_parent.m_filePath];
 			m_openedFile.m_frame = this;
-			m_openedFile.m_lstOpt = new XmlOperation.XmlOperationList(m_pW, this, 50);
+			m_openedFile.m_lstOpt = new XmlOperation.HistoryList(m_pW, this, 50);
 			m_openedFile.m_treeUI.Items.Clear();
 			m_openedFile.m_treeSkin.Items.Clear();
 

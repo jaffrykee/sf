@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace UIEditor
 {
@@ -75,13 +76,13 @@ namespace UIEditor
 						}
 					}
 				}
+				bool isWrong = false;
 				BoloUI.Basic elmUI = m_pW.m_curCtrl;
+
 				if (m_pW.m_attrBinding && elmUI != null && elmUI.m_xe != null)
 				{
 					if (mt_value != value)
 					{
-						bool isWrong = false;
-
 						if (m_name == "baseID")
 						{
 							BoloUI.Basic ctrl;
@@ -90,25 +91,20 @@ namespace UIEditor
 							{
 								isWrong = true;
 							}
-							else
-							{
-								if (elmUI.m_rootControl.m_mapCtrlUI.TryGetValue(mt_value, out ctrl))
-								{
-									elmUI.m_rootControl.m_mapCtrlUI.Remove(mt_value);
-									//elmUI.m_rootControl.m_mapCtrlUI[value] = ctrl;
-								}
-							}
-						}
-						if (isWrong == false)
-						{
-							elmUI.m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.XmlOperationNode(elmUI.m_xe, m_name, mt_value, value));
-						}
-						else
-						{
-							//todo 其它错误也在这里显示
-							m_pW.mx_debug.Text += "<警告>baseID不可重复\r\n";
 						}
 					}
+				}
+				if (isWrong == false)
+				{
+					if (m_pW.m_attrBinding && m_parent != null && m_parent.m_xmlCtrl != null && m_parent.m_xe != null && mt_value != value)
+					{
+						m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_xe, m_name, mt_value, value));
+					}
+				}
+				else
+				{
+					//todo 其它错误也在这里显示
+					m_pW.mx_debug.Text += "<警告>baseID不可重复\r\n";
 				}
 				mt_value = value;
 				mx_value.Text = value;

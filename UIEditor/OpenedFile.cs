@@ -29,7 +29,7 @@ namespace UIEditor
 		public TreeViewItem m_treeSkin;
 		public UserControl m_frame;
 		public string m_fileType;
-		public XmlOperationList m_lstOpt;
+		public HistoryList m_lstOpt;
 
 		public OpenedFile(TreeView treeUIFrame, TreeView treeSkinFrame, string path)
 		{

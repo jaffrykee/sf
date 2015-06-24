@@ -19,12 +19,19 @@ namespace UIEditor.XmlOperation
 		public XmlDocument m_oldDoc;
 		public XmlDocument m_newDoc;
 
-		public HistoryNode(XmlOptType optType, XmlElement dstXe, XmlElement srcXe)
+		public HistoryNode(XmlOptType optType, XmlElement dstXe, XmlElement srcXe = null)
 		{
 			//NODE_INSERT, NODE_REPLACE, NODE_DELETE
 			m_optType = optType;
 			m_dstElm = dstXe;
-			m_srcElm = srcXe;
+			if (srcXe == null)
+			{
+				m_srcElm = (XmlElement)m_dstElm.ParentNode;
+			}
+			else
+			{
+				m_srcElm = srcXe;
+			}
 		}
 		public HistoryNode(XmlElement dstXe, string attrName, string oldValue, string newValue)
 		{
@@ -119,25 +126,24 @@ namespace UIEditor.XmlOperation
 			{
 				dstXe.RemoveAttribute(attrName);
 			}
-			if (attrName == "baseID")
+			if (pW.m_mapOpenedFiles.TryGetValue(path, out fileT))
 			{
-				//仅Ctrl
-				if (pW.m_mapOpenedFiles.TryGetValue(path, out fileT))
+				if (fileT.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
 				{
-					if (fileT.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
-					{
-						XmlControl xmlCtrl = (XmlControl)fileT.m_frame;
-						BoloUI.Basic uiCtrl;
+					//仅Ctrl
+					XmlControl xmlCtrl = (XmlControl)fileT.m_frame;
+					BoloUI.Basic uiCtrl;
 
-						xmlCtrl.checkBaseId((XmlNode)dstXe);
+					if (attrName == "baseID")
+					{
 						if (xmlCtrl.m_mapCtrlUI.TryGetValue(oldValue, out uiCtrl))
 						{
+							xmlCtrl.checkBaseId((XmlNode)dstXe);
 							xmlCtrl.m_mapCtrlUI.Remove(oldValue);
-							xmlCtrl.m_mapCtrlUI[dstXe.GetAttribute(attrName)] = uiCtrl;
-
-							return true;
+							xmlCtrl.m_mapCtrlUI[newValue] = uiCtrl;
 						}
 					}
+					return true;
 				}
 			}
 
