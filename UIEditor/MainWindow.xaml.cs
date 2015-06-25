@@ -22,7 +22,8 @@ namespace UIEditor
 {
 	public partial class MainWindow : Window
 	{
-		public string m_rootPath;
+		public string m_skinPath;
+		public string m_projPath;
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
@@ -57,7 +58,8 @@ namespace UIEditor
 
 		public MainWindow()
 		{
-			m_rootPath = "";
+			m_skinPath = "";
+			m_projPath = "";
 			m_hwndGL = IntPtr.Zero;
 			m_hwndGLParent = IntPtr.Zero;
 			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
@@ -73,7 +75,7 @@ namespace UIEditor
 
 			m_xdTest = new XmlDocument();
 			// w=\"400\" h=\"300\"
-			m_strTestXml = "<panel w=\"960\" h=\"640\" baseID=\"testCtrl\" text=\"Test\"/>";
+			m_strTestXml = "<label w=\"960\" h=\"640\" baseID=\"testCtrl\" text=\"Test\"/>";
 
 			m_xdTest.LoadXml(m_strTestXml);
 			m_xeTest = m_xdTest.DocumentElement;
@@ -95,7 +97,9 @@ namespace UIEditor
 			sendPathToGL(path);
 			initXmlValueDef();
 			//refreshImage(path + "\\images");
-			refreshSkin(path + "\\skin");
+			m_projPath = path;
+			m_skinPath = path + "\\skin";
+			refreshSkin(m_skinPath);
 			refreshProjTree(path, this.mx_treePro, true);
 		}
 		private void sendPathToGL(string path)//告知GL端工程根目录
@@ -117,7 +121,6 @@ namespace UIEditor
 		}
 		private void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
 		{
-			m_rootPath = path;
 			m_dep = 0;
 			m_mapStrSkinGroup.Clear();
 			m_mapStrSkin.Clear();
@@ -182,7 +185,7 @@ namespace UIEditor
 				else
 				{
 					//不存在
-					mx_debug.Text += "<错误>文件：\"" + path + "\"不存在，请检查路径。";
+					mx_debug.Text += "<错误>文件：\"" + path + "\"不存在，请检查路径。\r\n";
 				}
 			}
 		}
@@ -1316,11 +1319,16 @@ namespace UIEditor
 		}
 		private void mx_toolSave_Click(object sender, RoutedEventArgs e)
 		{
-			if(m_mapOpenedFiles[m_curFile].frameIsXmlCtrl())
+			OpenedFile savedFile;
+
+			if (m_mapOpenedFiles.Count > 0 && m_curFile != "" && m_mapOpenedFiles.TryGetValue(m_curFile, out savedFile))
 			{
-				((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_xmlDoc.Save(m_curFile);
-				m_mapOpenedFiles[m_curFile].m_lstOpt.m_saveNode = m_mapOpenedFiles[m_curFile].m_lstOpt.m_curNode;
-				m_mapOpenedFiles[m_curFile].updateSaveStatus();
+				if (savedFile.frameIsXmlCtrl())
+				{
+					((XmlControl)savedFile.m_frame).m_xmlDoc.Save(m_curFile);
+					savedFile.m_lstOpt.m_saveNode = m_mapOpenedFiles[m_curFile].m_lstOpt.m_curNode;
+					savedFile.updateSaveStatus();
+				}
 			}
 		}
 		private void mx_toolSaveAll_Click(object sender, RoutedEventArgs e)

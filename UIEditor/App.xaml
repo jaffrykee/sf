@@ -5,15 +5,10 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Themes/Generic.Dark.xaml" x:Name="mx_res"/>
+				<!--<ResourceDictionary Source="Themes/Generic.Dark.xaml"/>-->
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>
 <!--<ResourceDictionary Source="Themes/Generic.Light.xaml"/>-->
-<!--<ResourceDictionary Source="Themes/Generic.Dark.xaml"/>
-	
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary/>
-			</ResourceDictionary.MergedDictionaries>
-	-->
+<!--<ResourceDictionary Source="Themes/Generic.Dark.xaml"/>-->

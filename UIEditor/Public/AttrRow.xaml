@@ -13,16 +13,17 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Name="mx_c0" Width="*"/>
 			<ColumnDefinition Name="mx_c1" Width="10"/>
-			<ColumnDefinition Name="mx_c2" Width="125"/>
+			<ColumnDefinition Name="mx_c2" Width="100"/>
+			<ColumnDefinition Name="mx_c3" Width="25"/>
 		</Grid.ColumnDefinitions>
 		<Label Name="mx_name"
 			Grid.Column="0"
-			Foreground="#ffffffff"
 			HorizontalAlignment="Right"
 			Content="width:"/>
-		<Grid Grid.Column="2"  Background="#ffffffff" Margin="2"></Grid>
+		<Grid Grid.Column="2" Grid.ColumnSpan="2" Background="#ffffffff" Margin="2"></Grid>
 		<TextBlock Name="mx_valueDef"
 			Grid.Column="2"
+			Grid.ColumnSpan="2"
 			Foreground="#ffaaaaaa"
 			Background="#ffffffff"
 			Margin="5"
@@ -30,12 +31,16 @@
 		<TextBox Name="mx_value"
 			Width="{Binding ElementName=mx_c2, Path=Width}"
 			Grid.Column="2"
+			Grid.ColumnSpan="2"
 			CaretBrush="Black"
 			Background="#00000000"
-			Foreground="{StaticResource BKForeText}"
-			BorderBrush="{StaticResource BKBorderText}"
 			Margin="2"
 			TextChanged="mx_value_TextChanged"/>
+		<Button Name="mx_link"
+			Grid.Column="3"
+			Visibility="Collapsed"
+			Content="→"
+			Click="mx_link_Click"/>
 	</Grid>
 	<Grid Name="mx_boolFrame" Visibility="Collapsed">
 		<Grid.ColumnDefinitions>
@@ -46,7 +51,6 @@
 		<CheckBox Name="mx_valueBool"
 			Grid.Column="0"
 			IsEnabledChanged="mx_valueBool_IsEnabledChanged"
-			Foreground="#ffffffff"
 			VerticalAlignment="Center"
 			Margin="10,0,0,0"
 			Content="{Binding ElementName=mx_name, Path=Content}"
@@ -54,7 +58,6 @@
 			Unchecked="mx_valueBool_Unchecked"/>
 		<CheckBox Name="mx_defaultBool"
 			Grid.Column="2"
-			Foreground="#ffffffff"
 			VerticalAlignment="Center"
 			Margin="10,0,0,0"
 			Content="default"
@@ -69,7 +72,6 @@
 		</Grid.ColumnDefinitions>
 		<Label Name="mx_nameEnum"
 			Grid.Column="0"
-			Foreground="#ffffffff"
 			HorizontalAlignment="Right"
 			Content="width:"/>
 		<Grid Grid.Column="2"  Background="#ffffffff" Margin="2"></Grid>
@@ -84,8 +86,6 @@
 			Grid.Column="2"
 			IsEditable="True"
 			Background="#00000000"
-			Foreground="{StaticResource BKForeText}"
-			BorderBrush="{StaticResource BKBorderText}"
 			Margin="2"
 			SelectionChanged="mx_valueEnum_SelectionChanged">
 			<ComboBoxItem Content="[default]"/>

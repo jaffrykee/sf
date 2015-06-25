@@ -7,10 +7,15 @@
 	mc:Ignorable="d"
 	x:Class="UIEditor.AttrList"
 	x:Name="mx_root"
-	Loaded="mx_root_Loaded">
+	Loaded="mx_root_Loaded"
+	Background="#33333333">
 	<StackPanel Margin="2,2,2,2">
-		<Border BorderThickness="1" BorderBrush="#ffffffff" CornerRadius="2">
-			<Label Margin="0,0,0,0" Padding="5,1,0,1" Name="mx_title"></Label>
+		<Border BorderThickness="1" BorderBrush="#ffffffff" Background="#ff444444" CornerRadius="2">
+			<Label Name="mx_title"
+				Foreground="White"
+				Margin="0,0,0,0"
+				Padding="5,1,0,1"
+				Content="a"/>
 		</Border>
 		<StackPanel Name="mx_frame">
 			<Grid Name="mx_setting"
@@ -26,14 +31,12 @@
 					IsChecked="True"
 					Checked="mx_onlySetted_Checked"
 					Unchecked="mx_onlySetted_Unchecked"
-					Foreground="#ffffffff"
 					VerticalAlignment="Center"
 					Margin="10,0,0,0"
 					Content="隐藏未赋值的项"/>
 				<CheckBox Name="mx_onlyMain"
 					Checked="mx_onlyMain_Checked"
 					Unchecked="mx_onlyMain_Unchecked"
-					Foreground="#ffffffff"
 					Grid.Column="1"
 					VerticalAlignment="Center"
 					Margin="10,0,0,0"

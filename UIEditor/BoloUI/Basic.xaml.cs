@@ -22,6 +22,7 @@ namespace UIEditor.BoloUI
 		public XmlElement m_xe;
 		public MainWindow m_pW;
 		public bool m_isCtrl;
+		public bool m_setFocus;
 
 		public int m_selX;
 		public int m_selY;
@@ -51,6 +52,11 @@ namespace UIEditor.BoloUI
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			initHeader();
+			if(m_setFocus)
+			{
+				this.Focus();
+				m_setFocus = false;
+			}
 		}
 
 		protected void addChild()
@@ -196,15 +202,10 @@ namespace UIEditor.BoloUI
 			bool tmp = m_pW.m_attrBinding;
 			m_pW.m_attrBinding = false;
 
-			if (m_pW.m_curCtrl != null)
-			{
-				m_pW.m_curCtrl.mx_text.Background = (SolidColorBrush)m_pW.FindResource("BKBack");
-			}
 			m_pW.m_curCtrl = this;
 			m_pW.hiddenAllAttr();
 			MainWindow.CtrlDef_T ctrlDef;
 
-			m_pW.m_curCtrl.mx_text.Background = (SolidColorBrush)m_pW.FindResource("BKBackSel");
 			if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
 			{
 				if (m_xe.Name != "event")
@@ -272,6 +273,10 @@ namespace UIEditor.BoloUI
 			}
 
 			m_pW.m_attrBinding = tmp;
+			if (!this.Focus())
+			{
+				m_setFocus = true;
+			}
 		}
 
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)

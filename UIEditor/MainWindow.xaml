@@ -9,13 +9,6 @@
 	Title="MainWindow" Width="1280" Height="800"
 	Loaded="On_UIReady"
 	>
-	<Window.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Themes/Generic.Dark.xaml" x:Name="mx_res"/>
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -52,13 +45,13 @@
 				</Grid.RowDefinitions>
 				<ToolBarTray Grid.Row="0">
 					<ToolBar HorizontalAlignment="Left">
-						<Button Name="mx_toolNew" IsEnabled="False" Foreground="{StaticResource BKFore}">新建</Button>
-						<Button Name="mx_toolOpen" Foreground="{StaticResource BKFore}" Click="openProj">打开</Button>
-						<Button Name="mx_toolSave" Foreground="{StaticResource BKFore}" Click="mx_toolSave_Click">保存</Button>
-						<Button Name="mx_toolSaveAll" Foreground="{StaticResource BKFore}" Click="mx_toolSaveAll_Click">全部保存</Button>
+						<Button Name="mx_toolNew" IsEnabled="False">新建</Button>
+						<Button Name="mx_toolOpen" Click="openProj">打开</Button>
+						<Button Name="mx_toolSave" Click="mx_toolSave_Click">保存</Button>
+						<Button Name="mx_toolSaveAll" Click="mx_toolSaveAll_Click">全部保存</Button>
 						<Separator/>
-						<Button Name="mx_toolUndo" Foreground="{StaticResource BKFore}" Click="mx_toolUndo_Click">撤销</Button>
-						<Button Name="mx_toolRedo" Foreground="{StaticResource BKFore}" Click="mx_toolRedo_Click">重复</Button>
+						<Button Name="mx_toolUndo" Click="mx_toolUndo_Click">撤销</Button>
+						<Button Name="mx_toolRedo" Click="mx_toolRedo_Click">重复</Button>
 					</ToolBar>
 					<ToolBar HorizontalAlignment="Left">
 						<Label>调试模式：</Label>
@@ -73,18 +66,18 @@
 			<Grid>
 				<TabControl Name="mx_leftToolFrame" BorderThickness="0" Padding="0">
 					<TabItem Name="mx_proFrame" Header="工程目录">
-						<TreeView>
+						<TreeView Background="#08080808">
 							<TreeViewItem Name="mx_treePro">
 							</TreeViewItem>
 						</TreeView>
 					</TabItem>
-					<TabItem Name="mx_ctrlFrame" Header="控件" IsEnabled="False" Foreground="{StaticResource BKForeDis}">
+					<TabItem Name="mx_ctrlFrame" Header="控件" IsEnabled="False">
 						<Grid>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="auto"/>
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
-							<Grid Background="{StaticResource BKLightBack}">
+							<Grid>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="100"/>
 									<ColumnDefinition Width="*"/>
@@ -93,7 +86,7 @@
 									Grid.Column="0"
 									IsChecked="True"
 									VerticalAlignment="Center"
-									Margin="10,0,0,0"
+									Margin="10,5,0,5"
 									Content="显示name"
 									Checked="mx_checkVName_Checked"
 									Unchecked="mx_checkVName_Unchecked"/>
@@ -101,24 +94,24 @@
 									Grid.Column="1"
 									IsChecked="True"
 									VerticalAlignment="Center"
-									Margin="10,0,0,0"
+									Margin="10,5,0,5"
 									Content="显示id"
 									Checked="mx_checkVId_Checked"
 									Unchecked="mx_checkVId_Unchecked"/>
 							</Grid>
-							<TreeView Grid.Row="1" Name="mx_treeCtrlFrame">
+							<TreeView Grid.Row="1" Name="mx_treeCtrlFrame" Background="#08080808">
 							</TreeView>
 						</Grid>
 					</TabItem>
-					<TabItem Name="mx_skinFrame" Header="资源" IsEnabled="False" Foreground="{StaticResource BKForeDis}">
-						<TreeView Name="mx_treeSkinFrame">
+					<TabItem Name="mx_skinFrame" Header="资源" IsEnabled="False">
+						<TreeView Name="mx_treeSkinFrame" Background="#08080808">
 						</TreeView>
 					</TabItem>
 				</TabControl>
 			</Grid>
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5"></GridSplitter>
-		<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Margin="5,0,0,0">
+		<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Margin="5,0,0,0" Background="#22222222">
 			<ScrollViewer Name="mx_toolScroll" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" SizeChanged="ScrollViewer_SizeChanged">
 				<StackPanel Name="mx_toolArea" Width="auto">
 				</StackPanel>
@@ -138,7 +131,7 @@
 				<ColumnDefinition Name="mx_glC0" Width="*"/>
 				<ColumnDefinition Name="mx_glC1" Width="{Binding ElementName=mx_glR1, Path=Height}"/>
 			</Grid.ColumnDefinitions>
-			<Border Name="mx_GLCtrl" Background="{StaticResource BKBack}" Visibility="Collapsed"></Border>
+			<Border Name="mx_GLCtrl" Visibility="Collapsed"></Border>
 			<ScrollViewer
 					Grid.ColumnSpan="2"
 					Grid.RowSpan="2"

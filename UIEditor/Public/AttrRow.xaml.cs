@@ -45,6 +45,14 @@ namespace UIEditor
 					mx_name.Content = value;
 					mx_name.ToolTip = "";
 				}
+				if(m_name == "skin")
+				{
+					mx_link.Visibility = System.Windows.Visibility.Visible;
+				}
+				else
+				{
+					mx_link.Visibility = System.Windows.Visibility.Collapsed;
+				}
 			}
 		}
 		public string m_value
@@ -218,19 +226,17 @@ namespace UIEditor
 		}
 		private void mx_valueBool_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			if(mx_valueBool.IsEnabled == true)
-			{
-				mx_valueBool.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
-			}
-			else
-			{
-				mx_valueBool.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xbb, 0xbb, 0xbb));
-			}
 		}
-
 		private void mx_valueEnum_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			//((ComboBox)sender).SelectedItem
+		}
+		private void mx_link_Click(object sender, RoutedEventArgs e)
+		{
+			if (m_parent.m_basic != null && m_parent.m_basic.GetType().ToString() == "UIEditor.BoloUI.Basic")
+			{
+				m_parent.m_xmlCtrl.findSkinAndSelect(mx_value.Text, (BoloUI.Basic)m_parent.m_basic);
+			}
 		}
 	}
 }

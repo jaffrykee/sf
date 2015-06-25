@@ -22,6 +22,7 @@ namespace UIEditor.BoloRes
 		public XmlElement m_xe;
 		public MainWindow m_pW;
 		public MainWindow.SkinDef_T m_curDeepDef;
+		public bool m_setFocus;
 
 		public ResBasic(XmlElement xe, XmlControl rootControl, MainWindow.SkinDef_T deepDef)
 		{
@@ -30,11 +31,24 @@ namespace UIEditor.BoloRes
 			m_xe = xe;
 			m_pW = rootControl.m_pW;
 			m_curDeepDef = deepDef;
+			if(m_xe.Name == "skin" || m_xe.Name == "publicskin")
+			{
+				ResBasic nullPtr;
+				if(!m_rootControl.m_mapSkin.TryGetValue(m_xe.GetAttribute("Name"), out nullPtr))
+				{
+					m_rootControl.m_mapSkin[m_xe.GetAttribute("Name")] = this;
+				}
+			}
 			addChild();
 		}
 		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			initHeader();
+			if (m_setFocus)
+			{
+				this.Focus();
+				m_setFocus = false;
+			}
 		}
 
 		protected void addChild()
@@ -83,16 +97,11 @@ namespace UIEditor.BoloRes
 
 			mx_text.Content += name;
 		}
-		public void changeSelectSkin(XmlElement xeView = null)
+		public void changeSelectSkin(BoloUI.Basic ctrlUI = null)
 		{
 			m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
-			if (m_pW.m_curRes != null)
-			{
-				m_pW.m_curRes.mx_text.Background = (SolidColorBrush)m_pW.FindResource("BKBack");
-			}
 			m_pW.m_curRes = this;
 			m_pW.hiddenAllAttr();
-			m_pW.m_curRes.mx_text.Background = (SolidColorBrush)m_pW.FindResource("BKBackSel");
 
 			if (m_pW.m_otherAttrList == null)
 			{
@@ -138,14 +147,36 @@ namespace UIEditor.BoloRes
 			{
 				if (m_rootControl.m_isOnlySkin)
 				{
-					if (xeView == null)
+					XmlElement xeView;
+
+					if (ctrlUI == null && m_rootControl.m_skinViewCtrlUI == null)
 					{
 						xeView = m_pW.m_xeTest;
+						((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
 					}
-					((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
+					else
+					{
+						if (ctrlUI != null)
+						{
+							m_rootControl.m_skinViewCtrlUI = ctrlUI;
+						}
+						xeView = m_rootControl.m_skinViewCtrlUI.m_xe;
+						m_rootControl.m_skinViewCtrlUI.m_rootControl.m_openedFile.m_lstOpt.addOperation(
+							new XmlOperation.HistoryNode(
+								m_rootControl.m_skinViewCtrlUI,
+								"skin",
+								m_rootControl.m_skinViewCtrlUI.m_xe.GetAttribute("skin"),
+								xeSkin.GetAttribute("Name")
+							)
+						);
+					}
 					m_pW.updateXmlToGL(m_rootControl.m_openedFile.m_path, m_rootControl.m_xmlDoc, xeView);
 				}
 				//todo 更改皮肤预览
+			}
+			if(!this.Focus())
+			{
+				m_setFocus = true;
 			}
 		}
 
@@ -157,7 +188,7 @@ namespace UIEditor.BoloRes
 		{
 			if (m_xe.Name == "skingroup")
 			{
-				string path = m_pW.m_rootPath + "\\" + m_xe.GetAttribute("Name") + ".xml";
+				string path = m_pW.m_skinPath + "\\" + m_xe.GetAttribute("Name") + ".xml";
 
 				m_pW.openFileByPath(path);
 			}

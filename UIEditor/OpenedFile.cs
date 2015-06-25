@@ -31,6 +31,10 @@ namespace UIEditor
 		public string m_fileType;
 		public HistoryList m_lstOpt;
 
+		public string m_preViewBaseId;
+		public string m_preViewSkinName;
+		public BoloUI.Basic m_prePlusCtrlUI;
+
 		public OpenedFile(TreeView treeUIFrame, TreeView treeSkinFrame, string path)
 		{
 			MainWindow pW = Window.GetWindow(treeUIFrame) as MainWindow;

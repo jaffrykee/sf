@@ -10,6 +10,18 @@
 	Selected="mx_root_Selected"
 	Unselected="mx_root_Unselected">
 	<TreeViewItem.Header>
-		<Label Name="mx_text" MouseDown="mx_text_MouseDown" Margin="0" Padding="0"></Label>
+		<Label Name="mx_text"
+			   Margin="0"
+			   Padding="0"
+			   MouseDown="mx_text_MouseDown">
+			<Label.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="添加控件"/>
+					<MenuItem Header="删除控件"/>
+					<MenuItem Header="上移"/>
+					<MenuItem Header="下移"/>
+				</ContextMenu>
+			</Label.ContextMenu>
+		</Label>
 	</TreeViewItem.Header>
 </TreeViewItem>

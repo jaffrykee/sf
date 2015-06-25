@@ -25,9 +25,13 @@ namespace UIEditor
 		public OpenedFile m_openedFile;
 		//以baseID为索引的UI们
 		public Dictionary<string, BoloUI.Basic> m_mapCtrlUI;
+		public Dictionary<string, string> m_mapSkinLink;
+		public Dictionary<string, BoloRes.ResBasic> m_mapSkin;
 		public XmlDocument m_xmlDoc;
+		public XmlElement m_xeRootCtrl;
 		public TreeViewItem m_treeCtrl;
 		public bool m_isOnlySkin;
+		public BoloUI.Basic m_skinViewCtrlUI;
 
 		public XmlControl(FileTabItem parent)
 		{
@@ -35,7 +39,10 @@ namespace UIEditor
 			m_parent = parent;
 			m_loaded = false;
 			m_mapCtrlUI = new Dictionary<string, BoloUI.Basic>();
+			m_mapSkinLink = new Dictionary<string, string>();
+			m_mapSkin = new Dictionary<string, BoloRes.ResBasic>();
 			m_isOnlySkin = true;
+			m_skinViewCtrlUI = null;
 		}
 
 		public void deleteBaseId(XmlNode xn)
@@ -105,7 +112,72 @@ namespace UIEditor
 				}
 			}
 		}
+		
+		static public void changeSelectCtrlAndFile(MainWindow pW, string path, string baseId)
+		{
+			if (File.Exists(path))
+			{
+				//todo
+			}
+			else
+			{
+				pW.mx_debug.Text += "<警告>文件：\"" + path + "\"不存在，请检查路径。\r\n";
+			}
+		}
+		static public void changeSelectSkinAndFile(MainWindow pW, string path, string skinName, BoloUI.Basic ctrlUI = null)
+		{
+			if (File.Exists(path))
+			{
+				OpenedFile skinFile;
 
+				pW.openFileByPath(path);
+				if(pW.m_mapOpenedFiles.TryGetValue(path, out skinFile))
+				{
+					if (skinFile.m_frame != null)
+					{
+						if (skinFile.m_frame.GetType().ToString() == "UIEditor.XmlControl")
+						{
+							XmlControl xmlCtrl = (XmlControl)skinFile.m_frame;
+							BoloRes.ResBasic skinBasic;
+
+							if(xmlCtrl.m_mapSkin.TryGetValue(skinName, out skinBasic))
+							{
+								skinBasic.changeSelectSkin(ctrlUI);
+							}
+							else
+							{
+								pW.mx_debug.Text += "<警告>然而，并没有这个皮肤。(" + skinName + ")\r\n";
+							}
+						}
+					}
+					else
+					{
+						skinFile.m_preViewSkinName = skinName;
+						skinFile.m_prePlusCtrlUI = ctrlUI;
+					}
+				}
+			}
+			else
+			{
+				pW.mx_debug.Text += "<警告>文件：\"" + path + "\"不存在，请检查路径。\r\n";
+			}
+		}
+		public bool findSkinAndSelect(string skinName, BoloUI.Basic ctrlUI = null)
+		{
+			string groupName;
+
+			if (m_mapSkinLink.TryGetValue(skinName, out groupName))
+			{
+				string path = m_pW.m_skinPath + "\\" + groupName + ".xml";
+
+				changeSelectSkinAndFile(m_pW, path, skinName, ctrlUI);
+			}
+			else
+			{
+				m_pW.mx_debug.Text += "<警告>然而，并没有这个皮肤。(" + skinName + ")\r\n";
+			}
+			return false;
+		}
 		public void refreshBoloUIView(bool changeItem = false)
 		{
 			if (m_isOnlySkin)
@@ -113,12 +185,6 @@ namespace UIEditor
 				m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
 				m_pW.mx_ctrlFrame.IsEnabled = false;
 				m_pW.mx_skinFrame.IsEnabled = true;
-				if (m_pW.Resources["CKForeDis"] != null &&
-					m_pW.Resources["CKForeDis"].GetType().ToString() == "System.Windows.Media.Color")
-				{
-					m_pW.mx_ctrlFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKForeDis"]);
-					m_pW.mx_skinFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKFore"]);
-				}
 			}
 			else
 			{
@@ -128,12 +194,6 @@ namespace UIEditor
 				}
 				m_pW.mx_ctrlFrame.IsEnabled = true;
 				m_pW.mx_skinFrame.IsEnabled = true;
-				if (m_pW.Resources["CKFore"] != null &&
-					m_pW.Resources["CKFore"].GetType().ToString() == "System.Windows.Media.Color")
-				{
-					m_pW.mx_ctrlFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKFore"]);
-					m_pW.mx_skinFrame.Foreground = new SolidColorBrush((Color)m_pW.Resources["CKFore"]);
-				}
 			}
 		}
 		public void refreshVRect()
@@ -145,6 +205,52 @@ namespace UIEditor
 				msgData += pairCtrlUI.Key + ":";
 			}
 			m_pW.updateGL(msgData, MainWindow.W2GTag.W2G_UI_VRECT);
+		}
+		public void refreshSkinDic(string skinGroupName)
+		{
+			string path = m_pW.m_skinPath + "\\" + skinGroupName + ".xml";
+
+			if (File.Exists(path))
+			{
+				XmlDocument skinDoc = new XmlDocument();
+				skinDoc.Load(path);
+				XmlNode xn = skinDoc.SelectSingleNode("BoloUI");
+
+				if (xn != null)
+				{
+					XmlNodeList xnlSkin = xn.ChildNodes;
+
+					foreach (XmlNode xnfSkin in xnlSkin)
+					{
+						if (xnfSkin.NodeType == XmlNodeType.Element)
+						{
+							XmlElement xeSkin = (XmlElement)xnfSkin;
+
+							if (xeSkin.Name == "skin" || xeSkin.Name == "publicskin")
+							{
+								if(xeSkin.GetAttribute("Name") != "")
+								{
+									string nullStr;
+									if (!m_mapSkinLink.TryGetValue(xeSkin.GetAttribute("Name"), out nullStr))
+									{
+										m_mapSkinLink.Add(xeSkin.GetAttribute("Name"), skinGroupName);
+									}
+									else
+									{
+										m_pW.mx_debug.Text += "<错误>文件:\"" + path + "\"中，存在重复Name的皮肤(" + 
+											xeSkin.GetAttribute("Name") + ")，后一个同名的皮肤将不能正确显示。\r\n";
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				//不存在
+				m_pW.mx_debug.Text += "<警告>皮肤组：\"" + skinGroupName + "\"不存在，请检查路径：\"" + path + "\"。\r\n";
+			}
 		}
 		public void refreshControl()
 		{
@@ -165,7 +271,7 @@ namespace UIEditor
 				XmlNodeList xnl = xn.ChildNodes;
 
 				checkBaseId(xn);
-				this.textContent.Text += ("未被解析的项目：\r\n");
+				//m_pW.mx_debug.Text += ("未被解析的项目：\r\n");
 				foreach (XmlNode xnf in xnl)
 				{
 					if (xnf.NodeType == XmlNodeType.Element)
@@ -179,23 +285,42 @@ namespace UIEditor
 							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
 							this.m_openedFile.m_treeUI.Items.Add(treeChild);
 							m_isOnlySkin = false;
+							m_xeRootCtrl = xe;
 						}
 						else if (m_pW.m_mapSkinResDef.TryGetValue(xe.Name, out skinPtr))
 						{
 							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), xe, this, skinPtr) as TreeViewItem;
-							treeChild.IsExpanded = false;
 							this.m_openedFile.m_treeSkin.Items.Add(treeChild);
+							treeChild.IsExpanded = false;
+							if (xe.Name == "skingroup")
+							{
+								refreshSkinDic(xe.GetAttribute("Name"));
+							}
 						}
 					}
 				}
+				refreshSkinDic("publicskin");
 				refreshBoloUIView(true);
 			}
 			else
 			{
-				this.textContent.Text += ("这不是一个有效的BoloUI文件。" + "\r\n");
+				m_pW.mx_debug.Text += ("这不是一个有效的BoloUI文件。" + "\r\n");
 			}
 			m_pW.updateXmlToGL(m_openedFile.m_path, m_xmlDoc);
 			m_loaded = true;
+			if (m_openedFile.m_preViewSkinName != null && m_openedFile.m_preViewSkinName != "")
+			{
+				BoloRes.ResBasic skinBasic;
+
+				if(m_mapSkin.TryGetValue(m_openedFile.m_preViewSkinName, out skinBasic))
+				{
+					skinBasic.changeSelectSkin(m_openedFile.m_prePlusCtrlUI);
+				}
+				else
+				{
+					m_pW.mx_debug.Text += "<警告>然而，并没有这个皮肤。(" + m_openedFile.m_preViewSkinName + ")\r\n";
+				}
+			}
 		}
 
 		private void mx_root_Loaded(object sender, RoutedEventArgs e)
