@@ -517,10 +517,10 @@ void CMScene::drawMiniMap()
 #pragma region 地图定位
 	FLOAT vMaxX = m_maxX * m_lenCellX;
 	FLOAT vMaxY = m_maxY * m_lenCellY;
-	FLOAT perVl = m_cX / vMaxX;
-	FLOAT perVt = m_cY / vMaxY;
-	FLOAT perVr = (m_cX + sW / m_viewScaleX) / vMaxX;
-	FLOAT perVb = (m_cY + sH / m_viewScaleY) / vMaxY;
+	FLOAT perVl = (m_cX - sW / m_viewScaleX / 2) / vMaxX;
+	FLOAT perVt = (m_cY - sH / m_viewScaleY / 2) / vMaxY;
+	FLOAT perVr = (m_cX + sW / m_viewScaleX / 2) / vMaxX;
+	FLOAT perVb = (m_cY + sH / m_viewScaleY / 2) / vMaxY;
 
 	g_pConf->m_pWin->m_pRenderTarget->DrawRectangle(D2D1::RectF(
 		mapL + (mapR - mapL) * perVl,
@@ -660,8 +660,6 @@ void CMScene::moveToPosByMiniMap(INT xPos, INT yPos)
 	perCy = (yPos - m_miniMapTexture.top) / (m_miniMapTexture.bottom - m_miniMapTexture.top);
 	m_cX = vMaxX * perCx;
 	m_cY = vMaxY * perCy;
-// 	m_cX = vMaxX * perCx - sW / m_viewScaleX / 2;
-// 	m_cY = vMaxY * perCy - sH / m_viewScaleY / 2;
 }
 
 void CMScene::moveToPosByMiniMap(POINT pos)
