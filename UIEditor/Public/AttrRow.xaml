@@ -13,17 +13,16 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Name="mx_c0" Width="*"/>
 			<ColumnDefinition Name="mx_c1" Width="10"/>
-			<ColumnDefinition Name="mx_c2" Width="100"/>
+			<ColumnDefinition Name="mx_c2" Width="125"/>
 			<ColumnDefinition Name="mx_c3" Width="25"/>
 		</Grid.ColumnDefinitions>
 		<Label Name="mx_name"
 			Grid.Column="0"
 			HorizontalAlignment="Right"
 			Content="width:"/>
-		<Grid Grid.Column="2" Grid.ColumnSpan="2" Background="#ffffffff" Margin="2"></Grid>
+		<Grid Grid.Column="2" Background="#ffffffff" Margin="2"></Grid>
 		<TextBlock Name="mx_valueDef"
 			Grid.Column="2"
-			Grid.ColumnSpan="2"
 			Foreground="#ffaaaaaa"
 			Background="#ffffffff"
 			Margin="5"
@@ -31,7 +30,6 @@
 		<TextBox Name="mx_value"
 			Width="{Binding ElementName=mx_c2, Path=Width}"
 			Grid.Column="2"
-			Grid.ColumnSpan="2"
 			CaretBrush="Black"
 			Background="#00000000"
 			Margin="2"

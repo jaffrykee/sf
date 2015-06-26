@@ -28,6 +28,7 @@ namespace UIEditor
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
 		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
+		public Dictionary<string, CtrlDef_T> m_mapPanelCtrlDef;
 		public Dictionary<string, SkinDef_T> m_mapEventDef;
 		public Dictionary<string, SkinDef_T> m_mapShapeChildDef;
 		public Dictionary<string, SkinDef_T> m_mapSkinChildDef;
@@ -394,6 +395,10 @@ namespace UIEditor
 					break;
 				case WM_LBUTTONDOWN:
 					{
+					}
+					break;
+				case WM_LBUTTONUP:
+					{
 						List<BoloUI.Basic> lstSelCtrl = new List<BoloUI.Basic>();
 						int pX = (int)lParam & 0xFFFF;
 						int pY = ((int)lParam >> 16) & 0xFFFF;
@@ -403,15 +408,15 @@ namespace UIEditor
 						mx_selCtrlLstFrame.Children.Clear();
 						foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
 						{
-							if(pairCtrlDef.Value.checkPointInFence(pX, pY))
+							if (pairCtrlDef.Value.checkPointInFence(pX, pY))
 							{
 								lstSelCtrl.Add(pairCtrlDef.Value);
-								if(hadCurCtrl)
+								if (hadCurCtrl)
 								{
 									hadCurCtrl = false;
 									selCtrl = pairCtrlDef.Value;
 								}
-								if(m_curCtrl == pairCtrlDef.Value)
+								if (m_curCtrl == pairCtrlDef.Value)
 								{
 									hadCurCtrl = true;
 									selCtrl = m_curCtrl;
@@ -431,8 +436,6 @@ namespace UIEditor
 							selCtrl.changeSelectCtrl();
 						}
 					}
-					break;
-				case WM_LBUTTONUP:
 					break;
 				case WM_LBUTTONDBLCLK:
 					break;
@@ -1065,6 +1068,16 @@ namespace UIEditor
 				{ "dropList", new CtrlDef_T(conf_mapDropListAttrDef, null)},
 				{ "event", new CtrlDef_T(conf_mapEventAttrDef, null)},
 				{ "tooltip", new CtrlDef_T(conf_mapToolTipAttrDef, null)}
+				#endregion
+			};
+
+			m_mapPanelCtrlDef = new Dictionary<string, CtrlDef_T>
+			{
+				#region boloUI父控件的定义
+				{ "panel",		m_mapCtrlDef["panel"]},
+				{ "listPanel",	m_mapCtrlDef["listPanel"]},
+				{ "tabPanel",	m_mapCtrlDef["tabPanel"]},
+				{ "pagePanel",	m_mapCtrlDef["pagePanel"]}
 				#endregion
 			};
 

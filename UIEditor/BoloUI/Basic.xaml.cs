@@ -57,6 +57,44 @@ namespace UIEditor.BoloUI
 				this.Focus();
 				m_setFocus = false;
 			}
+
+			MainWindow.CtrlDef_T panelCtrlDef;
+
+			if(m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
+			{
+				foreach(KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrl in m_pW.m_mapCtrlDef.ToList())
+				{
+					MenuItem ctrlItem = new MenuItem();
+
+					ctrlItem.ToolTip = pairCtrl.Key;
+					if (StringDic.m_mapStrControl[pairCtrl.Key] == null || StringDic.m_mapStrControl[pairCtrl.Key] == "")
+					{
+						ctrlItem.Header = pairCtrl.Key;
+					}
+					else
+					{
+						ctrlItem.Header = StringDic.m_mapStrControl[pairCtrl.Key];
+					}
+					ctrlItem.Click += insertCtrlItem_Click;
+					mx_addCtrl.Items.Add(ctrlItem);
+				}
+			}
+			else
+			{
+				mx_addCtrl.IsEnabled = false;
+			}
+		}
+
+		void insertCtrlItem_Click(object sender, RoutedEventArgs e)
+		{
+			if (sender.GetType().ToString() == "System.Windows.Controls.MenuItem")
+			{
+				MenuItem ctrlItem = (MenuItem)sender;
+				XmlElement newXe = m_xe.OwnerDocument.CreateElement(ctrlItem.ToolTip.ToString());
+				
+				m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, newXe, m_xe));
+			}
+			//throw new NotImplementedException();
 		}
 
 		protected void addChild()
@@ -288,6 +326,18 @@ namespace UIEditor.BoloUI
 		}
 		private void mx_root_Unselected(object sender, RoutedEventArgs e)
 		{
+		}
+
+		private void mx_menu_Loaded(object sender, RoutedEventArgs e)
+		{
+			mx_addCtrl.Visibility = System.Windows.Visibility.Visible;
+			mx_addNode.Visibility = System.Windows.Visibility.Collapsed;
+		}
+		private void mx_delete_Click(object sender, RoutedEventArgs e)
+		{
+			m_rootControl.m_openedFile.m_lstOpt.addOperation(
+				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, m_xe)
+				);
 		}
 	}
 }

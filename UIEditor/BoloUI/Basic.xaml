@@ -15,11 +15,16 @@
 			   Padding="0"
 			   MouseDown="mx_text_MouseDown">
 			<Label.ContextMenu>
-				<ContextMenu>
-					<MenuItem Header="添加控件"/>
-					<MenuItem Header="删除控件"/>
-					<MenuItem Header="上移"/>
-					<MenuItem Header="下移"/>
+				<ContextMenu Name="mx_menu" Loaded="mx_menu_Loaded">
+					<MenuItem Name="mx_addNode" Header="添加节点"/>
+					<MenuItem Name="mx_addCtrl" Header="添加控件"/>
+					<Separator/>
+					<MenuItem Name="mx_cut" Header="剪切"/>
+					<MenuItem Name="mx_copy" Header="复制"/>
+					<MenuItem Name="mx_paste" Header="粘贴" Visibility="Collapsed"/>
+					<MenuItem Name="mx_delete" Header="删除" Click="mx_delete_Click"/>
+					<Separator/>
+					<MenuItem Name="mx_attr" Header="属性"/>
 				</ContextMenu>
 			</Label.ContextMenu>
 		</Label>

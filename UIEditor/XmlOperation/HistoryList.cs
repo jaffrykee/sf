@@ -12,7 +12,7 @@ namespace UIEditor.XmlOperation
 	{
 		NODE_INSERT,
 		NODE_DELETE,
-		NODE_REPLACE,
+		NODE_MOVE,
 		NODE_UPDATE,
 		TEXT,
 	}
@@ -76,7 +76,7 @@ namespace UIEditor.XmlOperation
 							m_curNode.Value.m_dstElm);
 					}
 					break;
-				case XmlOptType.NODE_REPLACE:
+				case XmlOptType.NODE_MOVE:
 					{
 						//todo
 					}
@@ -141,7 +141,7 @@ namespace UIEditor.XmlOperation
 							m_curNode.Value.m_srcElm);
 					}
 					break;
-				case XmlOptType.NODE_REPLACE:
+				case XmlOptType.NODE_MOVE:
 					{
 						//todo
 					}
