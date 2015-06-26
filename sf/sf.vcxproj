@@ -171,6 +171,9 @@
   <ItemGroup>
     <ClCompile Include="sfMain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="doc\idea.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

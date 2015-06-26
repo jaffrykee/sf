@@ -432,23 +432,31 @@ void CMScene::drawWorld()
 	FLOAT sW = m_screenSize.width;
 	FLOAT sH = m_screenSize.height;
 
-	INT i0 = m_cX / m_lenCellX - m_prereadWidth;
-	INT j0 = m_cY / m_lenCellY - m_prereadHeight;
-	INT iMax = sW / (m_lenCellX * m_viewScaleX) + i0 + m_prereadWidth * 2;
-	INT jMax = sH / (m_lenCellY * m_viewScaleY) + j0 + m_prereadHeight * 2;
+	INT iLen = sW / (m_lenCellX * m_viewScaleX);
+	INT jLen = sH / (m_lenCellY * m_viewScaleY);
+	INT iMid = m_cX / m_lenCellX;
+	INT jMid = m_cY / m_lenCellY;
+	INT iMin = iMid - iLen / 2 - m_prereadWidth;
+	INT jMin = jMid - jLen / 2 - m_prereadWidth;
+	INT iMax = iMid + iLen / 2 + m_prereadWidth;
+	INT jMax = jMid + jLen / 2 + m_prereadWidth;
 
-	i0 = i0 < 0 ? 0 : i0;
-	j0 = j0 < 0 ? 0 : j0;
+	iMin = iMin < 0 ? 0 : iMin;
+	jMin = jMin < 0 ? 0 : jMin;
 	iMax = iMax < m_maxX ? iMax : m_maxX;
 	jMax = jMax < m_maxY ? jMax : m_maxY;
 	iMax = iMax < 0 ? 0 : iMax;
 	jMax = jMax < 0 ? 0 : jMax;
 
-	UINT i01 = (i0 % 2 == 1) ? i0 : i0 + 1;
-	UINT i02 = (i0 % 2 == 0) ? i0 : i0 + 1;
+	UINT i01 = (iMin % 2 == 1) ? iMin : iMin + 1;
+	UINT i02 = (iMin % 2 == 0) ? iMin : iMin + 1;
 
-	g_pConf->m_pWin->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(-m_cX, -m_cY) * D2D1::Matrix3x2F::Scale(m_viewScaleX, m_viewScaleY));
-	for (UINT j = j0; j < jMax; j++)
+	g_pConf->m_pWin->m_pRenderTarget->SetTransform(
+		D2D1::Matrix3x2F::Translation(-m_cX, -m_cY) *
+		D2D1::Matrix3x2F::Scale(m_viewScaleX, m_viewScaleY) *
+		D2D1::Matrix3x2F::Translation(sW / 2, sH / 2)
+		);
+	for (UINT j = jMin; j < jMax; j++)
 	{
 		//todo变成线程处理，超过16列的用8线程
 		for (UINT i = i01; i < iMax; i += 2)
@@ -650,8 +658,10 @@ void CMScene::moveToPosByMiniMap(INT xPos, INT yPos)
 	}
 	perCx = (xPos - m_miniMapTexture.left) / (m_miniMapTexture.right - m_miniMapTexture.left);
 	perCy = (yPos - m_miniMapTexture.top) / (m_miniMapTexture.bottom - m_miniMapTexture.top);
-	m_cX = vMaxX * perCx - sW / m_viewScaleX / 2;
-	m_cY = vMaxY * perCy - sH / m_viewScaleY / 2;
+	m_cX = vMaxX * perCx;
+	m_cY = vMaxY * perCy;
+// 	m_cX = vMaxX * perCx - sW / m_viewScaleX / 2;
+// 	m_cY = vMaxY * perCy - sH / m_viewScaleY / 2;
 }
 
 void CMScene::moveToPosByMiniMap(POINT pos)
