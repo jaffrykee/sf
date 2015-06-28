@@ -69,6 +69,8 @@ public:
 	FLOAT m_perRug;
 	FLOAT m_maxH;
 	FLOAT m_minH;
+	//单位高度，为0的话则没有
+	FLOAT m_unitH;
 	FLOAT m_viewMouseScaleX;
 	FLOAT m_viewMouseScaleY;
 	FLOAT m_prereadWidth;

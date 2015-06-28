@@ -192,7 +192,7 @@ Scene()
 	m_viewScaleY = 1;
 	m_viewWheelScale = 0;
 	m_viewLen = 7;
-	m_viewMar = 1;
+	m_viewMar = 0;
 	m_lenCellX = m_viewLen * 3 + sqrt(3) / 2 * m_viewMar;
 	m_lenCellY = m_viewLen * 2 * sqrt(3) + m_viewMar;
 
@@ -208,6 +208,7 @@ Scene()
 	m_perRug = 0.5;
 	m_maxH = 0;
 	m_minH = 0;
+	m_unitH = 3;
 
 	m_cX = m_maxX * m_viewScaleX * m_lenCellX - 300;
 	m_cY = m_maxY * m_viewScaleY * m_lenCellY - 300;
@@ -290,6 +291,10 @@ Scene()
 			if (ht < m_minH)
 			{
 				m_minH = ht;
+			}
+			if (m_unitH > 0)
+			{
+				ht = ((INT)(ht / m_unitH)) * m_unitH;
 			}
 			enView = (((FLOAT)rand()) / ((FLOAT)RAND_MAX) <= m_perEn) ? true : false;
 			m_arrArrMap[i][j] = { {}, ht, enView };
