@@ -27,7 +27,7 @@ namespace UIEditor.XmlOperation
 		public LinkedListNode<HistoryNode> m_headNode;
 		public LinkedListNode<HistoryNode> m_saveNode;
 
-		public HistoryList(MainWindow pW, XmlControl xmlCtrl, int maxSize = 10)
+		public HistoryList(MainWindow pW, XmlControl xmlCtrl, int maxSize = 255)
 		{
 			m_pW = pW;
 			m_xmlCtrl = xmlCtrl;
@@ -64,8 +64,8 @@ namespace UIEditor.XmlOperation
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstElm,
-							m_curNode.Value.m_srcElm);
+							m_curNode.Value.m_dstItem,
+							m_curNode.Value.m_srcItem);
 					}
 					break;
 				case XmlOptType.NODE_DELETE:
@@ -73,12 +73,21 @@ namespace UIEditor.XmlOperation
 						HistoryNode.deleteXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstElm);
+							m_curNode.Value.m_dstItem);
 					}
 					break;
 				case XmlOptType.NODE_MOVE:
 					{
-						//todo
+						HistoryNode.deleteXmlNode(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstItem);
+						HistoryNode.insertXmlNode(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstItem,
+							m_curNode.Value.m_newSrcItem,
+							m_curNode.Value.m_newIndex);
 					}
 					break;
 				case XmlOptType.NODE_UPDATE:
@@ -86,7 +95,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.updateXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstElm,
+							m_curNode.Value.m_dstItem,
 							m_curNode.Value.m_attrName,
 							m_curNode.Value.m_newValue);
 					}
@@ -102,17 +111,17 @@ namespace UIEditor.XmlOperation
 			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
 			if (!isAddOpt)
 			{
-				if (m_curNode.Value.m_dstBasic != null)
+				if (m_curNode.Value.m_dstItem != null)
 				{
-					switch (m_curNode.Value.m_dstBasic.GetType().ToString())
+					switch (m_curNode.Value.m_dstItem.GetType().ToString())
 					{
 						case "UIEditor.BoloUI.Basic":
-							((BoloUI.Basic)m_curNode.Value.m_dstBasic).changeSelectCtrl();
+							((BoloUI.Basic)m_curNode.Value.m_dstItem).changeSelectItem();
 							m_pW.refreshAllCtrlUIHeader();
 							break;
 						case "UIEditor.BoloRes.ResBasic":
-							((BoloRes.ResBasic)m_curNode.Value.m_dstBasic).changeSelectSkin();
-							m_pW.refreshAllCtrlUIHeader();
+							((BoloRes.ResBasic)m_curNode.Value.m_dstItem).changeSelectItem();
+							m_pW.refreshAllSkinHeader();
 							break;
 						default:
 							break;
@@ -129,7 +138,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.deleteXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstElm);
+							m_curNode.Value.m_dstItem);
 					}
 					break;
 				case XmlOptType.NODE_DELETE:
@@ -137,13 +146,23 @@ namespace UIEditor.XmlOperation
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstElm,
-							m_curNode.Value.m_srcElm);
+							m_curNode.Value.m_dstItem,
+							m_curNode.Value.m_srcItem,
+							m_curNode.Value.m_oldIndex);
 					}
 					break;
 				case XmlOptType.NODE_MOVE:
 					{
-						//todo
+						HistoryNode.deleteXmlNode(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstItem);
+						HistoryNode.insertXmlNode(
+							m_pW,
+							m_xmlCtrl.m_openedFile.m_path,
+							m_curNode.Value.m_dstItem,
+							m_curNode.Value.m_srcItem,
+							m_curNode.Value.m_oldIndex);
 					}
 					break;
 				case XmlOptType.NODE_UPDATE:
@@ -151,7 +170,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.updateXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstElm,
+							m_curNode.Value.m_dstItem,
 							m_curNode.Value.m_attrName,
 							m_curNode.Value.m_oldValue);
 					}
@@ -166,17 +185,17 @@ namespace UIEditor.XmlOperation
 			}
 			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
 
-			if (m_curNode.Value.m_dstBasic != null)
+			if (m_curNode.Value.m_dstItem != null)
 			{
-				switch (m_curNode.Value.m_dstBasic.GetType().ToString())
+				switch (m_curNode.Value.m_dstItem.GetType().ToString())
 				{
 					case "UIEditor.BoloUI.Basic":
-						((BoloUI.Basic)m_curNode.Value.m_dstBasic).changeSelectCtrl();
+						((BoloUI.Basic)m_curNode.Value.m_dstItem).changeSelectItem();
 						m_pW.refreshAllCtrlUIHeader();
 						break;
 					case "UIEditor.BoloRes.ResBasic":
-						((BoloRes.ResBasic)m_curNode.Value.m_dstBasic).changeSelectSkin();
-						m_pW.refreshAllCtrlUIHeader();
+						((BoloRes.ResBasic)m_curNode.Value.m_dstItem).changeSelectItem();
+						m_pW.refreshAllSkinHeader();
 						break;
 					default:
 						break;

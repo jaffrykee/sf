@@ -13,26 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UIEditor.BoloUI
+namespace UIEditor
 {
 	/// <summary>
-	/// SelButton.xaml 的交互逻辑
+	/// BasicFrame.xaml 的交互逻辑
 	/// </summary>
-	public partial class SelButton : Button
+	public partial class BasicFrame : TreeView
 	{
-		public MainWindow m_pW;
-		public Basic m_ctrlUI;
-
-		public SelButton(MainWindow pW, Basic ctrl)
+		public BasicFrame()
 		{
 			InitializeComponent();
-			m_pW = pW;
-			m_ctrlUI = ctrl;
-		}
-
-		private void mx_root_Click(object sender, RoutedEventArgs e)
-		{
-			m_ctrlUI.changeSelectItem();
 		}
 	}
 }

@@ -16,20 +16,14 @@ using System.Xml;
 
 namespace UIEditor.BoloRes
 {
-	public partial class ResBasic : TreeViewItem
+	public class ResBasic : UIEditor.XmlItem
 	{
-		public XmlControl m_rootControl;
-		public XmlElement m_xe;
-		public MainWindow m_pW;
 		public MainWindow.SkinDef_T m_curDeepDef;
-		public bool m_setFocus;
 
 		public ResBasic(XmlElement xe, XmlControl rootControl, MainWindow.SkinDef_T deepDef)
+			: base(xe, rootControl)
 		{
 			InitializeComponent();
-			m_rootControl = rootControl;
-			m_xe = xe;
-			m_pW = rootControl.m_pW;
 			m_curDeepDef = deepDef;
 			if(m_xe.Name == "skin" || m_xe.Name == "publicskin")
 			{
@@ -41,7 +35,7 @@ namespace UIEditor.BoloRes
 			}
 			addChild();
 		}
-		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
+		virtual override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			initHeader();
 			if (m_setFocus)
@@ -96,13 +90,23 @@ namespace UIEditor.BoloRes
 			}
 
 			mx_text.Content += name;
+			mx_text.Content = mx_text.Content.ToString().Replace("_", "__"); 
 		}
-		public void changeSelectSkin(BoloUI.Basic ctrlUI = null)
+		public override void changeSelectItem(object obj = null)
 		{
+			BoloUI.Basic ctrlUI;
 			m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
 			m_pW.m_curRes = this;
 			m_pW.hiddenAllAttr();
 
+			if (obj != null && obj.GetType().ToString() == "UIEditor.BoloUI.Basic")
+			{
+				ctrlUI = (BoloUI.Basic)obj;
+			}
+			else
+			{
+				ctrlUI = null;
+			}
 			if (m_pW.m_otherAttrList == null)
 			{
 				m_pW.m_otherAttrList = new AttrList("基本", m_pW);
@@ -182,7 +186,7 @@ namespace UIEditor.BoloRes
 
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			changeSelectSkin();
+			changeSelectItem();
 		}
 		private void mx_text_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{

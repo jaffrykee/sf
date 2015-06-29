@@ -35,7 +35,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Debug\</OutputPath>
+    <OutputPath>E:\clienttools\UI编辑器2\</OutputPath>
     <DefineConstants>TRACE;DEBUG;/unsafe</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -74,11 +74,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BoloRes\ResBasic.xaml.cs">
-      <DependentUpon>ResBasic.xaml</DependentUpon>
+    <Compile Include="BoloRes\ResBasic.cs" />
+    <Compile Include="BoloUI\Basic.cs" />
+    <Compile Include="XmlItem.xaml.cs">
+      <DependentUpon>XmlItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BoloUI\Basic.xaml.cs">
-      <DependentUpon>Basic.xaml</DependentUpon>
+    <Compile Include="BasicFrame.xaml.cs">
+      <DependentUpon>BasicFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="BoloUI\SelButton.xaml.cs">
       <DependentUpon>SelButton.xaml</DependentUpon>
@@ -119,13 +121,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="BoloRes\ResBasic.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="XmlItem.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="BoloUI\Basic.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="BasicFrame.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BoloUI\SelButton.xaml">
       <SubType>Designer</SubType>

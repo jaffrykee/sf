@@ -16,14 +16,8 @@ using System.Xml;
 
 namespace UIEditor.BoloUI
 {
-	public partial class Basic : TreeViewItem
+	public class Basic : UIEditor.XmlItem
 	{
-		public XmlControl m_rootControl;
-		public XmlElement m_xe;
-		public MainWindow m_pW;
-		public bool m_isCtrl;
-		public bool m_setFocus;
-
 		public int m_selX;
 		public int m_selY;
 		public int m_selW;
@@ -34,22 +28,18 @@ namespace UIEditor.BoloUI
 			InitializeComponent();
 		}
 		public Basic(XmlElement xe, XmlControl rootControl)
+			: base(xe, rootControl)
 		{
 			InitializeComponent();
-			m_rootControl = rootControl;
-			m_xe = xe;
-			m_isCtrl = false;
-			m_pW = rootControl.m_pW;
-			m_rootControl.m_mapCtrlUI[m_xe.GetAttribute("baseID")] = this;
 
-			MainWindow.CtrlDef_T ctrlDef;
-			if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
+			m_isCtrl = false;
+			if (m_xe.GetAttribute("baseID") != "")
 			{
-				m_isCtrl = true;
+				m_rootControl.m_mapCtrlUI[m_xe.GetAttribute("baseID")] = this;
 			}
 			addChild();
 		}
-		virtual protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
+		virtual override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			initHeader();
 			if(m_setFocus)
@@ -60,6 +50,7 @@ namespace UIEditor.BoloUI
 
 			MainWindow.CtrlDef_T panelCtrlDef;
 
+			mx_addCtrl.Items.Clear();
 			if(m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 			{
 				foreach(KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrl in m_pW.m_mapCtrlDef.ToList())
@@ -81,7 +72,26 @@ namespace UIEditor.BoloUI
 			}
 			else
 			{
-				mx_addCtrl.IsEnabled = false;
+				if (m_xe.Name != "event")
+				{
+					MenuItem ctrlItem = new MenuItem();
+
+					ctrlItem.ToolTip = "event";
+					if (StringDic.m_mapStrControl["event"] == null || StringDic.m_mapStrControl["event"] == "")
+					{
+						ctrlItem.Header = "event";
+					}
+					else
+					{
+						ctrlItem.Header = StringDic.m_mapStrControl["event"];
+					}
+					ctrlItem.Click += insertCtrlItem_Click;
+					mx_addCtrl.Items.Add(ctrlItem);
+				}
+				else
+				{
+					mx_addCtrl.IsEnabled = false;
+				}
 			}
 		}
 
@@ -91,8 +101,9 @@ namespace UIEditor.BoloUI
 			{
 				MenuItem ctrlItem = (MenuItem)sender;
 				XmlElement newXe = m_xe.OwnerDocument.CreateElement(ctrlItem.ToolTip.ToString());
-				
-				m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, newXe, m_xe));
+				Basic treeChild = new Basic(newXe, m_rootControl);
+
+				m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild, this));
 			}
 			//throw new NotImplementedException();
 		}
@@ -212,6 +223,7 @@ namespace UIEditor.BoloUI
 			{
 				mx_text.Content += "(" + id + ")";
 			}
+			mx_text.Content = mx_text.Content.ToString().Replace("_", "__"); 
 		}
 		public bool checkPointInFence(int x, int y)
 		{
@@ -224,7 +236,7 @@ namespace UIEditor.BoloUI
 			}
 			return false;
 		}
-		public void changeSelectCtrl()
+		public override void changeSelectItem(object obj = null)
 		{
 			m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_ctrlFrame;
 			if (m_xe.GetAttribute("baseID") != "")
@@ -317,27 +329,6 @@ namespace UIEditor.BoloUI
 			}
 		}
 
-		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			changeSelectCtrl();
-		}
-		private void mx_root_Selected(object sender, RoutedEventArgs e)
-		{
-		}
-		private void mx_root_Unselected(object sender, RoutedEventArgs e)
-		{
-		}
 
-		private void mx_menu_Loaded(object sender, RoutedEventArgs e)
-		{
-			mx_addCtrl.Visibility = System.Windows.Visibility.Visible;
-			mx_addNode.Visibility = System.Windows.Visibility.Collapsed;
-		}
-		private void mx_delete_Click(object sender, RoutedEventArgs e)
-		{
-			m_rootControl.m_openedFile.m_lstOpt.addOperation(
-				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, m_xe)
-				);
-		}
 	}
 }

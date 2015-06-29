@@ -52,6 +52,8 @@ namespace UIEditor
 		public BoloRes.ResBasic m_curRes;
 		private int m_dep;
 
+		public XmlElement m_xePaste;
+
 		//debug
 		//public string conf_pathGlApp = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
 		//release
@@ -73,6 +75,7 @@ namespace UIEditor
 			m_curFile = "";
 			m_vCtrlName = true;
 			m_vCtrlId = true;
+			m_xePaste = null;
 
 			m_xdTest = new XmlDocument();
 			// w=\"400\" h=\"300\"
@@ -433,7 +436,7 @@ namespace UIEditor
 							{
 								selCtrl = lstSelCtrl.First();
 							}
-							selCtrl.changeSelectCtrl();
+							selCtrl.changeSelectItem();
 						}
 					}
 					break;
@@ -475,7 +478,7 @@ namespace UIEditor
 												BoloUI.Basic tmpCtrl;
 												if (((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.TryGetValue(id, out tmpCtrl))
 												{
-													tmpCtrl.changeSelectCtrl();
+													tmpCtrl.changeSelectItem();
 													tmpCtrl.IsSelected = true;
 												}
 												break;
@@ -1290,6 +1293,19 @@ namespace UIEditor
 					foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlUI in ((XmlControl)pairOpenedFile.Value.m_frame).m_mapCtrlUI.ToList())
 					{
 						pairCtrlUI.Value.initHeader();
+					}
+				}
+			}
+		}
+		public void refreshAllSkinHeader()
+		{
+			foreach (KeyValuePair<string, OpenedFile> pairOpenedFile in m_mapOpenedFiles.ToList())
+			{
+				if (pairOpenedFile.Value.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+				{
+					foreach (KeyValuePair<string, BoloRes.ResBasic> pairSkin in ((XmlControl)pairOpenedFile.Value.m_frame).m_mapSkin.ToList())
+					{
+						pairSkin.Value.initHeader();
 					}
 				}
 			}

@@ -142,7 +142,7 @@ namespace UIEditor
 
 							if(xmlCtrl.m_mapSkin.TryGetValue(skinName, out skinBasic))
 							{
-								skinBasic.changeSelectSkin(ctrlUI);
+								skinBasic.changeSelectItem(ctrlUI);
 							}
 							else
 							{
@@ -257,7 +257,7 @@ namespace UIEditor
 			m_pW = Window.GetWindow(this) as MainWindow;
 			m_openedFile = m_pW.m_mapOpenedFiles[m_parent.m_filePath];
 			m_openedFile.m_frame = this;
-			m_openedFile.m_lstOpt = new XmlOperation.HistoryList(m_pW, this, 50);
+			m_openedFile.m_lstOpt = new XmlOperation.HistoryList(m_pW, this, 65535);
 			m_openedFile.m_treeUI.Items.Clear();
 			m_openedFile.m_treeSkin.Items.Clear();
 
@@ -314,7 +314,7 @@ namespace UIEditor
 
 				if(m_mapSkin.TryGetValue(m_openedFile.m_preViewSkinName, out skinBasic))
 				{
-					skinBasic.changeSelectSkin(m_openedFile.m_prePlusCtrlUI);
+					skinBasic.changeSelectItem(m_openedFile.m_prePlusCtrlUI);
 				}
 				else
 				{
