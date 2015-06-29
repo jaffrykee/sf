@@ -35,7 +35,7 @@ namespace UIEditor.BoloRes
 			}
 			addChild();
 		}
-		virtual override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
+		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			initHeader();
 			if (m_setFocus)

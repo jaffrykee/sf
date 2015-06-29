@@ -66,7 +66,7 @@ namespace UIEditor
 		{
 
 		}
-		public void changeSelectItem(object obj = null)
+		public virtual void changeSelectItem(object obj = null)
 		{
 
 		}
