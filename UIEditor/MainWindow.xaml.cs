@@ -227,8 +227,8 @@ namespace UIEditor
 						if (m_mapOpenedFiles.TryGetValue(tabPath, out openFile))
 						{
 							updateGL(fileName, W2GTag.W2G_NORMAL_TURN);
-							mx_treeCtrlFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeUI);
-							mx_treeSkinFrame.Items.Add(m_mapOpenedFiles[tabPath].m_treeSkin);
+							mx_treeCtrlFrame.Items.Add(((XmlControl)m_mapOpenedFiles[tabPath].m_frame).m_treeUI);
+							mx_treeSkinFrame.Items.Add(((XmlControl)m_mapOpenedFiles[tabPath].m_frame).m_treeSkin);
 							((XmlControl)openFile.m_frame).refreshBoloUIView(true);
 						}
 						mx_GLCtrl.Visibility = System.Windows.Visibility.Visible;

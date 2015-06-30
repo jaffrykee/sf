@@ -23,21 +23,27 @@ namespace UIEditor.BoloUI
 		public int m_selW;
 		public int m_selH;
 
-		public Basic()
+		public Basic(XmlElement xe, XmlControl rootControl, bool isRoot = false) : base(xe, rootControl)
 		{
-			InitializeComponent();
-		}
-		public Basic(XmlElement xe, XmlControl rootControl)
-			: base(xe, rootControl)
-		{
+			m_type = "CtrlUI";
 			InitializeComponent();
 
-			m_isCtrl = false;
-			if (m_xe.GetAttribute("baseID") != "")
+			if (isRoot == false)
 			{
-				m_rootControl.m_mapCtrlUI[m_xe.GetAttribute("baseID")] = this;
+				if (m_pW.m_mapCtrlDef[m_xe.Name] != null)
+				{
+					m_isCtrl = true;
+				}
+				else
+				{
+					m_isCtrl = false;
+				}
+				if (m_xe.GetAttribute("baseID") != "")
+				{
+					m_rootControl.m_mapCtrlUI[m_xe.GetAttribute("baseID")] = this;
+				}
+				addChild();
 			}
-			addChild();
 		}
 		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
@@ -108,7 +114,7 @@ namespace UIEditor.BoloUI
 			//throw new NotImplementedException();
 		}
 
-		protected void addChild()
+		override protected void addChild()
 		{
 			XmlNodeList xnl = m_xe.ChildNodes;
 			foreach (XmlNode xnf in xnl)
@@ -120,7 +126,7 @@ namespace UIEditor.BoloUI
 
 					if (m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
 					{
-						var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, m_rootControl) as TreeViewItem;
+						var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, m_rootControl, false) as TreeViewItem;
 						this.Items.Add(treeChild);
 					}
 					else
@@ -132,46 +138,6 @@ namespace UIEditor.BoloUI
 						}
 					}
 				}
-			}
-		}
-		static public void checkBaseId(Basic elmUI, bool isUpdate = false)
-		{
-			string name = "", id = "";
-			MainWindow.CtrlDef_T ctrlDef;
-
-			if (elmUI.m_pW.m_mapCtrlDef.TryGetValue(elmUI.m_xe.Name, out ctrlDef))
-			{
-				elmUI.m_isCtrl = true;
-			}
-
-			if (elmUI.m_isCtrl && elmUI.m_xe.Name != "event")
-			{
-				name = elmUI.m_xe.GetAttribute("name");
-				if (elmUI.m_xe.GetAttribute("baseID") == "")
-				{
-					//m_xe.SetAttribute("baseID", StringDic.getRandString());
-					elmUI.m_xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
-					elmUI.m_pW.mx_debug.Text += "<警告>baseID没有赋值，已经将其替换为随机值：" + elmUI.m_xe.GetAttribute("baseID") + "\r\n";
-				}
-
-				if (isUpdate == false)
-				{
-					Basic ctrl;
-					id = elmUI.m_xe.GetAttribute("baseID");
-					if (elmUI.m_rootControl.m_mapCtrlUI.TryGetValue(id, out ctrl))
-					{
-						//baseId重复了
-						elmUI.m_xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
-						elmUI.m_pW.mx_debug.Text += "<警告>baseID(" + id + ")重复，已经将其替换为随机值：" + elmUI.m_xe.GetAttribute("baseID") + "\r\n";
-					}
-				}
-				else
-				{
-					id = elmUI.m_xe.GetAttribute("baseID");
-				}
-				elmUI.m_rootControl.m_mapCtrlUI[id] = elmUI;
-
-				id = elmUI.m_xe.GetAttribute("baseID");
 			}
 		}
 		public override void initHeader()
@@ -224,17 +190,6 @@ namespace UIEditor.BoloUI
 				mx_text.Content += "(" + id + ")";
 			}
 			mx_text.Content = mx_text.Content.ToString().Replace("_", "__"); 
-		}
-		public bool checkPointInFence(int x, int y)
-		{
-			if(x >= m_selX && y >= m_selY)
-			{
-				if(x <= m_selX + m_selW && y <= m_selY + m_selH)
-				{
-					return true;
-				}
-			}
-			return false;
 		}
 		public override void changeSelectItem(object obj = null)
 		{
@@ -327,6 +282,17 @@ namespace UIEditor.BoloUI
 			{
 				m_setFocus = true;
 			}
+		}
+		public bool checkPointInFence(int x, int y)
+		{
+			if(x >= m_selX && y >= m_selY)
+			{
+				if(x <= m_selX + m_selW && y <= m_selY + m_selH)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 

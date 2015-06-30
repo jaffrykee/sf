@@ -20,22 +20,27 @@ namespace UIEditor.BoloRes
 	{
 		public MainWindow.SkinDef_T m_curDeepDef;
 
-		public ResBasic(XmlElement xe, XmlControl rootControl, MainWindow.SkinDef_T deepDef)
-			: base(xe, rootControl)
+		public ResBasic(XmlElement xe, XmlControl rootControl, MainWindow.SkinDef_T deepDef) : base(xe, rootControl)
 		{
+			m_type = "Skin";
 			InitializeComponent();
+			m_isCtrl = false;
 			m_curDeepDef = deepDef;
-			if(m_xe.Name == "skin" || m_xe.Name == "publicskin")
+
+			if (m_curDeepDef != null)
 			{
-				ResBasic nullPtr;
-				if(!m_rootControl.m_mapSkin.TryGetValue(m_xe.GetAttribute("Name"), out nullPtr))
+				if (m_xe.Name == "skin" || m_xe.Name == "publicskin")
 				{
-					m_rootControl.m_mapSkin[m_xe.GetAttribute("Name")] = this;
+					ResBasic nullPtr;
+					if (!m_rootControl.m_mapSkin.TryGetValue(m_xe.GetAttribute("Name"), out nullPtr))
+					{
+						m_rootControl.m_mapSkin[m_xe.GetAttribute("Name")] = this;
+					}
 				}
+				addChild();
 			}
-			addChild();
 		}
-		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
+		protected override void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			initHeader();
 			if (m_setFocus)
@@ -45,7 +50,7 @@ namespace UIEditor.BoloRes
 			}
 		}
 
-		protected void addChild()
+		override protected void addChild()
 		{
 			XmlNodeList xnl = m_xe.ChildNodes;
 			foreach (XmlNode xnf in xnl)
@@ -71,26 +76,29 @@ namespace UIEditor.BoloRes
 		}
 		public override void initHeader()
 		{
-			string ctrlTip;
-			string name = "";
-			//string id = "";
+			if(m_curDeepDef != null)
+			{
+				string ctrlTip;
+				string name = "";
+				//string id = "";
 
-			if (StringDic.m_mapStrNode.TryGetValue(m_xe.Name, out ctrlTip))
-			{
-				mx_text.Content = "<" + ctrlTip + ">";
-				mx_text.ToolTip = m_xe.Name;
-			}
-			else
-			{
-				mx_text.Content = "<" + m_xe.Name + ">";
-			}
-			if (m_curDeepDef.m_mapAttrDef != null)
-			{
-				name = m_xe.GetAttribute(m_curDeepDef.m_mapAttrDef.ToList().First().Key);
-			}
+				if (StringDic.m_mapStrNode.TryGetValue(m_xe.Name, out ctrlTip))
+				{
+					mx_text.Content = "<" + ctrlTip + ">";
+					mx_text.ToolTip = m_xe.Name;
+				}
+				else
+				{
+					mx_text.Content = "<" + m_xe.Name + ">";
+				}
+				if (m_curDeepDef.m_mapAttrDef != null)
+				{
+					name = m_xe.GetAttribute(m_curDeepDef.m_mapAttrDef.ToList().First().Key);
+				}
 
-			mx_text.Content += name;
-			mx_text.Content = mx_text.Content.ToString().Replace("_", "__"); 
+				mx_text.Content += name;
+				mx_text.Content = mx_text.Content.ToString().Replace("_", "__"); 
+			}
 		}
 		public override void changeSelectItem(object obj = null)
 		{

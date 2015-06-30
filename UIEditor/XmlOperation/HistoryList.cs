@@ -64,7 +64,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem,
+							ref m_curNode.Value.m_dstItem,
 							m_curNode.Value.m_srcItem);
 					}
 					break;
@@ -85,7 +85,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem,
+							ref m_curNode.Value.m_dstItem,
 							m_curNode.Value.m_newSrcItem,
 							m_curNode.Value.m_newIndex);
 					}
@@ -113,13 +113,13 @@ namespace UIEditor.XmlOperation
 			{
 				if (m_curNode.Value.m_dstItem != null)
 				{
-					switch (m_curNode.Value.m_dstItem.GetType().ToString())
+					switch (m_curNode.Value.m_dstItem.m_type)
 					{
-						case "UIEditor.BoloUI.Basic":
+						case "CtrlUI":
 							((BoloUI.Basic)m_curNode.Value.m_dstItem).changeSelectItem();
 							m_pW.refreshAllCtrlUIHeader();
 							break;
-						case "UIEditor.BoloRes.ResBasic":
+						case "Skin":
 							((BoloRes.ResBasic)m_curNode.Value.m_dstItem).changeSelectItem();
 							m_pW.refreshAllSkinHeader();
 							break;
@@ -146,7 +146,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem,
+							ref m_curNode.Value.m_dstItem,
 							m_curNode.Value.m_srcItem,
 							m_curNode.Value.m_oldIndex);
 					}
@@ -160,7 +160,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem,
+							ref m_curNode.Value.m_dstItem,
 							m_curNode.Value.m_srcItem,
 							m_curNode.Value.m_oldIndex);
 					}
@@ -187,13 +187,13 @@ namespace UIEditor.XmlOperation
 
 			if (m_curNode.Value.m_dstItem != null)
 			{
-				switch (m_curNode.Value.m_dstItem.GetType().ToString())
+				switch (m_curNode.Value.m_dstItem.m_type)
 				{
-					case "UIEditor.BoloUI.Basic":
+					case "CtrlUI":
 						((BoloUI.Basic)m_curNode.Value.m_dstItem).changeSelectItem();
 						m_pW.refreshAllCtrlUIHeader();
 						break;
-					case "UIEditor.BoloRes.ResBasic":
+					case "Skin":
 						((BoloRes.ResBasic)m_curNode.Value.m_dstItem).changeSelectItem();
 						m_pW.refreshAllSkinHeader();
 						break;

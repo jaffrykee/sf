@@ -25,8 +25,6 @@ namespace UIEditor
 	{
 		public string m_path;
 		public TabItem m_tab;
-		public TreeViewItem m_treeUI;
-		public TreeViewItem m_treeSkin;
 		public UserControl m_frame;
 		public string m_fileType;
 		public HistoryList m_lstOpt;
@@ -42,8 +40,6 @@ namespace UIEditor
 			m_path = path;
 			m_fileType = StringDic.getFileType(m_path);
 			m_tab = new TabItem();
-			m_treeUI = new TreeViewItem();
-			m_treeSkin = new TreeViewItem();
 
 			m_tab.Unloaded += new RoutedEventHandler(pW.eventCloseFile);
 			ToolTip tabTip = new ToolTip();
@@ -55,15 +51,6 @@ namespace UIEditor
 
 			pW.mx_workTabs.Items.Add(m_tab);
 			pW.mx_workTabs.SelectedItem = m_tab;
-
-			treeUIFrame.Items.Add(m_treeUI);
-			m_treeUI.Header = StringDic.getFileNameWithoutPath(path);
-			m_treeUI.ToolTip = tabTip;
-			m_treeUI.IsExpanded = true;
-			treeSkinFrame.Items.Add(m_treeSkin);
-			m_treeSkin.Header = StringDic.getFileNameWithoutPath(path);
-			m_treeSkin.ToolTip = tabTip;
-			m_treeSkin.IsExpanded = true;
 		}
 
 		public bool frameIsXmlCtrl()

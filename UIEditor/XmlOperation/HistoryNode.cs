@@ -11,11 +11,11 @@ namespace UIEditor.XmlOperation
 	public class HistoryNode
 	{
 		public XmlOptType m_optType;
-		public XmlItem m_dstItem;
-		public XmlItem m_srcItem;
+		public XmlElement m_dstXe;
+		public XmlElement m_srcXe;
 		public int m_oldIndex;
 		public int m_newIndex;
-		public XmlItem m_newSrcItem;
+		public XmlElement m_newSrcXe;
 
 		public string m_attrName;
 		public string m_oldValue;
@@ -44,49 +44,39 @@ namespace UIEditor.XmlOperation
 			return iXe;
 		}
 
-		public HistoryNode(XmlOptType optType, XmlItem dstItem, XmlItem srcItem = null, int newIndex = 0)
+		public HistoryNode(XmlOptType optType, XmlElement dstXe, XmlElement srcXe = null, int newIndex = 0)
 		{
 
 			m_optType = optType;
-			m_dstItem = dstItem;
+			m_dstXe = dstXe;
 			switch (optType)
 			{
 				case XmlOptType.NODE_DELETE:
-					if (m_dstItem.Parent.GetType().ToString() == "UIEditor.XmlItem" ||
-						m_dstItem.Parent.GetType().BaseType.ToString() == "UIEditor.XmlItem" ||
-						m_dstItem.Parent.GetType().BaseType.BaseType.ToString() == "UIEditor.XmlItem")
-					{
-						m_srcItem = (XmlItem)m_dstItem.Parent;
-						m_oldIndex = getXeIndex(m_dstItem.m_xe);
-					}
+					m_srcXe = (XmlElement)m_dstXe.ParentNode;
+					m_oldIndex = getXeIndex(m_dstXe);
 					break;
 				case XmlOptType.NODE_INSERT:
-					m_srcItem = srcItem;
+					m_srcXe = srcXe;
 					m_newIndex = newIndex;
 					break;
 				case XmlOptType.NODE_MOVE:
-					if (m_dstItem.Parent.GetType().ToString() == "UIEditor.XmlItem" ||
-						m_dstItem.Parent.GetType().BaseType.ToString() == "UIEditor.XmlItem" ||
-						m_dstItem.Parent.GetType().BaseType.BaseType.ToString() == "UIEditor.XmlItem")
-					{
-						m_srcItem = (XmlItem)m_dstItem.Parent;
-						m_newSrcItem = srcItem;
-						m_newIndex = newIndex;
-						m_oldIndex = getXeIndex(m_dstItem.m_xe);
-					}
+					m_srcXe = (XmlElement)m_dstXe.ParentNode;
+					m_newSrcXe = srcXe;
+					m_newIndex = newIndex;
+					m_oldIndex = getXeIndex(m_dstXe);
 					break;
 				default:
 					break;
 			}
 		}
-		public HistoryNode(XmlItem dstItem, string attrName, string oldValue, string newValue)
+		public HistoryNode(XmlElement dstXe, string attrName, string oldValue, string newValue)
 		{
 			//NODE_UPDATE
 			m_optType = XmlOptType.NODE_UPDATE;
 			m_attrName = attrName;
 			m_oldValue = oldValue;
 			m_newValue = newValue;
-			m_dstItem = dstItem;
+			m_dstXe = dstXe;
 		}
 		public HistoryNode(XmlOptType optType, XmlDocument oldDoc, XmlDocument newDoc)
 		{
@@ -107,7 +97,7 @@ namespace UIEditor.XmlOperation
 					MainWindow.CtrlDef_T nullCtrlDef;
 
 					((TreeViewItem)dstItem.Parent).Items.Remove(dstItem);
-					if (dstItem.GetType().ToString() == "UIEditor.BoloUI.Basic" &&
+					if (dstItem.m_type == "CtrlUI" &&
 						pW.m_mapCtrlDef.TryGetValue(dstItem.m_xe.Name, out nullCtrlDef) &&
 						dstItem.m_xe.Name != "event")
 					{
@@ -127,7 +117,7 @@ namespace UIEditor.XmlOperation
 
 			return false;
 		}
-		static public bool insertItemWithXmlItem(MainWindow pW, string path, XmlItem dstItem, XmlItem srcItem, int index = 0)
+		static public bool insertItemWithXmlItem(MainWindow pW, string path, ref XmlItem dstItem, XmlItem srcItem, int index = 0)
 		{
 			MainWindow.CtrlDef_T nullCtrlDef;
 			OpenedFile fileT;
@@ -137,16 +127,30 @@ namespace UIEditor.XmlOperation
 				if (fileT.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
 				{
 					XmlControl xmlCtrl = (XmlControl)fileT.m_frame;
+					TreeViewItem treeChild;
+					MainWindow.SkinDef_T skinPtr;
 
-					if (dstItem.GetType().ToString() == "UIEditor.BoloUI.Basic" &&
+					if (dstItem.m_type == "CtrlUI" && 
 						pW.m_mapCtrlDef.TryGetValue(dstItem.m_xe.Name, out nullCtrlDef) &&
 						dstItem.m_xe.Name != "event")
 					{
 						xmlCtrl.checkBaseId((XmlNode)dstItem.m_xe);
 					}
-					//var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), dstItem.m_xe, xmlCtrl) as System.Windows.Controls.TreeViewItem;
-					srcItem.Items.Insert(index, dstItem);
-					dstItem.Focus();
+					if (dstItem.m_type == "CtrlUI")
+					{
+						treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), dstItem.m_xe, xmlCtrl, false) as System.Windows.Controls.TreeViewItem;
+					}
+					else if (pW.m_mapSkinResDef.TryGetValue(dstItem.m_xe.Name, out skinPtr))
+					{
+						treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), dstItem.m_xe, xmlCtrl, skinPtr) as System.Windows.Controls.TreeViewItem;
+					}
+					else
+					{
+						return false;
+					}
+					srcItem.Items.Insert(index, treeChild);
+					treeChild.Focus();
+					dstItem = (XmlItem)treeChild;
 
 					return true;
 				}
@@ -156,7 +160,7 @@ namespace UIEditor.XmlOperation
 		}
 		//直接和xml打交道的处理和部分对于显示的刷新。
 		//把dstXe加到srcXe里
-		static public bool insertXmlNode(MainWindow pW, string path, XmlItem dstItem, XmlItem srcItem, int index = 0)
+		static public bool insertXmlNode(MainWindow pW, string path, ref XmlItem dstItem, XmlItem srcItem, int index = 0)
 		{
 			XmlElement tmpXe1 = dstItem.m_xe.OwnerDocument.CreateElement("tmp1");
 			XmlElement tmpXe2 = dstItem.m_xe.OwnerDocument.CreateElement("tmp2");
@@ -191,7 +195,7 @@ namespace UIEditor.XmlOperation
 				}
 				srcItem.m_xe.ReplaceChild(dstItem.m_xe, tmpXe1);
 			}
-			insertItemWithXmlItem(pW, path, dstItem, srcItem, index);
+			insertItemWithXmlItem(pW, path, ref dstItem, srcItem, index);
 
 			return false;
 		}

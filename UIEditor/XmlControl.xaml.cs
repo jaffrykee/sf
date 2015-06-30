@@ -27,11 +27,15 @@ namespace UIEditor
 		public Dictionary<string, BoloUI.Basic> m_mapCtrlUI;
 		public Dictionary<string, string> m_mapSkinLink;
 		public Dictionary<string, BoloRes.ResBasic> m_mapSkin;
+		public Dictionary<XmlElement, XmlItem> m_mapXeItem;
 		public XmlDocument m_xmlDoc;
 		public XmlElement m_xeRootCtrl;
-		public TreeViewItem m_treeCtrl;
+		public XmlElement m_xeRootBolo;
 		public bool m_isOnlySkin;
 		public BoloUI.Basic m_skinViewCtrlUI;
+
+		public BoloUI.Basic m_treeUI;
+		public BoloRes.ResBasic m_treeSkin;
 
 		public XmlControl(FileTabItem parent)
 		{
@@ -41,6 +45,7 @@ namespace UIEditor
 			m_mapCtrlUI = new Dictionary<string, BoloUI.Basic>();
 			m_mapSkinLink = new Dictionary<string, string>();
 			m_mapSkin = new Dictionary<string, BoloRes.ResBasic>();
+			m_mapXeItem = new Dictionary<XmlElement, XmlItem>();
 			m_isOnlySkin = true;
 			m_skinViewCtrlUI = null;
 		}
@@ -255,22 +260,36 @@ namespace UIEditor
 		public void refreshControl()
 		{
 			m_pW = Window.GetWindow(this) as MainWindow;
+
 			m_openedFile = m_pW.m_mapOpenedFiles[m_parent.m_filePath];
 			m_openedFile.m_frame = this;
 			m_openedFile.m_lstOpt = new XmlOperation.HistoryList(m_pW, this, 65535);
-			m_openedFile.m_treeUI.Items.Clear();
-			m_openedFile.m_treeSkin.Items.Clear();
 
 			m_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
 
 			m_xmlDoc = new XmlDocument();
 			m_xmlDoc.Load(m_openedFile.m_path);
-			XmlNode xn = m_xmlDoc.SelectSingleNode("BoloUI");
-			if (xn != null)
-			{
-				XmlNodeList xnl = xn.ChildNodes;
+			m_xeRootBolo = (XmlElement)m_xmlDoc.SelectSingleNode("BoloUI");
 
-				checkBaseId(xn);
+			m_treeUI = new BoloUI.Basic(m_xeRootBolo, this, true);
+			m_treeSkin = new BoloRes.ResBasic(m_xeRootBolo, this, null);
+
+			m_pW.mx_treeCtrlFrame.Items.Add(m_treeUI);
+			m_treeUI.Header = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+			m_treeUI.ToolTip = m_openedFile.m_path;
+			m_treeUI.IsExpanded = true;
+			m_pW.mx_treeSkinFrame.Items.Add(m_treeSkin);
+			m_treeSkin.Header = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+			m_treeSkin.ToolTip = m_openedFile.m_path;
+			m_treeSkin.IsExpanded = true;
+
+			m_treeUI.Items.Clear();
+			m_treeSkin.Items.Clear();
+			if (m_xeRootBolo != null)
+			{
+				XmlNodeList xnl = m_xeRootBolo.ChildNodes;
+
+				checkBaseId(m_xeRootBolo);
 				//m_pW.mx_debug.Text += ("未被解析的项目：\r\n");
 				foreach (XmlNode xnf in xnl)
 				{
@@ -282,15 +301,15 @@ namespace UIEditor
 
 						if (m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
 						{
-							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this) as TreeViewItem;
-							this.m_openedFile.m_treeUI.Items.Add(treeChild);
+							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, this, false) as TreeViewItem;
+							m_treeUI.Items.Add(treeChild);
 							m_isOnlySkin = false;
 							m_xeRootCtrl = xe;
 						}
 						else if (m_pW.m_mapSkinResDef.TryGetValue(xe.Name, out skinPtr))
 						{
 							var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), xe, this, skinPtr) as TreeViewItem;
-							this.m_openedFile.m_treeSkin.Items.Add(treeChild);
+							m_treeSkin.Items.Add(treeChild);
 							treeChild.IsExpanded = false;
 							if (xe.Name == "skingroup")
 							{
@@ -333,7 +352,7 @@ namespace UIEditor
 		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
 		{
 			m_pW.mx_selCtrlLstFrame.Children.Clear();
-			if (m_pW.mx_treeCtrlFrame.Items[0] != null)
+			if (m_pW.mx_treeCtrlFrame.Items.Count > 0 && m_pW.mx_treeCtrlFrame.Items[0] != null)
 			{
 				TreeViewItem firstItem = (TreeViewItem)m_pW.mx_treeCtrlFrame.Items[0];
 
