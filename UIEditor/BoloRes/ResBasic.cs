@@ -69,7 +69,7 @@ namespace UIEditor.BoloRes
 				}
 			}
 		}
-		public void initHeader()
+		public override void initHeader()
 		{
 			string ctrlTip;
 			string name = "";

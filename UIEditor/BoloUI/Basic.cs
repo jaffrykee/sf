@@ -174,7 +174,7 @@ namespace UIEditor.BoloUI
 				id = elmUI.m_xe.GetAttribute("baseID");
 			}
 		}
-		public void initHeader()
+		public override void initHeader()
 		{
 			string ctrlTip;
 			string name = "", id = "";

@@ -48,7 +48,14 @@ namespace UIEditor
 		{
 
 		}
+		public virtual void changeSelectItem(object obj = null)
+		{
 
+		}
+		public virtual void initHeader()
+		{
+
+		}
 
 		private void mx_root_DragEnter(object sender, DragEventArgs e)
 		{
@@ -63,10 +70,6 @@ namespace UIEditor
 
 		}
 		private void mx_root_Drop(object sender, DragEventArgs e)
-		{
-
-		}
-		public virtual void changeSelectItem(object obj = null)
 		{
 
 		}
