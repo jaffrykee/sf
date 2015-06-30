@@ -64,8 +64,8 @@ namespace UIEditor.XmlOperation
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							ref m_curNode.Value.m_dstItem,
-							m_curNode.Value.m_srcItem);
+							m_curNode.Value.m_dstXe,
+							m_curNode.Value.m_srcXe);
 					}
 					break;
 				case XmlOptType.NODE_DELETE:
@@ -73,7 +73,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.deleteXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem);
+							m_curNode.Value.m_dstXe);
 					}
 					break;
 				case XmlOptType.NODE_MOVE:
@@ -81,12 +81,12 @@ namespace UIEditor.XmlOperation
 						HistoryNode.deleteXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem);
+							m_curNode.Value.m_dstXe);
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							ref m_curNode.Value.m_dstItem,
-							m_curNode.Value.m_newSrcItem,
+							m_curNode.Value.m_dstXe,
+							m_curNode.Value.m_newSrcXe,
 							m_curNode.Value.m_newIndex);
 					}
 					break;
@@ -95,7 +95,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.updateXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem,
+							m_curNode.Value.m_dstXe,
 							m_curNode.Value.m_attrName,
 							m_curNode.Value.m_newValue);
 					}
@@ -109,22 +109,28 @@ namespace UIEditor.XmlOperation
 					return;
 			}
 			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
+
 			if (!isAddOpt)
 			{
-				if (m_curNode.Value.m_dstItem != null)
+				XmlItem dstItem;
+
+				if (m_xmlCtrl.m_mapXeItem.TryGetValue(m_curNode.Value.m_dstXe, out dstItem))
 				{
-					switch (m_curNode.Value.m_dstItem.m_type)
+					if (dstItem != null)
 					{
-						case "CtrlUI":
-							((BoloUI.Basic)m_curNode.Value.m_dstItem).changeSelectItem();
-							m_pW.refreshAllCtrlUIHeader();
-							break;
-						case "Skin":
-							((BoloRes.ResBasic)m_curNode.Value.m_dstItem).changeSelectItem();
-							m_pW.refreshAllSkinHeader();
-							break;
-						default:
-							break;
+						switch (dstItem.m_type)
+						{
+							case "CtrlUI":
+								((BoloUI.Basic)dstItem).changeSelectItem();
+								m_pW.refreshAllCtrlUIHeader();
+								break;
+							case "Skin":
+								((BoloRes.ResBasic)dstItem).changeSelectItem();
+								m_pW.refreshAllSkinHeader();
+								break;
+							default:
+								break;
+						}
 					}
 				}
 			}
@@ -138,7 +144,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.deleteXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem);
+							m_curNode.Value.m_dstXe);
 					}
 					break;
 				case XmlOptType.NODE_DELETE:
@@ -146,8 +152,8 @@ namespace UIEditor.XmlOperation
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							ref m_curNode.Value.m_dstItem,
-							m_curNode.Value.m_srcItem,
+							m_curNode.Value.m_dstXe,
+							m_curNode.Value.m_srcXe,
 							m_curNode.Value.m_oldIndex);
 					}
 					break;
@@ -156,12 +162,12 @@ namespace UIEditor.XmlOperation
 						HistoryNode.deleteXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem);
+							m_curNode.Value.m_dstXe);
 						HistoryNode.insertXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							ref m_curNode.Value.m_dstItem,
-							m_curNode.Value.m_srcItem,
+							m_curNode.Value.m_dstXe,
+							m_curNode.Value.m_srcXe,
 							m_curNode.Value.m_oldIndex);
 					}
 					break;
@@ -170,7 +176,7 @@ namespace UIEditor.XmlOperation
 						HistoryNode.updateXmlNode(
 							m_pW,
 							m_xmlCtrl.m_openedFile.m_path,
-							m_curNode.Value.m_dstItem,
+							m_curNode.Value.m_dstXe,
 							m_curNode.Value.m_attrName,
 							m_curNode.Value.m_oldValue);
 					}
@@ -185,20 +191,25 @@ namespace UIEditor.XmlOperation
 			}
 			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
 
-			if (m_curNode.Value.m_dstItem != null)
+			XmlItem dstItem;
+
+			if (m_xmlCtrl.m_mapXeItem.TryGetValue(m_curNode.Value.m_dstXe, out dstItem))
 			{
-				switch (m_curNode.Value.m_dstItem.m_type)
+				if (dstItem != null)
 				{
-					case "CtrlUI":
-						((BoloUI.Basic)m_curNode.Value.m_dstItem).changeSelectItem();
-						m_pW.refreshAllCtrlUIHeader();
-						break;
-					case "Skin":
-						((BoloRes.ResBasic)m_curNode.Value.m_dstItem).changeSelectItem();
-						m_pW.refreshAllSkinHeader();
-						break;
-					default:
-						break;
+					switch (dstItem.m_type)
+					{
+						case "CtrlUI":
+							((BoloUI.Basic)dstItem).changeSelectItem();
+							m_pW.refreshAllCtrlUIHeader();
+							break;
+						case "Skin":
+							((BoloRes.ResBasic)dstItem).changeSelectItem();
+							m_pW.refreshAllSkinHeader();
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		}

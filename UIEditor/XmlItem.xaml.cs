@@ -76,7 +76,6 @@ namespace UIEditor
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			changeSelectItem();
-			this.BringIntoView(new Rect(0, 0, 0, 0));
 		}
 		private void mx_root_Selected(object sender, RoutedEventArgs e)
 		{
@@ -101,7 +100,7 @@ namespace UIEditor
 		private void mx_delete_Click(object sender, RoutedEventArgs e)
 		{
 			m_rootControl.m_openedFile.m_lstOpt.addOperation(
-				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, this)
+				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, m_xe)
 				);
 		}
 		private void mx_moveDown_Click(object sender, RoutedEventArgs e)
@@ -111,8 +110,8 @@ namespace UIEditor
 				m_rootControl.m_openedFile.m_lstOpt.addOperation(
 					new XmlOperation.HistoryNode(
 						XmlOperation.XmlOptType.NODE_MOVE,
-						this,
-						(XmlItem)this.Parent,
+						m_xe,
+						(XmlElement)m_xe.ParentNode,
 						XmlOperation.HistoryNode.getXeIndex(m_xe) + 1
 					)
 				);
@@ -125,8 +124,8 @@ namespace UIEditor
 				m_rootControl.m_openedFile.m_lstOpt.addOperation(
 					new XmlOperation.HistoryNode(
 						XmlOperation.XmlOptType.NODE_MOVE,
-						this,
-						(XmlItem)this.Parent,
+						m_xe,
+						(XmlElement)m_xe.ParentNode,
 						XmlOperation.HistoryNode.getXeIndex(m_xe) - 1
 					)
 				);
@@ -137,7 +136,7 @@ namespace UIEditor
 		{
 			m_pW.m_xePaste = (XmlElement)m_xe.CloneNode(true);
 			m_rootControl.m_openedFile.m_lstOpt.addOperation(
-				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, this)
+				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, m_xe)
 				);
 		}
 		private void mx_copy_Click(object sender, RoutedEventArgs e)
@@ -177,7 +176,7 @@ namespace UIEditor
 					if (xeCopy.Name == "event")
 					{
 						m_rootControl.m_openedFile.m_lstOpt.addOperation(
-							new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild, this)
+							new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
 							);
 					}
 					else
@@ -187,7 +186,7 @@ namespace UIEditor
 						if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 						{
 							m_rootControl.m_openedFile.m_lstOpt.addOperation(
-								new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild, this)
+								new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
 								);
 						}
 						else
@@ -195,7 +194,7 @@ namespace UIEditor
 							if (m_xe.ParentNode.ParentNode.NodeType == XmlNodeType.Element)
 							{
 								m_rootControl.m_openedFile.m_lstOpt.addOperation(
-									new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild, (XmlItem)this.Parent)
+									new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, (XmlElement)m_xe.ParentNode)
 									);
 							}
 						}

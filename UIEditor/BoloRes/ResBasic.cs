@@ -104,7 +104,7 @@ namespace UIEditor.BoloRes
 		{
 			BoloUI.Basic ctrlUI;
 			m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
-			m_pW.m_curRes = this;
+			m_pW.m_curItem = this;
 			m_pW.hiddenAllAttr();
 
 			if (obj != null && obj.GetType().ToString() == "UIEditor.BoloUI.Basic")
@@ -113,7 +113,14 @@ namespace UIEditor.BoloRes
 			}
 			else
 			{
-				ctrlUI = null;
+				if (m_rootControl.m_skinViewCtrlUI != null)
+				{
+					ctrlUI = m_rootControl.m_skinViewCtrlUI;
+				}
+				else
+				{
+					ctrlUI = null;
+				}
 			}
 			if (m_pW.m_otherAttrList == null)
 			{
@@ -165,6 +172,7 @@ namespace UIEditor.BoloRes
 					{
 						xeView = m_pW.m_xeTest;
 						((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
+						m_pW.updateXmlToGL(m_rootControl.m_openedFile.m_path, m_rootControl.m_xmlDoc, xeView, false);
 					}
 					else
 					{
@@ -175,14 +183,14 @@ namespace UIEditor.BoloRes
 						xeView = m_rootControl.m_skinViewCtrlUI.m_xe;
 						m_rootControl.m_skinViewCtrlUI.m_rootControl.m_openedFile.m_lstOpt.addOperation(
 							new XmlOperation.HistoryNode(
-								m_rootControl.m_skinViewCtrlUI,
+								xeView,
 								"skin",
 								m_rootControl.m_skinViewCtrlUI.m_xe.GetAttribute("skin"),
 								xeSkin.GetAttribute("Name")
 							)
 						);
+						m_pW.updateXmlToGL(m_rootControl.m_openedFile.m_path, m_rootControl.m_xmlDoc, xeView, true);
 					}
-					m_pW.updateXmlToGL(m_rootControl.m_openedFile.m_path, m_rootControl.m_xmlDoc, xeView);
 				}
 				//todo 更改皮肤预览
 			}
@@ -190,6 +198,7 @@ namespace UIEditor.BoloRes
 			{
 				m_setFocus = true;
 			}
+			BringIntoView(new Rect(0, 0, 0, 0));
 		}
 
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)

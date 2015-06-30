@@ -27,10 +27,11 @@ namespace UIEditor.BoloUI
 		{
 			m_type = "CtrlUI";
 			InitializeComponent();
+			MainWindow.CtrlDef_T ctrlDef;
 
 			if (isRoot == false)
 			{
-				if (m_pW.m_mapCtrlDef[m_xe.Name] != null)
+				if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef) && ctrlDef != null)
 				{
 					m_isCtrl = true;
 				}
@@ -109,7 +110,7 @@ namespace UIEditor.BoloUI
 				XmlElement newXe = m_xe.OwnerDocument.CreateElement(ctrlItem.ToolTip.ToString());
 				Basic treeChild = new Basic(newXe, m_rootControl);
 
-				m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild, this));
+				m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe));
 			}
 			//throw new NotImplementedException();
 		}
@@ -207,7 +208,7 @@ namespace UIEditor.BoloUI
 			bool tmp = m_pW.m_attrBinding;
 			m_pW.m_attrBinding = false;
 
-			m_pW.m_curCtrl = this;
+			m_pW.m_curItem = this;
 			m_pW.hiddenAllAttr();
 			MainWindow.CtrlDef_T ctrlDef;
 
@@ -282,6 +283,7 @@ namespace UIEditor.BoloUI
 			{
 				m_setFocus = true;
 			}
+			BringIntoView(new Rect(0, 0, 0, 0));
 		}
 		public bool checkPointInFence(int x, int y)
 		{
@@ -294,7 +296,5 @@ namespace UIEditor.BoloUI
 			}
 			return false;
 		}
-
-
 	}
 }

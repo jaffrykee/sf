@@ -48,11 +48,15 @@ namespace UIEditor
 		public string m_strTestXml;
 
 		public string m_curFile;	//todo
-		public BoloUI.Basic m_curCtrl;
-		public BoloRes.ResBasic m_curRes;
+		public XmlItem m_curItem;
 		private int m_dep;
 
 		public XmlElement m_xePaste;
+
+		public bool m_isMouseDown;
+		public bool m_isCtrlMoved;
+		public int m_downX;
+		public int m_downY;
 
 		//debug
 		//public string conf_pathGlApp = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
@@ -395,49 +399,76 @@ namespace UIEditor
 			switch (msg)
 			{
 				case WM_MOUSEMOVE:
+					{
+						if(m_isMouseDown)
+						{
+							int pX = (int)lParam & 0xFFFF;
+							int pY = ((int)lParam >> 16) & 0xFFFF;
+
+							if (m_isCtrlMoved == false)
+							{
+								if (System.Math.Abs(m_downX - pX) > 10)
+								{
+									m_isCtrlMoved = true;
+								}
+							}
+						}
+					}
 					break;
 				case WM_LBUTTONDOWN:
 					{
+						int pX = (int)lParam & 0xFFFF;
+						int pY = ((int)lParam >> 16) & 0xFFFF;
+
+						m_isMouseDown = true;
+						m_isCtrlMoved = false;
+						m_downX = pX;
+						m_downY = pY;
 					}
 					break;
 				case WM_LBUTTONUP:
 					{
-						List<BoloUI.Basic> lstSelCtrl = new List<BoloUI.Basic>();
-						int pX = (int)lParam & 0xFFFF;
-						int pY = ((int)lParam >> 16) & 0xFFFF;
-						bool hadCurCtrl = false;
-						BoloUI.Basic selCtrl = null;
-
-						mx_selCtrlLstFrame.Children.Clear();
-						foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
+						if(m_isMouseDown == true && m_isCtrlMoved == false)
 						{
-							if (pairCtrlDef.Value.checkPointInFence(pX, pY))
-							{
-								lstSelCtrl.Add(pairCtrlDef.Value);
-								if (hadCurCtrl)
-								{
-									hadCurCtrl = false;
-									selCtrl = pairCtrlDef.Value;
-								}
-								if (m_curCtrl == pairCtrlDef.Value)
-								{
-									hadCurCtrl = true;
-									selCtrl = m_curCtrl;
-								}
+							List<BoloUI.Basic> lstSelCtrl = new List<BoloUI.Basic>();
+							int pX = (int)lParam & 0xFFFF;
+							int pY = ((int)lParam >> 16) & 0xFFFF;
+							bool hadCurCtrl = false;
+							BoloUI.Basic selCtrl = null;
 
-								BoloUI.SelButton selCtrlButton = new BoloUI.SelButton(this, pairCtrlDef.Value);
-								selCtrlButton.mx_root.Content = pairCtrlDef.Value.mx_text.Content;
-								mx_selCtrlLstFrame.Children.Add(selCtrlButton);
+							mx_selCtrlLstFrame.Children.Clear();
+							foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
+							{
+								if (pairCtrlDef.Value.checkPointInFence(pX, pY))
+								{
+									lstSelCtrl.Add(pairCtrlDef.Value);
+									if (hadCurCtrl)
+									{
+										hadCurCtrl = false;
+										selCtrl = pairCtrlDef.Value;
+									}
+									if (m_curItem == pairCtrlDef.Value)
+									{
+										hadCurCtrl = true;
+										selCtrl = pairCtrlDef.Value;
+									}
+
+									BoloUI.SelButton selCtrlButton = new BoloUI.SelButton(this, pairCtrlDef.Value);
+									selCtrlButton.mx_root.Content = pairCtrlDef.Value.mx_text.Content;
+									mx_selCtrlLstFrame.Children.Add(selCtrlButton);
+								}
+							}
+							if (lstSelCtrl.Count > 0)
+							{
+								if (selCtrl == null || selCtrl == m_curItem)
+								{
+									selCtrl = lstSelCtrl.First();
+								}
+								selCtrl.changeSelectItem();
 							}
 						}
-						if (lstSelCtrl.Count > 0)
-						{
-							if (selCtrl == null || selCtrl == m_curCtrl)
-							{
-								selCtrl = lstSelCtrl.First();
-							}
-							selCtrl.changeSelectItem();
-						}
+						m_isMouseDown = false;
+						m_isCtrlMoved = false;
 					}
 					break;
 				case WM_LBUTTONDBLCLK:
@@ -534,7 +565,7 @@ namespace UIEditor
 
 			return hwnd;
 		}
-		public void updateXmlToGL(string path, XmlDocument doc, XmlElement xePlus = null)
+		public void updateXmlToGL(string path, XmlDocument doc, XmlElement xePlus = null, bool isCtrlUI = false)
 		{
 			XmlDocument newDoc = new XmlDocument();
 			string fileName = StringDic.getFileNameWithoutPath(path);
@@ -545,13 +576,36 @@ namespace UIEditor
 
 			if (xePlus != null)
 			{
-				string strTmp = "<panel dock=\"4\" w=\"960\" h=\"640\" name=\"background\" skin=\"BackPure\"></panel>";
+				if(isCtrlUI == false)
+				{
+					string strTmp = "<panel dock=\"4\" w=\"960\" h=\"640\" name=\"background\" skin=\"BackPure\"></panel>";
 
-				XmlElement xeTmp = newDoc.CreateElement("tmp");
-				xeTmp.InnerXml = strTmp;
-				//xePlus.OuterXml
-				xeTmp.FirstChild.InnerXml = xePlus.OuterXml;
-				root.AppendChild(xeTmp.FirstChild);
+					XmlElement xeTmp = newDoc.CreateElement("tmp");
+					xeTmp.InnerXml = strTmp;
+					//xePlus.OuterXml
+					xeTmp.FirstChild.InnerXml = xePlus.OuterXml;
+					root.AppendChild(xeTmp.FirstChild);
+				}
+				else
+				{
+					XmlNode xn;
+					XmlElement xe;
+
+					for (xn = xePlus; xn.ParentNode != null && xn.ParentNode.NodeType == XmlNodeType.Element && xn.ParentNode.Name != "BoloUI"; xn = xn.ParentNode)
+					{
+						
+					}
+					if(xn.ParentNode != null && xn.ParentNode.NodeType == XmlNodeType.Element && xn.ParentNode.Name == "BoloUI")
+					{
+						xe = (XmlElement)xn;
+
+						string strTmp = xe.OuterXml;
+
+						XmlElement xeTmp = newDoc.CreateElement("tmp");
+						xeTmp.InnerXml = strTmp;
+						root.AppendChild(xeTmp.FirstChild);
+					}
+				}
 			}
 			//去掉所有事件(<event>)
 			nodeList = root.SelectNodes("descendant::event");
@@ -1292,7 +1346,10 @@ namespace UIEditor
 				{
 					foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlUI in ((XmlControl)pairOpenedFile.Value.m_frame).m_mapCtrlUI.ToList())
 					{
-						pairCtrlUI.Value.initHeader();
+						if (pairCtrlUI.Value != null)
+						{
+							pairCtrlUI.Value.initHeader();
+						}
 					}
 				}
 			}
@@ -1305,7 +1362,10 @@ namespace UIEditor
 				{
 					foreach (KeyValuePair<string, BoloRes.ResBasic> pairSkin in ((XmlControl)pairOpenedFile.Value.m_frame).m_mapSkin.ToList())
 					{
-						pairSkin.Value.initHeader();
+						if (pairSkin.Value != null)
+						{
+							pairSkin.Value.initHeader();
+						}
 					}
 				}
 			}

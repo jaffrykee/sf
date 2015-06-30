@@ -85,9 +85,9 @@ namespace UIEditor
 					}
 				}
 				bool isWrong = false;
-				BoloUI.Basic elmUI = m_pW.m_curCtrl;
+				XmlItem curItem = m_pW.m_curItem;
 
-				if (m_pW.m_attrBinding && elmUI != null && elmUI.m_xe != null)
+				if (m_pW.m_attrBinding && curItem != null && curItem.m_xe != null)
 				{
 					if (mt_value != value)
 					{
@@ -95,7 +95,7 @@ namespace UIEditor
 						{
 							BoloUI.Basic ctrl;
 
-							if (elmUI.m_rootControl.m_mapCtrlUI.TryGetValue(value, out ctrl))
+							if (curItem.m_rootControl.m_mapCtrlUI.TryGetValue(value, out ctrl))
 							{
 								isWrong = true;
 							}
@@ -106,7 +106,7 @@ namespace UIEditor
 				{
 					if (m_pW.m_attrBinding && m_parent != null && m_parent.m_xmlCtrl != null && m_parent.m_xe != null && mt_value != value)
 					{
-						m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_basic, m_name, mt_value, value));
+						m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_basic.m_xe, m_name, mt_value, value));
 					}
 				}
 				else
