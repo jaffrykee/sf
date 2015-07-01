@@ -149,7 +149,7 @@ namespace UIEditor.XmlOperation
 					{
 						treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), dstXe, xmlCtrl, false) as System.Windows.Controls.TreeViewItem;
 					}
-					else if (pW.m_mapSkinResDef.TryGetValue(dstXe.Name, out skinPtr))
+					else if (pW.m_mapAllResDef.TryGetValue(dstXe.Name, out skinPtr))
 					{
 						treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), dstXe, xmlCtrl, skinPtr) as System.Windows.Controls.TreeViewItem;
 					}
@@ -158,14 +158,38 @@ namespace UIEditor.XmlOperation
 						return false;
 					}
 
-					XmlItem srcItem;
-
-					if(xmlCtrl.m_mapXeItem.TryGetValue(srcXe, out srcItem))
+					if(srcXe.Name != "BoloUI")
 					{
-						if(srcItem != null)
+						XmlItem srcItem;
+
+						if (xmlCtrl.m_mapXeItem.TryGetValue(srcXe, out srcItem))
 						{
-							srcItem.Items.Insert(index, treeChild);
-							treeChild.Focus();
+							if (srcItem != null)
+							{
+								srcItem.Items.Insert(index, treeChild);
+								treeChild.Focus();
+							}
+						}
+					}
+					else
+					{
+						XmlItem dstItem = (XmlItem)treeChild;
+
+						if(dstItem.m_type == "CtrlUI")
+						{
+							if (index > xmlCtrl.m_treeUI.Items.Count)
+							{
+								index = xmlCtrl.m_treeUI.Items.Count;
+							}
+							xmlCtrl.m_treeUI.Items.Insert(index, treeChild);
+						}
+						else if(dstItem.m_type == "Skin")
+						{
+							if (index > xmlCtrl.m_treeSkin.Items.Count)
+							{
+								index = xmlCtrl.m_treeSkin.Items.Count;
+							}
+							xmlCtrl.m_treeSkin.Items.Insert(index, treeChild);
 						}
 					}
 

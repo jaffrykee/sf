@@ -33,6 +33,7 @@ namespace UIEditor
 		public Dictionary<string, SkinDef_T> m_mapShapeChildDef;
 		public Dictionary<string, SkinDef_T> m_mapSkinChildDef;
 		public Dictionary<string, SkinDef_T> m_mapSkinResDef;
+		public Dictionary<string, SkinDef_T> m_mapAllResDef;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
 		public IntPtr m_hwndGLFrame;
@@ -65,6 +66,7 @@ namespace UIEditor
 
 		public MainWindow()
 		{
+			StringDic.initDic();
 			m_skinPath = "";
 			m_projPath = "";
 			m_hwndGL = IntPtr.Zero;
@@ -74,6 +76,7 @@ namespace UIEditor
 			InitializeComponent();
 			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
 			m_mapStrSkin = new Dictionary<string, XmlElement>();
+			m_mapAllResDef = new Dictionary<string, SkinDef_T>();
 			m_dpiSysX = 96.0f;
 			m_dpiSysY = 96.0f;
 			m_curFile = "";
@@ -249,6 +252,8 @@ namespace UIEditor
 
 		ControlHost mx_GLHost;
 		#region WIN32消息相关
+
+		#region WIN32预定义
 		internal const int
 			WM_DESTROY			= 0x0002,
 			WM_CLOSE			= 0x0010,
@@ -256,6 +261,8 @@ namespace UIEditor
 			WM_COPYDATA			= 0x004A,
 			WM_COMMAND			= 0x0111,
 			
+			WM_KEYDOWN			= 0x0100,
+
 			WM_MOUSEFIRST		= 0x0200,
 			WM_MOUSEMOVE		= 0x0200,
 			WM_LBUTTONDOWN		= 0x0201,
@@ -274,10 +281,46 @@ namespace UIEditor
 			LB_ADDSTRING		= 0x0180,
 			LB_GETTEXT			= 0x0189,
 			LB_DELETESTRING		= 0x0182,
-			LB_GETCOUNT			= 0x018B;
+			LB_GETCOUNT			= 0x018B,
 
+			VK_LEFT		= 0x25,
+			VK_UP		= 0x26,
+			VK_RIGHT	= 0x27,
+			VK_DOWN		= 0x28,
+			VK_DELETE	= 0x2E,
 
+			VK_OEM_PLUS		= 0xBB,
+			VK_OEM_MINUS	= 0xBD,
 
+			VK_A	= 0x41,
+			VK_B	= 0x42,
+			VK_C	= 0x43,
+			VK_D	= 0x44,
+			VK_E	= 0x45,
+			VK_F	= 0x46,
+			VK_G	= 0x47,
+			VK_H	= 0x48,
+			VK_I	= 0x49,
+			VK_J	= 0x4A,
+			VK_K	= 0x4B,
+			VK_L	= 0x4C,
+			VK_M	= 0x4D,
+			VK_N	= 0x4E,
+			VK_O	= 0x4F,
+			VK_P	= 0x50,
+			VK_Q	= 0x51,
+			VK_R	= 0x52,
+			VK_S	= 0x53,
+			VK_T	= 0x54,
+			VK_U	= 0x55,
+			VK_V	= 0x56,
+			VK_W	= 0x57,
+			VK_X	= 0x58,
+			VK_Y	= 0x59,
+			VK_Z	= 0x5A;
+		#endregion
+
+		#region SendMessage函数接口
 		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]
 		internal static extern int SendMessage(
 			IntPtr hwnd,
@@ -321,6 +364,9 @@ namespace UIEditor
 			ref COPYDATASTRUCT_SENDEX IParam);
 		#endregion
 
+		#endregion
+
+		#region 通讯结构
 		public enum W2GTag
 		{
 			W2G_PATH = 0x0000,
@@ -359,6 +405,7 @@ namespace UIEditor
 			[MarshalAs(UnmanagedType.LPStr)]
 			public IntPtr lpData;
 		}
+		#endregion
 
 		public void updateGL(string buffer, W2GTag msgTag = W2GTag.W2G_NORMAL_DATA)
 		{
@@ -400,16 +447,31 @@ namespace UIEditor
 			{
 				case WM_MOUSEMOVE:
 					{
-						if(m_isMouseDown)
+						if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Control) == System.Windows.Forms.Keys.Control)
 						{
-							int pX = (int)lParam & 0xFFFF;
-							int pY = ((int)lParam >> 16) & 0xFFFF;
-
-							if (m_isCtrlMoved == false)
+							if (m_isMouseDown)
 							{
-								if (System.Math.Abs(m_downX - pX) > 10)
+								int pX = (int)lParam & 0xFFFF;
+								int pY = ((int)lParam >> 16) & 0xFFFF;
+
+								if (m_isCtrlMoved == false)
 								{
-									m_isCtrlMoved = true;
+									if (System.Math.Abs(pX - m_downX) > 10 || System.Math.Abs(pY - m_downY) > 10)
+									{
+										m_isCtrlMoved = true;
+									}
+								}
+								else
+								{
+									if (m_curItem != null && m_curItem.m_type == "CtrlUI")
+									{
+										BoloUI.Basic selItem = (BoloUI.Basic)m_curItem;
+										string msgData;
+
+										msgData = (selItem.m_selX + (pX - m_downX)).ToString() + ":" + (selItem.m_selY + (pY - m_downY)).ToString() + ":" + 
+											selItem.m_selW.ToString() + ":" + selItem.m_selH.ToString() + ":";
+										updateGL(msgData, W2GTag.W2G_DRAWRECT);
+									}
 								}
 							}
 						}
@@ -428,43 +490,83 @@ namespace UIEditor
 					break;
 				case WM_LBUTTONUP:
 					{
-						if(m_isMouseDown == true && m_isCtrlMoved == false)
+						if(m_isMouseDown == true)
 						{
-							List<BoloUI.Basic> lstSelCtrl = new List<BoloUI.Basic>();
 							int pX = (int)lParam & 0xFFFF;
 							int pY = ((int)lParam >> 16) & 0xFFFF;
-							bool hadCurCtrl = false;
-							BoloUI.Basic selCtrl = null;
-
-							mx_selCtrlLstFrame.Children.Clear();
-							foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
+							if(m_isCtrlMoved == false)
 							{
-								if (pairCtrlDef.Value.checkPointInFence(pX, pY))
-								{
-									lstSelCtrl.Add(pairCtrlDef.Value);
-									if (hadCurCtrl)
-									{
-										hadCurCtrl = false;
-										selCtrl = pairCtrlDef.Value;
-									}
-									if (m_curItem == pairCtrlDef.Value)
-									{
-										hadCurCtrl = true;
-										selCtrl = pairCtrlDef.Value;
-									}
+								List<BoloUI.Basic> lstSelCtrl = new List<BoloUI.Basic>();
+								bool hadCurCtrl = false;
+								BoloUI.Basic selCtrl = null;
 
-									BoloUI.SelButton selCtrlButton = new BoloUI.SelButton(this, pairCtrlDef.Value);
-									selCtrlButton.mx_root.Content = pairCtrlDef.Value.mx_text.Content;
-									mx_selCtrlLstFrame.Children.Add(selCtrlButton);
+								mx_selCtrlLstFrame.Children.Clear();
+								foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
+								{
+									if (pairCtrlDef.Value.checkPointInFence(pX, pY))
+									{
+										lstSelCtrl.Add(pairCtrlDef.Value);
+										if (hadCurCtrl)
+										{
+											hadCurCtrl = false;
+											selCtrl = pairCtrlDef.Value;
+										}
+										if (m_curItem == pairCtrlDef.Value)
+										{
+											hadCurCtrl = true;
+											selCtrl = pairCtrlDef.Value;
+										}
+
+										BoloUI.SelButton selCtrlButton = new BoloUI.SelButton(this, pairCtrlDef.Value);
+										selCtrlButton.mx_root.Content = pairCtrlDef.Value.mx_text.Content;
+										mx_selCtrlLstFrame.Children.Add(selCtrlButton);
+									}
+								}
+								if (lstSelCtrl.Count > 0)
+								{
+									if (selCtrl == null || selCtrl == m_curItem)
+									{
+										selCtrl = lstSelCtrl.First();
+									}
+									selCtrl.changeSelectItem();
 								}
 							}
-							if (lstSelCtrl.Count > 0)
+							else
 							{
-								if (selCtrl == null || selCtrl == m_curItem)
+								if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Control) == System.Windows.Forms.Keys.Control)
 								{
-									selCtrl = lstSelCtrl.First();
+									if (m_curItem != null && m_curItem.m_type == "CtrlUI")
+									{
+										BoloUI.Basic selItem = (BoloUI.Basic)m_curItem;
+										int x, y;
+
+										if (selItem.m_xe.GetAttribute("x") == "")
+										{
+											x = 0;
+										}
+										else
+										{
+											x = int.Parse(selItem.m_xe.GetAttribute("x"));
+										}
+										x += pX - m_downX;
+										selItem.m_rootControl.m_openedFile.m_lstOpt.addOperation(
+											new XmlOperation.HistoryNode(selItem.m_xe, "x", selItem.m_xe.GetAttribute("x"), x.ToString())
+											);
+										if (selItem.m_xe.GetAttribute("y") == "")
+										{
+											y = 0;
+										}
+										else
+										{
+											y = int.Parse(selItem.m_xe.GetAttribute("y"));
+										}
+										y += pY - m_downY;
+										selItem.m_rootControl.m_openedFile.m_lstOpt.addOperation(
+											new XmlOperation.HistoryNode(selItem.m_xe, "y", selItem.m_xe.GetAttribute("y"), y.ToString())
+											);
+										selItem.changeSelectItem();
+									}
 								}
-								selCtrl.changeSelectItem();
 							}
 						}
 						m_isMouseDown = false;
@@ -544,7 +646,7 @@ namespace UIEditor
 
 			return IntPtr.Zero;
 		}
-		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)//根窗体消息相应
+		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)//根窗体消息响应
 		{
 			switch (msg)
 			{
@@ -558,6 +660,64 @@ namespace UIEditor
 					break;
 				case WM_DESTROY:
 					SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
+					break;
+				case WM_KEYDOWN:
+					if (m_curItem != null)
+					{
+						if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Control) == System.Windows.Forms.Keys.Control)
+						{
+							switch ((int)wParam)
+							{
+								case VK_X:
+									if (m_curItem.canCut())
+									{
+										m_curItem.cutItem();
+									}
+									break;
+								case VK_C:
+									if(m_curItem.canCopy())
+									{
+										m_curItem.copyItem();
+									}
+									break;
+								case VK_V:
+									if (m_curItem.canPaste())
+									{
+										m_curItem.pasteItem();
+									}
+									break;
+								case VK_OEM_MINUS:
+									if (m_curItem.canMoveUp())
+									{
+										m_curItem.moveUpItem();
+									}
+									break;
+								case VK_OEM_PLUS:
+									if (m_curItem.canMoveDown())
+									{
+										m_curItem.moveDownItem();
+									}
+									break;
+								case VK_DELETE:
+									if (m_curItem.canDelete())
+									{
+										m_curItem.deleteItem();
+									}
+									break;
+								default:
+									break;
+							}
+						}
+						switch ((int)wParam)
+						{
+							case VK_DELETE:
+								if (m_curItem.canDelete())
+								{
+									m_curItem.deleteItem();
+								}
+								break;
+						}
+					}
 					break;
 				default:
 					break;
@@ -1097,6 +1257,21 @@ namespace UIEditor
 				#endregion
 			};
 
+		public void initResMap(Dictionary<string, SkinDef_T> mapResDef)
+		{
+			foreach(KeyValuePair<string, SkinDef_T> pairSkinDef in mapResDef.ToList())
+			{
+				SkinDef_T skinDef;
+				if (!m_mapAllResDef.TryGetValue(pairSkinDef.Key, out skinDef))
+				{
+					m_mapAllResDef.Add(pairSkinDef.Key, pairSkinDef.Value);
+					if (pairSkinDef.Value.m_mapEnChild != null && pairSkinDef.Value.m_mapEnChild.Count > 0)
+					{
+						initResMap(pairSkinDef.Value.m_mapEnChild);
+					}
+				}
+			}
+		}
 		public void initXmlValueDef()
 		{
 			m_mapCtrlDef = new Dictionary<string, CtrlDef_T>
@@ -1318,6 +1493,8 @@ namespace UIEditor
 				#endregion
 			};
 
+			initResMap(m_mapSkinResDef);
+
 			foreach(KeyValuePair<string, CtrlDef_T> pairCtrlDef in m_mapCtrlDef.ToList())
 			{
 				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI = new AttrList(pairCtrlDef.Key, this));
@@ -1444,6 +1621,74 @@ namespace UIEditor
 			if (m_mapOpenedFiles[m_curFile].m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
 			{
 				m_mapOpenedFiles[m_curFile].m_lstOpt.redo();
+			}
+		}
+
+		private void mx_toolNew_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void mx_toolCut_Click(object sender, RoutedEventArgs e)
+		{
+			if (m_curItem != null)
+			{
+				if (m_curItem.canCut())
+				{
+					m_curItem.cutItem();
+				}
+			}
+		}
+		private void mx_toolCopy_Click(object sender, RoutedEventArgs e)
+		{
+			if (m_curItem != null)
+			{
+				if (m_curItem.canCopy())
+				{
+					m_curItem.copyItem();
+				}
+			}
+		}
+		private void mx_toolPaste_Click(object sender, RoutedEventArgs e)
+		{
+			if (m_curItem != null && Keyboard.FocusedElement != null &&
+				(Keyboard.FocusedElement.GetType().ToString() == "UIEditor.XmlItem" ||
+				Keyboard.FocusedElement.GetType().BaseType.ToString() == "UIEditor.XmlItem"))
+			{
+				if (m_curItem.canPaste())
+				{
+					m_curItem.pasteItem();
+				}
+			}
+		}
+		private void mx_toolDelete_Click(object sender, RoutedEventArgs e)
+		{
+			if (m_curItem != null)
+			{
+				if (m_curItem.canDelete())
+				{
+					m_curItem.deleteItem();
+				}
+			}
+		}
+		private void mx_toolMoveUp_Click(object sender, RoutedEventArgs e)
+		{
+			if (m_curItem != null)
+			{
+				if (m_curItem.canMoveUp())
+				{
+					m_curItem.moveUpItem();
+				}
+			}
+		}
+		private void mx_toolMoveDown_Click(object sender, RoutedEventArgs e)
+		{
+			if (m_curItem != null)
+			{
+				if (m_curItem.canMoveDown())
+				{
+					m_curItem.moveDownItem();
+				}
 			}
 		}
 	}

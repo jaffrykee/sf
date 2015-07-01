@@ -21,17 +21,17 @@
 			   MouseDown="mx_text_MouseDown"
 			   MouseDoubleClick="mx_text_MouseDoubleClick">
 			<Label.ContextMenu>
-				<ContextMenu Name="mx_menu" Loaded="mx_menu_Loaded">
+				<ContextMenu Name="mx_menu" Loaded="mx_menu_Loaded" Unloaded="mx_menu_Unloaded">
 					<MenuItem Name="mx_addNode" Header="添加节点"/>
 					<MenuItem Name="mx_addCtrl" Header="添加控件"/>
 					<Separator/>
-					<MenuItem Name="mx_cut" Header="剪切" Click="mx_cut_Click"/>
-					<MenuItem Name="mx_copy" Header="复制" Click="mx_copy_Click"/>
-					<MenuItem Name="mx_paste" Header="粘贴" Click="mx_paste_Click"/>
-					<MenuItem Name="mx_delete" Header="删除" Click="mx_delete_Click"/>
+					<MenuItem Name="mx_cut" Header="剪切" InputGestureText="Ctrl+X" Click="mx_cut_Click"/>
+					<MenuItem Name="mx_copy" Header="复制" InputGestureText="Ctrl+C" Click="mx_copy_Click"/>
+					<MenuItem Name="mx_paste" Header="粘贴" InputGestureText="Ctrl+V" Click="mx_paste_Click"/>
+					<MenuItem Name="mx_delete" Header="删除" InputGestureText="Delete" Click="mx_delete_Click"/>
 					<Separator/>
-					<MenuItem Name="mx_moveUp" Header="上移" Click="mx_moveUp_Click"/>
-					<MenuItem Name="mx_moveDown" Header="下移" Click="mx_moveDown_Click"/>
+					<MenuItem Name="mx_moveUp" Header="上移" InputGestureText="Ctrl+=" Click="mx_moveUp_Click"/>
+					<MenuItem Name="mx_moveDown" Header="下移" InputGestureText="Ctrl+-" Click="mx_moveDown_Click"/>
 					<Separator/>
 					<MenuItem Name="mx_attr" Header="属性"/>
 				</ContextMenu>

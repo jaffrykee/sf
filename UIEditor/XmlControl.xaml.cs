@@ -275,12 +275,14 @@ namespace UIEditor
 			m_treeSkin = new BoloRes.ResBasic(m_xeRootBolo, this, null);
 
 			m_pW.mx_treeCtrlFrame.Items.Add(m_treeUI);
-			m_treeUI.Header = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-			m_treeUI.ToolTip = m_openedFile.m_path;
+			m_treeUI.mx_text.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+			m_treeUI.mx_text.Content = m_treeUI.mx_text.Content.ToString().Replace("_", "__");
+			m_treeUI.mx_text.ToolTip = m_openedFile.m_path;
 			m_treeUI.IsExpanded = true;
 			m_pW.mx_treeSkinFrame.Items.Add(m_treeSkin);
-			m_treeSkin.Header = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-			m_treeSkin.ToolTip = m_openedFile.m_path;
+			m_treeSkin.mx_text.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+			m_treeSkin.mx_text.Content = m_treeSkin.mx_text.Content.ToString().Replace("_", "__");
+			m_treeSkin.mx_text.ToolTip = m_openedFile.m_path;
 			m_treeSkin.IsExpanded = true;
 
 			m_treeUI.Items.Clear();

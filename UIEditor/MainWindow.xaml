@@ -9,6 +9,31 @@
 	Title="MainWindow" Width="1280" Height="800"
 	Loaded="On_UIReady"
 	>
+	<Window.Resources>
+		<RoutedUICommand x:Key="btnClick_mx_toolNew" Text="Button Click" />
+		<RoutedUICommand x:Key="btnClick_mx_toolOpen" Text="Button Click" />
+		<RoutedUICommand x:Key="btnClick_mx_toolSave" Text="Button Click" />
+		<RoutedUICommand x:Key="btnClick_mx_toolSaveAll" Text="Button Click" />
+		<RoutedUICommand x:Key="btnClick_mx_toolUndo" Text="Button Click" />
+		<RoutedUICommand x:Key="btnClick_mx_toolRedo" Text="Button Click" />
+	</Window.Resources>
+	<Window.InputBindings>
+		<KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolNew}" />
+		<KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolOpen}" />
+		<KeyBinding Key="S" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolSave}" />
+		<KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{StaticResource btnClick_mx_toolSaveAll}" />
+		<KeyBinding Key="Z" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolUndo}" />
+		<KeyBinding Key="Y" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolRedo}" />
+	</Window.InputBindings>
+	<Window.CommandBindings>
+		<CommandBinding Command="{StaticResource btnClick_mx_toolNew}" Executed="mx_toolNew_Click" />
+		<CommandBinding Command="{StaticResource btnClick_mx_toolOpen}" Executed="openProj" />
+		<CommandBinding Command="{StaticResource btnClick_mx_toolSave}" Executed="mx_toolSave_Click" />
+		<CommandBinding Command="{StaticResource btnClick_mx_toolSaveAll}" Executed="mx_toolSaveAll_Click" />
+		<CommandBinding Command="{StaticResource btnClick_mx_toolUndo}" Executed="mx_toolUndo_Click" />
+		<CommandBinding Command="{StaticResource btnClick_mx_toolRedo}" Executed="mx_toolRedo_Click" />
+	</Window.CommandBindings>
+	
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -24,17 +49,25 @@
 		</Grid.ColumnDefinitions>
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
 			<MenuItem Header="文件">
-				<MenuItem Header="新建" IsEnabled="False"/>
-				<MenuItem Header="打开" Click="openProj"/>
+				<MenuItem Header="新建" InputGestureText="Ctrl+N" IsEnabled="False"/>
+				<MenuItem Header="打开" InputGestureText="Ctrl+O" Click="openProj"/>
 				<Separator/>
-				<MenuItem Header="保存" Click="mx_toolSave_Click"/>
-				<MenuItem Header="全部保存" Click="mx_toolSaveAll_Click"/>
+				<MenuItem Header="保存" InputGestureText="Ctrl+S" Click="mx_toolSave_Click"/>
+				<MenuItem Header="全部保存" InputGestureText="Ctrl+Shift+S" Click="mx_toolSaveAll_Click"/>
 				<Separator/>
-				<MenuItem Header="退出" IsEnabled="False"/>
+				<MenuItem Header="退出" InputGestureText="Alt+F4" IsEnabled="False"/>
 			</MenuItem>
 			<MenuItem Header="编辑">
-				<MenuItem Header="撤销" Click="mx_toolUndo_Click"/>
-				<MenuItem Header="重复" Click="mx_toolRedo_Click"/>
+				<MenuItem Header="撤销" InputGestureText="Ctrl+Z" Click="mx_toolUndo_Click"/>
+				<MenuItem Header="重复" InputGestureText="Ctrl+Y" Click="mx_toolRedo_Click"/>
+				<Separator/>
+				<MenuItem Header="剪切" InputGestureText="Ctrl+X" Click="mx_toolCut_Click"/>
+				<MenuItem Header="复制" InputGestureText="Ctrl+C" Click="mx_toolCopy_Click"/>
+				<MenuItem Header="粘贴" InputGestureText="Ctrl+V" Click="mx_toolPaste_Click"/>
+				<MenuItem Header="删除" InputGestureText="Delete" Click="mx_toolDelete_Click"/>
+				<Separator/>
+				<MenuItem Header="上移" InputGestureText="Ctrl+-" Click="mx_toolMoveUp_Click"/>
+				<MenuItem Header="下移" InputGestureText="Ctrl+=" Click="mx_toolMoveDown_Click"/>
 			</MenuItem>
 		</Menu>
 		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
@@ -45,13 +78,21 @@
 				</Grid.RowDefinitions>
 				<ToolBarTray Grid.Row="0">
 					<ToolBar HorizontalAlignment="Left">
-						<Button Name="mx_toolNew" IsEnabled="False">新建</Button>
-						<Button Name="mx_toolOpen" Click="openProj">打开</Button>
-						<Button Name="mx_toolSave" Click="mx_toolSave_Click">保存</Button>
-						<Button Name="mx_toolSaveAll" Click="mx_toolSaveAll_Click">全部保存</Button>
+						<Button Name="mx_toolNew" Click="mx_toolNew_Click" IsEnabled="False" ToolTip="新建 (Ctrl + N)">新建</Button>
+						<Button Name="mx_toolOpen" Click="openProj" ToolTip="打开 (Ctrl + O)">打开</Button>
+						<Button Name="mx_toolSave" Click="mx_toolSave_Click" ToolTip="保存 (Ctrl + S)">保存</Button>
+						<Button Name="mx_toolSaveAll" Click="mx_toolSaveAll_Click" ToolTip="全部保存 (Ctrl + Shift + S)">全部保存</Button>
 						<Separator/>
-						<Button Name="mx_toolUndo" Click="mx_toolUndo_Click">撤销</Button>
-						<Button Name="mx_toolRedo" Click="mx_toolRedo_Click">重复</Button>
+						<Button Name="mx_toolUndo" Click="mx_toolUndo_Click" ToolTip="撤销 (Ctrl + Z)">撤销</Button>
+						<Button Name="mx_toolRedo" Click="mx_toolRedo_Click" ToolTip="重复 (Ctrl + Y)">重复</Button>
+						<Separator/>
+						<Button Name="mx_toolCut" Click="mx_toolCut_Click" ToolTip="剪切 (Ctrl + X)">剪切</Button>
+						<Button Name="mx_toolCopy" Click="mx_toolCopy_Click"  ToolTip="复制 (Ctrl + C)">复制</Button>
+						<Button Name="mx_toolPaste" Click="mx_toolPaste_Click"  ToolTip="粘贴 (Ctrl + V)">粘贴</Button>
+						<Button Name="mx_toolDelete" Click="mx_toolDelete_Click"  ToolTip="删除 (Delete)">删除</Button>
+						<Separator/>
+						<Button Name="mx_toolMoveUp" Click="mx_toolMoveUp_Click"  ToolTip="上移 (Ctrl + -)">上移</Button>
+						<Button Name="mx_toolMoveDown" Click="mx_toolMoveDown_Click"  ToolTip="下移 (Ctrl + =)">下移</Button>
 					</ToolBar>
 					<ToolBar HorizontalAlignment="Left">
 						<Label>调试模式：</Label>

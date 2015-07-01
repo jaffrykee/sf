@@ -28,7 +28,7 @@
 				</Grid.ColumnDefinitions>
 				<CheckBox Name="mx_onlySetted"
 					Grid.Column="0"
-					IsChecked="True"
+					IsChecked="False"
 					Checked="mx_onlySetted_Checked"
 					Unchecked="mx_onlySetted_Unchecked"
 					VerticalAlignment="Center"

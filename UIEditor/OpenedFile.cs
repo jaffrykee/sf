@@ -45,6 +45,7 @@ namespace UIEditor
 			ToolTip tabTip = new ToolTip();
 			tabTip.Content = m_path;
 			m_tab.Header = StringDic.getFileNameWithoutPath(path);
+			m_tab.Header = m_tab.Header.ToString().Replace("_", "__");
 			m_tab.ToolTip = tabTip;
 			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
 			m_tab.Content = tabContent;

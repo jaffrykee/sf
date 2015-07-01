@@ -84,84 +84,191 @@ namespace UIEditor
 		{
 		}
 
+		public void refreshItemMenu()
+		{
+			switch(m_type)
+			{
+				case "CtrlUI":
+					{
+						#region
+						mx_addCtrl.Visibility = System.Windows.Visibility.Visible;
+						mx_addNode.Visibility = System.Windows.Visibility.Collapsed;
+						if (m_xe.Name == "BoloUI")
+						{
+							MainWindow.CtrlDef_T panelCtrlDef;
+
+							mx_cut.IsEnabled = false;
+							mx_copy.IsEnabled = false;
+							mx_delete.IsEnabled = false;
+							mx_moveUp.IsEnabled = false;
+							mx_moveDown.IsEnabled = false;
+							if (m_pW.m_xePaste != null)
+							{
+								if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_pW.m_xePaste.Name, out panelCtrlDef))
+								{
+									mx_paste.IsEnabled = true;
+								}
+								else
+								{
+									mx_paste.IsEnabled = false;
+								}
+							}
+							else
+							{
+								mx_paste.IsEnabled = false;
+							}
+						}
+						else
+						{
+							mx_cut.IsEnabled = true;
+							mx_copy.IsEnabled = true;
+							mx_delete.IsEnabled = true;
+							mx_moveUp.IsEnabled = true;
+							mx_moveDown.IsEnabled = true;
+							if (m_pW.m_xePaste != null)
+							{
+								mx_paste.IsEnabled = true;
+							}
+							else
+							{
+								mx_paste.IsEnabled = false;
+							}
+						}
+						#endregion
+					}
+					break;
+				case "Skin":
+					{
+						#region
+						mx_addCtrl.Visibility = System.Windows.Visibility.Collapsed;
+						mx_addNode.Visibility = System.Windows.Visibility.Visible;
+						if (m_xe.Name == "BoloUI")
+						{
+							mx_delete.IsEnabled = false;
+							mx_moveUp.IsEnabled = false;
+							mx_moveDown.IsEnabled = false;
+						}
+						else
+						{
+							mx_delete.IsEnabled = true;
+							mx_moveUp.IsEnabled = true;
+							mx_moveDown.IsEnabled = true;
+						}
+						mx_cut.Visibility = System.Windows.Visibility.Collapsed;
+						mx_copy.Visibility = System.Windows.Visibility.Collapsed;
+						mx_paste.Visibility = System.Windows.Visibility.Collapsed;
+						#endregion
+					}
+					break;
+				default:
+					break;
+			}
+		}
 		private void mx_menu_Loaded(object sender, RoutedEventArgs e)
 		{
-			mx_addCtrl.Visibility = System.Windows.Visibility.Visible;
-			mx_addNode.Visibility = System.Windows.Visibility.Collapsed;
-			if (m_pW.m_xePaste == null)
+			refreshItemMenu();
+		}
+		private void mx_menu_Unloaded(object sender, RoutedEventArgs e)
+		{
+		}
+
+		public bool canCut()
+		{
+			refreshItemMenu();
+			if(mx_cut.IsEnabled == true && mx_cut.Visibility == System.Windows.Visibility.Visible)
 			{
-				mx_paste.IsEnabled = false;
+				return true;
 			}
 			else
 			{
-				mx_paste.IsEnabled = true;
+				return false;
 			}
 		}
-		private void mx_delete_Click(object sender, RoutedEventArgs e)
+		public bool canCopy()
 		{
-			m_rootControl.m_openedFile.m_lstOpt.addOperation(
-				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, m_xe)
-				);
-		}
-		private void mx_moveDown_Click(object sender, RoutedEventArgs e)
-		{
-			if (m_xe.ParentNode.LastChild != m_xe)
+			refreshItemMenu();
+			if (mx_copy.IsEnabled == true && mx_copy.Visibility == System.Windows.Visibility.Visible)
 			{
-				m_rootControl.m_openedFile.m_lstOpt.addOperation(
-					new XmlOperation.HistoryNode(
-						XmlOperation.XmlOptType.NODE_MOVE,
-						m_xe,
-						(XmlElement)m_xe.ParentNode,
-						XmlOperation.HistoryNode.getXeIndex(m_xe) + 1
-					)
-				);
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
-		private void mx_moveUp_Click(object sender, RoutedEventArgs e)
+		public bool canPaste()
 		{
-			if (m_xe.ParentNode.FirstChild != m_xe)
+			refreshItemMenu();
+			if (mx_paste.IsEnabled == true && mx_paste.Visibility == System.Windows.Visibility.Visible)
 			{
-				m_rootControl.m_openedFile.m_lstOpt.addOperation(
-					new XmlOperation.HistoryNode(
-						XmlOperation.XmlOptType.NODE_MOVE,
-						m_xe,
-						(XmlElement)m_xe.ParentNode,
-						XmlOperation.HistoryNode.getXeIndex(m_xe) - 1
-					)
-				);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		public bool canDelete()
+		{
+			refreshItemMenu();
+			if (mx_delete.IsEnabled == true && mx_delete.Visibility == System.Windows.Visibility.Visible)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		public bool canMoveUp()
+		{
+			refreshItemMenu();
+			if (mx_moveUp.IsEnabled == true && mx_delete.Visibility == System.Windows.Visibility.Visible)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		public bool canMoveDown()
+		{
+			refreshItemMenu();
+			if (mx_moveDown.IsEnabled == true && mx_delete.Visibility == System.Windows.Visibility.Visible)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 
-		private void mx_cut_Click(object sender, RoutedEventArgs e)
+		public void cutItem()
 		{
 			m_pW.m_xePaste = (XmlElement)m_xe.CloneNode(true);
 			m_rootControl.m_openedFile.m_lstOpt.addOperation(
 				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, m_xe)
 				);
 		}
-		private void mx_copy_Click(object sender, RoutedEventArgs e)
+		public void copyItem()
 		{
 			m_pW.m_xePaste = (XmlElement)m_xe.CloneNode(true);
 		}
-		private void mx_paste_Click(object sender, RoutedEventArgs e)
+		public void pasteItem()
 		{
 			XmlElement xeCopy;
 
 			if (m_pW.m_xePaste != null)
 			{
-				if (m_pW.m_xePaste.OwnerDocument != m_xe.OwnerDocument)
-				{
-					xeCopy = m_xe.OwnerDocument.CreateElement("tmp");
-					xeCopy.InnerXml = m_pW.m_xePaste.OuterXml;
-					xeCopy = (XmlElement)xeCopy.FirstChild;
-				}
-				else
-				{
-					xeCopy = m_pW.m_xePaste;
-				}
 				MainWindow.CtrlDef_T ctrlPtr;
 				MainWindow.SkinDef_T skinPtr;
 				XmlItem treeChild = null;
+
+				xeCopy = m_xe.OwnerDocument.CreateElement("tmp");
+				xeCopy.InnerXml = m_pW.m_xePaste.OuterXml;
+				xeCopy = (XmlElement)xeCopy.FirstChild;
 
 				if (m_pW.m_mapCtrlDef.TryGetValue(xeCopy.Name, out ctrlPtr))
 				{
@@ -183,7 +290,13 @@ namespace UIEditor
 					{
 						MainWindow.CtrlDef_T panelCtrlDef;
 
-						if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
+						if (m_xe.Name == "BoloUI" && m_pW.m_mapPanelCtrlDef.TryGetValue(treeChild.m_xe.Name, out panelCtrlDef))
+						{
+							m_rootControl.m_openedFile.m_lstOpt.addOperation(
+								new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
+								);
+						}
+						else if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 						{
 							m_rootControl.m_openedFile.m_lstOpt.addOperation(
 								new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
@@ -191,7 +304,7 @@ namespace UIEditor
 						}
 						else
 						{
-							if (m_xe.ParentNode.ParentNode.NodeType == XmlNodeType.Element)
+							if (m_xe.ParentNode != null && m_xe.ParentNode.ParentNode == null && m_xe.ParentNode.ParentNode.NodeType == XmlNodeType.Element)
 							{
 								m_rootControl.m_openedFile.m_lstOpt.addOperation(
 									new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, (XmlElement)m_xe.ParentNode)
@@ -202,6 +315,66 @@ namespace UIEditor
 				}
 			}
 		}
+		public void deleteItem()
+		{
+			m_rootControl.m_openedFile.m_lstOpt.addOperation(
+				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, m_xe)
+				);
+		}
+		public void moveDownItem()
+		{
+			if (m_xe.ParentNode.LastChild != m_xe)
+			{
+				m_rootControl.m_openedFile.m_lstOpt.addOperation(
+					new XmlOperation.HistoryNode(
+						XmlOperation.XmlOptType.NODE_MOVE,
+						m_xe,
+						(XmlElement)m_xe.ParentNode,
+						XmlOperation.HistoryNode.getXeIndex(m_xe) + 1
+					)
+				);
+			}
+		}
+		public void moveUpItem()
+		{
+			if (m_xe.ParentNode.FirstChild != m_xe)
+			{
+				m_rootControl.m_openedFile.m_lstOpt.addOperation(
+					new XmlOperation.HistoryNode(
+						XmlOperation.XmlOptType.NODE_MOVE,
+						m_xe,
+						(XmlElement)m_xe.ParentNode,
+						XmlOperation.HistoryNode.getXeIndex(m_xe) - 1
+					)
+				);
+			}
+		}
+
+		private void mx_cut_Click(object sender, RoutedEventArgs e)
+		{
+			cutItem();
+		}
+		private void mx_copy_Click(object sender, RoutedEventArgs e)
+		{
+			copyItem();
+		}
+		private void mx_paste_Click(object sender, RoutedEventArgs e)
+		{
+			pasteItem();
+		}
+		private void mx_delete_Click(object sender, RoutedEventArgs e)
+		{
+			deleteItem();
+		}
+		private void mx_moveDown_Click(object sender, RoutedEventArgs e)
+		{
+			moveDownItem();
+		}
+		private void mx_moveUp_Click(object sender, RoutedEventArgs e)
+		{
+			moveUpItem();
+		}
+
 		private void mx_text_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			if (m_xe.Name == "skingroup")

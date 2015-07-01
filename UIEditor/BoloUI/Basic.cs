@@ -60,26 +60,37 @@ namespace UIEditor.BoloUI
 			mx_addCtrl.Items.Clear();
 			if(m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 			{
-				foreach(KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrl in m_pW.m_mapCtrlDef.ToList())
+				foreach(KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in m_pW.m_mapCtrlDef.ToList())
 				{
-					MenuItem ctrlItem = new MenuItem();
+					MenuItem ctrlMenuItem = new MenuItem();
 
-					ctrlItem.ToolTip = pairCtrl.Key;
-					if (StringDic.m_mapStrControl[pairCtrl.Key] == null || StringDic.m_mapStrControl[pairCtrl.Key] == "")
-					{
-						ctrlItem.Header = pairCtrl.Key;
-					}
-					else
-					{
-						ctrlItem.Header = StringDic.m_mapStrControl[pairCtrl.Key];
-					}
-					ctrlItem.Click += insertCtrlItem_Click;
-					mx_addCtrl.Items.Add(ctrlItem);
+					StringDic.getNameAndTip(ctrlMenuItem, pairCtrlDef.Key, StringDic.m_mapStrControl);
+					ctrlMenuItem.Click += insertCtrlItem_Click;
+					mx_addCtrl.Items.Add(ctrlMenuItem);
 				}
 			}
 			else
 			{
-				if (m_xe.Name != "event")
+				if(m_xe.Name == "BoloUI")
+				{
+					foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrl in m_pW.m_mapPanelCtrlDef.ToList())
+					{
+						MenuItem ctrlItem = new MenuItem();
+
+						ctrlItem.ToolTip = pairCtrl.Key;
+						if (StringDic.m_mapStrControl[pairCtrl.Key] == null || StringDic.m_mapStrControl[pairCtrl.Key] == "")
+						{
+							ctrlItem.Header = pairCtrl.Key;
+						}
+						else
+						{
+							ctrlItem.Header = StringDic.m_mapStrControl[pairCtrl.Key];
+						}
+						ctrlItem.Click += insertCtrlItem_Click;
+						mx_addCtrl.Items.Add(ctrlItem);
+					}
+				}
+				else if (m_xe.Name != "event")
 				{
 					MenuItem ctrlItem = new MenuItem();
 
@@ -143,54 +154,57 @@ namespace UIEditor.BoloUI
 		}
 		public override void initHeader()
 		{
-			string ctrlTip;
-			string name = "", id = "";
+			if(m_xe.Name != "BoloUI")
+			{
+				string ctrlTip;
+				string name = "", id = "";
 
-			if (StringDic.m_mapStrControl.TryGetValue(m_xe.Name, out ctrlTip))
-			{
-				mx_text.Content = "<" + ctrlTip + ">";
-				mx_text.ToolTip = m_xe.Name;
-			}
-			else
-			{
-				mx_text.Content = "<" + m_xe.Name + ">";
-			}
-			if (m_isCtrl && m_xe.Name != "event")
-			{
-				name = m_xe.GetAttribute("name");
-				id = m_xe.GetAttribute("baseID");
-			}
-			else
-			{
-				mx_text.Content = "<" + m_xe.Name + ">";
-				if (m_xe.GetAttribute("Name") != "")
+				if (StringDic.m_mapStrControl.TryGetValue(m_xe.Name, out ctrlTip))
 				{
-					name = m_xe.GetAttribute("Name");
+					mx_text.Content = "<" + ctrlTip + ">";
+					mx_text.ToolTip = m_xe.Name;
 				}
-				else if (m_xe.GetAttribute("type") != "")
+				else
 				{
-					name = m_xe.GetAttribute("type");
+					mx_text.Content = "<" + m_xe.Name + ">";
+				}
+				if (m_isCtrl && m_xe.Name != "event")
+				{
+					name = m_xe.GetAttribute("name");
+					id = m_xe.GetAttribute("baseID");
+				}
+				else
+				{
+					mx_text.Content = "<" + m_xe.Name + ">";
+					if (m_xe.GetAttribute("Name") != "")
+					{
+						name = m_xe.GetAttribute("Name");
+					}
+					else if (m_xe.GetAttribute("type") != "")
+					{
+						name = m_xe.GetAttribute("type");
+					}
+
+					if (m_xe.GetAttribute("id") != "")
+					{
+						id = m_xe.GetAttribute("id");
+					}
+					else if (m_xe.GetAttribute("function") != "")
+					{
+						id = m_xe.GetAttribute("function");
+					}
 				}
 
-				if (m_xe.GetAttribute("id") != "")
+				if (m_pW.m_vCtrlName)
 				{
-					id = m_xe.GetAttribute("id");
+					mx_text.Content += name;
 				}
-				else if (m_xe.GetAttribute("function") != "")
+				if (m_pW.m_vCtrlId)
 				{
-					id = m_xe.GetAttribute("function");
+					mx_text.Content += "(" + id + ")";
 				}
+				mx_text.Content = mx_text.Content.ToString().Replace("_", "__");
 			}
-
-			if (m_pW.m_vCtrlName)
-			{
-				mx_text.Content += name;
-			}
-			if (m_pW.m_vCtrlId)
-			{
-				mx_text.Content += "(" + id + ")";
-			}
-			mx_text.Content = mx_text.Content.ToString().Replace("_", "__"); 
 		}
 		public override void changeSelectItem(object obj = null)
 		{
@@ -208,7 +222,12 @@ namespace UIEditor.BoloUI
 			bool tmp = m_pW.m_attrBinding;
 			m_pW.m_attrBinding = false;
 
+			if (m_pW.m_curItem != null)
+			{
+				m_pW.m_curItem.mx_text.Background = new SolidColorBrush(Color.FromArgb(0x00, 0xff, 0xff, 0xff));
+			}
 			m_pW.m_curItem = this;
+			m_pW.m_curItem.mx_text.Background = new SolidColorBrush(Color.FromArgb(0xff, 0x33, 0x99, 0xff));
 			m_pW.hiddenAllAttr();
 			MainWindow.CtrlDef_T ctrlDef;
 

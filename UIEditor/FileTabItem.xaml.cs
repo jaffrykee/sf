@@ -86,6 +86,11 @@ namespace UIEditor
 			pW.updateGL(m_filePath, MainWindow.W2GTag.W2G_NORMAL_NAME);
 			pW.m_mapOpenedFiles.Remove(tabPath);
 			pW.mx_workTabs.Items.Remove(tabItem);
+			if(pW.mx_workTabs.Items.Count == 0)
+			{
+				pW.mx_treeCtrlFrame.Items.Clear();
+				pW.mx_treeSkinFrame.Items.Clear();
+			}
 			pW.hiddenAllAttr();
 		}
 	}
