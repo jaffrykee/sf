@@ -147,16 +147,25 @@ namespace UIEditor
 							mx_delete.IsEnabled = false;
 							mx_moveUp.IsEnabled = false;
 							mx_moveDown.IsEnabled = false;
+							mx_cut.IsEnabled = false;
+							mx_copy.IsEnabled = false;
 						}
 						else
 						{
 							mx_delete.IsEnabled = true;
 							mx_moveUp.IsEnabled = true;
 							mx_moveDown.IsEnabled = true;
+							mx_cut.IsEnabled = true;
+							mx_copy.IsEnabled = true;
 						}
-						mx_cut.Visibility = System.Windows.Visibility.Collapsed;
-						mx_copy.Visibility = System.Windows.Visibility.Collapsed;
-						mx_paste.Visibility = System.Windows.Visibility.Collapsed;
+						if (m_pW.m_xePaste != null)
+						{
+							mx_paste.IsEnabled = true;
+						}
+						else
+						{
+							mx_paste.IsEnabled = false;
+						}
 						#endregion
 					}
 					break;
@@ -274,7 +283,7 @@ namespace UIEditor
 				{
 					treeChild = new BoloUI.Basic(xeCopy, m_rootControl);
 				}
-				else if (m_pW.m_mapSkinResDef.TryGetValue(xeCopy.Name, out skinPtr))
+				else if (m_pW.m_mapAllResDef.TryGetValue(xeCopy.Name, out skinPtr))
 				{
 					treeChild = new BoloRes.ResBasic(xeCopy, m_rootControl, skinPtr);
 				}
@@ -288,27 +297,72 @@ namespace UIEditor
 					}
 					else
 					{
-						MainWindow.CtrlDef_T panelCtrlDef;
+						if(m_type == "CtrlUI")
+						{
+							MainWindow.CtrlDef_T panelCtrlDef;
 
-						if (m_xe.Name == "BoloUI" && m_pW.m_mapPanelCtrlDef.TryGetValue(treeChild.m_xe.Name, out panelCtrlDef))
-						{
-							m_rootControl.m_openedFile.m_lstOpt.addOperation(
-								new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
-								);
-						}
-						else if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
-						{
-							m_rootControl.m_openedFile.m_lstOpt.addOperation(
-								new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
-								);
-						}
-						else
-						{
-							if (m_xe.ParentNode != null && m_xe.ParentNode.ParentNode == null && m_xe.ParentNode.ParentNode.NodeType == XmlNodeType.Element)
+							if (m_xe.Name == "BoloUI" && m_pW.m_mapPanelCtrlDef.TryGetValue(treeChild.m_xe.Name, out panelCtrlDef))
 							{
 								m_rootControl.m_openedFile.m_lstOpt.addOperation(
-									new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, (XmlElement)m_xe.ParentNode)
+									new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
 									);
+							}
+							else if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
+							{
+								m_rootControl.m_openedFile.m_lstOpt.addOperation(
+									new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
+									);
+							}
+							else
+							{
+								if (m_xe.ParentNode != null && m_xe.ParentNode.ParentNode == null && m_xe.ParentNode.ParentNode.NodeType == XmlNodeType.Element)
+								{
+									m_rootControl.m_openedFile.m_lstOpt.addOperation(
+										new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, (XmlElement)m_xe.ParentNode)
+										);
+								}
+							}
+						}
+						else if(m_type == "Skin")
+						{
+							MainWindow.SkinDef_T skinDef;
+							if(m_pW.m_mapAllResDef.TryGetValue(m_xe.Name, out skinDef))
+							{
+								MainWindow.SkinDef_T skinChildDef;
+								if(skinDef.m_mapEnChild != null && skinDef.m_mapEnChild.Count > 0
+									&& skinDef.m_mapEnChild.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
+								{
+									m_rootControl.m_openedFile.m_lstOpt.addOperation(
+										new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
+										);
+								}
+								else
+								{
+									if(m_xe.ParentNode.NodeType == XmlNodeType.Element)
+									{
+										if (((XmlElement)m_xe.ParentNode).Name == "BoloUI")
+										{
+											if (m_pW.m_mapSkinResDef.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
+											{
+												m_rootControl.m_openedFile.m_lstOpt.addOperation(
+													new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, ((XmlElement)m_xe.ParentNode))
+													);
+											}
+										}
+										else
+										{
+											if (m_pW.m_mapAllResDef.TryGetValue(((XmlElement)m_xe.ParentNode).Name, out skinDef))
+											{
+												if (skinDef.m_mapEnChild.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
+												{
+													m_rootControl.m_openedFile.m_lstOpt.addOperation(
+														new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, ((XmlElement)m_xe.ParentNode))
+														);
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 					}
