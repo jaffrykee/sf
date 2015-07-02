@@ -271,24 +271,25 @@ namespace UIEditor
 			m_xmlDoc.Load(m_openedFile.m_path);
 			m_xeRootBolo = (XmlElement)m_xmlDoc.SelectSingleNode("BoloUI");
 
-			m_treeUI = new BoloUI.Basic(m_xeRootBolo, this, true);
-			m_treeSkin = new BoloRes.ResBasic(m_xeRootBolo, this, null);
-
-			m_pW.mx_treeCtrlFrame.Items.Add(m_treeUI);
-			m_treeUI.mx_text.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-			m_treeUI.mx_text.Content = m_treeUI.mx_text.Content.ToString().Replace("_", "__");
-			m_treeUI.mx_text.ToolTip = m_openedFile.m_path;
-			m_treeUI.IsExpanded = true;
-			m_pW.mx_treeSkinFrame.Items.Add(m_treeSkin);
-			m_treeSkin.mx_text.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-			m_treeSkin.mx_text.Content = m_treeSkin.mx_text.Content.ToString().Replace("_", "__");
-			m_treeSkin.mx_text.ToolTip = m_openedFile.m_path;
-			m_treeSkin.IsExpanded = true;
-
-			m_treeUI.Items.Clear();
-			m_treeSkin.Items.Clear();
 			if (m_xeRootBolo != null)
 			{
+				m_treeUI = new BoloUI.Basic(m_xeRootBolo, this, true);
+				m_treeSkin = new BoloRes.ResBasic(m_xeRootBolo, this, null);
+
+				m_pW.mx_treeCtrlFrame.Items.Add(m_treeUI);
+				m_treeUI.mx_text.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+				m_treeUI.mx_text.Content = m_treeUI.mx_text.Content.ToString().Replace("_", "__");
+				m_treeUI.mx_text.ToolTip = m_openedFile.m_path;
+				m_treeUI.IsExpanded = true;
+				m_pW.mx_treeSkinFrame.Items.Add(m_treeSkin);
+				m_treeSkin.mx_text.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+				m_treeSkin.mx_text.Content = m_treeSkin.mx_text.Content.ToString().Replace("_", "__");
+				m_treeSkin.mx_text.ToolTip = m_openedFile.m_path;
+				m_treeSkin.IsExpanded = true;
+
+				m_treeUI.Items.Clear();
+				m_treeSkin.Items.Clear();
+
 				XmlNodeList xnl = m_xeRootBolo.ChildNodes;
 
 				checkBaseId(m_xeRootBolo);
@@ -322,26 +323,26 @@ namespace UIEditor
 				}
 				refreshSkinDic("publicskin");
 				refreshBoloUIView(true);
+				m_pW.updateXmlToGL(m_openedFile.m_path, m_xmlDoc);
+				if (m_openedFile.m_preViewSkinName != null && m_openedFile.m_preViewSkinName != "")
+				{
+					BoloRes.ResBasic skinBasic;
+
+					if (m_mapSkin.TryGetValue(m_openedFile.m_preViewSkinName, out skinBasic))
+					{
+						skinBasic.changeSelectItem(m_openedFile.m_prePlusCtrlUI);
+					}
+					else
+					{
+						m_pW.mx_debug.Text += "<警告>然而，并没有这个皮肤。(" + m_openedFile.m_preViewSkinName + ")\r\n";
+					}
+				}
 			}
 			else
 			{
 				m_pW.mx_debug.Text += ("这不是一个有效的BoloUI文件。" + "\r\n");
 			}
-			m_pW.updateXmlToGL(m_openedFile.m_path, m_xmlDoc);
 			m_loaded = true;
-			if (m_openedFile.m_preViewSkinName != null && m_openedFile.m_preViewSkinName != "")
-			{
-				BoloRes.ResBasic skinBasic;
-
-				if(m_mapSkin.TryGetValue(m_openedFile.m_preViewSkinName, out skinBasic))
-				{
-					skinBasic.changeSelectItem(m_openedFile.m_prePlusCtrlUI);
-				}
-				else
-				{
-					m_pW.mx_debug.Text += "<警告>然而，并没有这个皮肤。(" + m_openedFile.m_preViewSkinName + ")\r\n";
-				}
-			}
 		}
 
 		private void mx_root_Loaded(object sender, RoutedEventArgs e)

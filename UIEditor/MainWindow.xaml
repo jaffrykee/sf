@@ -69,6 +69,10 @@
 				<MenuItem Header="上移" InputGestureText="Ctrl+-" Click="mx_toolMoveUp_Click"/>
 				<MenuItem Header="下移" InputGestureText="Ctrl+=" Click="mx_toolMoveDown_Click"/>
 			</MenuItem>
+			<MenuItem Header="视图">
+				<MenuItem Name="mx_viewPrevFile" Header="上一文件" InputGestureText="Ctrl+PageUp"/>
+				<MenuItem Name="mx_viewNextFile" Header="下一文件" InputGestureText="Ctrl+PageDown"/>
+			</MenuItem>
 		</Menu>
 		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
 			<Grid>

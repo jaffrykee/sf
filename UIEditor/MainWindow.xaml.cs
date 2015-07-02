@@ -64,6 +64,8 @@ namespace UIEditor
 		//public string conf_pathGlApp = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
 		//release
 		public string conf_pathGlApp = @".\dsuieditor.exe";
+		public string conf_pathConf = @".\conf.xml";
+		public XmlDocument m_docConf;
 
 		public MainWindow()
 		{
@@ -91,13 +93,28 @@ namespace UIEditor
 
 			m_xdTest.LoadXml(m_strTestXml);
 			m_xeTest = m_xdTest.DocumentElement;
+
+			m_docConf = new XmlDocument();
+			if(!File.Exists(conf_pathConf))
+			{
+				string initConfXml = "<Config><ProjHistory>E:\\mmo2013001\\artist\\client_resouce\\ui\\free</ProjHistory></Config>";
+
+				m_docConf.LoadXml(initConfXml);
+				m_docConf.Save(conf_pathConf);
+			}
+			else
+			{
+				m_docConf.Load(conf_pathConf);
+			}
 		}
 
 		private void openProj(object sender, RoutedEventArgs e)//打开工程
 		{
+			string projPath = m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml;
+
 			System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			openFolderDialog.Description = "选择UI所在文件夹";
-			openFolderDialog.SelectedPath = @"E:\mmo2013001\artist\client_resouce\ui\free";
+			openFolderDialog.SelectedPath = projPath;
 			System.Windows.Forms.DialogResult result = openFolderDialog.ShowDialog();
 
 			if (result == System.Windows.Forms.DialogResult.Cancel)
@@ -106,13 +123,25 @@ namespace UIEditor
 			}
 			string path = openFolderDialog.SelectedPath;
 
+			m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml = path;
+			m_docConf.Save(conf_pathConf);
 			sendPathToGL(path);
 			initXmlValueDef();
 			//refreshImage(path + "\\images");
 			m_projPath = path;
 			m_skinPath = path + "\\skin";
-			refreshSkin(m_skinPath);
-			refreshProjTree(path, this.mx_treePro, true);
+			if (Directory.Exists(m_skinPath))
+			{
+				if (File.Exists(m_skinPath + "\\publicskin.xml"))
+				{
+					refreshSkin(m_skinPath);
+				}
+				refreshProjTree(path, this.mx_treePro, true);
+			}
+			else
+			{
+				MessageBox.Show("没有找到皮肤目录：" + m_skinPath + "，请检查项目路径。");
+			}
 		}
 		private void sendPathToGL(string path)//告知GL端工程根目录
 		{
@@ -480,6 +509,10 @@ namespace UIEditor
 					break;
 				case WM_LBUTTONDOWN:
 					{
+						if (m_curItem != null)
+						{
+							m_curItem.m_rootControl.refreshVRect();
+						}
 						int pX = (int)lParam & 0xFFFF;
 						int pY = ((int)lParam >> 16) & 0xFFFF;
 
@@ -1671,16 +1704,28 @@ namespace UIEditor
 		}
 		private void mx_toolUndo_Click(object sender, RoutedEventArgs e)
 		{
-			if (m_mapOpenedFiles[m_curFile].m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+			OpenedFile openFileDef;
+
+			if (m_curFile != "" &&
+				m_mapOpenedFiles.TryGetValue(m_curFile, out openFileDef) &&
+				openFileDef != null &&
+				openFileDef.m_frame != null &&
+				openFileDef.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
 			{
-				m_mapOpenedFiles[m_curFile].m_lstOpt.undo();
+				openFileDef.m_lstOpt.undo();
 			}
 		}
 		private void mx_toolRedo_Click(object sender, RoutedEventArgs e)
 		{
-			if (m_mapOpenedFiles[m_curFile].m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+			OpenedFile openFileDef;
+
+			if (m_curFile != "" &&
+				m_mapOpenedFiles.TryGetValue(m_curFile, out openFileDef) &&
+				openFileDef != null &&
+				openFileDef.m_frame != null &&
+				openFileDef.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
 			{
-				m_mapOpenedFiles[m_curFile].m_lstOpt.redo();
+				openFileDef.m_lstOpt.redo();
 			}
 		}
 
