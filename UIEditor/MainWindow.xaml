@@ -109,6 +109,11 @@
 					<TabItem Name="mx_proFrame" Header="工程目录">
 						<TreeView Background="#08080808">
 							<TreeViewItem Name="mx_treePro">
+								<TreeViewItem.ContextMenu>
+									<ContextMenu>
+										<MenuItem Name="mx_newFile" Header="新建" InputGestureText="Ctrl+N" Click="mx_newFile_Click" IsEnabled="False"/>
+									</ContextMenu>
+								</TreeViewItem.ContextMenu>
 							</TreeViewItem>
 						</TreeView>
 					</TabItem>

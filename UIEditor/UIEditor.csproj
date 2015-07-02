@@ -76,6 +76,9 @@
     </ApplicationDefinition>
     <Compile Include="BoloRes\ResBasic.cs" />
     <Compile Include="BoloUI\Basic.cs" />
+    <Compile Include="FileMenu.xaml.cs">
+      <DependentUpon>FileMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XmlItem.xaml.cs">
       <DependentUpon>XmlItem.xaml</DependentUpon>
     </Compile>
@@ -120,6 +123,10 @@
     <Page Include="ani.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FileMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XmlItem.xaml">
       <Generator>MSBuild:Compile</Generator>

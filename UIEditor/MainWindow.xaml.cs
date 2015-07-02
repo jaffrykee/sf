@@ -58,6 +58,7 @@ namespace UIEditor
 		public bool m_isCtrlMoved;
 		public int m_downX;
 		public int m_downY;
+		public string m_pasteFilePath;
 
 		//debug
 		//public string conf_pathGlApp = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
@@ -675,15 +676,74 @@ namespace UIEditor
 									}
 									break;
 								case VK_C:
-									if(m_curItem.canCopy())
+									//需要简化下
+									if
+									(
+										(
+											(
+												Keyboard.FocusedElement.GetType().ToString() == "System.Windows.Controls.TreeViewItem" ||
+												Keyboard.FocusedElement.GetType().BaseType.ToString() == "System.Windows.Controls.TreeViewItem"
+											)
+										) &&
+										((TreeViewItem)Keyboard.FocusedElement).Parent != null &&
+										(
+											((TreeViewItem)Keyboard.FocusedElement).Parent == mx_treePro ||
+											(
+												(
+													((TreeViewItem)Keyboard.FocusedElement).Parent.GetType().ToString() == "System.Windows.Controls.TreeViewItem" ||
+													((TreeViewItem)Keyboard.FocusedElement).Parent.GetType().BaseType.ToString() == "System.Windows.Controls.TreeViewItem"
+												) &&
+												((TreeViewItem)((TreeViewItem)Keyboard.FocusedElement).Parent).Parent != null &&
+												((TreeViewItem)((TreeViewItem)Keyboard.FocusedElement).Parent).Parent == mx_treePro
+											)
+										)
+									)
 									{
-										m_curItem.copyItem();
+										m_pasteFilePath = ((TreeViewItem)Keyboard.FocusedElement).ToolTip.ToString();
+									}
+									else
+									{
+										if (m_curItem.canCopy())
+										{
+											m_curItem.copyItem();
+										}
 									}
 									break;
 								case VK_V:
-									if (m_curItem.canPaste())
+									//需要简化下
+									if
+									(
+										(
+											(
+												Keyboard.FocusedElement.GetType().ToString() == "System.Windows.Controls.TreeViewItem" ||
+												Keyboard.FocusedElement.GetType().BaseType.ToString() == "System.Windows.Controls.TreeViewItem"
+											)
+										) &&
+										((TreeViewItem)Keyboard.FocusedElement).Parent != null &&
+										(
+											((TreeViewItem)Keyboard.FocusedElement).Parent == mx_treePro ||
+											(
+												(
+													((TreeViewItem)Keyboard.FocusedElement).Parent.GetType().ToString() == "System.Windows.Controls.TreeViewItem" ||
+													((TreeViewItem)Keyboard.FocusedElement).Parent.GetType().BaseType.ToString() == "System.Windows.Controls.TreeViewItem"
+												) &&
+												((TreeViewItem)((TreeViewItem)Keyboard.FocusedElement).Parent).Parent != null &&
+												((TreeViewItem)((TreeViewItem)Keyboard.FocusedElement).Parent).Parent == mx_treePro
+											)
+										)
+									)
 									{
-										m_curItem.pasteItem();
+										if (m_pasteFilePath != null && m_pasteFilePath != "")
+										{
+											
+										}
+									}
+									else
+									{
+										if (m_curItem.canPaste())
+										{
+											m_curItem.pasteItem();
+										}
 									}
 									break;
 								case VK_OEM_MINUS:
@@ -1690,6 +1750,11 @@ namespace UIEditor
 					m_curItem.moveDownItem();
 				}
 			}
+		}
+
+		private void mx_newFile_Click(object sender, RoutedEventArgs e)
+		{
+
 		}
 	}
 }
