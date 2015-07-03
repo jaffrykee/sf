@@ -21,7 +21,8 @@ namespace UIEditor
 	public partial class PngControl : UserControl
 	{
 		public FileTabItem m_parent;
-		public BitmapImage m_imgSource;
+		public System.Drawing.Bitmap m_Bitmap;
+		public BitmapSource m_imgSource;
 		public int m_imgHeight;
 		public int m_imgWidth;
 		public bool m_loaded;
@@ -33,32 +34,31 @@ namespace UIEditor
 			m_loaded = false;
 		}
 
-		private void tabFrameLoaded(object sender, RoutedEventArgs e)
+		private void mx_imageLoaded(object sender, RoutedEventArgs e)
 		{
 			if (m_loaded == false)
 			{
 				string path = this.m_parent.m_filePath;
 
-				m_imgSource = new BitmapImage();
-				m_imgSource.BeginInit();
-				m_imgSource.StreamSource = new System.IO.FileStream(path, System.IO.FileMode.Open);
-				m_imgSource.EndInit();
+				m_Bitmap = DevIL.DevIL.LoadBitmap(path);
+				IntPtr ip = m_Bitmap.GetHbitmap();
+				m_imgSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+					ip, IntPtr.Zero, Int32Rect.Empty,
+					System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+				MainWindow.DeleteObject(ip);
+
 				m_imgHeight = m_imgSource.PixelHeight;
 				m_imgWidth = m_imgSource.PixelWidth;
-				this.imageFrame.Height = m_imgHeight;
-				this.imageFrame.Width = m_imgWidth;
-				this.imageFrame.Source = m_imgSource;
-				this.imageFrame.Stretch = Stretch.Uniform;
+				m_parent.itemFrame.Height = m_imgHeight;
+				m_parent.itemFrame.Width = m_imgWidth;
+				mx_image.Source = m_imgSource;
+				mx_image.Stretch = Stretch.Uniform;
 				m_loaded = true;
 			}
 		}
 
-		private void imageFrame_Unloaded(object sender, RoutedEventArgs e)
+		private void mx_image_Unloaded(object sender, RoutedEventArgs e)
 		{
-			if (m_imgSource != null)
-			{
-				m_imgSource.StreamSource.Dispose();
-			}
 		}
 	}
 }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+			 Name="mx_root"
              >
 	<Grid Loaded="tabFrameLoaded">
 		<Grid.RowDefinitions>
@@ -17,7 +18,9 @@
 		<TextBox Grid.Row="0" Grid.Column="0" Name="filePath" IsReadOnly="True"/>
 		<Button Grid.Row="0" Grid.Column="1" Width="25" HorizontalAlignment="Right" Click="closeFileTab">x</Button>
 		<Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-			<Border Name="itemFrame"></Border>
+			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+				<Grid Name="itemFrame"></Grid>
+			</ScrollViewer>
 		</Grid>
 	</Grid>
 </UserControl>

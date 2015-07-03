@@ -40,20 +40,44 @@ namespace UIEditor
 				m_filePath = ((ToolTip)((TabItem)this.Parent).ToolTip).Content.ToString();
 				this.filePath.Text = m_filePath;
 
-				m_fileType = StringDic.getFileType(m_filePath);
-				if (m_fileType == "png")
+				m_fileType = StringDic.getFileType(m_filePath).ToLower();
+				switch(m_fileType)
 				{
-					tabContent = Activator.CreateInstance(Type.GetType("UIEditor.PngControl"), this) as UserControl;
+					case "bmp":
+					case "cut":
+					case "dcx":
+					case "dds":
+					case "ico":
+					case "gif":
+					case "jpg":
+					case "lbm":
+					case "lif":
+					case "mdl":
+					case "pcd":
+					case "pcx":
+					case "pic":
+					case "png":
+					case "pnm":
+					case "psd":
+					case "psp":
+					case "raw":
+					case "sgi":
+					case "tga":
+					case "tif":
+					case "wal":
+					case "act":
+					case "pal":
+						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.PngControl"), this) as UserControl;
+						break;
+					case "xml":
+						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.XmlControl"), this) as UserControl;
+						break;
+					default:
+						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.UnknownControl"), this) as UserControl;
+						break;
 				}
-				else if (m_fileType == "xml")
-				{
-					tabContent = Activator.CreateInstance(Type.GetType("UIEditor.XmlControl"), this) as UserControl;
-				}
-				else
-				{
-					tabContent = Activator.CreateInstance(Type.GetType("UIEditor.UnknownControl"), this) as UserControl;
-				}
-				this.itemFrame.Child = tabContent;
+				this.itemFrame.Children.Clear();
+				this.itemFrame.Children.Add(tabContent);
 				m_child = tabContent;
 			}
 		}

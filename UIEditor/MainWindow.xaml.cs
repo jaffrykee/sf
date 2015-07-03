@@ -268,11 +268,11 @@ namespace UIEditor
 							mx_treeSkinFrame.Items.Add(((XmlControl)m_mapOpenedFiles[tabPath].m_frame).m_treeSkin);
 							((XmlControl)openFile.m_frame).refreshBoloUIView(true);
 						}
-						mx_GLCtrl.Visibility = System.Windows.Visibility.Visible;
+						mx_drawFrame.Visibility = System.Windows.Visibility.Visible;
 					}
 					else
 					{
-						mx_GLCtrl.Visibility = System.Windows.Visibility.Collapsed;
+						mx_drawFrame.Visibility = System.Windows.Visibility.Collapsed;
 					}
 				}
 			}
@@ -351,6 +351,9 @@ namespace UIEditor
 		#endregion
 
 		#region SendMessage函数接口
+		[DllImport("gdi32")]
+		public static extern int DeleteObject(IntPtr o);
+
 		[DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Unicode)]
 		internal static extern int SendMessage(
 			IntPtr hwnd,
