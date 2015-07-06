@@ -6,8 +6,10 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
 	xmlns:userView="clr-namespace:UIEditor"
+	Name="mx_root"
 	Title="MainWindow" Width="1280" Height="800"
 	Loaded="On_UIReady"
+	Closing="mx_root_Closing"
 	>
 	<Window.Resources>
 		<RoutedUICommand x:Key="btnClick_mx_toolNew" Text="Button Click" />
@@ -70,8 +72,10 @@
 				<MenuItem Header="下移" InputGestureText="Ctrl+=" Click="mx_toolMoveDown_Click"/>
 			</MenuItem>
 			<MenuItem Header="视图">
-				<MenuItem Name="mx_viewPrevFile" Header="上一文件" InputGestureText="Ctrl+PageUp"/>
-				<MenuItem Name="mx_viewNextFile" Header="下一文件" InputGestureText="Ctrl+PageDown"/>
+				<MenuItem Name="mx_viewPrevFile" Header="上一窗口" InputGestureText="Ctrl+PageUp"/>
+				<MenuItem Name="mx_viewNextFile" Header="下一窗口" InputGestureText="Ctrl+PageDown"/>
+				<Separator/>
+				<MenuItem Name="mx_viewCloseFile" Header="关闭窗口" InputGestureText="Ctrl+W"/>
 			</MenuItem>
 		</Menu>
 		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
@@ -178,14 +182,7 @@
 				<ColumnDefinition Name="mx_glC0" Width="*"/>
 				<ColumnDefinition Name="mx_glC1" Width="{Binding ElementName=mx_glR2, Path=Height}"/>
 			</Grid.ColumnDefinitions>
-			<Border Name="mx_GLCtrl" Grid.Row="1"></Border>
-			<ScrollViewer
-					Grid.ColumnSpan="2"
-					Grid.RowSpan="2"
-					HorizontalScrollBarVisibility="Visible"
-					VerticalScrollBarVisibility="Visible">
-				<Grid Width="960" Height="640"></Grid>
-			</ScrollViewer>
+			<Border Name="mx_GLCtrl" Grid.Row="1" Margin="5"></Border>
 		</Grid>
 		<DockPanel Name="mx_normalFrame" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" Margin="0,0,0,5">
 			<TabControl Name="mx_workTabs" SelectionChanged="mx_workTabs_SelectionChanged">

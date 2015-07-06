@@ -690,7 +690,8 @@ namespace UIEditor
 				case WM_COPYDATA:
 					break;
 				case WM_CLOSE:
-					SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
+					//因为有保存确认，这里不向GL端发送关闭消息。
+					//SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
 					break;
 				case WM_QUIT:
 					SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
@@ -1803,6 +1804,48 @@ namespace UIEditor
 		private void mx_newFile_Click(object sender, RoutedEventArgs e)
 		{
 
+		}
+
+		private void mx_root_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			List<OpenedFile> lstChangedFiles = new List<OpenedFile>();
+			string strMsg = "是否将更改保存到：\r\n";
+
+			foreach (KeyValuePair<string, OpenedFile> pairFile in m_mapOpenedFiles.ToList())
+			{
+				if (pairFile.Value != null)
+				{
+					if (pairFile.Value.haveDiffToFile())
+					{
+						lstChangedFiles.Add(pairFile.Value);
+						strMsg += pairFile.Value.m_path + "\r\n";
+					}
+				}
+			}
+			if (lstChangedFiles != null && lstChangedFiles.Count > 0)
+			{
+
+				MessageBoxResult ret = MessageBox.Show(strMsg, "保存确认", MessageBoxButton.YesNoCancel);
+				switch (ret)
+				{
+					case MessageBoxResult.Yes:
+						{
+							foreach(OpenedFile fileDef in lstChangedFiles)
+							{
+								((XmlControl)fileDef.m_frame).m_xmlDoc.Save(fileDef.m_path);
+								fileDef.m_lstOpt.m_saveNode = fileDef.m_lstOpt.m_curNode;
+								fileDef.updateSaveStatus();
+							}
+						}
+						break;
+					case MessageBoxResult.No:
+						break;
+					case MessageBoxResult.Cancel:
+					default:
+						e.Cancel = true;
+						return;
+				}
+			}
 		}
 	}
 }

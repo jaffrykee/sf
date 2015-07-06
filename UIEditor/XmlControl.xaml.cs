@@ -170,8 +170,14 @@ namespace UIEditor
 		public bool findSkinAndSelect(string skinName, BoloUI.Basic ctrlUI = null)
 		{
 			string groupName;
+			BoloRes.ResBasic skinBasic;
 
-			if (m_mapSkinLink.TryGetValue(skinName, out groupName))
+			if (m_mapSkin.TryGetValue(skinName, out skinBasic))
+			{
+				skinBasic.changeSelectItem(ctrlUI);
+				//changeSelectSkinAndFile(m_pW, m_openedFile.m_path, skinName, ctrlUI);
+			}
+			else if (m_mapSkinLink.TryGetValue(skinName, out groupName))
 			{
 				string path = m_pW.m_skinPath + "\\" + groupName + ".xml";
 
@@ -211,10 +217,8 @@ namespace UIEditor
 			}
 			m_pW.updateGL(msgData, MainWindow.W2GTag.W2G_UI_VRECT);
 		}
-		public void refreshSkinDic(string skinGroupName)
+		public void refreshSkinDicByPath(string path, string skinGroupName)
 		{
-			string path = m_pW.m_skinPath + "\\" + skinGroupName + ".xml";
-
 			if (File.Exists(path))
 			{
 				XmlDocument skinDoc = new XmlDocument();
@@ -233,7 +237,7 @@ namespace UIEditor
 
 							if (xeSkin.Name == "skin" || xeSkin.Name == "publicskin")
 							{
-								if(xeSkin.GetAttribute("Name") != "")
+								if (xeSkin.GetAttribute("Name") != "")
 								{
 									string nullStr;
 									if (!m_mapSkinLink.TryGetValue(xeSkin.GetAttribute("Name"), out nullStr))
@@ -242,7 +246,7 @@ namespace UIEditor
 									}
 									else
 									{
-										m_pW.mx_debug.Text += "<错误>文件:\"" + path + "\"中，存在重复Name的皮肤(" + 
+										m_pW.mx_debug.Text += "<错误>文件:\"" + path + "\"中，存在重复Name的皮肤(" +
 											xeSkin.GetAttribute("Name") + ")，后一个同名的皮肤将不能正确显示。\r\n";
 									}
 								}
@@ -256,6 +260,12 @@ namespace UIEditor
 				//不存在
 				m_pW.mx_debug.Text += "<警告>皮肤组：\"" + skinGroupName + "\"不存在，请检查路径：\"" + path + "\"。\r\n";
 			}
+		}
+		public void refreshSkinDicByGroupName(string skinGroupName)
+		{
+			string path = m_pW.m_skinPath + "\\" + skinGroupName + ".xml";
+
+			refreshSkinDicByPath(path, skinGroupName);
 		}
 		public void refreshControl()
 		{
@@ -316,12 +326,12 @@ namespace UIEditor
 							treeChild.IsExpanded = false;
 							if (xe.Name == "skingroup")
 							{
-								refreshSkinDic(xe.GetAttribute("Name"));
+								refreshSkinDicByGroupName(xe.GetAttribute("Name"));
 							}
 						}
 					}
 				}
-				refreshSkinDic("publicskin");
+				refreshSkinDicByGroupName("publicskin");
 				refreshBoloUIView(true);
 				m_pW.updateXmlToGL(m_openedFile.m_path, m_xmlDoc);
 				if (m_openedFile.m_preViewSkinName != null && m_openedFile.m_preViewSkinName != "")
