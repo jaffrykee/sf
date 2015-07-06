@@ -68,14 +68,14 @@
 				<MenuItem Header="粘贴" InputGestureText="Ctrl+V" Click="mx_toolPaste_Click"/>
 				<MenuItem Header="删除" InputGestureText="Delete" Click="mx_toolDelete_Click"/>
 				<Separator/>
-				<MenuItem Header="上移" InputGestureText="Ctrl+-" Click="mx_toolMoveUp_Click"/>
-				<MenuItem Header="下移" InputGestureText="Ctrl+=" Click="mx_toolMoveDown_Click"/>
+				<MenuItem Header="上移" InputGestureText="Ctrl+↑" Click="mx_toolMoveUp_Click"/>
+				<MenuItem Header="下移" InputGestureText="Ctrl+↓" Click="mx_toolMoveDown_Click"/>
 			</MenuItem>
 			<MenuItem Header="视图">
-				<MenuItem Name="mx_viewPrevFile" Header="上一窗口" InputGestureText="Ctrl+PageUp"/>
-				<MenuItem Name="mx_viewNextFile" Header="下一窗口" InputGestureText="Ctrl+PageDown"/>
+				<MenuItem Name="mx_viewPrevFile" Header="上一窗口" InputGestureText="Ctrl+PageUp" Click="mx_viewPrevFile_Click"/>
+				<MenuItem Name="mx_viewNextFile" Header="下一窗口" InputGestureText="Ctrl+PageDown" Click="mx_viewNextFile_Click"/>
 				<Separator/>
-				<MenuItem Name="mx_viewCloseFile" Header="关闭窗口" InputGestureText="Ctrl+W"/>
+				<MenuItem Name="mx_viewCloseFile" Header="关闭窗口" InputGestureText="Ctrl+W" Click="mx_viewCloseFile_Click"/>
 			</MenuItem>
 		</Menu>
 		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
@@ -99,8 +99,8 @@
 						<Button Name="mx_toolPaste" Click="mx_toolPaste_Click"  ToolTip="粘贴 (Ctrl + V)">粘贴</Button>
 						<Button Name="mx_toolDelete" Click="mx_toolDelete_Click"  ToolTip="删除 (Delete)">删除</Button>
 						<Separator/>
-						<Button Name="mx_toolMoveUp" Click="mx_toolMoveUp_Click"  ToolTip="上移 (Ctrl + -)">上移</Button>
-						<Button Name="mx_toolMoveDown" Click="mx_toolMoveDown_Click"  ToolTip="下移 (Ctrl + =)">下移</Button>
+						<Button Name="mx_toolMoveUp" Click="mx_toolMoveUp_Click"  ToolTip="上移 (Ctrl + ↑)">上移</Button>
+						<Button Name="mx_toolMoveDown" Click="mx_toolMoveDown_Click"  ToolTip="下移 (Ctrl + ↓)">下移</Button>
 					</ToolBar>
 					<ToolBar HorizontalAlignment="Left">
 						<Label>调试模式：</Label>
@@ -136,7 +136,12 @@
 									<ColumnDefinition Width="100"/>
 									<ColumnDefinition Width="*"/>
 								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="auto"/>
+									<RowDefinition Height="auto"/>
+								</Grid.RowDefinitions>
 								<CheckBox Name="mx_checkVName"
+									Grid.Row="0"
 									Grid.Column="0"
 									IsChecked="True"
 									VerticalAlignment="Center"
@@ -145,6 +150,7 @@
 									Checked="mx_checkVName_Checked"
 									Unchecked="mx_checkVName_Unchecked"/>
 								<CheckBox Name="mx_checkVId"
+									Grid.Row="0"
 									Grid.Column="1"
 									IsChecked="True"
 									VerticalAlignment="Center"
@@ -152,6 +158,22 @@
 									Content="显示id"
 									Checked="mx_checkVId_Checked"
 									Unchecked="mx_checkVId_Unchecked"/>
+								<TextBlock Name="mx_searchTip"
+										   Grid.Row="1"
+										   Grid.Column="0"
+										   Grid.ColumnSpan="2"
+										   Foreground="#88888888"
+										   Margin="12,8,0,0">
+									搜索
+								</TextBlock>
+								<TextBox Name="mx_search"
+										 Grid.Row="1"
+										 Grid.Column="0"
+										 Grid.ColumnSpan="2"
+										 Background="#00000000"
+										 CaretBrush="Black"
+										 Margin="5"
+										 TextChanged="mx_search_TextChanged"/>
 							</Grid>
 							<TreeView Grid.Row="1" Name="mx_treeCtrlFrame" Background="#08080808">
 							</TreeView>

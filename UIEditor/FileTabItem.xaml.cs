@@ -82,13 +82,13 @@ namespace UIEditor
 			}
 		}
 
-		private void closeFileTab(object sender, RoutedEventArgs e)
+		public void closeFile()
 		{
 			TabItem tabItem = (TabItem)this.Parent;
 			string tabPath = ((ToolTip)tabItem.ToolTip).Content.ToString();
 			MainWindow pW = Window.GetWindow(this) as MainWindow;
 
-			if(pW.m_mapOpenedFiles[pW.m_curFile].haveDiffToFile())
+			if (pW.m_mapOpenedFiles[pW.m_curFile].haveDiffToFile())
 			{
 				MessageBoxResult ret = MessageBox.Show("是否将更改保存到 " + tabPath, "保存确认", MessageBoxButton.YesNoCancel);
 				switch (ret)
@@ -110,12 +110,17 @@ namespace UIEditor
 			pW.updateGL(m_filePath, MainWindow.W2GTag.W2G_NORMAL_NAME);
 			pW.m_mapOpenedFiles.Remove(tabPath);
 			pW.mx_workTabs.Items.Remove(tabItem);
-			if(pW.mx_workTabs.Items.Count == 0)
+			if (pW.mx_workTabs.Items.Count == 0)
 			{
 				pW.mx_treeCtrlFrame.Items.Clear();
 				pW.mx_treeSkinFrame.Items.Clear();
 			}
 			pW.hiddenAllAttr();
+		}
+
+		private void closeFileTab(object sender, RoutedEventArgs e)
+		{
+			closeFile();
 		}
 	}
 }

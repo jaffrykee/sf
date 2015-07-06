@@ -22,6 +22,7 @@ namespace UIEditor
 {
 	public partial class MainWindow : Window
 	{
+		public static MainWindow s_pW;
 		public string m_skinPath;
 		public string m_projPath;
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
@@ -70,6 +71,7 @@ namespace UIEditor
 		public MainWindow()
 		{
 			StringDic.initDic();
+			s_pW = this;
 			m_skinPath = "";
 			m_projPath = "";
 			m_hwndGL = IntPtr.Zero;
@@ -105,6 +107,15 @@ namespace UIEditor
 			else
 			{
 				m_docConf.Load(conf_pathConf);
+			}
+
+			// hook keyboard
+			IntPtr hModule = GetModuleHandle(IntPtr.Zero);
+			hookProc = new LowLevelKeyboardProcDelegate(LowLevelKeyboardProc);
+			hHook = SetWindowsHookEx(WH_KEYBOARD_LL, hookProc, hModule, 0);
+			if (hHook == IntPtr.Zero)
+			{
+				MessageBox.Show("Failed to set hook, error = " + Marshal.GetLastWin32Error());
 			}
 		}
 
@@ -277,6 +288,49 @@ namespace UIEditor
 				}
 			}
 		}
+		private void mx_root_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			List<OpenedFile> lstChangedFiles = new List<OpenedFile>();
+			string strMsg = "是否将更改保存到：\r\n";
+
+			foreach (KeyValuePair<string, OpenedFile> pairFile in m_mapOpenedFiles.ToList())
+			{
+				if (pairFile.Value != null)
+				{
+					if (pairFile.Value.haveDiffToFile())
+					{
+						lstChangedFiles.Add(pairFile.Value);
+						strMsg += pairFile.Value.m_path + "\r\n";
+					}
+				}
+			}
+			if (lstChangedFiles != null && lstChangedFiles.Count > 0)
+			{
+
+				MessageBoxResult ret = MessageBox.Show(strMsg, "保存确认", MessageBoxButton.YesNoCancel);
+				switch (ret)
+				{
+					case MessageBoxResult.Yes:
+						{
+							foreach (OpenedFile fileDef in lstChangedFiles)
+							{
+								((XmlControl)fileDef.m_frame).m_xmlDoc.Save(fileDef.m_path);
+								fileDef.m_lstOpt.m_saveNode = fileDef.m_lstOpt.m_curNode;
+								fileDef.updateSaveStatus();
+							}
+						}
+						break;
+					case MessageBoxResult.No:
+						break;
+					case MessageBoxResult.Cancel:
+					default:
+						e.Cancel = true;
+						return;
+				}
+			}
+
+			UnhookWindowsHookEx(hHook); // release keyboard hook
+		}
 
 		//============================================================
 
@@ -313,6 +367,8 @@ namespace UIEditor
 			LB_DELETESTRING		= 0x0182,
 			LB_GETCOUNT			= 0x018B,
 
+			VK_PRIOR	= 0x21,
+			VK_NEXT		= 0x22,
 			VK_LEFT		= 0x25,
 			VK_UP		= 0x26,
 			VK_RIGHT	= 0x27,
@@ -439,6 +495,29 @@ namespace UIEditor
 			public IntPtr lpData;
 		}
 		#endregion
+
+		private struct KBDLLHOOKSTRUCT
+		{
+			public int vkCode;
+			int scanCode;
+			public int flags;
+			int time;
+			int dwExtraInfo;
+		}
+
+		private delegate int LowLevelKeyboardProcDelegate(int nCode, int wParam, ref KBDLLHOOKSTRUCT lParam);
+		[DllImport("user32.dll")]
+		private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProcDelegate lpfn, IntPtr hMod, int dwThreadId);
+		[DllImport("user32.dll")]
+		private static extern bool UnhookWindowsHookEx(IntPtr hHook);
+		[DllImport("user32.dll")]
+		private static extern int CallNextHookEx(int hHook, int nCode, int wParam, ref KBDLLHOOKSTRUCT lParam);
+		[DllImport("kernel32.dll")]
+		private static extern IntPtr GetModuleHandle(IntPtr path);
+
+		private IntPtr hHook;
+		LowLevelKeyboardProcDelegate hookProc; // prevent gc
+		const int WH_KEYBOARD_LL = 13;
 
 		public void updateGL(string buffer, W2GTag msgTag = W2GTag.W2G_NORMAL_DATA)
 		{
@@ -683,6 +762,51 @@ namespace UIEditor
 
 			return IntPtr.Zero;
 		}
+		private static int LowLevelKeyboardProc(int nCode, int wParam, ref KBDLLHOOKSTRUCT lParam)//底层相应，用于屏蔽系统和WPF控件默认事件
+		{
+			if (nCode >= 0)
+				switch (wParam)
+				{
+					case WM_KEYDOWN:
+						if (s_pW != null)
+						{
+							if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Control) == System.Windows.Forms.Keys.Control)
+							{
+								switch (lParam.vkCode)
+								{
+									case VK_PRIOR:
+										viewPrevFile(s_pW);
+										return 1;
+									case VK_NEXT:
+										viewNextFile(s_pW);
+										return 1;
+									case VK_UP:
+										if (s_pW.m_curItem != null)
+										{
+											if (s_pW.m_curItem.canMoveUp())
+											{
+												s_pW.m_curItem.moveUpItem();
+											}
+										}
+										return 1;
+									case VK_DOWN:
+										if (s_pW.m_curItem != null)
+										{
+											if (s_pW.m_curItem.canMoveDown())
+											{
+												s_pW.m_curItem.moveDownItem();
+											}
+										}
+										return 1;
+									default:
+										break;
+								}
+							}
+						}
+						break;
+				}
+			return CallNextHookEx(0, nCode, wParam, ref lParam);
+		}
 		private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)//根窗体消息响应
 		{
 			switch (msg)
@@ -783,18 +907,6 @@ namespace UIEditor
 										}
 									}
 									break;
-								case VK_OEM_MINUS:
-									if (m_curItem.canMoveUp())
-									{
-										m_curItem.moveUpItem();
-									}
-									break;
-								case VK_OEM_PLUS:
-									if (m_curItem.canMoveDown())
-									{
-										m_curItem.moveDownItem();
-									}
-									break;
 								case VK_DELETE:
 									if (m_curItem.canDelete())
 									{
@@ -814,6 +926,21 @@ namespace UIEditor
 								}
 								break;
 						}
+					}
+					switch ((int)wParam)
+					{
+						case VK_W:
+							{
+								OpenedFile fileDef;
+
+								if (s_pW.m_mapOpenedFiles.TryGetValue(s_pW.m_curFile, out fileDef) && fileDef != null && fileDef.m_tabItem != null)
+								{
+									fileDef.m_tabItem.closeFile();
+								}
+							}
+							break;
+						default:
+							break;
 					}
 					break;
 				default:
@@ -1801,50 +1928,65 @@ namespace UIEditor
 			}
 		}
 
+		static void viewPrevFile(MainWindow pW)
+		{
+			if (pW.mx_workTabs.Items.Count > 1)
+			{
+				if (pW.mx_workTabs.SelectedIndex > 0)
+				{
+					pW.mx_workTabs.SelectedItem = pW.mx_workTabs.Items.GetItemAt(pW.mx_workTabs.SelectedIndex - 1);
+				}
+				else
+				{
+					pW.mx_workTabs.SelectedItem = pW.mx_workTabs.Items.GetItemAt(pW.mx_workTabs.Items.Count - 1);
+				}
+			}
+		}
+		static void viewNextFile(MainWindow pW)
+		{
+			if (pW.mx_workTabs.Items.Count > 1)
+			{
+				if (pW.mx_workTabs.SelectedIndex < pW.mx_workTabs.Items.Count - 1)
+				{
+					pW.mx_workTabs.SelectedItem = pW.mx_workTabs.Items.GetItemAt(pW.mx_workTabs.SelectedIndex + 1);
+				}
+				else
+				{
+					pW.mx_workTabs.SelectedItem = pW.mx_workTabs.Items.GetItemAt(0);
+				}
+			}
+		}
 		private void mx_newFile_Click(object sender, RoutedEventArgs e)
 		{
 
 		}
-
-		private void mx_root_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		private void mx_viewPrevFile_Click(object sender, RoutedEventArgs e)
 		{
-			List<OpenedFile> lstChangedFiles = new List<OpenedFile>();
-			string strMsg = "是否将更改保存到：\r\n";
+			viewPrevFile(this);
+		}
+		private void mx_viewNextFile_Click(object sender, RoutedEventArgs e)
+		{
+			viewNextFile(this);
+		}
+		private void mx_viewCloseFile_Click(object sender, RoutedEventArgs e)
+		{
+			OpenedFile fileDef;
 
-			foreach (KeyValuePair<string, OpenedFile> pairFile in m_mapOpenedFiles.ToList())
+			if (m_mapOpenedFiles.TryGetValue(m_curFile, out fileDef) && fileDef != null && fileDef.m_tabItem != null)
 			{
-				if (pairFile.Value != null)
-				{
-					if (pairFile.Value.haveDiffToFile())
-					{
-						lstChangedFiles.Add(pairFile.Value);
-						strMsg += pairFile.Value.m_path + "\r\n";
-					}
-				}
+				fileDef.m_tabItem.closeFile();
 			}
-			if (lstChangedFiles != null && lstChangedFiles.Count > 0)
-			{
+		}
 
-				MessageBoxResult ret = MessageBox.Show(strMsg, "保存确认", MessageBoxButton.YesNoCancel);
-				switch (ret)
-				{
-					case MessageBoxResult.Yes:
-						{
-							foreach(OpenedFile fileDef in lstChangedFiles)
-							{
-								((XmlControl)fileDef.m_frame).m_xmlDoc.Save(fileDef.m_path);
-								fileDef.m_lstOpt.m_saveNode = fileDef.m_lstOpt.m_curNode;
-								fileDef.updateSaveStatus();
-							}
-						}
-						break;
-					case MessageBoxResult.No:
-						break;
-					case MessageBoxResult.Cancel:
-					default:
-						e.Cancel = true;
-						return;
-				}
+		private void mx_search_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if(mx_search.Text != "")
+			{
+				mx_searchTip.Visibility = System.Windows.Visibility.Collapsed;
+			}
+			else
+			{
+				mx_searchTip.Visibility = System.Windows.Visibility.Visible;
 			}
 		}
 	}

@@ -34,8 +34,8 @@ SFConfig::SFConfig():
 	m_aTmr[SF_TMR::TMR_SKILL] = 35;
 	m_viewBenchmark.width = 800;
 	m_viewBenchmark.height = 500;
-	m_defaultResolution.width = 1280;
-	m_defaultResolution.height = 800;
+	m_defaultResolution.width = 640;
+	m_defaultResolution.height = 400;
 }
 
 SFConfig* SFConfig::GetInstance()

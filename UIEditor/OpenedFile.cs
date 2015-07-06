@@ -26,6 +26,7 @@ namespace UIEditor
 		public string m_path;
 		public TabItem m_tab;
 		public UserControl m_frame;
+		public FileTabItem m_tabItem;
 		public string m_fileType;
 		public HistoryList m_lstOpt;
 
@@ -49,6 +50,7 @@ namespace UIEditor
 			m_tab.ToolTip = tabTip;
 			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
 			m_tab.Content = tabContent;
+			m_tabItem = (FileTabItem)tabContent;
 
 			pW.mx_workTabs.Items.Add(m_tab);
 			pW.mx_workTabs.SelectedItem = m_tab;
