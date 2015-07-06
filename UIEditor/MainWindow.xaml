@@ -77,6 +77,9 @@
 				<Separator/>
 				<MenuItem Name="mx_viewCloseFile" Header="关闭窗口" InputGestureText="Ctrl+W" Click="mx_viewCloseFile_Click"/>
 			</MenuItem>
+			<MenuItem Header="帮助">
+				<MenuItem Name="mx_help" Header="查看帮助" Click="mx_help_Click"/>
+			</MenuItem>
 		</Menu>
 		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
 			<Grid>

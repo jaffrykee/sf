@@ -1989,5 +1989,8 @@ namespace UIEditor
 				mx_searchTip.Visibility = System.Windows.Visibility.Visible;
 			}
 		}
+		private void mx_help_Click(object sender, RoutedEventArgs e)
+		{
+		}
 	}
 }
