@@ -158,9 +158,11 @@ namespace UIEditor.BoloRes
 				if (m_pW.m_curItem != null)
 				{
 					m_pW.m_curItem.mx_text.Background = new SolidColorBrush(Color.FromArgb(0x00, 0xff, 0xff, 0xff));
+					m_pW.m_curItem.mx_text.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0x00, 0x00));
 				}
 				m_pW.m_curItem = this;
 				m_pW.m_curItem.mx_text.Background = new SolidColorBrush(Color.FromArgb(0xff, 0x33, 0x99, 0xff));
+				m_pW.m_curItem.mx_text.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
 				m_pW.hiddenAllAttr();
 
 				if (obj != null && obj.GetType().ToString() == "UIEditor.BoloUI.Basic")

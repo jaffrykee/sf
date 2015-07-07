@@ -82,6 +82,9 @@
     <Compile Include="FileMenu.xaml.cs">
       <DependentUpon>FileMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HtmlControl.xaml.cs">
+      <DependentUpon>HtmlControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XmlItem.xaml.cs">
       <DependentUpon>XmlItem.xaml</DependentUpon>
     </Compile>
@@ -128,6 +131,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FileMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HtmlControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

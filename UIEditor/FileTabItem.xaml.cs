@@ -72,6 +72,11 @@ namespace UIEditor
 					case "xml":
 						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.XmlControl"), this) as UserControl;
 						break;
+					case "htm":
+					case "html":
+					case "php":
+						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.HtmlControl"), this) as UserControl;
+						break;
 					default:
 						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.UnknownControl"), this) as UserControl;
 						break;
@@ -117,7 +122,6 @@ namespace UIEditor
 			}
 			pW.hiddenAllAttr();
 		}
-
 		private void closeFileTab(object sender, RoutedEventArgs e)
 		{
 			closeFile();

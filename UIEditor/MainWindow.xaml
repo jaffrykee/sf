@@ -78,7 +78,8 @@
 				<MenuItem Name="mx_viewCloseFile" Header="关闭窗口" InputGestureText="Ctrl+W" Click="mx_viewCloseFile_Click"/>
 			</MenuItem>
 			<MenuItem Header="帮助">
-				<MenuItem Name="mx_help" Header="查看帮助" Click="mx_help_Click"/>
+				<MenuItem Name="mx_help" Header="查看帮助" IsEnabled="False" Click="mx_help_Click"/>
+				<MenuItem Name="mx_version" Header="关于UI编辑器" IsEnabled="False" Click="mx_version_Click"/>
 			</MenuItem>
 		</Menu>
 		<DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
@@ -110,23 +111,39 @@
 						<TextBox MinWidth="100" Name="mx_hwndDebug"></TextBox>
 					</ToolBar>
 				</ToolBarTray>
-				<WrapPanel Name="mx_selCtrlLstFrame" Orientation="Horizontal" Grid.Row="1">
-				</WrapPanel>
 			</Grid>
 		</DockPanel>
 		<DockPanel Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" Margin="0,0,5,0">
 			<Grid>
 				<TabControl Name="mx_leftToolFrame" BorderThickness="0" Padding="0">
 					<TabItem Name="mx_proFrame" Header="工程目录">
-						<TreeView Background="#08080808">
-							<TreeViewItem Name="mx_treePro">
-								<TreeViewItem.ContextMenu>
-									<ContextMenu>
-										<MenuItem Name="mx_newFile" Header="新建" InputGestureText="Ctrl+N" Click="mx_newFile_Click" IsEnabled="False"/>
-									</ContextMenu>
-								</TreeViewItem.ContextMenu>
-							</TreeViewItem>
-						</TreeView>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<TextBlock Name="mx_searchTip"
+									   Grid.Row="0"
+									   Foreground="#88888888"
+									   Margin="12,8,0,0">
+									搜索
+							</TextBlock>
+							<TextBox Name="mx_search"
+									 Grid.Row="0"
+									 Background="#00000000"
+									 CaretBrush="Black"
+									 Margin="5"
+									 TextChanged="mx_search_TextChanged"/>
+							<TreeView Background="#08080808" Grid.Row="1">
+								<TreeViewItem Name="mx_treePro">
+									<TreeViewItem.ContextMenu>
+										<ContextMenu>
+											<MenuItem Name="mx_newFile" Header="新建" InputGestureText="Ctrl+N" Click="mx_newFile_Click" IsEnabled="False"/>
+										</ContextMenu>
+									</TreeViewItem.ContextMenu>
+								</TreeViewItem>
+							</TreeView>
+						</Grid>
 					</TabItem>
 					<TabItem Name="mx_ctrlFrame" Header="控件" IsEnabled="False">
 						<Grid>
@@ -161,7 +178,7 @@
 									Content="显示id"
 									Checked="mx_checkVId_Checked"
 									Unchecked="mx_checkVId_Unchecked"/>
-								<TextBlock Name="mx_searchTip"
+								<TextBlock Name="mx_uiSearchTip"
 										   Grid.Row="1"
 										   Grid.Column="0"
 										   Grid.ColumnSpan="2"
@@ -169,22 +186,40 @@
 										   Margin="12,8,0,0">
 									搜索
 								</TextBlock>
-								<TextBox Name="mx_search"
+								<TextBox Name="mx_uiSearch"
 										 Grid.Row="1"
 										 Grid.Column="0"
 										 Grid.ColumnSpan="2"
 										 Background="#00000000"
 										 CaretBrush="Black"
 										 Margin="5"
-										 TextChanged="mx_search_TextChanged"/>
+										 TextChanged="mx_uiSearch_TextChanged"/>
 							</Grid>
 							<TreeView Grid.Row="1" Name="mx_treeCtrlFrame" Background="#08080808">
 							</TreeView>
 						</Grid>
 					</TabItem>
 					<TabItem Name="mx_skinFrame" Header="资源" IsEnabled="False">
-						<TreeView Name="mx_treeSkinFrame" Background="#08080808">
-						</TreeView>
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<TextBlock Name="mx_skinSearchTip"
+									   Grid.Row="0"
+									   Foreground="#88888888"
+									   Margin="12,8,0,0">
+									搜索
+							</TextBlock>
+							<TextBox Name="mx_skinSearch"
+									 Grid.Row="0"
+									 Background="#00000000"
+									 CaretBrush="Black"
+									 Margin="5"
+									 TextChanged="mx_skinSearch_TextChanged"/>
+							<TreeView Name="mx_treeSkinFrame" Grid.Row="1" Background="#08080808">
+							</TreeView>
+						</Grid>
 					</TabItem>
 				</TabControl>
 			</Grid>
@@ -213,7 +248,7 @@
 			<TabControl Name="mx_workTabs" SelectionChanged="mx_workTabs_SelectionChanged">
 			</TabControl>
 		</DockPanel>
-		<GridSplitter Grid.Row="4" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top"></GridSplitter>
+		<GridSplitter Name="mx_debugSplitter" Grid.Row="4" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
 		<DockPanel Grid.Row="4" Grid.Column="1" Margin="0,5,0,0">
 			<Grid>
 				<Grid.RowDefinitions>
@@ -221,6 +256,8 @@
 					<RowDefinition Height="auto"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
+				<WrapPanel Name="mx_selCtrlLstFrame" Orientation="Horizontal" Grid.Row="0">
+				</WrapPanel>
 				<StackPanel Grid.Row="1" Orientation="Horizontal">
 					<Button Width="auto" Margin="10,2,2,2" Padding="2" Click="mx_bClearDebug_Click">
 						clear
@@ -234,7 +271,8 @@
 					VerticalScrollBarVisibility="Visible"
 					HorizontalAlignment="Stretch"
 					IsReadOnly="True"
-					TextChanged="mx_debug_TextChanged"/>
+					TextChanged="mx_debug_TextChanged"
+					SizeChanged="mx_debug_SizeChanged"/>
 			</Grid>
 		</DockPanel>
 	</Grid>

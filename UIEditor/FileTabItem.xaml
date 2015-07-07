@@ -19,7 +19,11 @@
 		<Button Grid.Row="0" Grid.Column="1" Width="25" HorizontalAlignment="Right" Click="closeFileTab">x</Button>
 		<Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
 			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-				<Grid Name="itemFrame"></Grid>
+				<Grid Name="itemFrame" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+					<Grid.Background>
+						<ImageBrush ImageSource="E:\clienttools\UI编辑器2\data\hyaline.png"/>
+					</Grid.Background>
+				</Grid>
 			</ScrollViewer>
 		</Grid>
 	</Grid>

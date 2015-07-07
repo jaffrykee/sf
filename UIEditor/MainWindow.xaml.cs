@@ -23,6 +23,7 @@ namespace UIEditor
 	public partial class MainWindow : Window
 	{
 		public static MainWindow s_pW;
+
 		public string m_skinPath;
 		public string m_projPath;
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
@@ -232,7 +233,7 @@ namespace UIEditor
 			{
 				if (File.Exists(path))
 				{
-					m_mapOpenedFiles[path] = new OpenedFile(mx_treeCtrlFrame, mx_treeSkinFrame, path);
+					m_mapOpenedFiles[path] = new OpenedFile(path);
 				}
 				else
 				{
@@ -1978,19 +1979,131 @@ namespace UIEditor
 			}
 		}
 
+		public void refreshSearch(TreeViewItem viewItem, string key)
+		{
+			if(viewItem.Items.Count > 0)
+			{
+				foreach(TreeViewItem item in viewItem.Items)
+				{
+					if(key != "" && key != null)
+					{
+						if (item.Header.ToString().IndexOf(key, StringComparison.OrdinalIgnoreCase) < 0)
+						{
+							item.Visibility = System.Windows.Visibility.Collapsed;
+						}
+						else
+						{
+							for (object pItem = item.Parent;
+								pItem.GetType().ToString() == "System.Windows.Controls.TreeViewItem" ||
+									pItem.GetType().BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+									pItem.GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+									pItem.GetType().BaseType.BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem";
+								pItem = ((TreeViewItem)pItem).Parent)
+							{
+								((TreeViewItem)pItem).Visibility = System.Windows.Visibility.Visible;
+							}
+						}
+					}
+					else
+					{
+						item.Visibility = System.Windows.Visibility.Visible;
+					}
+					refreshSearch(item, key);
+				}
+			}
+		}
 		private void mx_search_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			if(mx_search.Text != "")
+			if (mx_search.Text != "")
 			{
+				refreshSearch(mx_treePro, null);
 				mx_searchTip.Visibility = System.Windows.Visibility.Collapsed;
+				refreshSearch(mx_treePro, mx_search.Text.ToString());
 			}
 			else
 			{
+				refreshSearch(mx_treePro, null);
 				mx_searchTip.Visibility = System.Windows.Visibility.Visible;
 			}
 		}
+		private void mx_uiSearch_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if (mx_uiSearch.Text != "")
+			{
+				if (mx_treeCtrlFrame.Items.Count > 0 &&
+						(mx_treeCtrlFrame.Items.GetItemAt(0).GetType().ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeCtrlFrame.Items.GetItemAt(0).GetType().BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeCtrlFrame.Items.GetItemAt(0).GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeCtrlFrame.Items.GetItemAt(0).GetType().BaseType.BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem"
+						)
+					)
+				{
+					refreshSearch((TreeViewItem)mx_treeCtrlFrame.Items.GetItemAt(0), null);
+					refreshSearch((TreeViewItem)mx_treeCtrlFrame.Items.GetItemAt(0), mx_uiSearch.Text.ToString());
+				}
+				mx_uiSearchTip.Visibility = System.Windows.Visibility.Collapsed;
+			}
+			else
+			{
+				if (mx_treeCtrlFrame.Items.Count > 0 &&
+						(mx_treeCtrlFrame.Items.GetItemAt(0).GetType().ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeCtrlFrame.Items.GetItemAt(0).GetType().BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeCtrlFrame.Items.GetItemAt(0).GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeCtrlFrame.Items.GetItemAt(0).GetType().BaseType.BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem"
+						)
+					)
+				{
+					refreshSearch((TreeViewItem)mx_treeCtrlFrame.Items.GetItemAt(0), null);
+				}
+				mx_uiSearchTip.Visibility = System.Windows.Visibility.Visible;
+			}
+		}
+		private void mx_skinSearch_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if (mx_skinSearch.Text != "")
+			{
+				if (mx_treeSkinFrame.Items.Count > 0 &&
+						(mx_treeSkinFrame.Items.GetItemAt(0).GetType().ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeSkinFrame.Items.GetItemAt(0).GetType().BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeSkinFrame.Items.GetItemAt(0).GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeSkinFrame.Items.GetItemAt(0).GetType().BaseType.BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem"
+						)
+					)
+				{
+					refreshSearch((TreeViewItem)mx_treeSkinFrame.Items.GetItemAt(0), null);
+					refreshSearch((TreeViewItem)mx_treeSkinFrame.Items.GetItemAt(0), mx_skinSearch.Text.ToString());
+				}
+				mx_skinSearchTip.Visibility = System.Windows.Visibility.Collapsed;
+			}
+			else
+			{
+				if (mx_treeSkinFrame.Items.Count > 0 &&
+						(mx_treeSkinFrame.Items.GetItemAt(0).GetType().ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeSkinFrame.Items.GetItemAt(0).GetType().BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeSkinFrame.Items.GetItemAt(0).GetType().BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem" ||
+							mx_treeSkinFrame.Items.GetItemAt(0).GetType().BaseType.BaseType.BaseType.ToString() == "System.Windows.Controls.TreeViewItem"
+						)
+					)
+				{
+					refreshSearch((TreeViewItem)mx_treeSkinFrame.Items.GetItemAt(0), null);
+				}
+				mx_skinSearchTip.Visibility = System.Windows.Visibility.Visible;
+			}
+		}
+
 		private void mx_help_Click(object sender, RoutedEventArgs e)
 		{
+			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
+
+			System.Diagnostics.Process.Start("file:///" + path + "/data/help.html");
+		}
+		private void mx_version_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+		private void mx_debug_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			mx_debug.ScrollToEnd();
 		}
 	}
 }

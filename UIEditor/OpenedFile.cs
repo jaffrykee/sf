@@ -34,9 +34,9 @@ namespace UIEditor
 		public string m_preViewSkinName;
 		public BoloUI.Basic m_prePlusCtrlUI;
 
-		public OpenedFile(TreeView treeUIFrame, TreeView treeSkinFrame, string path)
+		public OpenedFile(string path)
 		{
-			MainWindow pW = Window.GetWindow(treeUIFrame) as MainWindow;
+			MainWindow pW = MainWindow.s_pW;
 
 			m_path = path;
 			m_fileType = StringDic.getFileType(m_path);
