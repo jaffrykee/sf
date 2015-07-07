@@ -21,7 +21,13 @@
 			<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
 				<Grid Name="itemFrame" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
 					<Grid.Background>
-						<ImageBrush ImageSource="E:\clienttools\UI编辑器2\data\hyaline.png"/>
+						<ImageBrush
+						x:Name="mx_wsBckBrush"
+						ImageSource=".\data\hyaline.png"
+						Viewport="0,0,32,32"
+						ViewportUnits="Absolute"
+						Stretch="None"
+						TileMode="Tile"/>
 					</Grid.Background>
 				</Grid>
 			</ScrollViewer>
