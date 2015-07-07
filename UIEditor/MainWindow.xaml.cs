@@ -2105,5 +2105,9 @@ namespace UIEditor
 		{
 			mx_debug.ScrollToEnd();
 		}
+
+		private void mx_GLCtrl_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+		}
 	}
 }

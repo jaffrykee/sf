@@ -23,7 +23,6 @@
 					<Grid.Background>
 						<ImageBrush
 						x:Name="mx_wsBckBrush"
-						ImageSource=".\data\hyaline.png"
 						Viewport="0,0,32,32"
 						ViewportUnits="Absolute"
 						Stretch="None"
