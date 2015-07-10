@@ -1,16 +1,7 @@
-﻿<UserControl x:Class="UIEditor.HtmlControl"
+﻿<MenuItem x:Class="UIEditor.BoloUI.CtrlTemplate"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d"
-			 Name="mx_root"
-			 Loaded="mx_root_Loaded">
-	<Grid>
-		<ScrollViewer>
-			<Frame Name="mx_browser"
-			Width="800">
-			</Frame>
-		</ScrollViewer>
-	</Grid>
-</UserControl>
+             mc:Ignorable="d">
+</MenuItem>

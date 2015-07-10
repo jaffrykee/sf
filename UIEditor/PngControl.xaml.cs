@@ -21,6 +21,7 @@ namespace UIEditor
 	public partial class PngControl : UserControl
 	{
 		public FileTabItem m_parent;
+		public OpenedFile m_openedFile;
 		public System.Drawing.Bitmap m_Bitmap;
 		public BitmapSource m_imgSource;
 		public int m_imgHeight;
@@ -32,6 +33,8 @@ namespace UIEditor
 			InitializeComponent();
 			m_parent = parent;
 			m_loaded = false;
+			m_openedFile = MainWindow.s_pW.m_mapOpenedFiles[m_parent.m_filePath];
+			m_openedFile.m_frame = this;
 		}
 
 		private void mx_imageLoaded(object sender, RoutedEventArgs e)

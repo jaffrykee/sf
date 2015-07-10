@@ -27,12 +27,12 @@ namespace UIEditor
 			m_tabItem = tabItem;
 			InitializeComponent();
 			//mx_browser.Source = new Uri(tabItem.m_filePath, UriKind.Relative);
-		}
-		private void mx_root_Loaded(object sender, RoutedEventArgs e)
-		{
 			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
 
 			mx_browser.Source = new Uri("file:///" + path + "\\" + m_tabItem.m_filePath);
+		}
+		private void mx_root_Loaded(object sender, RoutedEventArgs e)
+		{
 		}
 	}
 }

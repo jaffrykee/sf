@@ -21,11 +21,14 @@ namespace UIEditor
 	public partial class UnknownControl : UserControl
 	{
 		FileTabItem m_parent;
+		public OpenedFile m_openedFile;
 
 		public UnknownControl(FileTabItem parent)
 		{
 			InitializeComponent();
 			m_parent = parent;
+			m_openedFile = MainWindow.s_pW.m_mapOpenedFiles[m_parent.m_filePath];
+			m_openedFile.m_frame = this;
 		}
 
 		private void tabFrameLoaded(object sender, RoutedEventArgs e)

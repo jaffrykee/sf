@@ -79,11 +79,17 @@
     </ApplicationDefinition>
     <Compile Include="BoloRes\ResBasic.cs" />
     <Compile Include="BoloUI\Basic.cs" />
+    <Compile Include="BoloUI\CtrlTemplate.xaml.cs">
+      <DependentUpon>CtrlTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileMenu.xaml.cs">
       <DependentUpon>FileMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="HtmlControl.xaml.cs">
       <DependentUpon>HtmlControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TemplateCreate.xaml.cs">
+      <DependentUpon>TemplateCreate.xaml</DependentUpon>
     </Compile>
     <Compile Include="XmlItem.xaml.cs">
       <DependentUpon>XmlItem.xaml</DependentUpon>
@@ -130,6 +136,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="BoloUI\CtrlTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FileMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -137,6 +147,14 @@
     <Page Include="HtmlControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TemplateCreate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="XmlItem.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -241,7 +259,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
-    <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

@@ -23,7 +23,8 @@
 			<Label.ContextMenu>
 				<ContextMenu Name="mx_menu" Loaded="mx_menu_Loaded" Unloaded="mx_menu_Unloaded">
 					<MenuItem Name="mx_addNode" Header="添加节点"/>
-					<MenuItem Name="mx_addCtrl" Header="添加控件"/>
+					<MenuItem Name="mx_addCtrl" Header="添加控件" Loaded="mx_addCtrl_Loaded"/>
+					<MenuItem Name="mx_addTmpl" Header="将该控件作为模板..." Click="mx_addTmpl_Click"/>
 					<Separator/>
 					<MenuItem Name="mx_cut" Header="剪切" InputGestureText="Ctrl+X" Click="mx_cut_Click"/>
 					<MenuItem Name="mx_copy" Header="复制" InputGestureText="Ctrl+C" Click="mx_copy_Click"/>

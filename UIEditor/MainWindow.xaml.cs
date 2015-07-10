@@ -62,12 +62,10 @@ namespace UIEditor
 		public int m_downY;
 		public string m_pasteFilePath;
 
-		//debug
-		//public string conf_pathGlApp = @"E:\mmo2013001\clienttools\DsUiEditor\dist\Debug\MinGW-Windows\dsuieditor.exe";
-		//release
 		public string conf_pathGlApp = @".\dsuieditor.exe";
 		public string conf_pathConf = @".\conf.xml";
 		public XmlDocument m_docConf;
+		public bool m_isDebug;
 
 		public MainWindow()
 		{
@@ -100,7 +98,7 @@ namespace UIEditor
 			m_docConf = new XmlDocument();
 			if(!File.Exists(conf_pathConf))
 			{
-				string initConfXml = "<Config><ProjHistory>E:\\mmo2013001\\artist\\client_resouce\\ui\\free</ProjHistory></Config>";
+				string initConfXml = "<Config><runMode>release</runMode><ProjHistory>E:\\mmo2013001\\artist\\client_resouce\\ui\\free</ProjHistory></Config>";
 
 				m_docConf.LoadXml(initConfXml);
 				m_docConf.Save(conf_pathConf);
@@ -108,6 +106,28 @@ namespace UIEditor
 			else
 			{
 				m_docConf.Load(conf_pathConf);
+			}
+
+			if (m_docConf.SelectSingleNode("Config").SelectSingleNode("runMode") != null)
+			{
+				if (m_docConf.SelectSingleNode("Config").SelectSingleNode("runMode").InnerXml == "debug")
+				{
+					m_isDebug = true;
+				}
+				else
+				{
+					m_isDebug = false;
+				}
+			}
+			else
+			{
+				XmlElement xe = m_docConf.CreateElement("runMode");
+
+				xe.InnerXml = "release";
+				m_docConf.SelectSingleNode("Config").AppendChild(xe);
+				m_docConf.Save(conf_pathConf);
+
+				m_isDebug = false;
 			}
 
 			// hook keyboard
@@ -119,11 +139,34 @@ namespace UIEditor
 				MessageBox.Show("Failed to set hook, error = " + Marshal.GetLastWin32Error());
 			}
 		}
-
-		private void openProj(object sender, RoutedEventArgs e)//打开工程
+		private void mx_root_Loaded(object sender, RoutedEventArgs e)
 		{
-			string projPath = m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml;
+			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
 
+			if (source != null)
+			{
+				source.AddHook(WndProc);
+			}
+
+			mx_GLHost = new ControlHost();
+			mx_GLCtrl.Child = mx_GLHost;
+			mx_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
+			if(m_isDebug)
+			{
+				mx_debugTools.Visibility = System.Windows.Visibility.Visible;
+			}
+			else
+			{
+				mx_debugTools.Visibility = System.Windows.Visibility.Collapsed;
+			}
+		}
+
+		public void openProjSelectBox(string projPath = null)
+		{
+			if(projPath == null)
+			{
+				projPath = m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml;
+			}
 			System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
 			openFolderDialog.Description = "选择UI所在文件夹";
 			openFolderDialog.SelectedPath = projPath;
@@ -154,6 +197,10 @@ namespace UIEditor
 			{
 				MessageBox.Show("没有找到皮肤目录：" + m_skinPath + "，请检查项目路径。");
 			}
+		}
+		private void openProj(object sender, RoutedEventArgs e)//打开工程
+		{
+			openProjSelectBox();
 		}
 		private void sendPathToGL(string path)//告知GL端工程根目录
 		{
@@ -592,9 +639,17 @@ namespace UIEditor
 					break;
 				case WM_LBUTTONDOWN:
 					{
-						if (m_curItem != null)
+						if (m_curFile != null && m_curFile != "")
 						{
-							m_curItem.m_rootControl.refreshVRect();
+							OpenedFile fileDef;
+
+							if(m_mapOpenedFiles.TryGetValue(m_curFile, out fileDef))
+							{
+								if(fileDef.m_frame.GetType().ToString() == "UIEditor.XmlControl")
+								{
+									((XmlControl)fileDef.m_frame).refreshVRect();
+								}
+							}
 						}
 						int pX = (int)lParam & 0xFFFF;
 						int pY = ((int)lParam >> 16) & 0xFFFF;
@@ -616,6 +671,7 @@ namespace UIEditor
 								List<BoloUI.Basic> lstSelCtrl = new List<BoloUI.Basic>();
 								bool hadCurCtrl = false;
 								BoloUI.Basic selCtrl = null;
+								BoloUI.Basic lastCtrl = null;
 
 								mx_selCtrlLstFrame.Children.Clear();
 								foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
@@ -623,16 +679,11 @@ namespace UIEditor
 									if (pairCtrlDef.Value.checkPointInFence(pX, pY))
 									{
 										lstSelCtrl.Add(pairCtrlDef.Value);
-										if (hadCurCtrl)
-										{
-											hadCurCtrl = false;
-											selCtrl = pairCtrlDef.Value;
-										}
 										if (m_curItem == pairCtrlDef.Value)
 										{
-											hadCurCtrl = true;
-											selCtrl = pairCtrlDef.Value;
+											selCtrl = lastCtrl;
 										}
+										lastCtrl = pairCtrlDef.Value;
 
 										BoloUI.SelButton selCtrlButton = new BoloUI.SelButton(this, pairCtrlDef.Value);
 										selCtrlButton.mx_root.Content = pairCtrlDef.Value.mx_text.Content;
@@ -641,9 +692,9 @@ namespace UIEditor
 								}
 								if (lstSelCtrl.Count > 0)
 								{
-									if (selCtrl == null || selCtrl == m_curItem)
+									if (selCtrl == null)
 									{
-										selCtrl = lstSelCtrl.First();
+										selCtrl = lstSelCtrl.Last();
 									}
 									selCtrl.changeSelectItem();
 								}
@@ -928,20 +979,28 @@ namespace UIEditor
 								break;
 						}
 					}
-					switch ((int)wParam)
+					if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Control) == System.Windows.Forms.Keys.Control)
 					{
-						case VK_W:
-							{
-								OpenedFile fileDef;
-
-								if (s_pW.m_mapOpenedFiles.TryGetValue(s_pW.m_curFile, out fileDef) && fileDef != null && fileDef.m_tabItem != null)
+						switch ((int)wParam)
+						{
+							case VK_W:
 								{
-									fileDef.m_tabItem.closeFile();
+									OpenedFile fileDef;
+
+									if (s_pW.m_mapOpenedFiles.TryGetValue(s_pW.m_curFile, out fileDef) && fileDef != null && fileDef.m_tabItem != null)
+									{
+										fileDef.m_tabItem.closeFile();
+									}
 								}
-							}
-							break;
-						default:
-							break;
+								break;
+							case VK_O:
+								{
+									openProjSelectBox();
+								}
+								break;
+							default:
+								break;
+						}
 					}
 					break;
 				default:
@@ -1038,19 +1097,6 @@ namespace UIEditor
 					}
 				}
 			}
-		}
-		private void On_UIReady(object sender, EventArgs e)
-		{
-			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
-
-			if (source != null)
-			{
-				source.AddHook(WndProc);
-			}
-
-			mx_GLHost = new ControlHost();
-			mx_GLCtrl.Child = mx_GLHost;
-			mx_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
 		}
 
 	#region xml控件名、属性名、默认值、取值范围等。
@@ -1566,6 +1612,10 @@ namespace UIEditor
 										{"y", new AttrDef_T("int")},
 										{"w", new AttrDef_T("int")},
 										{"h", new AttrDef_T("int")},
+										{"X", new AttrDef_T("int")},
+										{"Y", new AttrDef_T("int")},
+										{"Width", new AttrDef_T("int")},
+										{"Height", new AttrDef_T("int")},
 										{"topBorder", new AttrDef_T("int")},
 										{"bottomBorder", new AttrDef_T("int")},
 										{"leftBorder", new AttrDef_T("int")},
@@ -1574,6 +1624,9 @@ namespace UIEditor
 										{"angle", new AttrDef_T("int")},
 										{"rotateType", new AttrDef_T("int")},
 										{"mirrorType", new AttrDef_T("int")},
+										
+										{"ImageName", new AttrDef_T("string")},
+										{"Dock", new AttrDef_T("int")},
 										{"NineGrid", new AttrDef_T("bool")},
 										{"NGX", new AttrDef_T("int")},
 										{"NGY", new AttrDef_T("int")},
@@ -1587,7 +1640,7 @@ namespace UIEditor
 										{"Color1", new AttrDef_T("color")},
 										{"Color2", new AttrDef_T("color")},
 										{"Style", new AttrDef_T("int")},
-										{"fontSize", new AttrDef_T("int")},
+										{"fontSize", new AttrDef_T("int")}
 									}
 								)
 							}
@@ -1744,7 +1797,7 @@ namespace UIEditor
 		{
 			foreach (KeyValuePair<string, OpenedFile> pairOpenedFile in m_mapOpenedFiles.ToList())
 			{
-				if (pairOpenedFile.Value.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+				if (pairOpenedFile.Value != null && pairOpenedFile.Value.m_frame != null && pairOpenedFile.Value.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
 				{
 					foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlUI in ((XmlControl)pairOpenedFile.Value.m_frame).m_mapCtrlUI.ToList())
 					{
@@ -2095,11 +2148,15 @@ namespace UIEditor
 		{
 			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
 
-			System.Diagnostics.Process.Start("file:///" + path + "/data/help.html");
+			//openFileByPath("data/help/index.html");
+			System.Diagnostics.Process.Start("file:///" + path + "/data/help/index.html");
 		}
 		private void mx_version_Click(object sender, RoutedEventArgs e)
 		{
+			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
 
+			//openFileByPath("data/version/index.html");
+			System.Diagnostics.Process.Start("file:///" + path + "/data/version/index.html");
 		}
 		private void mx_debug_SizeChanged(object sender, SizeChangedEventArgs e)
 		{

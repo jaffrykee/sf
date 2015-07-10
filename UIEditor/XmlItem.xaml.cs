@@ -29,7 +29,6 @@ namespace UIEditor
 		{
 
 		}
-
 		public XmlItem(XmlElement xe, XmlControl rootControl)
 		{
 			InitializeComponent();
@@ -437,6 +436,155 @@ namespace UIEditor
 
 				m_pW.openFileByPath(path);
 			}
+		}
+		private void mx_addCtrl_Loaded(object sender, RoutedEventArgs e)
+		{
+			MainWindow.CtrlDef_T panelCtrlDef;
+
+			mx_addCtrl.Items.Clear();
+			if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
+			{
+				MainWindow.CtrlDef_T ctrlDef;
+
+				foreach (string addStr in StringDic.m_lstAddControl)
+				{
+					if (addStr == "Separator")
+					{
+						mx_addCtrl.Items.Add(new Separator());
+					}
+					else
+					{
+						if (m_pW.m_mapCtrlDef.TryGetValue(addStr, out ctrlDef) && ctrlDef != null)
+						{
+							MenuItem ctrlMenuItem = new MenuItem();
+
+							StringDic.getNameAndTip(ctrlMenuItem, addStr, StringDic.m_mapStrControl);
+							if (m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template") != null &&
+								m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
+							{
+								MenuItem emptyCtrl = new MenuItem();
+								XmlElement xeTmpls = (XmlElement)m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
+
+								emptyCtrl.Header = "空节点";
+								emptyCtrl.ToolTip = addStr;
+								emptyCtrl.Click += insertCtrlItem_Click;
+								ctrlMenuItem.Items.Add(emptyCtrl);
+								ctrlMenuItem.Items.Add(new Separator());
+
+								XmlNodeList xlstTmpl = xeTmpls.SelectNodes("row");
+								if(xlstTmpl.Count == 0)
+								{
+									MenuItem disTmpl = new MenuItem();
+
+									disTmpl.Header = "没有可用模板";
+									disTmpl.IsEnabled = false;
+									ctrlMenuItem.Items.Add(disTmpl);
+								}
+								else
+								{
+									foreach(XmlNode xn in xlstTmpl)
+									{
+										if(xn.NodeType == XmlNodeType.Element)
+										{
+											XmlElement xeRow = (XmlElement)xn;
+											BoloUI.CtrlTemplate rowTmpl = new BoloUI.CtrlTemplate();
+
+											rowTmpl.Header = xeRow.GetAttribute("name");
+											rowTmpl.ToolTip = xeRow.InnerXml;
+											ctrlMenuItem.Items.Add(rowTmpl);
+											rowTmpl.Click += insertCtrlItem_Click;
+										}
+									}
+								}
+							}
+							else
+							{
+								ctrlMenuItem.Click += insertCtrlItem_Click;
+							}
+							mx_addCtrl.Items.Add(ctrlMenuItem);
+						}
+					}
+				}
+			}
+			else
+			{
+				if (m_xe.Name == "BoloUI")
+				{
+					foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrl in m_pW.m_mapPanelCtrlDef.ToList())
+					{
+						MenuItem ctrlItem = new MenuItem();
+
+						ctrlItem.ToolTip = pairCtrl.Key;
+						if (StringDic.m_mapStrControl[pairCtrl.Key] == null || StringDic.m_mapStrControl[pairCtrl.Key] == "")
+						{
+							ctrlItem.Header = pairCtrl.Key;
+						}
+						else
+						{
+							ctrlItem.Header = StringDic.m_mapStrControl[pairCtrl.Key];
+						}
+						ctrlItem.Click += insertCtrlItem_Click;
+						mx_addCtrl.Items.Add(ctrlItem);
+					}
+				}
+				else if (m_xe.Name != "event")
+				{
+					MenuItem ctrlItem = new MenuItem();
+
+					ctrlItem.ToolTip = "event";
+					if (StringDic.m_mapStrControl["event"] == null || StringDic.m_mapStrControl["event"] == "")
+					{
+						ctrlItem.Header = "event";
+					}
+					else
+					{
+						ctrlItem.Header = StringDic.m_mapStrControl["event"];
+					}
+					ctrlItem.Click += insertCtrlItem_Click;
+					mx_addCtrl.Items.Add(ctrlItem);
+				}
+				else
+				{
+					mx_addCtrl.IsEnabled = false;
+				}
+			}
+		}
+		void insertCtrlItem_Click(object sender, RoutedEventArgs e)
+		{
+			switch(sender.GetType().ToString())
+			{
+				case "System.Windows.Controls.MenuItem":
+				{
+					MenuItem ctrlItem = (MenuItem)sender;
+					XmlElement newXe = m_xe.OwnerDocument.CreateElement(ctrlItem.ToolTip.ToString());
+					BoloUI.Basic treeChild = new BoloUI.Basic(newXe, m_rootControl);
+
+					m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe));
+				}
+				break;
+				case "UIEditor.BoloUI.CtrlTemplate":
+				{
+					BoloUI.CtrlTemplate ctrlItem = (BoloUI.CtrlTemplate)sender;
+					XmlDocument newDoc = new XmlDocument();
+					XmlElement newXe = m_xe.OwnerDocument.CreateElement("tmp");
+
+					if (ctrlItem.ToolTip.ToString() != "")
+					{
+						newXe.InnerXml = ctrlItem.ToolTip.ToString();
+						if(newXe.FirstChild.NodeType == XmlNodeType.Element)
+						{
+							BoloUI.Basic treeChild = new BoloUI.Basic((XmlElement)newXe.FirstChild, m_rootControl);
+							m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe));
+						}
+					}
+				}
+				break;
+			}
+		}
+		private void mx_addTmpl_Click(object sender, RoutedEventArgs e)
+		{
+			TemplateCreate winAddtmpl = new TemplateCreate(m_xe);
+			winAddtmpl.ShowDialog();
 		}
 	}
 }

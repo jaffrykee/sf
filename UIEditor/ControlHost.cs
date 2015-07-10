@@ -69,9 +69,20 @@ namespace UIEditor
 				0);
 
 			MainWindow pW = Window.GetWindow(this) as MainWindow;
+			string strRunMode;
+
+			if(pW.m_isDebug)
+			{
+				strRunMode = "true";
+			}
+			else
+			{
+				strRunMode = "false";
+			}
+
 			pW.m_hwndGLParent = (IntPtr)m_hwndHost;
 			m_hwndControl = pW.m_hwndGLParent;
-			System.Diagnostics.Process.Start(pW.conf_pathGlApp, pW.m_hwndGLParent.ToString() + " " + m_hostWidth.ToString() + " " + m_hostHeight.ToString());
+			System.Diagnostics.Process.Start(pW.conf_pathGlApp, pW.m_hwndGLParent.ToString() + " " + m_hostWidth.ToString() + " " + m_hostHeight.ToString() + " " + strRunMode);
 
 			return new HandleRef(this, m_hwndHost);
 		}
