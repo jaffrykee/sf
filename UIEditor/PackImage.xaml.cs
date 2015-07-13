@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace UIEditor
 {
@@ -26,16 +27,37 @@ namespace UIEditor
 		public int m_imgHeight;
 		public int m_imgWidth;
 		public bool m_loaded;
+		public Dictionary<string, Rect> m_mapImgRect;
 
 		public PackImage(XmlControl parent)
 		{
 			InitializeComponent();
 			m_parent = parent;
 			m_loaded = false;
+			m_mapImgRect = new Dictionary<string, Rect>();
+			foreach (XmlNode xn in m_parent.m_xeRoot.SelectNodes("Image"))
+			{
+				if (xn.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xe = (XmlElement)xn;
+					Rect rt;
+
+					if (xe.GetAttribute("Name") != "" && !m_mapImgRect.TryGetValue(xe.GetAttribute("Name"), out rt))
+					{
+						m_mapImgRect.Add(xe.GetAttribute("Name"),
+							new Rect(
+								Double.Parse(xe.GetAttribute("X")),
+								Double.Parse(xe.GetAttribute("Y")),
+								Double.Parse(xe.GetAttribute("Width")),
+								Double.Parse(xe.GetAttribute("Height"))
+								)
+							);
+					}
+				}
+			}
 		}
 		private void mx_root_Loaded(object sender, RoutedEventArgs e)
 		{
-
 		}
 
 		private void mx_imageLoaded(object sender, RoutedEventArgs e)
@@ -65,6 +87,44 @@ namespace UIEditor
 		}
 		private void mx_image_Unloaded(object sender, RoutedEventArgs e)
 		{
+		}
+
+		private void mx_canvas_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			double x = e.GetPosition(mx_image).X;
+			double y = e.GetPosition(mx_image).Y;
+
+			MainWindow.s_pW.mx_debug.Text += "<坐标>(" + e.GetPosition(mx_image).X.ToString() + "," + e.GetPosition(mx_image).Y.ToString() + ")\r\n";
+			foreach(KeyValuePair<string, Rect> pairImgRect in m_mapImgRect.ToList())
+			{
+				if(pairImgRect.Value.Contains(x, y))
+				{
+					mx_selPath.Visibility = System.Windows.Visibility.Visible;
+					mx_selPath.Data = new RectangleGeometry(pairImgRect.Value);
+					MainWindow.s_pW.mx_debug.Text += "<图片>Name:" + pairImgRect.Key + "\r\n";
+
+					return;
+				}
+			}
+			mx_selPath.Visibility = System.Windows.Visibility.Collapsed;
+		}
+
+		private void mx_canvas_MouseMove(object sender, MouseEventArgs e)
+		{
+			double x = e.GetPosition(mx_image).X;
+			double y = Math.Floor(e.GetPosition(mx_image).Y);
+
+			foreach (KeyValuePair<string, Rect> pairImgRect in m_mapImgRect.ToList())
+			{
+				if (pairImgRect.Value.Contains(x, y))
+				{
+					mx_overPath.Visibility = System.Windows.Visibility.Visible;
+					mx_overPath.Data = new RectangleGeometry(pairImgRect.Value);
+
+					return;
+				}
+			}
+			mx_overPath.Visibility = System.Windows.Visibility.Collapsed;
 		}
 	}
 }
