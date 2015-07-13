@@ -230,7 +230,7 @@
 			<ColumnDefinition Width="*" MinWidth="50"/>
 			<ColumnDefinition Width="275" MinWidth="275"/>
 		</Grid.ColumnDefinitions>
-		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
+		<Menu Grid.Row="0" Grid.Column="0" Background="#18181818" Grid.ColumnSpan="3" VerticalAlignment="Top">
 			<MenuItem Header="文件">
 				<MenuItem Header="新建" InputGestureText="Ctrl+N" IsEnabled="False"/>
 				<MenuItem Header="打开" InputGestureText="Ctrl+O" Click="openProj"/>
@@ -252,16 +252,22 @@
 				<MenuItem Header="上移" InputGestureText="Ctrl+↑" Click="mx_toolMoveUp_Click"/>
 				<MenuItem Header="下移" InputGestureText="Ctrl+↓" Click="mx_toolMoveDown_Click"/>
 			</MenuItem>
+			<MenuItem Header="项目">
+				<MenuItem Header="资源管理..." IsEnabled="False"/>
+				<MenuItem Header="项目分析..." IsEnabled="False"/>
+				<Separator/>
+				<MenuItem Name="mx_projSetting" Header="项目属性..." IsEnabled="False"/>
+			</MenuItem>
+			<MenuItem Header="工具">
+				<MenuItem Header="分析..." IsEnabled="False"/>
+				<Separator/>
+				<MenuItem Name="mx_setting" Header="选项..." IsEnabled="False"/>
+			</MenuItem>
 			<MenuItem Header="视图">
 				<MenuItem Name="mx_viewPrevFile" Header="上一窗口" InputGestureText="Ctrl+PageUp" Click="mx_viewPrevFile_Click"/>
 				<MenuItem Name="mx_viewNextFile" Header="下一窗口" InputGestureText="Ctrl+PageDown" Click="mx_viewNextFile_Click"/>
 				<Separator/>
 				<MenuItem Name="mx_viewCloseFile" Header="关闭窗口" InputGestureText="Ctrl+W" Click="mx_viewCloseFile_Click"/>
-			</MenuItem>
-			<MenuItem Header="工具" IsEnabled="False">
-				<MenuItem Header="分析" IsEnabled="False"/>
-				<Separator/>
-				<MenuItem Name="mx_setting" Header="选项" IsEnabled="False"/>
 			</MenuItem>
 			<MenuItem Header="帮助">
 				<MenuItem Name="mx_help" Header="查看帮助" Click="mx_help_Click"/>
