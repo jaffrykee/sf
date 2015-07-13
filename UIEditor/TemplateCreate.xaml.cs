@@ -29,6 +29,23 @@ namespace UIEditor
 			InitializeComponent();
 		}
 
+		private void createTmpl(XmlElement xeConfig)
+		{
+			if (xeConfig.SelectSingleNode("template") == null)
+			{
+				xeConfig.AppendChild(xeConfig.OwnerDocument.CreateElement("template"));
+			}
+			XmlElement xeTmpl = (XmlElement)xeConfig.SelectSingleNode("template");
+			if (xeTmpl.SelectSingleNode(m_xe.Name + "Tmpls") == null)
+			{
+				xeTmpl.AppendChild(xeTmpl.OwnerDocument.CreateElement(m_xe.Name + "Tmpls"));
+			}
+			XmlElement xeCtrlTmpl = (XmlElement)xeTmpl.SelectSingleNode(m_xe.Name + "Tmpls");
+			XmlElement xeRow = xeCtrlTmpl.OwnerDocument.CreateElement("row");
+			xeCtrlTmpl.AppendChild(xeRow);
+			xeRow.SetAttribute("name", mx_tmplName.Text.ToString());
+			xeRow.InnerXml = m_strTmpl;
+		}
 		private void mx_ok_Click(object sender, RoutedEventArgs e)
 		{
 			if (mx_tmplName.Text.ToString() != "")
@@ -47,25 +64,25 @@ namespace UIEditor
 						m_strTmpl = xetmp.OuterXml;
 					}
 				}
-				if (MainWindow.s_pW.m_docConf.SelectSingleNode("Config").NodeType == XmlNodeType.Element)
+				if (mx_pathAll.IsChecked == true)
 				{
-					XmlElement xeConfig = (XmlElement)MainWindow.s_pW.m_docConf.SelectSingleNode("Config");
+					if (MainWindow.s_pW.m_docConf.SelectSingleNode("Config").NodeType == XmlNodeType.Element)
+					{
+						XmlElement xeConfig = (XmlElement)MainWindow.s_pW.m_docConf.SelectSingleNode("Config");
 
-					if (xeConfig.SelectSingleNode("template") == null)
-					{
-						xeConfig.AppendChild(xeConfig.OwnerDocument.CreateElement("template"));
+						createTmpl(xeConfig);
+						xeConfig.OwnerDocument.Save(MainWindow.s_pW.conf_pathConf);
 					}
-					XmlElement xeTmpl = (XmlElement)xeConfig.SelectSingleNode("template");
-					if (xeTmpl.SelectSingleNode(m_xe.Name + "Tmpls") == null)
+				}
+				else if (mx_pathProj.IsChecked == true)
+				{
+					if (MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").NodeType == XmlNodeType.Element)
 					{
-						xeTmpl.AppendChild(xeTmpl.OwnerDocument.CreateElement(m_xe.Name + "Tmpls"));
+						XmlElement xeConfig = (XmlElement)MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj");
+
+						createTmpl(xeConfig);
+						xeConfig.OwnerDocument.Save(MainWindow.s_pW.m_projPath + "\\" + MainWindow.s_pW.m_projName);
 					}
-					XmlElement xeCtrlTmpl = (XmlElement)xeTmpl.SelectSingleNode(m_xe.Name + "Tmpls");
-					XmlElement xeRow = xeCtrlTmpl.OwnerDocument.CreateElement("row");
-					xeCtrlTmpl.AppendChild(xeRow);
-					xeRow.SetAttribute("name", mx_tmplName.Text.ToString());
-					xeRow.InnerXml = m_strTmpl;
-					xeRow.OwnerDocument.Save(MainWindow.s_pW.conf_pathConf);
 				}
 				this.Close();
 			}

@@ -437,6 +437,42 @@ namespace UIEditor
 				m_pW.openFileByPath(path);
 			}
 		}
+		private void showTmpl(MenuItem ctrlMenuItem, XmlElement xeTmpls, string addStr)
+		{
+			MenuItem emptyCtrl = new MenuItem();
+
+			emptyCtrl.Header = "空节点";
+			emptyCtrl.ToolTip = addStr;
+			emptyCtrl.Click += insertCtrlItem_Click;
+			ctrlMenuItem.Items.Add(emptyCtrl);
+			ctrlMenuItem.Items.Add(new Separator());
+
+			XmlNodeList xlstTmpl = xeTmpls.SelectNodes("row");
+			if (xlstTmpl.Count == 0)
+			{
+				MenuItem disTmpl = new MenuItem();
+
+				disTmpl.Header = "<没有模板>";
+				disTmpl.IsEnabled = false;
+				ctrlMenuItem.Items.Add(disTmpl);
+			}
+			else
+			{
+				foreach (XmlNode xn in xlstTmpl)
+				{
+					if (xn.NodeType == XmlNodeType.Element)
+					{
+						XmlElement xeRow = (XmlElement)xn;
+						BoloUI.CtrlTemplate rowTmpl = new BoloUI.CtrlTemplate();
+
+						rowTmpl.Header = xeRow.GetAttribute("name");
+						rowTmpl.ToolTip = xeRow.InnerXml;
+						ctrlMenuItem.Items.Add(rowTmpl);
+						rowTmpl.Click += insertCtrlItem_Click;
+					}
+				}
+			}
+		}
 		private void mx_addCtrl_Loaded(object sender, RoutedEventArgs e)
 		{
 			MainWindow.CtrlDef_T panelCtrlDef;
@@ -457,47 +493,33 @@ namespace UIEditor
 						if (m_pW.m_mapCtrlDef.TryGetValue(addStr, out ctrlDef) && ctrlDef != null)
 						{
 							MenuItem ctrlMenuItem = new MenuItem();
+							bool isNull = true;
 
 							StringDic.getNameAndTip(ctrlMenuItem, addStr, StringDic.m_mapStrControl);
 							if (m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template") != null &&
 								m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
 							{
-								MenuItem emptyCtrl = new MenuItem();
+								isNull = false;
 								XmlElement xeTmpls = (XmlElement)m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
 
-								emptyCtrl.Header = "空节点";
-								emptyCtrl.ToolTip = addStr;
-								emptyCtrl.Click += insertCtrlItem_Click;
-								ctrlMenuItem.Items.Add(emptyCtrl);
-								ctrlMenuItem.Items.Add(new Separator());
-
-								XmlNodeList xlstTmpl = xeTmpls.SelectNodes("row");
-								if(xlstTmpl.Count == 0)
-								{
-									MenuItem disTmpl = new MenuItem();
-
-									disTmpl.Header = "没有可用模板";
-									disTmpl.IsEnabled = false;
-									ctrlMenuItem.Items.Add(disTmpl);
-								}
-								else
-								{
-									foreach(XmlNode xn in xlstTmpl)
-									{
-										if(xn.NodeType == XmlNodeType.Element)
-										{
-											XmlElement xeRow = (XmlElement)xn;
-											BoloUI.CtrlTemplate rowTmpl = new BoloUI.CtrlTemplate();
-
-											rowTmpl.Header = xeRow.GetAttribute("name");
-											rowTmpl.ToolTip = xeRow.InnerXml;
-											ctrlMenuItem.Items.Add(rowTmpl);
-											rowTmpl.Click += insertCtrlItem_Click;
-										}
-									}
-								}
+								showTmpl(ctrlMenuItem, xeTmpls, addStr);
 							}
-							else
+
+							if (m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template") != null &&
+								m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
+							{
+								if (!isNull)
+								{
+									ctrlMenuItem.Items.Add(new Separator());
+								}
+								isNull = false;
+
+								XmlElement xeTmpls = (XmlElement)m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
+
+								showTmpl(ctrlMenuItem, xeTmpls, addStr);
+							}
+
+							if(isNull)
 							{
 								ctrlMenuItem.Click += insertCtrlItem_Click;
 							}

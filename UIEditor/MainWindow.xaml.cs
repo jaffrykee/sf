@@ -26,6 +26,8 @@ namespace UIEditor
 
 		public string m_skinPath;
 		public string m_projPath;
+		public string m_projName;
+		public XmlDocument m_docProj;
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
@@ -36,6 +38,7 @@ namespace UIEditor
 		public Dictionary<string, SkinDef_T> m_mapSkinChildDef;
 		public Dictionary<string, SkinDef_T> m_mapSkinResDef;
 		public Dictionary<string, SkinDef_T> m_mapAllResDef;
+		public Dictionary<XmlElement, BoloUI.SelButton> m_mapXeSel;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
 		public IntPtr m_hwndGLFrame;
@@ -87,6 +90,7 @@ namespace UIEditor
 			m_vCtrlName = true;
 			m_vCtrlId = true;
 			m_xePaste = null;
+			m_mapXeSel = new Dictionary<XmlElement, BoloUI.SelButton>();
 
 			m_xdTest = new XmlDocument();
 			// w=\"400\" h=\"300\"
@@ -167,31 +171,63 @@ namespace UIEditor
 			{
 				projPath = m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml;
 			}
-			System.Windows.Forms.FolderBrowserDialog openFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
-			openFolderDialog.Description = "选择UI所在文件夹";
-			openFolderDialog.SelectedPath = projPath;
-			System.Windows.Forms.DialogResult result = openFolderDialog.ShowDialog();
 
+
+			System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+			openFileDialog.Title = "选择BoloUI工程文件";
+			openFileDialog.Filter = "BoloUI工程文件|*.bup|BoloUI工程文件(旧)|*.ryrp";
+			openFileDialog.FileName = string.Empty;
+			openFileDialog.FilterIndex = 1;
+			openFileDialog.RestoreDirectory = true;
+			openFileDialog.DefaultExt = "bup";
+			openFileDialog.InitialDirectory = projPath;
+			System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
 			if (result == System.Windows.Forms.DialogResult.Cancel)
 			{
 				return;
 			}
-			string path = openFolderDialog.SelectedPath;
+			m_projPath = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
+			m_projName = System.IO.Path.GetFileName(openFileDialog.FileName);
+			if (System.IO.Path.GetExtension(m_projName) == ".ryrp")
+			{
+				m_projName = System.IO.Path.ChangeExtension(m_projName, ".bup");
+				if(!File.Exists(m_projPath + "\\" + m_projName))
+				{
+					string initProjXml = "<BoloUIProj><template></template></BoloUIProj>";
 
-			m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml = path;
+					m_docProj = new XmlDocument();
+					m_docProj.LoadXml(initProjXml);
+					m_docProj.Save(m_projPath + "\\" + m_projName);
+				}
+				else
+				{
+					m_docProj = new XmlDocument();
+					m_docProj.Load(m_projPath + "\\" + m_projName);
+				}
+			}
+			else if (System.IO.Path.GetExtension(m_projName) == ".bup")
+			{
+				m_docProj = new XmlDocument();
+				m_docProj.Load(m_projPath + "\\" + m_projName);
+			}
+			else
+			{
+				return;
+			}
+
+			m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml = m_projPath;
 			m_docConf.Save(conf_pathConf);
-			sendPathToGL(path);
+			sendPathToGL(m_projPath);
 			initXmlValueDef();
 			//refreshImage(path + "\\images");
-			m_projPath = path;
-			m_skinPath = path + "\\skin";
+			m_skinPath = m_projPath + "\\skin";
 			if (Directory.Exists(m_skinPath))
 			{
 				if (File.Exists(m_skinPath + "\\publicskin.xml"))
 				{
 					refreshSkin(m_skinPath);
 				}
-				refreshProjTree(path, this.mx_treePro, true);
+				refreshProjTree(m_projPath, this.mx_treePro, true);
 			}
 			else
 			{
@@ -674,6 +710,7 @@ namespace UIEditor
 								BoloUI.Basic lastCtrl = null;
 
 								mx_selCtrlLstFrame.Children.Clear();
+								m_mapXeSel.Clear();
 								foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
 								{
 									if (pairCtrlDef.Value.checkPointInFence(pX, pY))
@@ -686,8 +723,9 @@ namespace UIEditor
 										lastCtrl = pairCtrlDef.Value;
 
 										BoloUI.SelButton selCtrlButton = new BoloUI.SelButton(this, pairCtrlDef.Value);
-										selCtrlButton.mx_root.Content = pairCtrlDef.Value.mx_text.Content;
+										selCtrlButton.mx_radio.Content = pairCtrlDef.Value.mx_text.Content;
 										mx_selCtrlLstFrame.Children.Add(selCtrlButton);
+										m_mapXeSel.Add(pairCtrlDef.Value.m_xe, selCtrlButton);
 									}
 								}
 								if (lstSelCtrl.Count > 0)

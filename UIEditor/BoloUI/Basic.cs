@@ -235,6 +235,13 @@ namespace UIEditor.BoloUI
 				m_setFocus = true;
 			}
 			BringIntoView(new Rect(0, 0, 0, 0));
+
+			SelButton selBn;
+
+			if (m_pW.m_mapXeSel != null && m_pW.m_mapXeSel.TryGetValue(m_xe, out selBn) && selBn != null)
+			{
+				selBn.mx_radio.IsChecked = true;
+			}
 		}
 		public bool checkPointInFence(int x, int y)
 		{
