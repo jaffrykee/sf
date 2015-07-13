@@ -336,11 +336,27 @@ namespace UIEditor
 		{
 			if(m_mapOpenedFiles.Count == 0)
 			{
-				mx_GLCtrl.Visibility = System.Windows.Visibility.Collapsed;
+				m_curItem = null;
+				hiddenGLAttr();
 			}
+		}
+		public void hiddenGLAttr()
+		{
+			foreach (object attrList in mx_toolArea.Children)
+			{
+				if (attrList.GetType().ToString() == "UIEditor.AttrList")
+				{
+					((UIEditor.AttrList)attrList).Visibility = System.Windows.Visibility.Collapsed;
+				}
+			}
+			mx_drawFrame.Visibility = System.Windows.Visibility.Collapsed;
+			mx_ctrlFrame.IsEnabled = false;
+			mx_skinFrame.IsEnabled = false;
+			mx_leftToolFrame.SelectedItem = mx_proFrame;
 		}
 		private void mx_workTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			m_curItem = null;
 			if (((TabItem)mx_workTabs.SelectedItem) != null)
 			{
 				if (((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip) != null)
@@ -362,12 +378,19 @@ namespace UIEditor
 							mx_treeCtrlFrame.Items.Add(((XmlControl)m_mapOpenedFiles[tabPath].m_frame).m_treeUI);
 							mx_treeSkinFrame.Items.Add(((XmlControl)m_mapOpenedFiles[tabPath].m_frame).m_treeSkin);
 							((XmlControl)openFile.m_frame).refreshBoloUIView(true);
+							if (((XmlControl)openFile.m_frame).m_showGL)
+							{
+								mx_drawFrame.Visibility = System.Windows.Visibility.Visible;
+							}
+							else
+							{
+								hiddenGLAttr();
+							}
 						}
-						mx_drawFrame.Visibility = System.Windows.Visibility.Visible;
 					}
 					else
 					{
-						mx_drawFrame.Visibility = System.Windows.Visibility.Collapsed;
+						hiddenGLAttr();
 					}
 				}
 			}
@@ -605,7 +628,6 @@ namespace UIEditor
 
 		public void updateGL(string buffer, W2GTag msgTag = W2GTag.W2G_NORMAL_DATA)
 		{
-			mx_GLCtrl.Visibility = System.Windows.Visibility.Visible;
 			if (mx_hwndDebug.Text != "")
 			{
 				m_hwndGL = (IntPtr)long.Parse(mx_hwndDebug.Text);
@@ -1933,7 +1955,8 @@ namespace UIEditor
 				m_mapOpenedFiles.TryGetValue(m_curFile, out openFileDef) &&
 				openFileDef != null &&
 				openFileDef.m_frame != null &&
-				openFileDef.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+				openFileDef.m_frame.GetType() == Type.GetType("UIEditor.XmlControl") &&
+				openFileDef.m_lstOpt != null)
 			{
 				openFileDef.m_lstOpt.undo();
 			}
@@ -1946,7 +1969,8 @@ namespace UIEditor
 				m_mapOpenedFiles.TryGetValue(m_curFile, out openFileDef) &&
 				openFileDef != null &&
 				openFileDef.m_frame != null &&
-				openFileDef.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+				openFileDef.m_frame.GetType() == Type.GetType("UIEditor.XmlControl") &&
+				openFileDef.m_lstOpt != null)
 			{
 				openFileDef.m_lstOpt.redo();
 			}

@@ -61,7 +61,7 @@ namespace UIEditor
 		{
 			if (m_frame != null)
 			{
-				if (m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
+				if (m_frame.GetType() == Type.GetType("UIEditor.XmlControl") && ((XmlControl)m_frame).m_showGL == true)
 				{
 					return true;
 				}
@@ -77,7 +77,7 @@ namespace UIEditor
 		}
 		public bool haveDiffToFile()
 		{
-			if (frameIsXmlCtrl())
+			if (frameIsXmlCtrl() && m_lstOpt != null)
 			{
 				if (m_lstOpt.m_saveNode == m_lstOpt.m_curNode)
 				{

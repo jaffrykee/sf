@@ -23,6 +23,7 @@ namespace UIEditor
 		public bool m_loaded;
 		public MainWindow m_pW;
 		public OpenedFile m_openedFile;
+		public bool m_showGL;
 		//以baseID为索引的UI们
 		public Dictionary<string, BoloUI.Basic> m_mapCtrlUI;
 		public Dictionary<string, string> m_mapSkinLink;
@@ -48,6 +49,7 @@ namespace UIEditor
 			m_mapXeItem = new Dictionary<XmlElement, XmlItem>();
 			m_isOnlySkin = true;
 			m_skinViewCtrlUI = null;
+			m_showGL = false;
 		}
 
 		public void deleteBaseId(XmlNode xn)
@@ -191,20 +193,23 @@ namespace UIEditor
 		}
 		public void refreshBoloUIView(bool changeItem = false)
 		{
-			if (m_isOnlySkin)
+			if(m_showGL)
 			{
-				m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
-				m_pW.mx_ctrlFrame.IsEnabled = false;
-				m_pW.mx_skinFrame.IsEnabled = true;
-			}
-			else
-			{
-				if (changeItem)
+				if (m_isOnlySkin)
 				{
-					m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_ctrlFrame;
+					m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
+					m_pW.mx_ctrlFrame.IsEnabled = false;
+					m_pW.mx_skinFrame.IsEnabled = true;
 				}
-				m_pW.mx_ctrlFrame.IsEnabled = true;
-				m_pW.mx_skinFrame.IsEnabled = true;
+				else
+				{
+					if (changeItem)
+					{
+						m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_ctrlFrame;
+					}
+					m_pW.mx_ctrlFrame.IsEnabled = true;
+					m_pW.mx_skinFrame.IsEnabled = true;
+				}
 			}
 		}
 		public void refreshVRect()
@@ -273,7 +278,6 @@ namespace UIEditor
 
 			m_openedFile = m_pW.m_mapOpenedFiles[m_parent.m_filePath];
 			m_openedFile.m_frame = this;
-			m_openedFile.m_lstOpt = new XmlOperation.HistoryList(m_pW, this, 65535);
 
 			m_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
 
@@ -287,6 +291,8 @@ namespace UIEditor
 				{
 					case "BoloUI":
 						{
+							m_showGL = true;
+							m_openedFile.m_lstOpt = new XmlOperation.HistoryList(m_pW, this, 65535);
 							m_treeUI = new BoloUI.Basic(m_xeRoot, this, true);
 							m_treeSkin = new BoloRes.ResBasic(m_xeRoot, this, null);
 
@@ -355,12 +361,22 @@ namespace UIEditor
 						break;
 					case "UIImageResource":
 						{
+							m_showGL = false;
+							mx_root.AddChild(new PackImage(this));
 							m_pW.mx_debug.Text += ("<提示>todo。" + "\r\n");
 						}
 						break;
 					default:
 						m_pW.mx_debug.Text += ("<错误>这不是一个有效的BoloUI或UIImageResource文件。" + "\r\n");
 						break;
+				}
+				if(m_showGL)
+				{
+					m_pW.mx_drawFrame.Visibility = System.Windows.Visibility.Visible;
+				}
+				else
+				{
+					m_pW.hiddenGLAttr();
 				}
 			}
 			else
