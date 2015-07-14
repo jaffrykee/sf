@@ -59,7 +59,6 @@ namespace UIEditor
 				m_loaded = true;
 			}
 		}
-
 		private void mx_image_Unloaded(object sender, RoutedEventArgs e)
 		{
 		}
