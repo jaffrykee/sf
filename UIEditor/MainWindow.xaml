@@ -7,7 +7,7 @@
 	mc:Ignorable="d"
 	xmlns:userView="clr-namespace:UIEditor"
 	Name="mx_root"
-	Title="MainWindow"
+	Title="&lt;未加载项目&gt; - UI编辑器"
 	WindowState="Maximized"
 	Width="1280"
 	Height="800"
@@ -20,184 +20,6 @@
 		<RoutedUICommand x:Key="btnClick_mx_toolSaveAll" Text="Button Click" />
 		<RoutedUICommand x:Key="btnClick_mx_toolUndo" Text="Button Click" />
 		<RoutedUICommand x:Key="btnClick_mx_toolRedo" Text="Button Click" />
-		<SolidColorBrush x:Key="TabControlNormalBorderBrush" Color="#8C8E94"/>
-		<Style x:Key="TabControlStyle1" TargetType="{x:Type TabControl}">
-			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-			<Setter Property="Padding" Value="4,4,4,4"/>
-			<Setter Property="BorderThickness" Value="1"/>
-			<Setter Property="BorderBrush" Value="{StaticResource TabControlNormalBorderBrush}"/>
-			<Setter Property="Background" Value="#F9F9F9"/>
-			<Setter Property="HorizontalContentAlignment" Value="Center"/>
-			<Setter Property="VerticalContentAlignment" Value="Center"/>
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type TabControl}">
-						<Grid ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition x:Name="ColumnDefinition0"/>
-								<ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition x:Name="RowDefinition0" Height="Auto"/>
-								<RowDefinition x:Name="RowDefinition1" Height="*"/>
-							</Grid.RowDefinitions>
-							<WrapPanel x:Name="HeaderPanel"
-									  Grid.Column="0"
-									  Grid.Row="0"
-									  IsItemsHost="true"
-									  KeyboardNavigation.TabIndex="1"
-									  Panel.ZIndex="1"
-									  Margin="2,2,2,0"/>
-							<Border x:Name="ContentPanel"
-									Grid.Column="0"
-									Grid.Row="1"
-									BorderBrush="{TemplateBinding BorderBrush}"
-									BorderThickness="{TemplateBinding BorderThickness}"
-									Background="{TemplateBinding Background}"
-									KeyboardNavigation.DirectionalNavigation="Contained"
-									KeyboardNavigation.TabIndex="2"
-									KeyboardNavigation.TabNavigation="Local">
-								<ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-							</Border>
-						</Grid>
-						<ControlTemplate.Triggers>
-							<Trigger Property="TabStripPlacement" Value="Bottom">
-								<Setter Property="Grid.Row" TargetName="HeaderPanel" Value="1"/>
-								<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-								<Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-								<Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
-								<Setter Property="Margin" TargetName="HeaderPanel" Value="2,0,2,2"/>
-							</Trigger>
-							<Trigger Property="TabStripPlacement" Value="Left">
-								<Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
-								<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-								<Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
-								<Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
-								<Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
-								<Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
-								<Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-								<Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-								<Setter Property="Margin" TargetName="HeaderPanel" Value="2,2,0,2"/>
-							</Trigger>
-							<Trigger Property="TabStripPlacement" Value="Right">
-								<Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
-								<Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-								<Setter Property="Grid.Column" TargetName="HeaderPanel" Value="1"/>
-								<Setter Property="Grid.Column" TargetName="ContentPanel" Value="0"/>
-								<Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
-								<Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
-								<Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-								<Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-								<Setter Property="Margin" TargetName="HeaderPanel" Value="0,2,2,2"/>
-							</Trigger>
-							<Trigger Property="IsEnabled" Value="false">
-								<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-							</Trigger>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-		<ControlTemplate x:Key="TmplFileItem" TargetType="{x:Type TabItem}">
-			<Grid SnapsToDevicePixels="True">
-				<Border x:Name="Bd"
-						Background="#33333333"
-						BorderBrush="{TemplateBinding BorderBrush}"
-						Margin="1"
-						Padding="5,2,5,2"
-						BorderThickness="0">
-					<ContentPresenter x:Name="Content"
-								  ContentTemplate="{TemplateBinding HeaderTemplate}"
-								  Content="{TemplateBinding Header}"
-								  ContentStringFormat="{TemplateBinding HeaderStringFormat}"
-								  ContentSource="Header"
-								  HorizontalAlignment="{
-											Binding HorizontalContentAlignment, RelativeSource=
-											{
-												RelativeSource FindAncestor, AncestorLevel=1, AncestorType=
-												{
-													x:Type ItemsControl
-												}
-											}
-										}"
-								  RecognizesAccessKey="True"
-								  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-								  VerticalAlignment="{
-											Binding VerticalContentAlignment, RelativeSource=
-											{
-												RelativeSource FindAncestor, AncestorLevel=1, AncestorType=
-												{
-													x:Type ItemsControl
-												}
-											}
-										}"/>
-				</Border>
-			</Grid>
-			<ControlTemplate.Triggers>
-				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="Background" TargetName="Bd" Value="#FF88BBFF"/>
-					<Setter Property="TextBlock.Foreground" TargetName="Bd" Value="#FFFFFFFF"/>
-				</Trigger>
-				<Trigger Property="IsSelected" Value="True">
-					<Setter Property="Panel.ZIndex" Value="1"/>
-					<Setter Property="Background" TargetName="Bd" Value="#FF3399FF"/>
-					<Setter Property="TextBlock.Foreground" TargetName="Bd" Value="#FFFFFFFF"/>
-				</Trigger>
-				<MultiTrigger>
-					<MultiTrigger.Conditions>
-						<Condition Property="IsSelected" Value="False"/>
-						<Condition Property="IsMouseOver" Value="True"/>
-					</MultiTrigger.Conditions>
-					<Setter Property="BorderBrush" TargetName="Bd" Value="#FF3C7FB1"/>
-				</MultiTrigger>
-				<Trigger Property="TabStripPlacement" Value="Bottom">
-					<Setter Property="BorderThickness" TargetName="Bd" Value="1,0,1,1"/>
-				</Trigger>
-				<Trigger Property="TabStripPlacement" Value="Left">
-					<Setter Property="BorderThickness" TargetName="Bd" Value="1,1,0,1"/>
-				</Trigger>
-				<Trigger Property="TabStripPlacement" Value="Right">
-					<Setter Property="BorderThickness" TargetName="Bd" Value="0,1,1,1"/>
-				</Trigger>
-				<MultiTrigger>
-					<MultiTrigger.Conditions>
-						<Condition Property="IsSelected" Value="True"/>
-						<Condition Property="TabStripPlacement" Value="Top"/>
-					</MultiTrigger.Conditions>
-					<Setter Property="Margin" Value="-2,-2,-2,-1"/>
-					<Setter Property="Margin" TargetName="Content" Value="0,0,0,1"/>
-				</MultiTrigger>
-				<MultiTrigger>
-					<MultiTrigger.Conditions>
-						<Condition Property="IsSelected" Value="True"/>
-						<Condition Property="TabStripPlacement" Value="Bottom"/>
-					</MultiTrigger.Conditions>
-					<Setter Property="Margin" Value="-2,-1,-2,-2"/>
-					<Setter Property="Margin" TargetName="Content" Value="0,1,0,0"/>
-				</MultiTrigger>
-				<MultiTrigger>
-					<MultiTrigger.Conditions>
-						<Condition Property="IsSelected" Value="True"/>
-						<Condition Property="TabStripPlacement" Value="Left"/>
-					</MultiTrigger.Conditions>
-					<Setter Property="Margin" Value="-2,-2,-1,-2"/>
-					<Setter Property="Margin" TargetName="Content" Value="0,0,1,0"/>
-				</MultiTrigger>
-				<MultiTrigger>
-					<MultiTrigger.Conditions>
-						<Condition Property="IsSelected" Value="True"/>
-						<Condition Property="TabStripPlacement" Value="Right"/>
-					</MultiTrigger.Conditions>
-					<Setter Property="Margin" Value="-1,-2,-2,-2"/>
-					<Setter Property="Margin" TargetName="Content" Value="1,0,0,0"/>
-				</MultiTrigger>
-				<Trigger Property="IsEnabled" Value="False">
-					<Setter Property="Background" TargetName="Bd" Value="#FFF4F4F4"/>
-					<Setter Property="BorderBrush" TargetName="Bd" Value="#FFC9C7BA"/>
-					<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-				</Trigger>
-			</ControlTemplate.Triggers>
-		</ControlTemplate>
 	</Window.Resources>
 	<Window.InputBindings>
 		<KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolNew}" />
@@ -208,7 +30,7 @@
 		<KeyBinding Key="Y" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolRedo}" />
 	</Window.InputBindings>
 	<Window.CommandBindings>
-		<CommandBinding Command="{StaticResource btnClick_mx_toolNew}" Executed="mx_toolNew_Click" />
+		<CommandBinding Command="{StaticResource btnClick_mx_toolNew}" Executed="mx_newFile_Click" />
 		<CommandBinding Command="{StaticResource btnClick_mx_toolOpen}" Executed="openProj" />
 		<CommandBinding Command="{StaticResource btnClick_mx_toolSave}" Executed="mx_toolSave_Click" />
 		<CommandBinding Command="{StaticResource btnClick_mx_toolSaveAll}" Executed="mx_toolSaveAll_Click" />
@@ -230,25 +52,44 @@
 		</Grid.ColumnDefinitions>
 		<Menu Grid.Row="0" Grid.Column="0" Background="#18181818" Grid.ColumnSpan="3" VerticalAlignment="Top">
 			<MenuItem Header="文件">
-				<MenuItem Header="新建" InputGestureText="Ctrl+N" IsEnabled="False"/>
-				<MenuItem Header="打开" InputGestureText="Ctrl+O" Click="openProj"/>
+				<MenuItem Header="新建">
+					<MenuItem Name="mx_menuNewProj" Header="项目..." Click="mx_newProj_Click"/>
+					<MenuItem Name="mx_menuNewFile"
+							  Header="文件..."
+							  InputGestureText="Ctrl+N"
+							  IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+							  Click="mx_newFile_Click"/>
+				</MenuItem>
+				<MenuItem Header="打开"
+						  InputGestureText="Ctrl+O"
+						  IsEnabled="{Binding ElementName=mx_toolOpen, Path=IsEnabled}"
+						  Click="openProj"/>
+				<MenuItem Header="最近使用的工程">
+					<MenuItem Header="功能未开发" IsEnabled="False"/>
+				</MenuItem>
 				<Separator/>
-				<MenuItem Header="保存" InputGestureText="Ctrl+S" Click="mx_toolSave_Click"/>
-				<MenuItem Header="全部保存" InputGestureText="Ctrl+Shift+S" Click="mx_toolSaveAll_Click"/>
+				<MenuItem Header="保存"
+						  InputGestureText="Ctrl+S"
+						  IsEnabled="{Binding ElementName=mx_toolSave, Path=IsEnabled}"
+						  Click="mx_toolSave_Click"/>
+				<MenuItem Header="全部保存"
+						  InputGestureText="Ctrl+Shift+S"
+						  IsEnabled="{Binding ElementName=mx_toolSaveAll, Path=IsEnabled}"
+						  Click="mx_toolSaveAll_Click"/>
 				<Separator/>
 				<MenuItem Header="退出" InputGestureText="Alt+F4" IsEnabled="False"/>
 			</MenuItem>
 			<MenuItem Header="编辑">
-				<MenuItem Header="撤销" InputGestureText="Ctrl+Z" Click="mx_toolUndo_Click"/>
-				<MenuItem Header="重复" InputGestureText="Ctrl+Y" Click="mx_toolRedo_Click"/>
+				<MenuItem Header="撤销" InputGestureText="Ctrl+Z" IsEnabled="{Binding ElementName=mx_toolUndo, Path=IsEnabled}" Click="mx_toolUndo_Click"/>
+				<MenuItem Header="重复" InputGestureText="Ctrl+Y" IsEnabled="{Binding ElementName=mx_toolRedo, Path=IsEnabled}" Click="mx_toolRedo_Click"/>
 				<Separator/>
-				<MenuItem Header="剪切" InputGestureText="Ctrl+X" Click="mx_toolCut_Click"/>
-				<MenuItem Header="复制" InputGestureText="Ctrl+C" Click="mx_toolCopy_Click"/>
-				<MenuItem Header="粘贴" InputGestureText="Ctrl+V" Click="mx_toolPaste_Click"/>
-				<MenuItem Header="删除" InputGestureText="Delete" Click="mx_toolDelete_Click"/>
+				<MenuItem Header="剪切" InputGestureText="Ctrl+X" IsEnabled="{Binding ElementName=mx_toolCut, Path=IsEnabled}" Click="mx_toolCut_Click"/>
+				<MenuItem Header="复制" InputGestureText="Ctrl+C" IsEnabled="{Binding ElementName=mx_toolCopy, Path=IsEnabled}" Click="mx_toolCopy_Click"/>
+				<MenuItem Header="粘贴" InputGestureText="Ctrl+V" IsEnabled="{Binding ElementName=mx_toolPaste, Path=IsEnabled}" Click="mx_toolPaste_Click"/>
+				<MenuItem Header="删除" InputGestureText="Delete" IsEnabled="{Binding ElementName=mx_toolDelete, Path=IsEnabled}" Click="mx_toolDelete_Click"/>
 				<Separator/>
-				<MenuItem Header="上移" InputGestureText="Ctrl+↑" Click="mx_toolMoveUp_Click"/>
-				<MenuItem Header="下移" InputGestureText="Ctrl+↓" Click="mx_toolMoveDown_Click"/>
+				<MenuItem Header="上移" InputGestureText="Ctrl+↑" IsEnabled="{Binding ElementName=mx_toolMoveUp, Path=IsEnabled}" Click="mx_toolMoveUp_Click"/>
+				<MenuItem Header="下移" InputGestureText="Ctrl+↓" IsEnabled="{Binding ElementName=mx_toolMoveDown, Path=IsEnabled}" Click="mx_toolMoveDown_Click"/>
 			</MenuItem>
 			<MenuItem Header="项目">
 				<MenuItem Header="资源管理..." IsEnabled="False"/>
@@ -280,21 +121,56 @@
 				</Grid.RowDefinitions>
 				<ToolBarTray Grid.Row="0">
 					<ToolBar HorizontalAlignment="Left">
-						<Button Name="mx_toolNew" Click="mx_toolNew_Click" IsEnabled="False" ToolTip="新建 (Ctrl + N)">新建</Button>
-						<Button Name="mx_toolOpen" Click="openProj" ToolTip="打开 (Ctrl + O)">打开</Button>
-						<Button Name="mx_toolSave" Click="mx_toolSave_Click" ToolTip="保存 (Ctrl + S)">保存</Button>
-						<Button Name="mx_toolSaveAll" Click="mx_toolSaveAll_Click" ToolTip="全部保存 (Ctrl + Shift + S)">全部保存</Button>
+						<Button Name="mx_toolNew"
+								IsEnabled="False"
+								Click="mx_newFile_Click"
+								ToolTip="新建 (Ctrl + N)">新建</Button>
+						<Button Name="mx_toolOpen"
+								Click="openProj"
+								ToolTip="打开 (Ctrl + O)">打开</Button>
+						<Button Name="mx_toolSave"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolSave_Click"
+								ToolTip="保存 (Ctrl + S)">保存</Button>
+						<Button Name="mx_toolSaveAll"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolSaveAll_Click"
+								ToolTip="全部保存 (Ctrl + Shift + S)">全部保存</Button>
 						<Separator/>
-						<Button Name="mx_toolUndo" Click="mx_toolUndo_Click" ToolTip="撤销 (Ctrl + Z)">撤销</Button>
-						<Button Name="mx_toolRedo" Click="mx_toolRedo_Click" ToolTip="重复 (Ctrl + Y)">重复</Button>
+						<Button Name="mx_toolUndo"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolUndo_Click"
+								ToolTip="撤销 (Ctrl + Z)">撤销</Button>
+						<Button Name="mx_toolRedo"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolRedo_Click"
+								ToolTip="重复 (Ctrl + Y)">重复</Button>
 						<Separator/>
-						<Button Name="mx_toolCut" Click="mx_toolCut_Click" ToolTip="剪切 (Ctrl + X)">剪切</Button>
-						<Button Name="mx_toolCopy" Click="mx_toolCopy_Click"  ToolTip="复制 (Ctrl + C)">复制</Button>
-						<Button Name="mx_toolPaste" Click="mx_toolPaste_Click"  ToolTip="粘贴 (Ctrl + V)">粘贴</Button>
-						<Button Name="mx_toolDelete" Click="mx_toolDelete_Click"  ToolTip="删除 (Delete)">删除</Button>
+						<Button Name="mx_toolCut"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolCut_Click"
+								ToolTip="剪切 (Ctrl + X)">剪切</Button>
+						<Button Name="mx_toolCopy"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolCopy_Click"
+								ToolTip="复制 (Ctrl + C)">复制</Button>
+						<Button Name="mx_toolPaste"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolPaste_Click"
+								ToolTip="粘贴 (Ctrl + V)">粘贴</Button>
+						<Button Name="mx_toolDelete"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolDelete_Click"
+								ToolTip="删除 (Delete)">删除</Button>
 						<Separator/>
-						<Button Name="mx_toolMoveUp" Click="mx_toolMoveUp_Click"  ToolTip="上移 (Ctrl + ↑)">上移</Button>
-						<Button Name="mx_toolMoveDown" Click="mx_toolMoveDown_Click"  ToolTip="下移 (Ctrl + ↓)">下移</Button>
+						<Button Name="mx_toolMoveUp"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolMoveUp_Click"
+								ToolTip="上移 (Ctrl + ↑)">上移</Button>
+						<Button Name="mx_toolMoveDown"
+								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
+								Click="mx_toolMoveDown_Click"
+								ToolTip="下移 (Ctrl + ↓)">下移</Button>
 					</ToolBar>
 					<ToolBar Name="mx_debugTools" HorizontalAlignment="Left">
 						<Label>调试模式：</Label>
@@ -328,7 +204,7 @@
 								<TreeViewItem Name="mx_treePro">
 									<TreeViewItem.ContextMenu>
 										<ContextMenu>
-											<MenuItem Name="mx_newFile" Header="新建" InputGestureText="Ctrl+N" Click="mx_newFile_Click" IsEnabled="False"/>
+											<MenuItem Name="mx_newFile" Header="新建" InputGestureText="Ctrl+N" Click="mx_newFile_Click"/>
 										</ContextMenu>
 									</TreeViewItem.ContextMenu>
 								</TreeViewItem>
@@ -437,7 +313,8 @@
 		<DockPanel Name="mx_normalFrame" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" Margin="0,0,0,5">
 			<TabControl Name="mx_workTabs"
 						Margin="0,0,0,10"
-						SelectionChanged="mx_workTabs_SelectionChanged" Style="{DynamicResource TabControlStyle1}">
+						SelectionChanged="mx_workTabs_SelectionChanged"
+						Style="{StaticResource TabControlStyle1}">
 			</TabControl>
 		</DockPanel>
 		<GridSplitter Name="mx_debugSplitter" Grid.Row="4" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>

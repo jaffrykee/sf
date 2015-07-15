@@ -88,6 +88,12 @@
     <Compile Include="HtmlControl.xaml.cs">
       <DependentUpon>HtmlControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewFile\FileTypeRadio.xaml.cs">
+      <DependentUpon>FileTypeRadio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewFile\NewFileWin.xaml.cs">
+      <DependentUpon>NewFileWin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PackImage.xaml.cs">
       <DependentUpon>PackImage.xaml</DependentUpon>
     </Compile>
@@ -148,6 +154,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HtmlControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewFile\FileTypeRadio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewFile\NewFileWin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

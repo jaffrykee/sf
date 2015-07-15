@@ -439,13 +439,16 @@ namespace UIEditor
 		}
 		private void showTmpl(MenuItem ctrlMenuItem, XmlElement xeTmpls, string addStr)
 		{
-			MenuItem emptyCtrl = new MenuItem();
+			if(ctrlMenuItem.Items.Count == 0)
+			{
+				MenuItem emptyCtrl = new MenuItem();
 
-			emptyCtrl.Header = "空节点";
-			emptyCtrl.ToolTip = addStr;
-			emptyCtrl.Click += insertCtrlItem_Click;
-			ctrlMenuItem.Items.Add(emptyCtrl);
-			ctrlMenuItem.Items.Add(new Separator());
+				emptyCtrl.Header = "空节点";
+				emptyCtrl.ToolTip = addStr;
+				emptyCtrl.Click += insertCtrlItem_Click;
+				ctrlMenuItem.Items.Add(emptyCtrl);
+				ctrlMenuItem.Items.Add(new Separator());
+			}
 
 			XmlNodeList xlstTmpl = xeTmpls.SelectNodes("row");
 			if (xlstTmpl.Count == 0)
@@ -473,6 +476,46 @@ namespace UIEditor
 				}
 			}
 		}
+		public void showTmplGroup(string addStr)
+		{
+			MainWindow.CtrlDef_T ctrlDef;
+
+			if (m_pW.m_mapCtrlDef.TryGetValue(addStr, out ctrlDef) && ctrlDef != null)
+			{
+				MenuItem ctrlMenuItem = new MenuItem();
+				bool isNull = true;
+
+				StringDic.getNameAndTip(ctrlMenuItem, addStr, StringDic.m_mapStrControl);
+				if (m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template") != null &&
+					m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
+				{
+					isNull = false;
+					XmlElement xeTmpls = (XmlElement)m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
+
+					showTmpl(ctrlMenuItem, xeTmpls, addStr);
+				}
+
+				if (m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template") != null &&
+					m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
+				{
+					if (!isNull)
+					{
+						ctrlMenuItem.Items.Add(new Separator());
+					}
+					isNull = false;
+
+					XmlElement xeTmpls = (XmlElement)m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
+
+					showTmpl(ctrlMenuItem, xeTmpls, addStr);
+				}
+
+				if (isNull)
+				{
+					ctrlMenuItem.Click += insertCtrlItem_Click;
+				}
+				mx_addCtrl.Items.Add(ctrlMenuItem);
+			}
+		}
 		private void mx_addCtrl_Loaded(object sender, RoutedEventArgs e)
 		{
 			MainWindow.CtrlDef_T panelCtrlDef;
@@ -480,8 +523,6 @@ namespace UIEditor
 			mx_addCtrl.Items.Clear();
 			if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 			{
-				MainWindow.CtrlDef_T ctrlDef;
-
 				foreach (string addStr in StringDic.m_lstAddControl)
 				{
 					if (addStr == "Separator")
@@ -490,41 +531,7 @@ namespace UIEditor
 					}
 					else
 					{
-						if (m_pW.m_mapCtrlDef.TryGetValue(addStr, out ctrlDef) && ctrlDef != null)
-						{
-							MenuItem ctrlMenuItem = new MenuItem();
-							bool isNull = true;
-
-							StringDic.getNameAndTip(ctrlMenuItem, addStr, StringDic.m_mapStrControl);
-							if (m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template") != null &&
-								m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
-							{
-								isNull = false;
-								XmlElement xeTmpls = (XmlElement)m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
-
-								showTmpl(ctrlMenuItem, xeTmpls, addStr);
-							}
-
-							if (m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template") != null &&
-								m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
-							{
-								if (!isNull)
-								{
-									ctrlMenuItem.Items.Add(new Separator());
-								}
-								isNull = false;
-
-								XmlElement xeTmpls = (XmlElement)m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
-
-								showTmpl(ctrlMenuItem, xeTmpls, addStr);
-							}
-
-							if(isNull)
-							{
-								ctrlMenuItem.Click += insertCtrlItem_Click;
-							}
-							mx_addCtrl.Items.Add(ctrlMenuItem);
-						}
+						showTmplGroup(addStr);
 					}
 				}
 			}
@@ -551,19 +558,12 @@ namespace UIEditor
 				}
 				else if (m_xe.Name != "event")
 				{
-					MenuItem ctrlItem = new MenuItem();
-
-					ctrlItem.ToolTip = "event";
-					if (StringDic.m_mapStrControl["event"] == null || StringDic.m_mapStrControl["event"] == "")
-					{
-						ctrlItem.Header = "event";
-					}
-					else
-					{
-						ctrlItem.Header = StringDic.m_mapStrControl["event"];
-					}
-					ctrlItem.Click += insertCtrlItem_Click;
-					mx_addCtrl.Items.Add(ctrlItem);
+					showTmplGroup("event");
+					/*
+						正则替换："E:\clientlib\DsBoloUIEditor\src\boloUI\BoloEvent.java" 到 "E:\clienttools\UI编辑器2\conf.xml" -->
+						[\t a-z_=]*("[a-zA-Z]*")[; \t\/\/]*([\/\u4e00-\u9fa5 a-zA-Z（）]*)
+						\t<row name=$1 tip="$2">\r\n\t\t<event type=$1/>\r\n\t</row>
+					*/
 				}
 				else
 				{

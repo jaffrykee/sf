@@ -23,57 +23,68 @@ namespace UIEditor
 	{
 		public XmlControl m_parent;
 		public System.Drawing.Bitmap m_Bitmap;
+		public System.Drawing.Bitmap m_tgaImg;
 		public BitmapSource m_imgSource;
 		public int m_imgHeight;
 		public int m_imgWidth;
 		public bool m_loaded;
-		public Dictionary<string, Rect> m_mapImgRect;
+		public Dictionary<string, System.Drawing.Rectangle> m_mapImgRect;
 
 		public PackImage(XmlControl parent)
 		{
 			InitializeComponent();
 			m_parent = parent;
 			m_loaded = false;
-			m_mapImgRect = new Dictionary<string, Rect>();
+			m_mapImgRect = new Dictionary<string, System.Drawing.Rectangle>();
+
 			foreach (XmlNode xn in m_parent.m_xeRoot.SelectNodes("Image"))
 			{
 				if (xn.NodeType == XmlNodeType.Element)
 				{
 					XmlElement xe = (XmlElement)xn;
-					Rect rt;
+					System.Drawing.Rectangle rt;
 
 					if (xe.GetAttribute("Name") != "" && !m_mapImgRect.TryGetValue(xe.GetAttribute("Name"), out rt))
 					{
 						m_mapImgRect.Add(xe.GetAttribute("Name"),
-							new Rect(
-								Double.Parse(xe.GetAttribute("X")),
-								Double.Parse(xe.GetAttribute("Y")),
-								Double.Parse(xe.GetAttribute("Width")),
-								Double.Parse(xe.GetAttribute("Height"))
+							new System.Drawing.Rectangle(
+								int.Parse(xe.GetAttribute("X")),
+								int.Parse(xe.GetAttribute("Y")),
+								int.Parse(xe.GetAttribute("Width")),
+								int.Parse(xe.GetAttribute("Height"))
 								)
 							);
 					}
 				}
 			}
 		}
-		public static bool addPicToCanvas(string path, Rect rect, Canvas canvas)
+		public static bool addPicToGraphics(string path, System.Drawing.Rectangle rect, System.Drawing.Graphics g)
 		{
 			if (System.IO.File.Exists(path))
 			{
+				//拼图和延展1像素
 				System.Drawing.Bitmap bmp = DevIL.DevIL.LoadBitmap(path);
-				IntPtr ip = bmp.GetHbitmap();
-				BitmapSource ims = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-					ip, IntPtr.Zero, Int32Rect.Empty,
-					System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-				Image img = new Image();
-
-				img.Source = ims;
-				img.Stretch = Stretch.Uniform;
-				img.Margin = new Thickness(rect.X, rect.Y, 0, 0);
-				img.Width = rect.Width;
-				img.Height = rect.Height;
-				MainWindow.DeleteObject(ip);
-				canvas.Children.Insert(0, img);
+				g.DrawImage(bmp,
+					rect.X,
+					rect.Y,
+					rect.Width,
+					rect.Height);
+				g.DrawImage(bmp,
+					new System.Drawing.Rectangle(rect.X - 1, rect.Y, 1, rect.Height),
+					new System.Drawing.Rectangle(0, 0, 1, rect.Height),
+					System.Drawing.GraphicsUnit.Pixel);
+				g.DrawImage(bmp,
+					new System.Drawing.Rectangle(rect.X, rect.Y - 1, rect.Width, 1),
+					new System.Drawing.Rectangle(0, 0, rect.Width, 1),
+					System.Drawing.GraphicsUnit.Pixel);
+				g.DrawImage(bmp,
+					new System.Drawing.Rectangle(rect.X + rect.Width, rect.Y, 1, rect.Height),
+					new System.Drawing.Rectangle(rect.Width - 1, 0, 1, rect.Height),
+					System.Drawing.GraphicsUnit.Pixel);
+				g.DrawImage(bmp,
+					new System.Drawing.Rectangle(rect.X, rect.Y + rect.Height, rect.Width, 1),
+					new System.Drawing.Rectangle(0, rect.Height - 1, rect.Width, 1),
+					System.Drawing.GraphicsUnit.Pixel);
 
 				return true;
 			}
@@ -97,22 +108,38 @@ namespace UIEditor
 						System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
 					MainWindow.DeleteObject(ip);
 
-					m_imgHeight = m_imgSource.PixelHeight;
 					m_imgWidth = m_imgSource.PixelWidth;
-					m_parent.m_parent.itemFrame.Height = m_imgHeight;
+					m_imgHeight = m_imgSource.PixelHeight;
 					m_parent.m_parent.itemFrame.Width = m_imgWidth;
+					m_parent.m_parent.itemFrame.Height = m_imgHeight;
+					mx_canvas.Width = m_imgWidth;
  					mx_canvas.Height = m_imgHeight;
- 					mx_canvas.Width = m_imgWidth;
 					//mx_image.Source = m_imgSource;
 					//mx_image.Stretch = Stretch.Uniform;
-					foreach (KeyValuePair<string, Rect> pairImgRect in m_mapImgRect)
+
+					m_tgaImg = new System.Drawing.Bitmap(m_imgWidth, m_imgHeight);
+					System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(m_tgaImg);
+					g.Clear(System.Drawing.Color.FromArgb(0x00, 0x00, 0x00, 0x00));
+					foreach (KeyValuePair<string, System.Drawing.Rectangle> pairImgRect in m_mapImgRect)
 					{
-						addPicToCanvas(
+						addPicToGraphics(
 							MainWindow.s_pW.m_projPath + "\\images\\" + System.IO.Path.GetFileNameWithoutExtension(m_parent.m_openedFile.m_path) + 
 								"\\" + pairImgRect.Key + ".png",
 							pairImgRect.Value,
-							mx_canvas);
+							g);
 					}
+					g.Dispose();
+					DevIL.DevIL.SaveBitmap("E:\\tmp\\" + System.IO.Path.GetFileNameWithoutExtension(m_parent.m_openedFile.m_path) + ".tga", m_tgaImg);
+					ip = m_tgaImg.GetHbitmap();
+					m_imgSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+						ip, IntPtr.Zero, Int32Rect.Empty,
+						System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+					MainWindow.DeleteObject(ip);
+
+					System.Windows.Controls.Image cImg = new System.Windows.Controls.Image();
+					cImg.Source = m_imgSource;
+					cImg.Stretch = Stretch.Uniform;
+					mx_canvas.Children.Insert(0, cImg);
 				}
 				m_loaded = true;
 			}
@@ -120,16 +147,21 @@ namespace UIEditor
 
 		private void mx_canvas_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			double x = e.GetPosition(mx_canvas).X;
-			double y = e.GetPosition(mx_canvas).Y;
+			int x = (int)Math.Round(e.GetPosition(mx_canvas).X);
+			int y = (int)Math.Round(e.GetPosition(mx_canvas).Y);
 
 			MainWindow.s_pW.mx_debug.Text += "<坐标>(" + e.GetPosition(mx_canvas).X.ToString() + "," + e.GetPosition(mx_canvas).Y.ToString() + ")\r\n";
-			foreach(KeyValuePair<string, Rect> pairImgRect in m_mapImgRect.ToList())
+			foreach (KeyValuePair<string, System.Drawing.Rectangle> pairImgRect in m_mapImgRect.ToList())
 			{
 				if(pairImgRect.Value.Contains(x, y))
 				{
 					mx_selPath.Visibility = System.Windows.Visibility.Visible;
-					mx_selPath.Data = new RectangleGeometry(pairImgRect.Value);
+					mx_selPath.Data = new RectangleGeometry(new Rect(
+						pairImgRect.Value.X,
+						pairImgRect.Value.Y,
+						pairImgRect.Value.Width,
+						pairImgRect.Value.Height
+					));
 					MainWindow.s_pW.mx_debug.Text += "<图片>Name:" + pairImgRect.Key + "\r\n";
 
 					return;
@@ -139,15 +171,20 @@ namespace UIEditor
 		}
 		private void mx_canvas_MouseMove(object sender, MouseEventArgs e)
 		{
-			double x = e.GetPosition(mx_canvas).X;
-			double y = Math.Floor(e.GetPosition(mx_canvas).Y);
+			int x = (int)Math.Round(e.GetPosition(mx_canvas).X);
+			int y = (int)Math.Round(e.GetPosition(mx_canvas).Y);
 
-			foreach (KeyValuePair<string, Rect> pairImgRect in m_mapImgRect.ToList())
+			foreach (KeyValuePair<string, System.Drawing.Rectangle> pairImgRect in m_mapImgRect.ToList())
 			{
 				if (pairImgRect.Value.Contains(x, y))
 				{
 					mx_overPath.Visibility = System.Windows.Visibility.Visible;
-					mx_overPath.Data = new RectangleGeometry(pairImgRect.Value);
+					mx_overPath.Data = new RectangleGeometry(new Rect(
+						pairImgRect.Value.X,
+						pairImgRect.Value.Y,
+						pairImgRect.Value.Width,
+						pairImgRect.Value.Height
+					));
 
 					return;
 				}

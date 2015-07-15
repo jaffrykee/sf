@@ -228,6 +228,8 @@ namespace UIEditor
 					refreshSkin(m_skinPath);
 				}
 				refreshProjTree(m_projPath, this.mx_treePro, true);
+				mx_root.Title = m_projPath + "\\" + m_projName + " - UI编辑器";
+				mx_toolNew.IsEnabled = true;
 			}
 			else
 			{
@@ -1640,7 +1642,8 @@ namespace UIEditor
 				{ "panel",		m_mapCtrlDef["panel"]},
 				{ "listPanel",	m_mapCtrlDef["listPanel"]},
 				{ "tabPanel",	m_mapCtrlDef["tabPanel"]},
-				{ "pagePanel",	m_mapCtrlDef["pagePanel"]}
+				{ "pagePanel",	m_mapCtrlDef["pagePanel"]},
+				{ "apartPanel", m_mapCtrlDef["apartPanel"]}
 				#endregion
 			};
 
@@ -1976,11 +1979,6 @@ namespace UIEditor
 			}
 		}
 
-		private void mx_toolNew_Click(object sender, RoutedEventArgs e)
-		{
-
-		}
-
 		private void mx_toolCut_Click(object sender, RoutedEventArgs e)
 		{
 			if (m_curItem != null)
@@ -2073,6 +2071,11 @@ namespace UIEditor
 			}
 		}
 		private void mx_newFile_Click(object sender, RoutedEventArgs e)
+		{
+			NewFile.NewFileWin winNewFile = new NewFile.NewFileWin(".\\Template\\");
+			winNewFile.ShowDialog();
+		}
+		private void mx_newProj_Click(object sender, RoutedEventArgs e)
 		{
 
 		}

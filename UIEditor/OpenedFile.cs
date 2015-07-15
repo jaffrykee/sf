@@ -42,7 +42,7 @@ namespace UIEditor
 			m_fileType = StringDic.getFileType(m_path);
 			m_tab = new TabItem();
 
-			m_tab.Template = (ControlTemplate)pW.Resources["TmplFileItem"];
+			m_tab.Template = (ControlTemplate)(App.Current.Resources["TmplFileItem"]);
 			m_tab.Unloaded += new RoutedEventHandler(pW.eventCloseFile);
 			ToolTip tabTip = new ToolTip();
 			tabTip.Content = m_path;
