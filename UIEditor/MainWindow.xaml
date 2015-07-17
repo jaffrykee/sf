@@ -291,7 +291,7 @@
 			</Grid>
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5"></GridSplitter>
-		<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Margin="5,0,0,0" Background="#22222222">
+		<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Margin="5,0,0,0" Background="#ffdddddd">
 			<ScrollViewer Name="mx_toolScroll" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" SizeChanged="ScrollViewer_SizeChanged">
 				<StackPanel Name="mx_toolArea" Width="auto">
 				</StackPanel>
@@ -313,6 +313,7 @@
 		<DockPanel Name="mx_normalFrame" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" Margin="0,0,0,5">
 			<TabControl Name="mx_workTabs"
 						Margin="0,0,0,10"
+						BorderThickness="0,3,0,0"
 						SelectionChanged="mx_workTabs_SelectionChanged"
 						Style="{StaticResource TabControlStyle1}">
 			</TabControl>
@@ -325,8 +326,11 @@
 					<RowDefinition Height="auto"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<WrapPanel Name="mx_selCtrlLstFrame" Orientation="Horizontal" Grid.Row="0">
-				</WrapPanel>
+				<!-- Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" -->
+				<WrapPanel Name="mx_selCtrlLstFrame"
+						   Grid.Row="0"
+						   Background="#ffcccccc"
+						   Orientation="Horizontal"/>
 				<StackPanel Grid.Row="1" Orientation="Horizontal">
 					<Button Width="auto" Margin="10,2,2,2" Padding="2" Click="mx_bClearDebug_Click">
 						clear

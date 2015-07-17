@@ -20,28 +20,18 @@ namespace UIEditor.NewFile
 	/// </summary>
 	public partial class FileTypeRadio : Grid
 	{
-		public FileTypeRadio(string text,string groupName)
+		NewFileWin m_frame;
+
+		public FileTypeRadio(NewFileWin frame, string text,string groupName)
 		{
+			m_frame = frame;
 			InitializeComponent();
 			mx_radio.Content = text;
 			mx_radio.GroupName = groupName;
 		}
-
-		private void mx_radio_MouseEnter(object sender, MouseEventArgs e)
-		{
-
-		}
-		private void mx_radio_MouseLeave(object sender, MouseEventArgs e)
-		{
-
-		}
 		private void mx_radio_Checked(object sender, RoutedEventArgs e)
 		{
-
-		}
-		private void mx_radio_Unchecked(object sender, RoutedEventArgs e)
-		{
-
+			m_frame.m_curFileType = this;
 		}
 	}
 }

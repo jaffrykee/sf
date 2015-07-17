@@ -8,7 +8,7 @@
 	x:Class="UIEditor.AttrList"
 	x:Name="mx_root"
 	Loaded="mx_root_Loaded"
-	Background="#33333333">
+	Background="#ffcccccc">
 	<StackPanel Margin="2,2,2,2">
 		<Border BorderThickness="1" BorderBrush="#ffffffff" Background="#ff444444" CornerRadius="2">
 			<Label Name="mx_title"

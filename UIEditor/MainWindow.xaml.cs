@@ -257,9 +257,8 @@ namespace UIEditor
 				updateGL(buffer, W2GTag.W2G_SKIN_DATA);
 			}
 		}
-		private void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
+		public void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
 		{
-			m_dep = 0;
 			m_mapStrSkinGroup.Clear();
 			m_mapStrSkin.Clear();
 			rootItem.Items.Clear();
@@ -279,9 +278,7 @@ namespace UIEditor
 				treeUIChild.Header = dri.Name;
 				rootItem.Items.Add(treeUIChild);
 
-				m_dep++;
 				refreshProjTree(path + "\\" + dri.Name, treeUIChild, false);
-				m_dep--;
 			}
 			foreach (var dri in di.GetFiles("*"))
 			{
@@ -300,7 +297,7 @@ namespace UIEditor
 				ToolTip rootTip = new ToolTip();
 				rootTip.Content = path;
 				rootItem.ToolTip = rootTip;
-				rootItem.IsExpanded = false;
+				rootItem.IsExpanded = true;
 				rootItem.Header = "UI工程目录(" + i + "个目录和" + j + "个项目)";
 			}
 		}
@@ -2072,7 +2069,7 @@ namespace UIEditor
 		}
 		private void mx_newFile_Click(object sender, RoutedEventArgs e)
 		{
-			NewFile.NewFileWin winNewFile = new NewFile.NewFileWin(".\\Template\\");
+			NewFile.NewFileWin winNewFile = new NewFile.NewFileWin(".\\data\\Template\\");
 			winNewFile.ShowDialog();
 		}
 		private void mx_newProj_Click(object sender, RoutedEventArgs e)
@@ -2214,14 +2211,14 @@ namespace UIEditor
 			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
 
 			//openFileByPath("data/help/index.html");
-			System.Diagnostics.Process.Start("file:///" + path + "/data/help/index.html");
+			System.Diagnostics.Process.Start("file:///" + path + "/doc/help/index.html");
 		}
 		private void mx_version_Click(object sender, RoutedEventArgs e)
 		{
 			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
 
 			//openFileByPath("data/version/index.html");
-			System.Diagnostics.Process.Start("file:///" + path + "/data/version/index.html");
+			System.Diagnostics.Process.Start("file:///" + path + "/doc/version/index.html");
 		}
 		private void mx_debug_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
