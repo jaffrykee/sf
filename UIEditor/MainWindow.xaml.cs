@@ -2208,17 +2208,29 @@ namespace UIEditor
 
 		private void mx_help_Click(object sender, RoutedEventArgs e)
 		{
-			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
+			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location) + "/doc/help.html";
 
-			//openFileByPath("data/help/index.html");
-			System.Diagnostics.Process.Start("file:///" + path + "/doc/help/index.html");
+			if (System.IO.File.Exists(path))
+			{
+				System.Diagnostics.Process.Start("file:///" + path);
+			}
+			else
+			{
+				mx_debug.Text += "<错误>没有找到文件：" + path + "。\r\n";
+			}
 		}
 		private void mx_version_Click(object sender, RoutedEventArgs e)
 		{
-			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
+			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location) + "/doc/version.html";
 
-			//openFileByPath("data/version/index.html");
-			System.Diagnostics.Process.Start("file:///" + path + "/doc/version/index.html");
+			if (System.IO.File.Exists(path))
+			{
+				System.Diagnostics.Process.Start("file:///" + path);
+			}
+			else
+			{
+				mx_debug.Text += "<错误>没有找到文件：" + path + "。\r\n";
+			}
 		}
 		private void mx_debug_SizeChanged(object sender, SizeChangedEventArgs e)
 		{

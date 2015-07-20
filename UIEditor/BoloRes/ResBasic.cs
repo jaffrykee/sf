@@ -257,7 +257,7 @@ namespace UIEditor.BoloRes
 			{
 				m_setFocus = true;
 			}
-			BringIntoView(new Rect(0, 0, 0, 0));
+			BringIntoView(new Rect(0, 0, 50, 20));
 		}
 
 		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)

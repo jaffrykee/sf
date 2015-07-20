@@ -234,7 +234,7 @@ namespace UIEditor.BoloUI
 			{
 				m_setFocus = true;
 			}
-			BringIntoView(new Rect(0, 0, 0, 0));
+			BringIntoView(new Rect(0, 0, 50, 20));
 
 			SelButton selBn;
 
