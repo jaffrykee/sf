@@ -271,16 +271,16 @@ namespace UIEditor.XmlOperation
 					XmlControl xmlCtrl = (XmlControl)fileT.m_frame;
 					BoloUI.Basic uiCtrl;
 
-					if (attrName == "baseID")
-					{
-						if (xmlCtrl.m_mapCtrlUI.TryGetValue(oldValue, out uiCtrl))
-						{
-							xmlCtrl.checkBaseId((XmlNode)dstXe);
-							xmlCtrl.m_mapCtrlUI.Remove(oldValue);
-							xmlCtrl.m_mapCtrlUI[newValue] = uiCtrl;
-							uiCtrl.Focus();
-						}
-					}
+// 					if (attrName == "baseID")
+// 					{
+// 						if (xmlCtrl.m_mapCtrlUI.TryGetValue(oldValue, out uiCtrl) && uiCtrl != null)
+// 						{
+// 							xmlCtrl.checkBaseId((XmlNode)dstXe);
+// 							xmlCtrl.m_mapCtrlUI.Remove(oldValue);
+// 							xmlCtrl.m_mapCtrlUI[newValue] = uiCtrl;
+// 							uiCtrl.Focus();
+// 						}
+// 					}
 
 					return true;
 				}

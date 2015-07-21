@@ -1562,6 +1562,14 @@ namespace UIEditor
 				{"sound", new AttrDef_T("string")}
 				#endregion
 			};
+		Dictionary<string, AttrDef_T> conf_mapRootEventAttrDef = new Dictionary<string, AttrDef_T>
+			{
+				#region RootEvent
+				{"type", new AttrDef_T("string")},
+				{"function", new AttrDef_T("string")},
+				{"sound", new AttrDef_T("string")}
+				#endregion
+			};
 		Dictionary<string, AttrDef_T> conf_mapToolTipAttrDef = new Dictionary<string, AttrDef_T>
 			{
 			};
@@ -1646,10 +1654,10 @@ namespace UIEditor
 
 			m_mapEventDef = new Dictionary<string, SkinDef_T>
 			{
-				#region event
+				#region BoloUIEvent（事件组）
 				{
 					"event",
-					new SkinDef_T(null, conf_mapEventAttrDef)
+					new SkinDef_T(null, conf_mapRootEventAttrDef)
 				}
 				#endregion
 			};
