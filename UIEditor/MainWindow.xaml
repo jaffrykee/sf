@@ -176,6 +176,16 @@
 						<Label>调试模式：</Label>
 						<TextBox MinWidth="100" Name="mx_hwndDebug"></TextBox>
 					</ToolBar>
+					<ToolBar Name="mx_viewModeTools" HorizontalAlignment="Left">
+						<CheckBox Name="mx_isViewMode"
+								  Checked="mx_isViewMode_Checked"
+								  Unchecked="mx_isViewMode_Unchecked">
+							预览模式
+						</CheckBox>
+						<Separator/>
+						<Button Name="mx_btnNesting" Click="mx_btnNesting_Click">图片打包</Button>
+						<TextBox Name="mx_txtNesting" Width="200"/>
+					</ToolBar>
 				</ToolBarTray>
 			</Grid>
 		</DockPanel>

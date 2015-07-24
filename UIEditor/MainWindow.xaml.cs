@@ -573,6 +573,7 @@ namespace UIEditor
 			W2G_SELECT_UI = 0x0003,
 			W2G_UI_VRECT = 0x0004,
 			W2G_DRAWRECT = 0x0014,
+			W2G_VIEWMODE = 0x0005
 		};
 		public enum G2WTag
 		{
@@ -2247,6 +2248,33 @@ namespace UIEditor
 
 		private void mx_GLCtrl_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
+		}
+
+		private void mx_isViewMode_Checked(object sender, RoutedEventArgs e)
+		{
+			updateGL("true", W2GTag.W2G_VIEWMODE);
+		}
+		private void mx_isViewMode_Unchecked(object sender, RoutedEventArgs e)
+		{
+			updateGL("false", W2GTag.W2G_VIEWMODE);
+		}
+		private void mx_btnNesting_Click(object sender, RoutedEventArgs e)
+		{
+			if(mx_txtNesting != null && m_projPath != null && m_projPath != "")
+			{
+				if (System.IO.Directory.Exists(m_projPath + "\\images\\" + mx_txtNesting.Text.ToString()))
+				{
+					Public.ImageNestingPara np = new Public.ImageNestingPara();
+
+					np.m_path = m_projPath + "\\images\\" + mx_txtNesting.Text.ToString() + "\\";
+					np.m_filter = "*.png";
+					np.m_deep = 1;
+
+					System.Threading.Thread threadNesting = new System.Threading.Thread(Public.ImageTools.initThread);
+					threadNesting.Start(np);
+					//Public.ImageTools.pngToTgaRectNesting(m_projPath + "\\images\\" + mx_txtNesting.Text.ToString() + "\\", "*.png", 1);
+				}
+			}
 		}
 	}
 }

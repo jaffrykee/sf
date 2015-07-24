@@ -100,6 +100,7 @@
     <Compile Include="PackImage.xaml.cs">
       <DependentUpon>PackImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Public\ImageTools.cs" />
     <Compile Include="TemplateCreate.xaml.cs">
       <DependentUpon>TemplateCreate.xaml</DependentUpon>
     </Compile>
