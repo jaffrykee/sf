@@ -97,50 +97,47 @@ namespace UIEditor
 		{
 			if (m_loaded == false)
 			{
-				string path = System.IO.Path.ChangeExtension(m_parent.m_openedFile.m_path, ".tga");
+				IntPtr ip;
 
-				if (System.IO.File.Exists(path))
+				m_imgWidth = 4096;
+				m_imgHeight = 4096;
+				m_parent.m_parent.itemFrame.Width = m_imgWidth;
+				m_parent.m_parent.itemFrame.Height = m_imgHeight;
+				mx_canvas.Width = m_imgWidth;
+ 				mx_canvas.Height = m_imgHeight;
+				//mx_image.Source = m_imgSource;
+				//mx_image.Stretch = Stretch.Uniform;
+
+				m_tgaImg = new System.Drawing.Bitmap(m_imgWidth, m_imgHeight);
+				System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(m_tgaImg);
+				g.Clear(System.Drawing.Color.FromArgb(0x00, 0x00, 0x00, 0x00));
+
+				string tmpPath = System.IO.Path.GetFileNameWithoutExtension(m_parent.m_openedFile.m_path);
+
+				if (tmpPath.LastIndexOf("_wpf") >= 0)
 				{
-					m_Bitmap = DevIL.DevIL.LoadBitmap(path);
-					IntPtr ip = m_Bitmap.GetHbitmap();
-					m_imgSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-						ip, IntPtr.Zero, Int32Rect.Empty,
-						System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-					MainWindow.DeleteObject(ip);
-
-					m_imgWidth = m_imgSource.PixelWidth;
-					m_imgHeight = m_imgSource.PixelHeight;
-					m_parent.m_parent.itemFrame.Width = m_imgWidth;
-					m_parent.m_parent.itemFrame.Height = m_imgHeight;
-					mx_canvas.Width = m_imgWidth;
- 					mx_canvas.Height = m_imgHeight;
-					//mx_image.Source = m_imgSource;
-					//mx_image.Stretch = Stretch.Uniform;
-
-					m_tgaImg = new System.Drawing.Bitmap(m_imgWidth, m_imgHeight);
-					System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(m_tgaImg);
-					g.Clear(System.Drawing.Color.FromArgb(0x00, 0x00, 0x00, 0x00));
-					foreach (KeyValuePair<string, System.Drawing.Rectangle> pairImgRect in m_mapImgRect)
-					{
-						addPicToGraphics(
-							MainWindow.s_pW.m_projPath + "\\images\\" + System.IO.Path.GetFileNameWithoutExtension(m_parent.m_openedFile.m_path) + 
-								"\\" + pairImgRect.Key + ".png",
-							pairImgRect.Value,
-							g);
-					}
-					g.Dispose();
-					DevIL.DevIL.SaveBitmap("E:\\tmp\\" + System.IO.Path.GetFileNameWithoutExtension(m_parent.m_openedFile.m_path) + ".tga", m_tgaImg);
-					ip = m_tgaImg.GetHbitmap();
-					m_imgSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-						ip, IntPtr.Zero, Int32Rect.Empty,
-						System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-					MainWindow.DeleteObject(ip);
-
-					System.Windows.Controls.Image cImg = new System.Windows.Controls.Image();
-					cImg.Source = m_imgSource;
-					cImg.Stretch = Stretch.Uniform;
-					mx_canvas.Children.Insert(0, cImg);
+					tmpPath = tmpPath.Remove(tmpPath.LastIndexOf("_wpf"));
 				}
+				foreach (KeyValuePair<string, System.Drawing.Rectangle> pairImgRect in m_mapImgRect)
+				{
+					addPicToGraphics(
+						MainWindow.s_pW.m_projPath + "\\images\\" + tmpPath + 
+							"\\" + pairImgRect.Key + ".png",
+						pairImgRect.Value,
+						g);
+				}
+				g.Dispose();
+				DevIL.DevIL.SaveBitmap("E:\\tmp\\" + tmpPath + ".tga", m_tgaImg);
+				ip = m_tgaImg.GetHbitmap();
+				m_imgSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+					ip, IntPtr.Zero, Int32Rect.Empty,
+					System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+				MainWindow.DeleteObject(ip);
+
+				System.Windows.Controls.Image cImg = new System.Windows.Controls.Image();
+				cImg.Source = m_imgSource;
+				cImg.Stretch = Stretch.Uniform;
+				mx_canvas.Children.Insert(0, cImg);
 				m_loaded = true;
 			}
 		}

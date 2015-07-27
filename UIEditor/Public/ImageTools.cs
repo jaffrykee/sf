@@ -8,13 +8,20 @@ using System.IO;
 using System.Drawing;
 using System.Threading;
 using System.Collections;
+using System.Xml;
 
 namespace UIEditor.Public
 {
-	public struct RectNode
+	public class RectNode
 	{
 		public Rectangle m_rect;
 		public bool m_isAdd;
+
+		public RectNode(Rectangle rect, bool isAdd = false)
+		{
+			m_rect = rect;
+			m_isAdd = false;
+		}
 	}
 
 	public struct ImageNestingPara
@@ -26,6 +33,8 @@ namespace UIEditor.Public
 
 	class ImageTools
 	{
+		public static int s_fileCount;
+
 		public static int getMaxHeight(List<RectNode> lstRectNode)
 		{
 			int maxHeight = 0;
@@ -88,11 +97,15 @@ namespace UIEditor.Public
 			return (int)Math.Ceiling(maxPow);
 		}
 
-		public static void printString(string str)
+		public static void printString(string str, bool delLast = false)
 		{
 			MainWindow.s_pW.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
 				(ThreadStart)delegate()
 				{
+					if(delLast)
+					{
+						MainWindow.s_pW.mx_debug.Text = MainWindow.s_pW.mx_debug.Text.Remove(MainWindow.s_pW.mx_debug.Text.LastIndexOf("\r\n"));
+					}
 					MainWindow.s_pW.mx_debug.Text += str;
 				}
 			);
@@ -105,11 +118,9 @@ namespace UIEditor.Public
 
 			foreach(FileInfo fi in arrFileInfo)
 			{
-				RectNode rn = new RectNode();
 				Image img = Image.FromFile(fi.FullName);
+				RectNode rn = new RectNode(new Rectangle(0, 0, img.Width, img.Height), false);
 
-				rn.m_rect = new Rectangle(0, 0, img.Width, img.Height);
-				rn.m_isAdd = false;
 				mapRectNode.Add(subPath + "\\" + fi.Name, rn);
 			}
 			if(deep > 0)
@@ -131,22 +142,55 @@ namespace UIEditor.Public
 		public static void pngToTgaRectNesting(string path, string filter = "*.png", int deep = 0)
 		{
 			int maxPow = 0;
+			bool isFirst = true;
 			Dictionary<string, RectNode> mapRectNode = new Dictionary<string, RectNode>();
 
 			addFileToArr(path, "", filter, deep, mapRectNode);
 
 			//得到预期的2的整数次幂
 			maxPow = getMaxPow(mapRectNode.Values.ToList());
+			s_fileCount = mapRectNode.Count;
 
-			printString("<提示>png文件统计完成，文件数量:" + mapRectNode.Count() + "，tga图片预计尺寸:" + Math.Pow(2, maxPow) + "\r\n");
-
-			if(!getRectNesting(mapRectNode, (int)Math.Pow(2, maxPow), (int)Math.Pow(2, maxPow)))
+			do
 			{
-				maxPow++;
-				printString("<提示>该tga图片尺寸打包尝试失败，开始下一尺寸尝试\r\n" + "tga图片预计尺寸:" + Math.Pow(2, maxPow) +
-					" 文件数量:" + mapRectNode.Count() + "\r\n");
-				getRectNesting(mapRectNode, (int)Math.Pow(2, maxPow), (int)Math.Pow(2, maxPow));
+				if (isFirst)
+				{
+					isFirst = false;
+					printString("<提示>png文件统计完成，文件数量:" + mapRectNode.Count + "，tga图片预计尺寸:" + Math.Pow(2, maxPow) + "\r\n");
+				}
+				else
+				{
+					maxPow++;
+					printString("<提示>打包尝试失败，尝试下一尺寸:" + mapRectNode.Count + "，tga图片预计尺寸:" + Math.Pow(2, maxPow) + "\r\n");
+				}
+			} while (!getRectNesting(mapRectNode, (int)Math.Pow(2, maxPow), (int)Math.Pow(2, maxPow)));
+
+			if(path.Last() == '\\')
+			{
+				path = path.Remove(path.Length - 1);
+				if (path.Last() == '\\')
+				{
+					path = path.Remove(path.Length - 1);
+				}
 			}
+
+			string fileName = Path.GetFileName(path);
+			XmlDocument docGrid = new XmlDocument();
+			XmlElement xeRoot = docGrid.CreateElement("UIImageResource");
+
+			docGrid.AppendChild(xeRoot);
+			foreach(KeyValuePair<string, RectNode> pairRn in mapRectNode.ToList())
+			{
+				XmlElement xe = docGrid.CreateElement("Image");
+
+				xe.SetAttribute("Name", Path.GetFileNameWithoutExtension(pairRn.Key));
+				xe.SetAttribute("Width", pairRn.Value.m_rect.Width.ToString());
+				xe.SetAttribute("Height", pairRn.Value.m_rect.Height.ToString());
+				xe.SetAttribute("X", pairRn.Value.m_rect.X.ToString());
+				xe.SetAttribute("Y", pairRn.Value.m_rect.Y.ToString());
+				xeRoot.AppendChild(xe);
+			}
+			docGrid.Save(path + "\\..\\" + fileName + "_wpf.xml");
 		}
 		public static void crossInsertToGrid(ArrayList mapGrid, int i0, int j0, int di, int dj, int ws, int hs)
 		{
@@ -176,123 +220,77 @@ namespace UIEditor.Public
 			int aj = j0 + dj;
 			ArrayList newArr = new ArrayList();
 
-			((ArrayList)mapGrid).Insert(ai + 1, newArr);
-			for(int j = 0; j < ((ArrayList)mapGrid[ai]).Count; j++)
+			RectNode firstNode = ((RectNode)(((ArrayList)mapGrid[ai])[aj]));
+			if (firstNode.m_rect.Width != dw)
 			{
-				//纵向插入
-				RectNode node = ((RectNode)(((ArrayList)mapGrid[ai])[j]));
-				RectNode newNode = new RectNode();
+				((ArrayList)mapGrid).Insert(ai + 1, newArr);
+				for (int j = 0; j < ((ArrayList)mapGrid[ai]).Count; j++)
+				{
+					//纵向插入
+					RectNode node = ((RectNode)(((ArrayList)mapGrid[ai])[j]));
+					RectNode newNode = new RectNode(new Rectangle(node.m_rect.X + dw, node.m_rect.Y, node.m_rect.Width - dw, node.m_rect.Height), false);
 
-				newNode.m_isAdd = false;
-				newNode.m_rect = new Rectangle(node.m_rect.X + dw, node.m_rect.Y, node.m_rect.Width - dw, node.m_rect.Height);
-				((ArrayList)mapGrid[ai + 1]).Add(newNode);
+					if (node.m_rect.Width - dw < 0)
+					{
 
-				node.m_isAdd = true;
-				node.m_rect.Width = dw;
+					}
+					if (j >= j0 && j <= aj)
+					{
+						node.m_isAdd = true;
+						newNode.m_isAdd = false;
+					}
+					else
+					{
+						newNode.m_isAdd = node.m_isAdd;
+					}
+					node.m_rect.Width = dw;
+					((ArrayList)mapGrid[ai + 1]).Add(newNode);
+				}
 			}
 
-			for (int i = 0; i < mapGrid.Count; i++)
+			if (firstNode.m_rect.Height != dh)
 			{
-				//横向插入
-				RectNode node = ((RectNode)(((ArrayList)mapGrid[i])[aj]));
-				RectNode newNode = new RectNode();
+				for (int i = 0; i < mapGrid.Count; i++)
+				{
+					//横向插入
+					RectNode node = ((RectNode)(((ArrayList)mapGrid[i])[aj]));
+					RectNode newNode = new RectNode(new Rectangle(node.m_rect.X, node.m_rect.Y + dh, node.m_rect.Width, node.m_rect.Height - dh), false);
 
-				newNode.m_isAdd = false;
-				newNode.m_rect = new Rectangle(node.m_rect.X, node.m_rect.Y + dh, node.m_rect.Width, node.m_rect.Height - dh);
-				((ArrayList)mapGrid[i]).Insert(aj + 1, newNode);
-
-				node.m_isAdd = true;
-				node.m_rect.Height = dh;
+					if (i >= i0 && i <= ai)
+					{
+						node.m_isAdd = true;
+						newNode.m_isAdd = false;
+					}
+					else
+					{
+						newNode.m_isAdd = node.m_isAdd;
+					}
+					node.m_rect.Height = dh;
+					((ArrayList)mapGrid[i]).Insert(aj + 1, newNode);
+				}
 			}
 		}
 		public static bool getRectNesting(Dictionary<string, RectNode> mapRectNode, int width, int height)
 		{
-			var resultByHeight = from pair in mapRectNode orderby pair.Value.m_rect.Height select pair;
+			var resultByHeight = from pair in mapRectNode orderby pair.Value.m_rect.Height descending select pair;
 			printString("\t高度排列完成...\r\n");
 
 			ArrayList mapGrid = new ArrayList();
 			ArrayList firstArr = new ArrayList();
-			RectNode firstNode = new RectNode();
+			RectNode firstNode = new RectNode(new Rectangle(0, 0, width, height), false);
 
-			firstNode.m_rect = new Rectangle(0, 0, width, height);
-			firstNode.m_isAdd = false;
 			firstArr.Add(firstNode);
 			mapGrid.Add(firstArr);
-			
+
 			foreach (KeyValuePair<string, RectNode> pair in resultByHeight)
 			{
-				int i = 0, j = 0;
-				int wi = 0, hj = 0;
-				int wSum = 0;
-				int hSum = 0;
-
-				for (i = 0; i < mapGrid.Count; i++)
+				for(int i = 0; i < mapGrid.Count; i++)
 				{
-					for(j = 0; j < ((ArrayList)mapGrid[i]).Count; j++)
+					for (int j = 0; j < ((ArrayList)mapGrid[i]).Count; j++)
 					{
-						RectNode node = ((RectNode)(((ArrayList)mapGrid[i])[j]));
-
-						wi = 0;
-						hj = 0;
-						wSum = node.m_rect.Width;
-						hSum = node.m_rect.Height;
-
-						if(node.m_isAdd == true)
-						{
-							continue;
-						}
-						if (node.m_rect.Width < pair.Value.m_rect.Width)
-						{
-							for (wi = 1; (i + wi) < mapGrid.Count; wi++)
-							{
-								RectNode wNode = ((RectNode)(((ArrayList)mapGrid[(i + wi)])[j]));
-
-								if(wNode.m_isAdd == true)
-								{
-									goto ctn;
-								}
-								wSum += wNode.m_rect.Width;
-								if(wSum >= pair.Value.m_rect.Width)
-								{
-									break;
-								}
-							}
-						}
-						if ((i + wi) < mapGrid.Count)
-						{
-							if(node.m_rect.Height < pair.Value.m_rect.Height)
-							{
-								for (hj = 1; (j + hj) < ((ArrayList)mapGrid[i]).Count; hj++)
-								{
-									RectNode hNode = ((RectNode)(((ArrayList)mapGrid[i])[(j + hj)]));
-
-									if(hNode.m_isAdd == true)
-									{
-										goto ctn;
-									}
-									hSum += hNode.m_rect.Height;
-									if(hSum >= pair.Value.m_rect.Height)
-									{
-										break;
-									}
-								}
-							}
-							if ((j + hj) < ((ArrayList)mapGrid[i]).Count)
-							{
-								goto found;
-							}
-						}
-					ctn:
-						;
+						RectNode rn = (RectNode)((ArrayList)mapGrid[i])[j];
 					}
 				}
-				if(i >= mapGrid.Count)
-				{
-					return false;
-				}
-			found:
-				//添加新的Grid
-				crossInsertToGrid(mapGrid, i, j, wi, hj, pair.Value.m_rect.Height, pair.Value.m_rect.Width);
 			}
 
 			return true;
