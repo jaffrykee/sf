@@ -29,6 +29,8 @@ namespace UIEditor
 		public int m_imgWidth;
 		public bool m_loaded;
 		public Dictionary<string, System.Drawing.Rectangle> m_mapImgRect;
+		public int m_maxX;
+		public int m_maxY;
 
 		public PackImage(XmlControl parent)
 		{
@@ -36,6 +38,8 @@ namespace UIEditor
 			m_parent = parent;
 			m_loaded = false;
 			m_mapImgRect = new Dictionary<string, System.Drawing.Rectangle>();
+			m_maxX = 0;
+			m_maxY = 0;
 
 			foreach (XmlNode xn in m_parent.m_xeRoot.SelectNodes("Image"))
 			{
@@ -46,17 +50,28 @@ namespace UIEditor
 
 					if (xe.GetAttribute("Name") != "" && !m_mapImgRect.TryGetValue(xe.GetAttribute("Name"), out rt))
 					{
-						m_mapImgRect.Add(xe.GetAttribute("Name"),
-							new System.Drawing.Rectangle(
-								int.Parse(xe.GetAttribute("X")),
-								int.Parse(xe.GetAttribute("Y")),
-								int.Parse(xe.GetAttribute("Width")),
-								int.Parse(xe.GetAttribute("Height"))
-								)
-							);
+						int x = int.Parse(xe.GetAttribute("X"));
+						int y = int.Parse(xe.GetAttribute("Y"));
+						int w = int.Parse(xe.GetAttribute("Width"));
+						int h = int.Parse(xe.GetAttribute("Height"));
+
+						//因为差分，所以这么算
+						int mx = x + w + 1;
+						int my = y + h + 1;
+
+						m_maxX = m_maxX > mx ? m_maxX : mx;
+						m_maxY = m_maxY > my ? m_maxY : my;
+
+						m_mapImgRect.Add(xe.GetAttribute("Name"), new System.Drawing.Rectangle(x, y, w, h));
 					}
 				}
 			}
+
+			int wPow = (int)Math.Ceiling(Math.Log(m_maxX, 2));
+			int hPow = (int)Math.Ceiling(Math.Log(m_maxY, 2));
+
+			m_imgWidth = (int)Math.Pow(2, wPow > hPow ? wPow : hPow);
+			m_imgHeight = (int)Math.Pow(2, wPow > hPow ? wPow : hPow);
 		}
 		public static bool addPicToGraphics(string path, System.Drawing.Rectangle rect, System.Drawing.Graphics g)
 		{
@@ -99,8 +114,6 @@ namespace UIEditor
 			{
 				IntPtr ip;
 
-				m_imgWidth = 4096;
-				m_imgHeight = 4096;
 				m_parent.m_parent.itemFrame.Width = m_imgWidth;
 				m_parent.m_parent.itemFrame.Height = m_imgHeight;
 				mx_canvas.Width = m_imgWidth;

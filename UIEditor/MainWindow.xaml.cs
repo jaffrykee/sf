@@ -2264,15 +2264,9 @@ namespace UIEditor
 			{
 				if (System.IO.Directory.Exists(m_projPath + "\\images\\" + mx_txtNesting.Text.ToString()))
 				{
-					Public.ImageNestingPara np = new Public.ImageNestingPara();
 
-					np.m_path = m_projPath + "\\images\\" + mx_txtNesting.Text.ToString() + "\\";
-					np.m_filter = "*.png";
-					np.m_deep = 1;
-
-					System.Threading.Thread threadNesting = new System.Threading.Thread(Public.ImageTools.initThread);
-					threadNesting.Start(np);
-					//Public.ImageTools.pngToTgaRectNesting(m_projPath + "\\images\\" + mx_txtNesting.Text.ToString() + "\\", "*.png", 1);
+					ImageTools.ImageNesting winNesting = new ImageTools.ImageNesting(m_projPath + "\\images\\" + mx_txtNesting.Text.ToString() + "\\", "*.png", 1);
+					winNesting.ShowDialog();
 				}
 			}
 		}

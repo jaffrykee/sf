@@ -91,6 +91,9 @@
     <Compile Include="HtmlControl.xaml.cs">
       <DependentUpon>HtmlControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageTools\ImageNesting.xaml.cs">
+      <DependentUpon>ImageNesting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewFile\FileTypeRadio.xaml.cs">
       <DependentUpon>FileTypeRadio.xaml</DependentUpon>
     </Compile>
@@ -100,7 +103,6 @@
     <Compile Include="PackImage.xaml.cs">
       <DependentUpon>PackImage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Public\ImageTools.cs" />
     <Compile Include="TemplateCreate.xaml.cs">
       <DependentUpon>TemplateCreate.xaml</DependentUpon>
     </Compile>
@@ -158,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="HtmlControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ImageTools\ImageNesting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
