@@ -82,7 +82,12 @@ namespace UIEditor
 
 			pW.m_hwndGLParent = (IntPtr)m_hwndHost;
 			m_hwndControl = pW.m_hwndGLParent;
-			System.Diagnostics.Process.Start(pW.conf_pathGlApp, pW.m_hwndGLParent.ToString() + " " + m_hostWidth.ToString() + " " + m_hostHeight.ToString() + " " + strRunMode);
+			System.Diagnostics.Process.Start(
+				pW.conf_pathGlApp,
+				pW.m_hwndGLParent.ToString() + " " +
+					m_hostWidth.ToString() + " " +
+					m_hostHeight.ToString() + " " +
+					strRunMode);
 
 			return new HandleRef(this, m_hwndHost);
 		}

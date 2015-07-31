@@ -265,6 +265,7 @@ namespace UIEditor.ImageTools
 			ArrayList mapGrid = new ArrayList();
 			ArrayList firstArr = new ArrayList();
 			RectNode firstNode = new RectNode(new System.Drawing.Rectangle(0, 0, width, height), false);
+			int refreshCount = 0;
 
 			firstArr.Add(firstNode);
 			mapGrid.Add(firstArr);
@@ -344,7 +345,11 @@ namespace UIEditor.ImageTools
 			found:
 				printString("\r\n进度：" + mapGrid.Count.ToString() + "/" + (mapRectNode.Count + 1).ToString(), true);
 				drawRectNode(pair.Value, mx_canvas.ActualWidth / width);
-				DoEvents();
+				refreshCount++;
+				if (refreshCount % 17 == 0)
+				{
+					DoEvents();
+				}
 			}
 			printString("[完成]\r\n");
 
@@ -395,7 +400,8 @@ namespace UIEditor.ImageTools
 			{
 				XmlElement xe = docGrid.CreateElement("Image");
 
-				xe.SetAttribute("Name", System.IO.Path.GetFileNameWithoutExtension(pairRn.Key));
+				//xe.SetAttribute("Name", System.IO.Path.GetFileNameWithoutExtension(pairRn.Key));
+				xe.SetAttribute("Name", pairRn.Key.Remove(pairRn.Key.LastIndexOf(".")));
 				//因为差值什么的显示问题，所以要-2和+1。
 				xe.SetAttribute("Width", (pairRn.Value.m_rect.Width - 2).ToString());
 				xe.SetAttribute("Height", (pairRn.Value.m_rect.Height - 2).ToString());
@@ -454,7 +460,7 @@ namespace UIEditor.ImageTools
 				}
 			}
 		}
-		public void DoEvents()
+		public static void DoEvents()
 		{
 			DispatcherFrame frame = new DispatcherFrame();
 
@@ -474,7 +480,10 @@ namespace UIEditor.ImageTools
 
 		private void mx_start_Click(object sender, RoutedEventArgs e)
 		{
+			mx_start.IsEnabled = false;
+			DoEvents();
 			pngToTgaRectNesting(m_path, m_filter, m_deep);
+			mx_start.IsEnabled = true;
 		}
 	}
 }

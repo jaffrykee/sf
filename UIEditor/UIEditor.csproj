@@ -52,7 +52,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Image\SpeedShark.ico</ApplicationIcon>
+    <ApplicationIcon>SpeedShark.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevIL.NET2">
@@ -313,6 +313,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Public\sceneInfo.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SpeedShark.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
