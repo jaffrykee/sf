@@ -278,6 +278,7 @@ namespace UIEditor
 				xeCopy.InnerXml = m_pW.m_xePaste.OuterXml;
 				xeCopy = (XmlElement)xeCopy.FirstChild;
 
+				m_rootControl.checkBaseId((XmlNode)xeCopy);
 				if (m_pW.m_mapCtrlDef.TryGetValue(xeCopy.Name, out ctrlPtr))
 				{
 					treeChild = new BoloUI.Basic(xeCopy, m_rootControl);

@@ -143,7 +143,7 @@ namespace UIEditor.XmlOperation
 					if (pW.m_mapCtrlDef.TryGetValue(dstXe.Name, out nullCtrlDef) &&
 						dstXe.Name != "event")
 					{
-						xmlCtrl.checkBaseId((XmlNode)dstXe);
+						//xmlCtrl.checkBaseId((XmlNode)dstXe);
 					}
 					if (pW.m_mapCtrlDef.TryGetValue(dstXe.Name, out nullCtrlDef))
 					{
