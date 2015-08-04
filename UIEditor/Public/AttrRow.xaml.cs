@@ -84,36 +84,13 @@ namespace UIEditor
 						}
 					}
 				}
-				bool isWrong = false;
 				XmlItem curItem = m_pW.m_curItem;
 
-				if (m_pW.m_attrBinding && curItem != null && curItem.m_xe != null)
+				if (m_pW.m_attrBinding && m_parent != null && m_parent.m_xmlCtrl != null && m_parent.m_xe != null && mt_value != value)
 				{
-					if (mt_value != value)
-					{
-						if (m_name == "baseID")
-						{
-							BoloUI.Basic ctrl;
+					m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_basic.m_xe, m_name, mt_value, value));
+				}
 
-							if (curItem.m_rootControl.m_mapCtrlUI.TryGetValue(value, out ctrl))
-							{
-								isWrong = true;
-							}
-						}
-					}
-				}
-				if (isWrong == false)
-				{
-					if (m_pW.m_attrBinding && m_parent != null && m_parent.m_xmlCtrl != null && m_parent.m_xe != null && mt_value != value)
-					{
-						m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_basic.m_xe, m_name, mt_value, value));
-					}
-				}
-				else
-				{
-					//todo 其它错误也在这里显示
-					m_pW.mx_debug.Text += "<警告>baseID不可重复\r\n";
-				}
 				mt_value = value;
 				mx_value.Text = value;
 			}

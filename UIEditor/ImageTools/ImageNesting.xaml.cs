@@ -257,6 +257,110 @@ namespace UIEditor.ImageTools
 			return sh;
 		}
 
+		public bool enableToPutIn(ArrayList mapGrid, RectNode rNode)
+		{
+			//按照高度，从高到低寻找空格子
+			for (int i = 0; i < mapGrid.Count; i++)
+			{
+				for (int j = 0; j < ((ArrayList)mapGrid[i]).Count; j++)
+				{
+					RectNode nodeFirst = (RectNode)((ArrayList)mapGrid[i])[j];
+					int sW = 0;
+					int sH = 0;
+					int di = 0;
+					int dj = 0;
+
+					if (nodeFirst.m_rect.Width == 0 || nodeFirst.m_rect.Height == 0)
+					{
+						continue;
+					}
+					for (di = 0; (i + di) < mapGrid.Count; di++)
+					{
+						RectNode wRn = (RectNode)((ArrayList)mapGrid[i + di])[j];
+
+						if (wRn.m_isAdd == true)
+						{
+							goto ctn;
+						}
+						sW += wRn.m_rect.Width;
+						if (sW >= rNode.m_rect.Width)
+						{
+							goto hLoop;
+						}
+					}
+					goto ctn;
+				hLoop:
+					for (dj = 0; (j + dj) < ((ArrayList)mapGrid[i]).Count; dj++)
+					{
+						RectNode hRn = (RectNode)((ArrayList)mapGrid[i])[j + dj];
+
+						if (hRn.m_isAdd == true)
+						{
+							goto ctn;
+						}
+						sH += hRn.m_rect.Height;
+						if (sH >= rNode.m_rect.Height)
+						{
+							goto lastNode;
+						}
+					}
+					goto ctn;
+				lastNode:
+					RectNode rn = (RectNode)((ArrayList)mapGrid[i + di])[j + dj];
+					if (rn.m_isAdd == true)
+					{
+						goto ctn;
+					}
+					else
+					{
+						rNode.m_rect.X = getXFromGrid(mapGrid, i);
+						rNode.m_rect.Y = getYFromGrid(mapGrid, j);
+						rNode.m_isAdd = true;
+						crossInsertToGrid(
+							mapGrid,
+							i, j, di, dj,
+							rn.m_rect.Width - sW + rNode.m_rect.Width,
+							rn.m_rect.Height - sH + rNode.m_rect.Height);
+						return true;
+					}
+				ctn:
+					continue;
+				}
+			}
+			return false;
+		}
+		public int getRectNestingByPreset(Dictionary<string, RectNode> mapRectNode, int width, int height)
+		{
+			var resultByWidth = from pair in mapRectNode orderby pair.Value.m_rect.Width descending select pair;
+			printString("\t宽度排列完成...\r\n");
+
+			ArrayList mapGrid = new ArrayList();
+			ArrayList firstArr = new ArrayList();
+			RectNode firstNode = new RectNode(new System.Drawing.Rectangle(0, 0, width, height), false);
+			int refreshCount = 0;
+
+			firstArr.Add(firstNode);
+			mapGrid.Add(firstArr);
+			mx_canvas.Children.Clear();
+
+			foreach (KeyValuePair<string, RectNode> pair in resultByWidth)
+			{
+				if (!enableToPutIn(mapGrid, pair.Value))
+				{
+					return 1;
+				}
+				printString("\r\n进度：" + mapGrid.Count.ToString() + "/" + (mapRectNode.Count + 1).ToString(), true);
+				drawRectNode(pair.Value, mx_canvas.ActualWidth / width);
+				refreshCount++;
+				if (refreshCount % 17 == 0)
+				{
+					DoEvents();
+				}
+			}
+			printString("[完成]\r\n");
+
+			return 0;
+		}
 		public bool getRectNesting(Dictionary<string, RectNode> mapRectNode, int width, int height)
 		{
 			var resultByWidth = from pair in mapRectNode orderby pair.Value.m_rect.Width descending select pair;
@@ -273,76 +377,10 @@ namespace UIEditor.ImageTools
 
 			foreach (KeyValuePair<string, RectNode> pair in resultByWidth)
 			{
-				//按照高度，从高到低寻找空格子
-				for (int i = 0; i < mapGrid.Count; i++)
+				if (!enableToPutIn(mapGrid, pair.Value))
 				{
-					for (int j = 0; j < ((ArrayList)mapGrid[i]).Count; j++)
-					{
-						RectNode nodeFirst = (RectNode)((ArrayList)mapGrid[i])[j];
-						int sW = 0;
-						int sH = 0;
-						int di = 0;
-						int dj = 0;
-
-						if (nodeFirst.m_rect.Width == 0 || nodeFirst.m_rect.Height == 0)
-						{
-							continue;
-						}
-						for (di = 0; (i + di) < mapGrid.Count; di++)
-						{
-							RectNode wRn = (RectNode)((ArrayList)mapGrid[i + di])[j];
-
-							if (wRn.m_isAdd == true)
-							{
-								goto ctn;
-							}
-							sW += wRn.m_rect.Width;
-							if (sW >= pair.Value.m_rect.Width)
-							{
-								goto hLoop;
-							}
-						}
-						goto ctn;
-					hLoop:
-						for (dj = 0; (j + dj) < ((ArrayList)mapGrid[i]).Count; dj++)
-						{
-							RectNode hRn = (RectNode)((ArrayList)mapGrid[i])[j + dj];
-
-							if (hRn.m_isAdd == true)
-							{
-								goto ctn;
-							}
-							sH += hRn.m_rect.Height;
-							if (sH >= pair.Value.m_rect.Height)
-							{
-								goto lastNode;
-							}
-						}
-						goto ctn;
-					lastNode:
-						RectNode rn = (RectNode)((ArrayList)mapGrid[i + di])[j + dj];
-						if (rn.m_isAdd == true)
-						{
-							goto ctn;
-						}
-						else
-						{
-							pair.Value.m_rect.X = getXFromGrid(mapGrid, i);
-							pair.Value.m_rect.Y = getYFromGrid(mapGrid, j);
-							pair.Value.m_isAdd = true;
-							crossInsertToGrid(
-								mapGrid,
-								i, j, di, dj,
-								rn.m_rect.Width - sW + pair.Value.m_rect.Width,
-								rn.m_rect.Height - sH + pair.Value.m_rect.Height);
-							goto found;
-						}
-					ctn:
-						continue;
-					}
+					return false;
 				}
-				return false;
-			found:
 				printString("\r\n进度：" + mapGrid.Count.ToString() + "/" + (mapRectNode.Count + 1).ToString(), true);
 				drawRectNode(pair.Value, mx_canvas.ActualWidth / width);
 				refreshCount++;
@@ -399,9 +437,13 @@ namespace UIEditor.ImageTools
 			foreach (KeyValuePair<string, RectNode> pairRn in mapRectNode.ToList())
 			{
 				XmlElement xe = docGrid.CreateElement("Image");
-
-				//xe.SetAttribute("Name", System.IO.Path.GetFileNameWithoutExtension(pairRn.Key));
-				xe.SetAttribute("Name", pairRn.Key.Remove(pairRn.Key.LastIndexOf(".")));
+				string name = pairRn.Key.Remove(pairRn.Key.LastIndexOf("."));
+				
+				if(name[0] == '\\')
+				{
+					name = name.Remove(0, 1);
+				}
+				xe.SetAttribute("Name", name);
 				//因为差值什么的显示问题，所以要-2和+1。
 				xe.SetAttribute("Width", (pairRn.Value.m_rect.Width - 2).ToString());
 				xe.SetAttribute("Height", (pairRn.Value.m_rect.Height - 2).ToString());

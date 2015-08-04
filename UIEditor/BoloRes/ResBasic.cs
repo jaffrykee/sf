@@ -133,20 +133,19 @@ namespace UIEditor.BoloRes
 
 				if (StringDic.m_mapStrNode.TryGetValue(m_xe.Name, out ctrlTip))
 				{
-					mx_text.Content = "<" + ctrlTip + ">";
-					mx_text.ToolTip = m_xe.Name;
+					mx_root.Header = "<" + ctrlTip + ">";
+					mx_root.ToolTip = m_xe.Name;
 				}
 				else
 				{
-					mx_text.Content = "<" + m_xe.Name + ">";
+					mx_root.Header = "<" + m_xe.Name + ">";
 				}
 				if (m_curDeepDef.m_mapAttrDef != null)
 				{
 					name = m_xe.GetAttribute(m_curDeepDef.m_mapAttrDef.ToList().First().Key);
 				}
 
-				mx_text.Content += name;
-				mx_text.Content = mx_text.Content.ToString().Replace("_", "__"); 
+				mx_root.Header += name;
 			}
 		}
 		public override void changeSelectItem(object obj = null)
@@ -155,14 +154,6 @@ namespace UIEditor.BoloRes
 			{
 				BoloUI.Basic ctrlUI;
 				m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
-				if (m_pW.m_curItem != null)
-				{
-					m_pW.m_curItem.mx_text.Background = new SolidColorBrush(Color.FromArgb(0x00, 0xff, 0xff, 0xff));
-					m_pW.m_curItem.mx_text.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0x00, 0x00));
-				}
-				m_pW.m_curItem = this;
-				m_pW.m_curItem.mx_text.Background = new SolidColorBrush(Color.FromArgb(0xff, 0x33, 0x99, 0xff));
-				m_pW.m_curItem.mx_text.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
 				m_pW.hiddenAllAttr();
 
 				if (obj != null && obj.GetType().ToString() == "UIEditor.BoloUI.Basic")
@@ -230,7 +221,7 @@ namespace UIEditor.BoloRes
 						{
 							xeView = m_pW.m_xeTest;
 							((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
-							m_pW.updateXmlToGL(m_rootControl.m_openedFile.m_path, m_rootControl.m_xmlDoc, xeView, false);
+							m_pW.updateXmlToGL(m_rootControl, xeView, false);
 						}
 						else
 						{
@@ -247,7 +238,7 @@ namespace UIEditor.BoloRes
 									xeSkin.GetAttribute("Name")
 								)
 							);
-							m_pW.updateXmlToGL(m_rootControl.m_openedFile.m_path, m_rootControl.m_xmlDoc, xeView, true);
+							m_pW.updateXmlToGL(m_rootControl, xeView, true);
 						}
 					}
 					//todo 更改皮肤预览

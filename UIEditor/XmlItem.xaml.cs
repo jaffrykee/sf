@@ -72,10 +72,6 @@ namespace UIEditor
 
 		}
 
-		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			changeSelectItem();
-		}
 		private void mx_root_Selected(object sender, RoutedEventArgs e)
 		{
 		}
@@ -278,7 +274,6 @@ namespace UIEditor
 				xeCopy.InnerXml = m_pW.m_xePaste.OuterXml;
 				xeCopy = (XmlElement)xeCopy.FirstChild;
 
-				m_rootControl.checkBaseId((XmlNode)xeCopy);
 				if (m_pW.m_mapCtrlDef.TryGetValue(xeCopy.Name, out ctrlPtr))
 				{
 					treeChild = new BoloUI.Basic(xeCopy, m_rootControl);
@@ -429,7 +424,11 @@ namespace UIEditor
 			moveUpItem();
 		}
 
-		private void mx_text_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		private void mx_root_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			changeSelectItem();
+		}
+		private void mx_root_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			if (m_xe.Name == "skingroup")
 			{

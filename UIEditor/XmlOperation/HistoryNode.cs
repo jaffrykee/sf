@@ -112,11 +112,15 @@ namespace UIEditor.XmlOperation
 									//仅Ctrl
 									BoloUI.Basic uiCtrl;
 
-									if (xmlCtrl.m_mapCtrlUI.TryGetValue(dstXe.GetAttribute("baseID"), out uiCtrl))
+									if (dstItem.m_type == "CtrlUI")
 									{
-										xmlCtrl.deleteBaseId(uiCtrl.m_xe);
+										uiCtrl = (BoloUI.Basic)dstItem;
+										if (xmlCtrl.m_mapCtrlUI.TryGetValue(uiCtrl.m_vId, out uiCtrl))
+										{
+											xmlCtrl.m_mapCtrlUI.Remove(uiCtrl.m_vId);
 
-										return true;
+											return true;
+										}
 									}
 								}
 							}
@@ -140,11 +144,6 @@ namespace UIEditor.XmlOperation
 					TreeViewItem treeChild;
 					MainWindow.SkinDef_T skinPtr;
 
-					if (pW.m_mapCtrlDef.TryGetValue(dstXe.Name, out nullCtrlDef) &&
-						dstXe.Name != "event")
-					{
-						//xmlCtrl.checkBaseId((XmlNode)dstXe);
-					}
 					if (pW.m_mapCtrlDef.TryGetValue(dstXe.Name, out nullCtrlDef))
 					{
 						treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), dstXe, xmlCtrl, false) as System.Windows.Controls.TreeViewItem;
@@ -252,7 +251,6 @@ namespace UIEditor.XmlOperation
 		}
 		static public bool updateXmlNode(MainWindow pW, string path, XmlElement dstXe, string attrName, string newValue)
 		{
-			OpenedFile fileT;
 			string oldValue = dstXe.GetAttribute(attrName);
 
 			if (newValue != "")
@@ -262,28 +260,6 @@ namespace UIEditor.XmlOperation
 			else
 			{
 				dstXe.RemoveAttribute(attrName);
-			}
-			if (pW.m_mapOpenedFiles.TryGetValue(path, out fileT))
-			{
-				if (fileT.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
-				{
-					//仅Ctrl
-					XmlControl xmlCtrl = (XmlControl)fileT.m_frame;
-					BoloUI.Basic uiCtrl;
-
-// 					if (attrName == "baseID")
-// 					{
-// 						if (xmlCtrl.m_mapCtrlUI.TryGetValue(oldValue, out uiCtrl) && uiCtrl != null)
-// 						{
-// 							xmlCtrl.checkBaseId((XmlNode)dstXe);
-// 							xmlCtrl.m_mapCtrlUI.Remove(oldValue);
-// 							xmlCtrl.m_mapCtrlUI[newValue] = uiCtrl;
-// 							uiCtrl.Focus();
-// 						}
-// 					}
-
-					return true;
-				}
 			}
 
 			return false;

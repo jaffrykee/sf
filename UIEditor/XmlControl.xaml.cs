@@ -52,33 +52,7 @@ namespace UIEditor
 			m_showGL = false;
 		}
 
-		public void deleteBaseId(XmlNode xn)
-		{
-			if (xn != null)
-			{
-				if (xn.NodeType == XmlNodeType.Element)
-				{
-					XmlElement xe = (XmlElement)xn;
-
-					MainWindow.CtrlDef_T ctrlDef;
-
-					if (xe.Name != "event" && m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlDef))
-					{
-						if (xe.GetAttribute("baseID") != "")
-						{
-							m_mapCtrlUI.Remove(xe.GetAttribute("baseID"));
-						}
-					}
-				}
-
-				XmlNodeList xnl = xn.ChildNodes;
-				foreach (XmlNode xnf in xnl)
-				{
-					deleteBaseId(xnf);
-				}
-			}
-		}
-		public void checkBaseId(XmlNode xn)
+		public void checkBaseId_old(XmlNode xn)
 		{
 			if (xn != null)
 			{
@@ -115,7 +89,7 @@ namespace UIEditor
 				XmlNodeList xnl = xn.ChildNodes;
 				foreach (XmlNode xnf in xnl)
 				{
-					checkBaseId(xnf);
+					checkBaseId_old(xnf);
 				}
 			}
 		}
@@ -297,14 +271,14 @@ namespace UIEditor
 							m_treeSkin = new BoloRes.ResBasic(m_xeRoot, this, null);
 
 							m_pW.mx_treeCtrlFrame.Items.Add(m_treeUI);
-							m_treeUI.mx_text.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-							m_treeUI.mx_text.Content = m_treeUI.mx_text.Content.ToString().Replace("_", "__");
-							m_treeUI.mx_text.ToolTip = m_openedFile.m_path;
+							m_treeUI.mx_root.Header = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+							m_treeUI.mx_root.Header = m_treeUI.mx_root.Header.ToString().Replace("_", "__");
+							m_treeUI.mx_root.ToolTip = m_openedFile.m_path;
 							m_treeUI.IsExpanded = true;
 							m_pW.mx_treeSkinFrame.Items.Add(m_treeSkin);
-							m_treeSkin.mx_text.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-							m_treeSkin.mx_text.Content = m_treeSkin.mx_text.Content.ToString().Replace("_", "__");
-							m_treeSkin.mx_text.ToolTip = m_openedFile.m_path;
+							m_treeSkin.mx_root.Header = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+							m_treeSkin.mx_root.Header = m_treeSkin.mx_root.Header.ToString().Replace("_", "__");
+							m_treeSkin.mx_root.ToolTip = m_openedFile.m_path;
 							m_treeSkin.IsExpanded = true;
 
 							m_treeUI.Items.Clear();
@@ -312,7 +286,6 @@ namespace UIEditor
 
 							XmlNodeList xnl = m_xeRoot.ChildNodes;
 
-							checkBaseId(m_xeRoot);
 							//m_pW.mx_debug.Text += ("未被解析的项目：\r\n");
 							foreach (XmlNode xnf in xnl)
 							{
@@ -343,7 +316,7 @@ namespace UIEditor
 							}
 							refreshSkinDicByGroupName("publicskin");
 							refreshBoloUIView(true);
-							m_pW.updateXmlToGL(m_openedFile.m_path, m_xmlDoc);
+							m_pW.updateXmlToGL(this);
 							if (m_openedFile.m_preViewSkinName != null && m_openedFile.m_preViewSkinName != "")
 							{
 								BoloRes.ResBasic skinBasic;

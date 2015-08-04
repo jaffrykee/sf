@@ -727,7 +727,6 @@ namespace UIEditor
 							if(m_isCtrlMoved == false)
 							{
 								List<BoloUI.Basic> lstSelCtrl = new List<BoloUI.Basic>();
-								bool hadCurCtrl = false;
 								BoloUI.Basic selCtrl = null;
 								BoloUI.Basic lastCtrl = null;
 
@@ -745,7 +744,7 @@ namespace UIEditor
 										lastCtrl = pairCtrlDef.Value;
 
 										BoloUI.SelButton selCtrlButton = new BoloUI.SelButton(this, pairCtrlDef.Value);
-										selCtrlButton.mx_radio.Content = pairCtrlDef.Value.mx_text.Content;
+										selCtrlButton.mx_radio.Content = pairCtrlDef.Value.mx_root.Header;
 										mx_selCtrlLstFrame.Children.Add(selCtrlButton);
 										m_mapXeSel.Add(pairCtrlDef.Value.m_xe, selCtrlButton);
 									}
@@ -1069,14 +1068,50 @@ namespace UIEditor
 
 			return hwnd;
 		}
-		public void updateXmlToGL(string path, XmlDocument doc, XmlElement xePlus = null, bool isCtrlUI = false)
+		public void addVidToMsgXml(XmlElement srcXe, XmlElement dstXe, XmlDocument dstDoc, XmlControl xmlCtrl)
 		{
+			foreach (XmlAttribute attr in srcXe.Attributes)
+			{
+				dstXe.SetAttribute(attr.Name, attr.Value);
+			}
+			foreach (XmlNode xn in srcXe.ChildNodes)
+			{
+				if(xn.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xe = (XmlElement)xn;
+					XmlItem item;
+					XmlElement newXe = dstDoc.CreateElement(xe.Name);
+
+					addVidToMsgXml(xe, newXe, dstDoc, xmlCtrl);
+
+					if(xmlCtrl.m_mapXeItem.TryGetValue(xe, out item))
+					{
+						if(item.GetType().ToString() == "UIEditor.BoloUI.Basic")
+						{
+							BoloUI.Basic uiCtrl = (BoloUI.Basic)item;
+
+							if(uiCtrl.m_vId != null && uiCtrl.m_vId != "")
+							{
+								newXe.SetAttribute("baseID", uiCtrl.m_vId);
+							}
+						}
+					}
+					dstXe.AppendChild(newXe);
+				}
+			}
+		}
+		public void updateXmlToGL(XmlControl xmlCtrl, XmlElement xePlus = null, bool isCtrlUI = false)
+		{
+			string path = xmlCtrl.m_openedFile.m_path;
+			XmlDocument doc = xmlCtrl.m_xmlDoc;
 			XmlDocument newDoc = new XmlDocument();
 			string fileName = StringDic.getFileNameWithoutPath(path);
 
-			newDoc.LoadXml(doc.InnerXml);
+			XmlElement newRootXe = newDoc.CreateElement(doc.DocumentElement.Name);
+			addVidToMsgXml(doc.DocumentElement, newRootXe, newDoc, xmlCtrl);
+			newDoc.AppendChild(newRootXe);
+
 			XmlNodeList nodeList;
-			XmlNode root = newDoc.DocumentElement;
 
 			if (xePlus != null)
 			{
@@ -1088,7 +1123,7 @@ namespace UIEditor
 					xeTmp.InnerXml = strTmp;
 					//xePlus.OuterXml
 					xeTmp.FirstChild.InnerXml = xePlus.OuterXml;
-					root.AppendChild(xeTmp.FirstChild);
+					newRootXe.AppendChild(xeTmp.FirstChild);
 				}
 				else
 				{
@@ -1107,25 +1142,18 @@ namespace UIEditor
 
 						XmlElement xeTmp = newDoc.CreateElement("tmp");
 						xeTmp.InnerXml = strTmp;
-						root.AppendChild(xeTmp.FirstChild);
+						newRootXe.AppendChild(xeTmp.FirstChild);
 					}
 				}
 			}
 			//去掉所有事件(<event>)
-			nodeList = root.SelectNodes("descendant::event");
+			nodeList = newRootXe.SelectNodes("descendant::event");
 
 			foreach(XmlNode xnEvent in nodeList)
 			{
 				xnEvent.ParentNode.RemoveChild(xnEvent);
 			}
 
-			/*因为机制变化，不再由脚本来触发
-			XmlNode xn = newDoc.SelectSingleNode("BoloUI");
-			if (xn.NodeType == XmlNodeType.Element)
-			{
-				addTmpEvent(newDoc, (XmlElement)xn);
-			}
-			*/
 			string buffer = newDoc.InnerXml;
 			updateGL(fileName, MainWindow.W2GTag.W2G_NORMAL_NAME);
 			updateGL(buffer, MainWindow.W2GTag.W2G_NORMAL_DATA);

@@ -108,7 +108,7 @@ namespace UIEditor.XmlOperation
 				default:
 					return;
 			}
-			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
+			m_pW.updateXmlToGL(m_xmlCtrl);
 
 			if (!isAddOpt)
 			{
@@ -189,7 +189,7 @@ namespace UIEditor.XmlOperation
 				default:
 					return;
 			}
-			m_pW.updateXmlToGL(m_xmlCtrl.m_openedFile.m_path, m_xmlCtrl.m_xmlDoc);
+			m_pW.updateXmlToGL(m_xmlCtrl);
 
 			XmlItem dstItem;
 

@@ -22,6 +22,7 @@ namespace UIEditor.BoloUI
 		public int m_selY;
 		public int m_selW;
 		public int m_selH;
+		public string m_vId;
 
 		public Basic(XmlElement xe, XmlControl rootControl, bool isRoot = false) : base(xe, rootControl)
 		{
@@ -39,9 +40,14 @@ namespace UIEditor.BoloUI
 				{
 					m_isCtrl = false;
 				}
-				if (m_xe.GetAttribute("baseID") != "")
+				if (m_xe.Name != "event")
 				{
-					m_rootControl.m_mapCtrlUI[m_xe.GetAttribute("baseID")] = this;
+					m_vId = System.Guid.NewGuid().ToString().Substring(10);
+					m_rootControl.m_mapCtrlUI[m_vId] = this;
+				}
+				else
+				{
+					m_vId = "";
 				}
 				addChild();
 			}
@@ -91,12 +97,12 @@ namespace UIEditor.BoloUI
 
 				if (StringDic.m_mapStrControl.TryGetValue(m_xe.Name, out ctrlTip))
 				{
-					mx_text.Content = "<" + ctrlTip + ">";
-					mx_text.ToolTip = m_xe.Name;
+					mx_root.Header = "<" + ctrlTip + ">";
+					mx_root.ToolTip = m_xe.Name;
 				}
 				else
 				{
-					mx_text.Content = "<" + m_xe.Name + ">";
+					mx_root.Header = "<" + m_xe.Name + ">";
 				}
 				if (m_isCtrl && m_xe.Name != "event")
 				{
@@ -105,7 +111,7 @@ namespace UIEditor.BoloUI
 				}
 				else
 				{
-					mx_text.Content = "<" + m_xe.Name + ">";
+					mx_root.Header = "<" + m_xe.Name + ">";
 					if (m_xe.GetAttribute("Name") != "")
 					{
 						name = m_xe.GetAttribute("Name");
@@ -127,24 +133,23 @@ namespace UIEditor.BoloUI
 
 				if (m_pW.m_vCtrlName)
 				{
-					mx_text.Content += name;
+					mx_root.Header += name;
 				}
 				if (m_pW.m_vCtrlId)
 				{
-					mx_text.Content += "(" + id + ")";
+					mx_root.Header += "(" + id + ")";
 				}
-				mx_text.Content = mx_text.Content.ToString().Replace("_", "__");
 			}
 		}
 		public override void changeSelectItem(object obj = null)
 		{
 			m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_ctrlFrame;
-			if (m_xe.GetAttribute("baseID") != "")
+			if (m_vId != "")
 			{
 				m_pW.m_curFile = m_rootControl.m_openedFile.m_path;
 				m_pW.mx_workTabs.SelectedItem = m_rootControl.m_openedFile.m_tab;
 				m_pW.updateGL(
-					StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_xe.GetAttribute("baseID"),
+					StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_vId,
 					MainWindow.W2GTag.W2G_SELECT_UI
 				);
 			}
@@ -152,14 +157,7 @@ namespace UIEditor.BoloUI
 			bool tmp = m_pW.m_attrBinding;
 			m_pW.m_attrBinding = false;
 
-			if (m_pW.m_curItem != null)
-			{
-				m_pW.m_curItem.mx_text.Background = new SolidColorBrush(Color.FromArgb(0x00, 0xff, 0xff, 0xff));
-				m_pW.m_curItem.mx_text.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0x00, 0x00));
-			}
 			m_pW.m_curItem = this;
-			m_pW.m_curItem.mx_text.Background = new SolidColorBrush(Color.FromArgb(0xff, 0x33, 0x99, 0xff));
-			m_pW.m_curItem.mx_text.Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));
 			m_pW.hiddenAllAttr();
 			MainWindow.CtrlDef_T ctrlDef;
 
