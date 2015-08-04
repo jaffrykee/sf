@@ -3,28 +3,59 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ImageNesting"
 		Name="mx_root"
-		Width="1000"
-		Height="850">
+		Width="1280"
+		Height="900">
 	<Grid Name="mx_rootGrid" Background="#22333333">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
-		<Grid>
-			<ScrollViewer>
-				<Canvas Name="mx_canvas"
+		<Grid Margin="5">
+			<Grid Background="White">
+				<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+					<Canvas Name="mx_canvas"
 						Width="800"
 						Height="800"
 						Margin="5"
 						Background="#ffffffff"
 						HorizontalAlignment="Left"
 						VerticalAlignment="Top"/>
-			</ScrollViewer>
+				</ScrollViewer>
+			</Grid>
 		</Grid>
-		<Grid Grid.Column="1">
-			<WrapPanel MinWidth="150">
-				<Button Name="mx_start" Click="mx_start_Click" Margin="10" Padding="15,2,15,2">开始</Button>
-			</WrapPanel>
+		<Grid Grid.Column="1" MaxWidth="350" Width="350" MinWidth="150" >
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			<TextBox Name="mx_imgDebug"
+					TextWrapping="Wrap"
+					AcceptsReturn="True"
+					VerticalScrollBarVisibility="Visible"
+					HorizontalAlignment="Stretch"
+					IsReadOnly="True"
+					Margin="5"/>
+			<StackPanel Grid.Row="1" Margin="5">
+				<RadioButton Name="mx_rPreset"
+							 Padding="20"
+							 Checked="mx_rPreset_Checked"
+							 Style="{StaticResource RadioTeml_Mt}">
+					预设打包
+				</RadioButton>
+				<RadioButton Name="mx_rDev"
+							 Padding="20"
+							 Checked="mx_rDev_Checked"
+							 Style="{StaticResource RadioTeml_Mt}">
+					开发打包
+				</RadioButton>
+				<Button Name="mx_start"
+						IsEnabled="False"
+						Margin="10"
+						Padding="0,7,0,7"
+						Click="mx_start_Click">
+					开始
+				</Button>
+			</StackPanel>
 		</Grid>
     </Grid>
 </Window>

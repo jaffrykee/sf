@@ -23,11 +23,13 @@ namespace UIEditor.ImageTools
 	{
 		public System.Drawing.Rectangle m_rect;
 		public bool m_isAdd;
+		public int m_packCount;
 
 		public RectNode(System.Drawing.Rectangle rect, bool isAdd = false)
 		{
 			m_rect = rect;
 			m_isAdd = false;
+			m_packCount = 0;
 		}
 	}
 
@@ -38,12 +40,14 @@ namespace UIEditor.ImageTools
 		public string m_path;
 		public string m_filter;
 		public int m_deep;
+		public bool m_isInit;
 
 		public ImageNesting(string path, string filter = "*.png", int deep = 0)
 		{
 			m_path = path;
 			m_filter = filter;
 			m_deep = deep;
+			m_isInit = false;
 			InitializeComponent();
 		}
 
@@ -109,13 +113,13 @@ namespace UIEditor.ImageTools
 			return (int)Math.Ceiling(maxPow);
 		}
 
-		public static void printString(string str, bool delLast = false)
+		public void printString(string str, bool delLast = false)
 		{
 			if (delLast)
 			{
-				MainWindow.s_pW.mx_debug.Text = MainWindow.s_pW.mx_debug.Text.Remove(MainWindow.s_pW.mx_debug.Text.LastIndexOf("\r\n"));
+				mx_imgDebug.Text = mx_imgDebug.Text.Remove(mx_imgDebug.Text.LastIndexOf("\r\n"));
 			}
-			MainWindow.s_pW.mx_debug.Text += str;
+			mx_imgDebug.Text += str;
 		}
 		public static void addFileToArr(string basicPath, string subPath, string filter, int deep, Dictionary<string, RectNode> mapRectNode)
 		{
@@ -329,28 +333,48 @@ namespace UIEditor.ImageTools
 			}
 			return false;
 		}
-		public int getRectNestingByPreset(Dictionary<string, RectNode> mapRectNode, int width, int height)
+		public int getRectNestingByPreset(Dictionary<string, RectNode> mapRectNode, int width = 2048, int height = 2048)
 		{
 			var resultByWidth = from pair in mapRectNode orderby pair.Value.m_rect.Width descending select pair;
-			printString("\t宽度排列完成...\r\n");
+			printString("宽度排列完成...\r\n");
 
-			ArrayList mapGrid = new ArrayList();
-			ArrayList firstArr = new ArrayList();
-			RectNode firstNode = new RectNode(new System.Drawing.Rectangle(0, 0, width, height), false);
+			int count = 0;
+			ArrayList arrMapGrid = new ArrayList();
+			ArrayList tmpMapGrid = new ArrayList();
+			ArrayList tmpArr = new ArrayList();
+			RectNode tmpNode = new RectNode(new System.Drawing.Rectangle(0, 0, width, height), false);
 			int refreshCount = 0;
 
-			firstArr.Add(firstNode);
-			mapGrid.Add(firstArr);
+			tmpArr.Add(tmpNode);
+			tmpMapGrid.Add(tmpArr);
+			arrMapGrid.Add(tmpMapGrid);
 			mx_canvas.Children.Clear();
 
 			foreach (KeyValuePair<string, RectNode> pair in resultByWidth)
 			{
-				if (!enableToPutIn(mapGrid, pair.Value))
+				count++;
+				for (int i = 0; i < arrMapGrid.Count; i++)
 				{
-					return 1;
+					if (!enableToPutIn((ArrayList)arrMapGrid[i], pair.Value))
+					{
+						if(i == arrMapGrid.Count - 1)
+						{
+							tmpMapGrid = new ArrayList();
+							tmpArr = new ArrayList();
+							tmpNode = new RectNode(new System.Drawing.Rectangle(0, 0, width, height), false);
+							tmpArr.Add(tmpNode);
+							tmpMapGrid.Add(tmpArr);
+							arrMapGrid.Add(tmpMapGrid);
+						}
+					}
+					else
+					{
+						pair.Value.m_packCount = i;
+						break;
+					}
 				}
-				printString("\r\n进度：" + mapGrid.Count.ToString() + "/" + (mapRectNode.Count + 1).ToString(), true);
-				drawRectNode(pair.Value, mx_canvas.ActualWidth / width);
+				printString("\r\n进度：" + count.ToString() + "/" + mapRectNode.Count.ToString() + "\n" + "2048尺寸张数：" + arrMapGrid.Count, true);
+				drawRectNode(pair.Value, mx_canvas.ActualWidth / width / 4);
 				refreshCount++;
 				if (refreshCount % 17 == 0)
 				{
@@ -359,12 +383,12 @@ namespace UIEditor.ImageTools
 			}
 			printString("[完成]\r\n");
 
-			return 0;
+			return arrMapGrid.Count;
 		}
 		public bool getRectNesting(Dictionary<string, RectNode> mapRectNode, int width, int height)
 		{
 			var resultByWidth = from pair in mapRectNode orderby pair.Value.m_rect.Width descending select pair;
-			printString("\t宽度排列完成...\r\n");
+			printString("宽度排列完成...\r\n");
 
 			ArrayList mapGrid = new ArrayList();
 			ArrayList firstArr = new ArrayList();
@@ -393,32 +417,41 @@ namespace UIEditor.ImageTools
 
 			return true;
 		}
-		public void pngToTgaRectNesting(string path, string filter = "*.png", int deep = 0)
+		public void pngToTgaRectNesting(string path, string filter = "*.png", int deep = 0, bool isPreset = false)
 		{
 			int maxPow = 0;
 			bool isFirst = true;
 			Dictionary<string, RectNode> mapRectNode = new Dictionary<string, RectNode>();
 
-			printString("========================开始打包========================\r\n");
+			printString("========开始打包========\r\n" + "路径：" + path + "\r\n");
 			addFileToArr(path, "", filter, deep, mapRectNode);
 
 			//得到预期的2的整数次幂
 			maxPow = getMaxPow(mapRectNode.Values.ToList());
 			s_fileCount = mapRectNode.Count;
 
-			do
+			if (isPreset)
 			{
-				if (isFirst)
+				printString("模式：预设打包\r\n");
+				getRectNestingByPreset(mapRectNode, 2048, 2048);
+			}
+			else
+			{
+				printString("模式：开发打包\r\n");
+				do
 				{
-					isFirst = false;
-					printString("<提示>png文件统计完成，文件数量:" + mapRectNode.Count + "，tga图片预计尺寸:" + Math.Pow(2, maxPow) + "\r\n");
-				}
-				else
-				{
-					maxPow++;
-					printString("<提示>打包尝试失败，尝试下一尺寸:" + mapRectNode.Count + "，tga图片预计尺寸:" + Math.Pow(2, maxPow) + "\r\n");
-				}
-			} while (!getRectNesting(mapRectNode, (int)Math.Pow(2, maxPow), (int)Math.Pow(2, maxPow)));
+					if (isFirst)
+					{
+						isFirst = false;
+						printString("文件数量:" + mapRectNode.Count + "\r\ntga图片预计尺寸:" + Math.Pow(2, maxPow) + "\r\n");
+					}
+					else
+					{
+						maxPow++;
+						printString("本次尝试失败，尝试下一尺寸...\r\ntga图片预计尺寸:" + Math.Pow(2, maxPow) + "\r\n");
+					}
+				} while (!getRectNesting(mapRectNode, (int)Math.Pow(2, maxPow), (int)Math.Pow(2, maxPow)));
+			}
 
 			if (path.Last() == '\\')
 			{
@@ -460,7 +493,10 @@ namespace UIEditor.ImageTools
 			{
 				Width = node.m_rect.Width * per,
 				Height = node.m_rect.Height * per,
-				Margin = new Thickness(node.m_rect.X * per, node.m_rect.Y * per, 0, 0),
+				Margin = new Thickness(
+					node.m_rect.X * per + (mx_canvas.ActualWidth / 4) * (node.m_packCount % 4),
+					node.m_rect.Y * per + (mx_canvas.ActualWidth / 4) * (node.m_packCount / 4),
+					0, 0),
 				Stroke = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0xff, 0x00, 0x00, 0x00)),
 				StrokeThickness = 0,
 			};
@@ -524,8 +560,40 @@ namespace UIEditor.ImageTools
 		{
 			mx_start.IsEnabled = false;
 			DoEvents();
-			pngToTgaRectNesting(m_path, m_filter, m_deep);
+
+			string path = MainWindow.s_pW.m_projPath;
+			if(mx_rPreset.IsChecked == true)
+			{
+				pngToTgaRectNesting(path + "\\preset", m_filter, m_deep, true);
+			}
+			else if(mx_rDev.IsChecked == true)
+			{
+				DirectoryInfo di = new DirectoryInfo(path + "\\images");
+				DirectoryInfo[] arrDirInfo = di.GetDirectories();
+
+				foreach (DirectoryInfo dri in arrDirInfo)
+				{
+					pngToTgaRectNesting(dri.FullName, m_filter, m_deep, false);
+				}
+			}
+
 			mx_start.IsEnabled = true;
+		}
+		private void mx_rPreset_Checked(object sender, RoutedEventArgs e)
+		{
+			if (!m_isInit)
+			{
+				m_isInit = true;
+				mx_start.IsEnabled = true;
+			}
+		}
+		private void mx_rDev_Checked(object sender, RoutedEventArgs e)
+		{
+			if (!m_isInit)
+			{
+				m_isInit = true;
+				mx_start.IsEnabled = true;
+			}
 		}
 	}
 }
