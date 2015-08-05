@@ -233,7 +233,12 @@ namespace UIEditor
 			}
 			else
 			{
-				MessageBox.Show("没有找到皮肤目录：" + m_skinPath + "，请检查项目路径。");
+				MessageBox.Show(
+					"没有找到皮肤目录：" + m_skinPath + "，请检查项目路径。",
+					m_projPath + "\\" + m_projName + " - UI编辑器",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+				);
 			}
 		}
 		private void openProj(object sender, RoutedEventArgs e)//打开工程
@@ -413,7 +418,7 @@ namespace UIEditor
 			if (lstChangedFiles != null && lstChangedFiles.Count > 0)
 			{
 
-				MessageBoxResult ret = MessageBox.Show(strMsg, "保存确认", MessageBoxButton.YesNoCancel);
+				MessageBoxResult ret = MessageBox.Show(strMsg, "保存确认", MessageBoxButton.YesNoCancel, MessageBoxImage.Asterisk);
 				switch (ret)
 				{
 					case MessageBoxResult.Yes:
@@ -2288,14 +2293,14 @@ namespace UIEditor
 		}
 		private void mx_btnNesting_Click(object sender, RoutedEventArgs e)
 		{
-			if(mx_txtNesting != null && m_projPath != null && m_projPath != "")
+			if(m_projPath != null && m_projPath != "")
 			{
-				if (System.IO.Directory.Exists(m_projPath + "\\images\\" + mx_txtNesting.Text.ToString()))
+				if (!System.IO.Directory.Exists(m_projPath + "\\images\\"))
 				{
-
-					ImageTools.ImageNesting winNesting = new ImageTools.ImageNesting(m_projPath + "\\images\\" + mx_txtNesting.Text.ToString() + "\\", "*.png", 1);
-					winNesting.ShowDialog();
+					Directory.CreateDirectory(m_projPath + "\\images\\");
 				}
+				ImageTools.ImageNesting winNesting = new ImageTools.ImageNesting(m_projPath + "\\images\\", "*.png", 1);
+				winNesting.ShowDialog();
 			}
 		}
 	}

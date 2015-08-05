@@ -124,7 +124,7 @@ namespace UIEditor.NewFile
 
 			if(File.Exists(path))
 			{
-				MessageBox.Show("该文件名已经存在(" + path + ")，请重新输入文件名。", "保存确认", MessageBoxButton.OK, MessageBoxImage.Warning);
+				MessageBox.Show("该文件名已经存在(" + path + ")，请重新输入文件名。", "文件名重复", MessageBoxButton.OK, MessageBoxImage.Warning);
 			}
 			else
 			{

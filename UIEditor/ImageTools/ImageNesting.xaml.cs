@@ -40,14 +40,14 @@ namespace UIEditor.ImageTools
 		public string m_path;
 		public string m_filter;
 		public int m_deep;
-		public bool m_isInit;
+
+		public const int conf_maxSizeOfPreset = 2048;
 
 		public ImageNesting(string path, string filter = "*.png", int deep = 0)
 		{
 			m_path = path;
 			m_filter = filter;
 			m_deep = deep;
-			m_isInit = false;
 			InitializeComponent();
 		}
 
@@ -121,11 +121,11 @@ namespace UIEditor.ImageTools
 			}
 			mx_imgDebug.Text += str;
 		}
-		public static void addFileToArr(string basicPath, string subPath, string filter, int deep, Dictionary<string, RectNode> mapRectNode)
+		public static int addFileToArr(string basicPath, string filter, Dictionary<string, RectNode> mapRectNode)
 		{
-			DirectoryInfo di = new DirectoryInfo(basicPath + "\\" + subPath);
+			DirectoryInfo di = new DirectoryInfo(basicPath);
 			FileInfo[] arrFileInfo = di.GetFiles(filter);
-			DirectoryInfo[] arrDirInfo = di.GetDirectories();
+			int retCount = arrFileInfo.Count();
 
 			foreach (FileInfo fi in arrFileInfo)
 			{
@@ -133,21 +133,23 @@ namespace UIEditor.ImageTools
 				//因为差值什么的，所以要+2。
 				RectNode rn = new RectNode(new System.Drawing.Rectangle(0, 0, img.Width + 2, img.Height + 2), false);
 
-				mapRectNode.Add(subPath + "\\" + fi.Name, rn);
+				mapRectNode.Add(fi.Name, rn);
 			}
-			if (deep > 0)
+
+			return retCount;
+		}
+		public static void addFileToDirMap(string rootPath, Dictionary<string, string> mapNameDir)
+		{
+			DirectoryInfo di = new DirectoryInfo(rootPath);
+			DirectoryInfo[] arrDirInfo = di.GetDirectories();
+
+			foreach(DirectoryInfo dri in arrDirInfo)
 			{
-				deep--;
-				foreach (DirectoryInfo dri in arrDirInfo)
+				FileInfo[] arrPngInfo = dri.GetFiles("*.png");
+
+				foreach(FileInfo fi in arrPngInfo)
 				{
-					if (subPath != "")
-					{
-						addFileToArr(basicPath, subPath + "\\" + dri.Name, filter, deep, mapRectNode);
-					}
-					else
-					{
-						addFileToArr(basicPath, dri.Name, filter, deep, mapRectNode);
-					}
+					mapNameDir.Add(System.IO.Path.GetFileNameWithoutExtension(fi.Name), dri.Name);
 				}
 			}
 		}
@@ -333,7 +335,7 @@ namespace UIEditor.ImageTools
 			}
 			return false;
 		}
-		public int getRectNestingByPreset(Dictionary<string, RectNode> mapRectNode, int width = 2048, int height = 2048)
+		public int getRectNestingByPreset(Dictionary<string, RectNode> mapRectNode, int width = conf_maxSizeOfPreset, int height = conf_maxSizeOfPreset)
 		{
 			var resultByWidth = from pair in mapRectNode orderby pair.Value.m_rect.Width descending select pair;
 
@@ -439,7 +441,7 @@ namespace UIEditor.ImageTools
 				}
 				else
 				{
-					drawRectNode(pair.Value, mx_canvas.ActualWidth / 2048 / 4);
+					drawRectNode(pair.Value, mx_canvas.ActualWidth / conf_maxSizeOfPreset / 4);
 				}
 				refreshCount++;
 				if (refreshCount % 17 == 0)
@@ -457,14 +459,30 @@ namespace UIEditor.ImageTools
 		public void pngToTgaRectNesting(string path, string filter = "*.png", int deep = 0, bool isPreset = false)
 		{
 			Dictionary<string, RectNode> mapRectNode = new Dictionary<string, RectNode>();
+			string projPath = MainWindow.s_pW.m_projPath;
+			int presetCount = 0;
+			int fileCount = 0;
 
 			printString("========开始打包========\r\n" + "路径：" + path + "\r\n");
-			addFileToArr(path, "", filter, deep, mapRectNode);
+			fileCount = addFileToArr(path, filter, mapRectNode);
 
+			if (fileCount == 0)
+			{
+				return;
+			}
 			if (isPreset)
 			{
+				DirectoryInfo di = new DirectoryInfo(projPath + "\\images\\");
+				DirectoryInfo[] arrPreDri = di.GetDirectories("*_preset*");
+				DirectoryInfo[] arrAllDri = di.GetDirectories("*");
+
+				if (arrPreDri.Count() != arrAllDri.Count())
+				{
+					MessageBox.Show("存在自定义图片分包，无法进行预设打包。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+					return;
+				}
 				printString("模式：预设打包\r\n");
-				getRectNestingByPreset(mapRectNode, 2048, 2048);
+				presetCount = getRectNestingByPreset(mapRectNode, conf_maxSizeOfPreset, conf_maxSizeOfPreset);
 			}
 			else
 			{
@@ -500,30 +518,85 @@ namespace UIEditor.ImageTools
 				}
 			}
 
-			string fileName = System.IO.Path.GetFileName(path);
-			XmlDocument docGrid = new XmlDocument();
-			XmlElement xeRoot = docGrid.CreateElement("UIImageResource");
-
-			docGrid.AppendChild(xeRoot);
-			foreach (KeyValuePair<string, RectNode> pairRn in mapRectNode.ToList())
+			if (isPreset && presetCount != 0)
 			{
-				XmlElement xe = docGrid.CreateElement("Image");
-				string name = pairRn.Key.Remove(pairRn.Key.LastIndexOf("."));
-				
-				if(name[0] == '\\')
+				DirectoryInfo di = new DirectoryInfo(projPath + "\\images\\");
+				DirectoryInfo[] arrDirInfo = di.GetDirectories("*_preset*");
+				XmlDocument docRes = new XmlDocument();
+				XmlElement xeResRoot = docRes.CreateElement("BoloUI");
+
+				foreach(DirectoryInfo dri in arrDirInfo)
 				{
-					name = name.Remove(0, 1);
+					Directory.Delete(dri.FullName, true);
 				}
-				xe.SetAttribute("Name", name);
-				//因为差值什么的显示问题，所以要-2和+1。
-				xe.SetAttribute("Width", (pairRn.Value.m_rect.Width - 2).ToString());
-				xe.SetAttribute("Height", (pairRn.Value.m_rect.Height - 2).ToString());
-				xe.SetAttribute("X", (pairRn.Value.m_rect.X + 1).ToString());
-				xe.SetAttribute("Y", (pairRn.Value.m_rect.Y + 1).ToString());
-				xeRoot.AppendChild(xe);
+
+				XmlDocument[] arrDocGrid = new XmlDocument[presetCount];
+
+				for (int i = 0; i < presetCount; i++)
+				{
+					arrDocGrid[i] = new XmlDocument();
+					XmlElement xeRoot = arrDocGrid[i].CreateElement("UIImageResource");
+					arrDocGrid[i].AppendChild(xeRoot);
+					Directory.CreateDirectory(projPath + "\\images\\_preset" + (i + 1).ToString("00"));
+
+					XmlElement xeRes = docRes.CreateElement("resource");
+
+					xeRes.SetAttribute("name", "_preset" + (i + 1).ToString("00"));
+					xeResRoot.AppendChild(xeRes);
+				}
+
+				foreach (KeyValuePair<string, RectNode> pairRn in mapRectNode.ToList())
+				{
+					XmlDocument docGrid = arrDocGrid[pairRn.Value.m_packCount];
+					XmlElement xe = docGrid.CreateElement("Image");
+					string name = pairRn.Key.Remove(pairRn.Key.LastIndexOf("."));
+
+					xe.SetAttribute("Name", name);
+					//因为差值什么的显示问题，所以要-2和+1。
+					xe.SetAttribute("Width", (pairRn.Value.m_rect.Width - 2).ToString());
+					xe.SetAttribute("Height", (pairRn.Value.m_rect.Height - 2).ToString());
+					xe.SetAttribute("X", (pairRn.Value.m_rect.X + 1).ToString());
+					xe.SetAttribute("Y", (pairRn.Value.m_rect.Y + 1).ToString());
+					docGrid.DocumentElement.AppendChild(xe);
+					File.Copy(path + "\\" + pairRn.Key, projPath + "\\images\\_preset" + (pairRn.Value.m_packCount + 1).ToString("00") + "\\" + pairRn.Key, true);
+				}
+
+				for(int i = 0; i < presetCount; i++)
+				{
+					string xmlPath = projPath + "\\images\\_preset" + (i + 1).ToString("00") + ".xml";
+
+					arrDocGrid[i].Save(xmlPath);
+					MainWindow.s_pW.openFileByPath(xmlPath);
+				}
+
+				docRes.AppendChild(xeResRoot);
+				docRes.Save(projPath + "\\images\\resource.xml");
 			}
-			//docGrid.Save(path + "\\..\\" + fileName + "_wpf.xml");
-			docGrid.Save(path + "\\..\\" + fileName + ".xml");
+			else
+			{
+				string fileName = System.IO.Path.GetFileName(path);
+				XmlDocument docGrid = new XmlDocument();
+				XmlElement xeRoot = docGrid.CreateElement("UIImageResource");
+
+				docGrid.AppendChild(xeRoot);
+				foreach (KeyValuePair<string, RectNode> pairRn in mapRectNode.ToList())
+				{
+					XmlElement xe = docGrid.CreateElement("Image");
+					string name = pairRn.Key.Remove(pairRn.Key.LastIndexOf("."));
+
+					xe.SetAttribute("Name", name);
+					//因为差值什么的显示问题，所以要-2和+1。
+					xe.SetAttribute("Width", (pairRn.Value.m_rect.Width - 2).ToString());
+					xe.SetAttribute("Height", (pairRn.Value.m_rect.Height - 2).ToString());
+					xe.SetAttribute("X", (pairRn.Value.m_rect.X + 1).ToString());
+					xe.SetAttribute("Y", (pairRn.Value.m_rect.Y + 1).ToString());
+					xeRoot.AppendChild(xe);
+				}
+				string xmlPath = projPath + "\\images\\" + fileName + ".xml";
+
+				docGrid.Save(xmlPath);
+				MainWindow.s_pW.openFileByPath(xmlPath);
+			}
 		}
 		public void clearChildGrid(int num)
 		{
@@ -610,6 +683,108 @@ namespace UIEditor.ImageTools
 			Dispatcher.PushFrame(frame);
 		}
 
+		public static void refreshRes(XmlElement xeRoot, Dictionary<string, string> mapNameDir, Dictionary<string, int> mapResDir,string dirHead = "")
+		{
+			string imgName = "";
+
+			if (xeRoot.Name == "imageShape" || xeRoot.Name == "frame")
+			{
+				if (xeRoot.GetAttribute("image") != "")
+				{
+					imgName = xeRoot.GetAttribute("image");
+				}
+				if (xeRoot.GetAttribute("ImageName") != "")
+				{
+					imgName = xeRoot.GetAttribute("ImageName");
+				}
+
+				if (imgName != "")
+				{
+					string dirName = System.IO.Path.GetFileNameWithoutExtension(imgName);
+					string fileName = System.IO.Path.GetExtension(imgName).Remove(0, 1);
+
+					if (dirName != "" && fileName != "")
+					{
+						if (dirName == null || dirHead == "" || (dirHead != "" && dirName.IndexOf(dirHead) == 0))
+						{
+							string newDirName = "";
+
+							if (mapNameDir.TryGetValue(fileName, out newDirName))
+							{
+								string newName = newDirName + "." + fileName;
+								int dirCount = 0;
+
+								if (xeRoot.GetAttribute("image") != "")
+								{
+									xeRoot.SetAttribute("image", newName);
+								}
+								if (xeRoot.GetAttribute("ImageName") != "")
+								{
+									xeRoot.SetAttribute("ImageName", newName);
+								}
+								if(mapResDir.TryGetValue(newDirName,out dirCount))
+								{
+									mapResDir[newDirName] = dirCount + 1;
+								}
+								else
+								{
+									mapResDir.Add(newDirName, 1);
+								}
+							}
+						}
+					}
+				}
+			}
+
+			foreach(XmlNode xn in xeRoot.ChildNodes)
+			{
+				if(xn.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xe = (XmlElement)xn;
+
+					refreshRes(xe, mapNameDir, mapResDir, dirHead);
+				}
+			}
+		}
+		public void refreshAllSkinRes(string path, Dictionary<string, string> mapNameDir)
+		{
+			if(!Directory.Exists(path))
+			{
+				return;
+			}
+			DirectoryInfo di = new DirectoryInfo(path);
+			FileInfo[] arrBoloUI = di.GetFiles("*.xml");
+			Dictionary<string, int> mapResDir = new Dictionary<string, int>();
+
+			foreach (FileInfo fi in arrBoloUI)
+			{
+				XmlDocument docSkin = new XmlDocument();
+
+				printString("\r\n" + fi.FullName, true);
+				DoEvents();
+				docSkin.Load(fi.FullName);
+				//refreshRes(docSkin.DocumentElement, mapNameDir, "_preset");
+
+				if (docSkin.DocumentElement.Name == "BoloUI")
+				{
+					foreach (XmlNode xn in docSkin.DocumentElement.SelectNodes("resource"))
+					{
+						docSkin.DocumentElement.RemoveChild(xn);
+					}
+					refreshRes(docSkin.DocumentElement, mapNameDir, mapResDir, "");
+					foreach (KeyValuePair<string, int> pairRes in mapResDir)
+					{
+						XmlElement xeRes = docSkin.CreateElement("resource");
+
+						xeRes.SetAttribute("name", pairRes.Key);
+						docSkin.DocumentElement.AppendChild(xeRes);
+					}
+					docSkin.Save(fi.FullName);
+				}
+			}
+			printString("\r\n[完成]\r\n", false);
+		}
+
 		private void mx_start_Click(object sender, RoutedEventArgs e)
 		{
 			mx_start.IsEnabled = false;
@@ -633,31 +808,32 @@ namespace UIEditor.ImageTools
 			{
 				DirectoryInfo di = new DirectoryInfo(path + "\\images");
 				DirectoryInfo[] arrDirInfo = di.GetDirectories();
+				XmlDocument docRes = new XmlDocument();
+				XmlElement xeResRoot = docRes.CreateElement("BoloUI");
 
 				foreach (DirectoryInfo dri in arrDirInfo)
 				{
 					mx_imgDebug.Text = "";
 					pngToTgaRectNesting(dri.FullName, m_filter, m_deep, false);
+					XmlElement xeRes = docRes.CreateElement("resource");
+
+					xeRes.SetAttribute("name", dri.Name);
+					xeResRoot.AppendChild(xeRes);
 				}
+				docRes.AppendChild(xeResRoot);
+				docRes.Save(MainWindow.s_pW.m_projPath + "\\images\\resource.xml");
+			}
+			else if(mx_rRefreshRes.IsChecked == true)
+			{
+				Dictionary<string, string> mapNameDir = new Dictionary<string,string>();
+
+				mx_imgDebug.Text = "========开始转换========\r\n";
+				addFileToDirMap(MainWindow.s_pW.m_projPath + "\\images", mapNameDir);
+				refreshAllSkinRes(MainWindow.s_pW.m_projPath + "\\skin", mapNameDir);
+				refreshAllSkinRes(MainWindow.s_pW.m_projPath, mapNameDir);
 			}
 
 			mx_start.IsEnabled = true;
-		}
-		private void mx_rPreset_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!m_isInit)
-			{
-				m_isInit = true;
-				mx_start.IsEnabled = true;
-			}
-		}
-		private void mx_rDev_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!m_isInit)
-			{
-				m_isInit = true;
-				mx_start.IsEnabled = true;
-			}
 		}
 	}
 }

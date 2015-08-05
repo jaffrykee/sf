@@ -184,7 +184,6 @@
 						</CheckBox>
 						<Separator/>
 						<Button Name="mx_btnNesting" Click="mx_btnNesting_Click">图片打包</Button>
-						<TextBox Name="mx_txtNesting" Width="200"/>
 					</ToolBar>
 				</ToolBarTray>
 			</Grid>

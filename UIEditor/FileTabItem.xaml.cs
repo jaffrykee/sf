@@ -96,7 +96,7 @@ namespace UIEditor
 
 			if (pW.m_mapOpenedFiles[pW.m_curFile].haveDiffToFile())
 			{
-				MessageBoxResult ret = MessageBox.Show("是否将更改保存到 " + tabPath, "保存确认", MessageBoxButton.YesNoCancel);
+				MessageBoxResult ret = MessageBox.Show("是否将更改保存到 " + tabPath, "保存确认", MessageBoxButton.YesNoCancel, MessageBoxImage.Asterisk);
 				switch (ret)
 				{
 					case MessageBoxResult.Yes:

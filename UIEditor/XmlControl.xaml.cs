@@ -50,6 +50,7 @@ namespace UIEditor
 			m_isOnlySkin = true;
 			m_skinViewCtrlUI = null;
 			m_showGL = false;
+			refreshControl();
 		}
 
 		public void checkBaseId_old(XmlNode xn)
@@ -248,7 +249,7 @@ namespace UIEditor
 		}
 		public void refreshControl()
 		{
-			m_pW = Window.GetWindow(this) as MainWindow;
+			m_pW = MainWindow.s_pW;
 
 			m_openedFile = m_pW.m_mapOpenedFiles[m_parent.m_filePath];
 			m_openedFile.m_frame = this;
@@ -361,10 +362,6 @@ namespace UIEditor
 
 		private void mx_root_Loaded(object sender, RoutedEventArgs e)
 		{
-			if (m_loaded == false)
-			{
-				refreshControl();
-			}
 		}
 		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
 		{

@@ -38,18 +38,21 @@
 			<StackPanel Grid.Row="1" Margin="5">
 				<RadioButton Name="mx_rPreset"
 							 Padding="20"
-							 Checked="mx_rPreset_Checked"
+							 IsChecked="True"
 							 Style="{StaticResource RadioTeml_Mt}">
 					预设打包
 				</RadioButton>
 				<RadioButton Name="mx_rDev"
 							 Padding="20"
-							 Checked="mx_rDev_Checked"
 							 Style="{StaticResource RadioTeml_Mt}">
 					开发打包
 				</RadioButton>
+				<RadioButton Name="mx_rRefreshRes"
+							 Padding="20"
+							 Style="{StaticResource RadioTeml_Mt}">
+					将皮肤的预设打包资源转换为开发打包资源
+				</RadioButton>
 				<Button Name="mx_start"
-						IsEnabled="False"
 						Margin="10"
 						Padding="0,7,0,7"
 						Click="mx_start_Click">
