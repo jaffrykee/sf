@@ -683,9 +683,10 @@ namespace UIEditor.ImageTools
 			Dispatcher.PushFrame(frame);
 		}
 
-		public static void refreshRes(XmlElement xeRoot, Dictionary<string, string> mapNameDir, Dictionary<string, int> mapResDir,string dirHead = "")
+		public static bool refreshRes(XmlElement xeRoot, Dictionary<string, string> mapNameDir, Dictionary<string, int> mapResDir,string dirHead = "")
 		{
 			string imgName = "";
+			bool isChanged = false;
 
 			if (xeRoot.Name == "imageShape" || xeRoot.Name == "frame")
 			{
@@ -714,15 +715,17 @@ namespace UIEditor.ImageTools
 								string newName = newDirName + "." + fileName;
 								int dirCount = 0;
 
-								if (xeRoot.GetAttribute("image") != "")
+								if (xeRoot.GetAttribute("image") != "" && xeRoot.GetAttribute("image") != newName)
 								{
 									xeRoot.SetAttribute("image", newName);
+									isChanged = true;
 								}
-								if (xeRoot.GetAttribute("ImageName") != "")
+								if (xeRoot.GetAttribute("ImageName") != "" && xeRoot.GetAttribute("ImageName") != newName)
 								{
 									xeRoot.SetAttribute("ImageName", newName);
+									isChanged = true;
 								}
-								if(mapResDir.TryGetValue(newDirName,out dirCount))
+								if(mapResDir.TryGetValue(newDirName, out dirCount))
 								{
 									mapResDir[newDirName] = dirCount + 1;
 								}
@@ -741,10 +744,17 @@ namespace UIEditor.ImageTools
 				if(xn.NodeType == XmlNodeType.Element)
 				{
 					XmlElement xe = (XmlElement)xn;
+					bool retChild = false;
 
-					refreshRes(xe, mapNameDir, mapResDir, dirHead);
+					retChild = refreshRes(xe, mapNameDir, mapResDir, dirHead);
+					if(retChild == true)
+					{
+						isChanged = true;
+					}
 				}
 			}
+
+			return isChanged;
 		}
 		public void refreshAllSkinRes(string path, Dictionary<string, string> mapNameDir)
 		{
@@ -767,22 +777,33 @@ namespace UIEditor.ImageTools
 
 				if (docSkin.DocumentElement.Name == "BoloUI")
 				{
-					foreach (XmlNode xn in docSkin.DocumentElement.SelectNodes("resource"))
+					if(refreshRes(docSkin.DocumentElement, mapNameDir, mapResDir, ""))
 					{
-						docSkin.DocumentElement.RemoveChild(xn);
-					}
-					refreshRes(docSkin.DocumentElement, mapNameDir, mapResDir, "");
-					foreach (KeyValuePair<string, int> pairRes in mapResDir)
-					{
-						XmlElement xeRes = docSkin.CreateElement("resource");
+						foreach (XmlNode xn in docSkin.DocumentElement.SelectNodes("resource"))
+						{
+							docSkin.DocumentElement.RemoveChild(xn);
+						}
+						foreach (KeyValuePair<string, int> pairRes in mapResDir)
+						{
+							XmlElement xeRes = docSkin.CreateElement("resource");
 
-						xeRes.SetAttribute("name", pairRes.Key);
-						docSkin.DocumentElement.AppendChild(xeRes);
+							xeRes.SetAttribute("name", pairRes.Key);
+							docSkin.DocumentElement.AppendChild(xeRes);
+						}
+						docSkin.Save(fi.FullName);
 					}
-					docSkin.Save(fi.FullName);
 				}
 			}
 			printString("\r\n[完成]\r\n", false);
+		}
+		public void reLinkSkin()
+		{
+			Dictionary<string, string> mapNameDir = new Dictionary<string, string>();
+
+			mx_imgDebug.Text += "========开始重定向皮肤资源========\r\n";
+			addFileToDirMap(MainWindow.s_pW.m_projPath + "\\images", mapNameDir);
+			refreshAllSkinRes(MainWindow.s_pW.m_projPath + "\\skin", mapNameDir);
+			refreshAllSkinRes(MainWindow.s_pW.m_projPath, mapNameDir);
 		}
 
 		private void mx_start_Click(object sender, RoutedEventArgs e)
@@ -797,11 +818,12 @@ namespace UIEditor.ImageTools
 				if (Directory.Exists(path + "\\preset"))
 				{
 					pngToTgaRectNesting(path + "\\preset", m_filter, m_deep, true);
+					reLinkSkin();
 				}
 				else
 				{
-					printString("<错误>没有找到预设图片目录，如想要进行预设图片打包，请新建preset目录。（"
-						+ path + "\\preset" + "）\r\n");
+					MessageBox.Show("没有找到预设图片目录，如想要进行预设图片打包，请新建preset目录。（" + path + "\\preset" + "）\r\n",
+						"错误", MessageBoxButton.OK, MessageBoxImage.Error);
 				}
 			}
 			else if(mx_rDev.IsChecked == true)
@@ -825,12 +847,31 @@ namespace UIEditor.ImageTools
 			}
 			else if(mx_rRefreshRes.IsChecked == true)
 			{
-				Dictionary<string, string> mapNameDir = new Dictionary<string,string>();
+				mx_imgDebug.Text = "";
 
-				mx_imgDebug.Text = "========开始转换========\r\n";
-				addFileToDirMap(MainWindow.s_pW.m_projPath + "\\images", mapNameDir);
-				refreshAllSkinRes(MainWindow.s_pW.m_projPath + "\\skin", mapNameDir);
-				refreshAllSkinRes(MainWindow.s_pW.m_projPath, mapNameDir);
+				MessageBoxResult retInit = MessageBox.Show(
+					"此操作会删除工程目录下的preset文件夹（预设打包初始目录），且操作不可逆，是否继续？",
+					"确认", MessageBoxButton.OKCancel, MessageBoxImage.Asterisk);
+
+				if (retInit == MessageBoxResult.OK)
+				{
+					if(Directory.Exists(MainWindow.s_pW.m_projPath + "\\preset\\"))
+					{
+						reLinkSkin();
+						Directory.Delete(MainWindow.s_pW.m_projPath + "\\preset\\", true);
+					}
+					else
+					{
+						MessageBoxResult ret = MessageBox.Show(
+							"这不是一个使用预设打包的BoloUI工程（没有找到preset文件夹）。如存在不同开发打包下的同名文件，可能会引发不可预知的问题，即便如此仍然要继续吗？",
+							"警告", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+
+						if(ret == MessageBoxResult.OK)
+						{
+							reLinkSkin();
+						}
+					}
+				}
 			}
 
 			mx_start.IsEnabled = true;

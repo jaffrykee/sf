@@ -17,7 +17,6 @@
 			</Grid.ColumnDefinitions>
 			<Grid Grid.Column="0">
 				<TreeView Name="mx_tree" BorderThickness="0" Margin="5">
-					<TreeViewItem Name="mx_treeRootItem"></TreeViewItem>
 				</TreeView>
 			</Grid>
 			<GridSplitter Grid.Column="0" Width="10"/>
@@ -28,7 +27,7 @@
 				</ScrollViewer>
 			</Grid>
 		</Grid>
-		<Grid Grid.Row="1" Margin="5">
+		<Grid Name="mx_fileFrame" Grid.Row="1" Margin="5" Visibility="Collapsed">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="auto"/>
 				<ColumnDefinition Width="*"/>
@@ -45,6 +44,25 @@
 					 Background="#00000000"
 					 TextChanged="mx_fileName_TextChanged"
 					 GotFocus="mx_fileName_GotFocus"/>
+		</Grid>
+		<Grid Name="mx_projFrame" Grid.Row="1" Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="auto"/>
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="0">工程路径：</Label>
+			<Grid Grid.Column="1" Background="White"></Grid>
+			<TextBox Name="mx_projPath"
+					 Grid.Column="1"
+					 TextChanged="mx_projPath_TextChanged"/>
+			<Button Name="mx_selPath"
+					Grid.Column="2"
+					Margin="1"
+					Padding="10,2,10,2"
+					Click="mx_selPath_Click">
+				浏览...
+			</Button>
 		</Grid>
 		<Grid Grid.Row="2" Margin="10">
 			<WrapPanel HorizontalAlignment="Right">

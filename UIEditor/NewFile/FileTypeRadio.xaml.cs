@@ -32,6 +32,10 @@ namespace UIEditor.NewFile
 		private void mx_radio_Checked(object sender, RoutedEventArgs e)
 		{
 			m_frame.m_curFileType = this;
+			if(m_frame.mx_projPath.Text != "" || m_frame.mx_fileName.Text != "")
+			{
+				m_frame.mx_ok.IsEnabled = true;
+			}
 		}
 	}
 }

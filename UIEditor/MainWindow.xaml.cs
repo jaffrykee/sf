@@ -165,33 +165,15 @@ namespace UIEditor
 			}
 		}
 
-		public void openProjSelectBox(string projPath = null)
+		public void openProjByPath(string projPath, string projName)
 		{
-			if(projPath == null)
-			{
-				projPath = m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml;
-			}
+			m_projPath = projPath;
+			m_projName = projName;
 
-
-			System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
-			openFileDialog.Title = "选择BoloUI工程文件";
-			openFileDialog.Filter = "BoloUI工程文件|*.bup|BoloUI工程文件(旧)|*.ryrp";
-			openFileDialog.FileName = string.Empty;
-			openFileDialog.FilterIndex = 1;
-			openFileDialog.RestoreDirectory = true;
-			openFileDialog.DefaultExt = "bup";
-			openFileDialog.InitialDirectory = projPath;
-			System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
-			if (result == System.Windows.Forms.DialogResult.Cancel)
-			{
-				return;
-			}
-			m_projPath = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
-			m_projName = System.IO.Path.GetFileName(openFileDialog.FileName);
 			if (System.IO.Path.GetExtension(m_projName) == ".ryrp")
 			{
 				m_projName = System.IO.Path.ChangeExtension(m_projName, ".bup");
-				if(!File.Exists(m_projPath + "\\" + m_projName))
+				if (!File.Exists(m_projPath + "\\" + m_projName))
 				{
 					string initProjXml = "<BoloUIProj><template></template></BoloUIProj>";
 
@@ -240,6 +222,28 @@ namespace UIEditor
 					MessageBoxImage.Error
 				);
 			}
+		}
+		public void openProjSelectBox(string projPath = null)
+		{
+			if(projPath == null)
+			{
+				projPath = m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml;
+			}
+
+			System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+			openFileDialog.Title = "选择BoloUI工程文件";
+			openFileDialog.Filter = "BoloUI工程文件|*.bup|BoloUI工程文件(旧)|*.ryrp";
+			openFileDialog.FileName = string.Empty;
+			openFileDialog.FilterIndex = 1;
+			openFileDialog.RestoreDirectory = true;
+			openFileDialog.DefaultExt = "bup";
+			openFileDialog.InitialDirectory = projPath;
+			System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
+			if (result == System.Windows.Forms.DialogResult.Cancel)
+			{
+				return;
+			}
+			openProjByPath(System.IO.Path.GetDirectoryName(openFileDialog.FileName), System.IO.Path.GetFileName(openFileDialog.FileName));
 		}
 		private void openProj(object sender, RoutedEventArgs e)//打开工程
 		{
@@ -2116,7 +2120,8 @@ namespace UIEditor
 		}
 		private void mx_newProj_Click(object sender, RoutedEventArgs e)
 		{
-
+			NewFile.NewFileWin winNewFile = new NewFile.NewFileWin(".\\data\\ProjTemplate\\", true);
+			winNewFile.ShowDialog();
 		}
 		private void mx_viewPrevFile_Click(object sender, RoutedEventArgs e)
 		{

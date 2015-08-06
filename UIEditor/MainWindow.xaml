@@ -60,7 +60,7 @@
 							  IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 							  Click="mx_newFile_Click"/>
 				</MenuItem>
-				<MenuItem Header="打开"
+				<MenuItem Header="打开项目"
 						  InputGestureText="Ctrl+O"
 						  IsEnabled="{Binding ElementName=mx_toolOpen, Path=IsEnabled}"
 						  Click="openProj"/>
@@ -91,14 +91,9 @@
 				<MenuItem Header="上移" InputGestureText="Ctrl+↑" IsEnabled="{Binding ElementName=mx_toolMoveUp, Path=IsEnabled}" Click="mx_toolMoveUp_Click"/>
 				<MenuItem Header="下移" InputGestureText="Ctrl+↓" IsEnabled="{Binding ElementName=mx_toolMoveDown, Path=IsEnabled}" Click="mx_toolMoveDown_Click"/>
 			</MenuItem>
-			<MenuItem Header="项目">
-				<MenuItem Header="资源管理..." IsEnabled="False"/>
-				<MenuItem Header="项目分析..." IsEnabled="False"/>
-				<Separator/>
-				<MenuItem Name="mx_projSetting" Header="项目属性..." IsEnabled="False"/>
-			</MenuItem>
 			<MenuItem Header="工具">
-				<MenuItem Header="分析..." IsEnabled="False"/>
+				<MenuItem Header="图片打包" Click="mx_btnNesting_Click"/>
+				<MenuItem Header="分析..."/>
 				<Separator/>
 				<MenuItem Name="mx_setting" Header="选项..." IsEnabled="False"/>
 			</MenuItem>
@@ -127,7 +122,7 @@
 								ToolTip="新建 (Ctrl + N)">新建</Button>
 						<Button Name="mx_toolOpen"
 								Click="openProj"
-								ToolTip="打开 (Ctrl + O)">打开</Button>
+								ToolTip="打开 (Ctrl + O)">打开项目</Button>
 						<Button Name="mx_toolSave"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolSave_Click"

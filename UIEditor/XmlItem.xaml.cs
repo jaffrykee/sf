@@ -74,6 +74,10 @@ namespace UIEditor
 
 		private void mx_root_Selected(object sender, RoutedEventArgs e)
 		{
+			if (sender == Keyboard.FocusedElement)
+			{
+				changeSelectItem();
+			}
 		}
 		private void mx_root_Unselected(object sender, RoutedEventArgs e)
 		{
@@ -424,10 +428,6 @@ namespace UIEditor
 			moveUpItem();
 		}
 
-		private void mx_root_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			changeSelectItem();
-		}
 		private void mx_root_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			if (m_xe.Name == "skingroup")

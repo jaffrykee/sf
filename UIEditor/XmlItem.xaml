@@ -13,7 +13,6 @@
 			  DragLeave="mx_root_DragLeave"
 			  DragOver="mx_root_DragOver"
 			  Drop="mx_root_Drop"
-			  PreviewMouseLeftButtonDown="mx_root_PreviewMouseLeftButtonDown"
 			  PreviewMouseDoubleClick="mx_root_PreviewMouseDoubleClick">
 	<TreeViewItem.ContextMenu>
 		<ContextMenu Name="mx_menu" Loaded="mx_menu_Loaded" Unloaded="mx_menu_Unloaded">
