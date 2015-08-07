@@ -58,12 +58,20 @@
 							  Header="文件..."
 							  InputGestureText="Ctrl+N"
 							  IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
-							  Click="mx_newFile_Click"/>
+							  Click="mx_newFile_Click">
+						<MenuItem.Icon>
+							<Image Width="16" Source="pack://application:,,,/data/image/new.png"/>
+						</MenuItem.Icon>
+					</MenuItem>
 				</MenuItem>
 				<MenuItem Header="打开项目"
 						  InputGestureText="Ctrl+O"
 						  IsEnabled="{Binding ElementName=mx_toolOpen, Path=IsEnabled}"
-						  Click="openProj"/>
+						  Click="openProj">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/open.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
 				<MenuItem Header="最近使用的工程">
 					<MenuItem Header="功能未开发" IsEnabled="False"/>
 				</MenuItem>
@@ -71,28 +79,97 @@
 				<MenuItem Header="保存"
 						  InputGestureText="Ctrl+S"
 						  IsEnabled="{Binding ElementName=mx_toolSave, Path=IsEnabled}"
-						  Click="mx_toolSave_Click"/>
+						  Click="mx_toolSave_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/save.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
 				<MenuItem Header="全部保存"
 						  InputGestureText="Ctrl+Shift+S"
 						  IsEnabled="{Binding ElementName=mx_toolSaveAll, Path=IsEnabled}"
-						  Click="mx_toolSaveAll_Click"/>
+						  Click="mx_toolSaveAll_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/saveAll.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
 				<Separator/>
 				<MenuItem Header="退出" InputGestureText="Alt+F4" IsEnabled="False"/>
 			</MenuItem>
 			<MenuItem Header="编辑">
-				<MenuItem Header="撤销" InputGestureText="Ctrl+Z" IsEnabled="{Binding ElementName=mx_toolUndo, Path=IsEnabled}" Click="mx_toolUndo_Click"/>
-				<MenuItem Header="重复" InputGestureText="Ctrl+Y" IsEnabled="{Binding ElementName=mx_toolRedo, Path=IsEnabled}" Click="mx_toolRedo_Click"/>
+				<MenuItem Header="撤销"
+						  InputGestureText="Ctrl+Z"
+						  IsEnabled="{Binding ElementName=mx_toolUndo, Path=IsEnabled}"
+						  Click="mx_toolUndo_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/undo.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="重复"
+						  InputGestureText="Ctrl+Y"
+						  IsEnabled="{Binding ElementName=mx_toolRedo, Path=IsEnabled}"
+						  Click="mx_toolRedo_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/redo.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
 				<Separator/>
-				<MenuItem Header="剪切" InputGestureText="Ctrl+X" IsEnabled="{Binding ElementName=mx_toolCut, Path=IsEnabled}" Click="mx_toolCut_Click"/>
-				<MenuItem Header="复制" InputGestureText="Ctrl+C" IsEnabled="{Binding ElementName=mx_toolCopy, Path=IsEnabled}" Click="mx_toolCopy_Click"/>
-				<MenuItem Header="粘贴" InputGestureText="Ctrl+V" IsEnabled="{Binding ElementName=mx_toolPaste, Path=IsEnabled}" Click="mx_toolPaste_Click"/>
-				<MenuItem Header="删除" InputGestureText="Delete" IsEnabled="{Binding ElementName=mx_toolDelete, Path=IsEnabled}" Click="mx_toolDelete_Click"/>
+				<MenuItem Header="剪切"
+						  InputGestureText="Ctrl+X"
+						  IsEnabled="{Binding ElementName=mx_toolCut, Path=IsEnabled}"
+						  Click="mx_toolCut_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/cut.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="复制"
+						  InputGestureText="Ctrl+C"
+						  IsEnabled="{Binding ElementName=mx_toolCopy, Path=IsEnabled}"
+						  Click="mx_toolCopy_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/copy.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="粘贴"
+						  InputGestureText="Ctrl+V"
+						  IsEnabled="{Binding ElementName=mx_toolPaste, Path=IsEnabled}"
+						  Click="mx_toolPaste_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/paste.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="删除"
+						  InputGestureText="Delete"
+						  IsEnabled="{Binding ElementName=mx_toolDelete, Path=IsEnabled}"
+						  Click="mx_toolDelete_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/delete.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
 				<Separator/>
-				<MenuItem Header="上移" InputGestureText="Ctrl+↑" IsEnabled="{Binding ElementName=mx_toolMoveUp, Path=IsEnabled}" Click="mx_toolMoveUp_Click"/>
-				<MenuItem Header="下移" InputGestureText="Ctrl+↓" IsEnabled="{Binding ElementName=mx_toolMoveDown, Path=IsEnabled}" Click="mx_toolMoveDown_Click"/>
+				<MenuItem Header="上移"
+						  InputGestureText="Ctrl+↑"
+						  IsEnabled="{Binding ElementName=mx_toolMoveUp, Path=IsEnabled}"
+						  Click="mx_toolMoveUp_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/moveUp.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="下移"
+						  InputGestureText="Ctrl+↓"
+						  IsEnabled="{Binding ElementName=mx_toolMoveDown, Path=IsEnabled}"
+						  Click="mx_toolMoveDown_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/moveDown.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
 			</MenuItem>
 			<MenuItem Header="工具">
-				<MenuItem Header="图片打包" Click="mx_btnNesting_Click"/>
+				<MenuItem Header="图片打包"
+						  Click="mx_btnNesting_Click">
+					<MenuItem.Icon>
+						<Image Width="16" Source="pack://application:,,,/data/image/nesting.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
 				<MenuItem Header="分析..."/>
 				<Separator/>
 				<MenuItem Name="mx_setting" Header="选项..." IsEnabled="False"/>
@@ -119,53 +196,77 @@
 						<Button Name="mx_toolNew"
 								IsEnabled="False"
 								Click="mx_newFile_Click"
-								ToolTip="新建 (Ctrl + N)">新建</Button>
+								ToolTip="新建 (Ctrl + N)">
+							<Image Source="pack://application:,,,/data/image/new.png"/>
+						</Button>
 						<Button Name="mx_toolOpen"
 								Click="openProj"
-								ToolTip="打开 (Ctrl + O)">打开项目</Button>
+								ToolTip="打开项目 (Ctrl + O)">
+							<Image Source="pack://application:,,,/data/image/open.png"/>
+						</Button>
 						<Button Name="mx_toolSave"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolSave_Click"
-								ToolTip="保存 (Ctrl + S)">保存</Button>
+								ToolTip="保存 (Ctrl + S)">
+							<Image Source="pack://application:,,,/data/image/save.png"/>
+						</Button>
 						<Button Name="mx_toolSaveAll"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolSaveAll_Click"
-								ToolTip="全部保存 (Ctrl + Shift + S)">全部保存</Button>
+								ToolTip="全部保存 (Ctrl + Shift + S)">
+							<Image Source="pack://application:,,,/data/image/saveAll.png"/>
+						</Button>
 						<Separator/>
 						<Button Name="mx_toolUndo"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolUndo_Click"
-								ToolTip="撤销 (Ctrl + Z)">撤销</Button>
+								ToolTip="撤销 (Ctrl + Z)">
+							<Image Source="pack://application:,,,/data/image/undo.png"/>
+						</Button>
 						<Button Name="mx_toolRedo"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolRedo_Click"
-								ToolTip="重复 (Ctrl + Y)">重复</Button>
+								ToolTip="重复 (Ctrl + Y)">
+							<Image Source="pack://application:,,,/data/image/redo.png"/>
+						</Button>
 						<Separator/>
 						<Button Name="mx_toolCut"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolCut_Click"
-								ToolTip="剪切 (Ctrl + X)">剪切</Button>
+								ToolTip="剪切 (Ctrl + X)">
+							<Image Source="pack://application:,,,/data/image/cut.png"/>
+						</Button>
 						<Button Name="mx_toolCopy"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolCopy_Click"
-								ToolTip="复制 (Ctrl + C)">复制</Button>
+								ToolTip="复制 (Ctrl + C)">
+							<Image Source="pack://application:,,,/data/image/copy.png"/>
+						</Button>
 						<Button Name="mx_toolPaste"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolPaste_Click"
-								ToolTip="粘贴 (Ctrl + V)">粘贴</Button>
+								ToolTip="粘贴 (Ctrl + V)">
+							<Image Source="pack://application:,,,/data/image/paste.png"/>
+						</Button>
 						<Button Name="mx_toolDelete"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolDelete_Click"
-								ToolTip="删除 (Delete)">删除</Button>
+								ToolTip="删除 (Delete)">
+							<Image Source="pack://application:,,,/data/image/delete.png"/>
+						</Button>
 						<Separator/>
 						<Button Name="mx_toolMoveUp"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolMoveUp_Click"
-								ToolTip="上移 (Ctrl + ↑)">上移</Button>
+								ToolTip="上移 (Ctrl + ↑)">
+							<Image Source="pack://application:,,,/data/image/moveUp.png"/>
+						</Button>
 						<Button Name="mx_toolMoveDown"
 								IsEnabled="{Binding ElementName=mx_toolNew, Path=IsEnabled}"
 								Click="mx_toolMoveDown_Click"
-								ToolTip="下移 (Ctrl + ↓)">下移</Button>
+								ToolTip="下移 (Ctrl + ↓)">
+							<Image Source="pack://application:,,,/data/image/moveDown.png"/>
+						</Button>
 					</ToolBar>
 					<ToolBar Name="mx_debugTools" HorizontalAlignment="Left">
 						<Label>调试模式：</Label>
@@ -173,12 +274,17 @@
 					</ToolBar>
 					<ToolBar Name="mx_viewModeTools" HorizontalAlignment="Left">
 						<CheckBox Name="mx_isViewMode"
+								  ToolTip="预览模式"
 								  Checked="mx_isViewMode_Checked"
 								  Unchecked="mx_isViewMode_Unchecked">
-							预览模式
+							<Image Source="pack://application:,,,/data/image/viewMode.png"/>
 						</CheckBox>
 						<Separator/>
-						<Button Name="mx_btnNesting" Click="mx_btnNesting_Click">图片打包</Button>
+						<Button Name="mx_btnNesting"
+								ToolTip="图片打包"
+								Click="mx_btnNesting_Click">
+							<Image Source="pack://application:,,,/data/image/nesting.png"/>
+						</Button>
 					</ToolBar>
 				</ToolBarTray>
 			</Grid>

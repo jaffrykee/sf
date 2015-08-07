@@ -52,7 +52,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>SpeedShark.ico</ApplicationIcon>
+    <ApplicationIcon>data\image\SpeedShark.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevIL.NET2">
@@ -84,6 +84,9 @@
     <Compile Include="BoloUI\Basic.cs" />
     <Compile Include="BoloUI\CtrlTemplate.xaml.cs">
       <DependentUpon>CtrlTemplate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BoloUI\SelSkin.xaml.cs">
+      <DependentUpon>SelSkin.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileMenu.xaml.cs">
       <DependentUpon>FileMenu.xaml</DependentUpon>
@@ -152,6 +155,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BoloUI\CtrlTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoloUI\SelSkin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -286,9 +293,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\hyaline.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
@@ -309,13 +313,44 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\SpeedShark.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Public\sceneInfo.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="SpeedShark.ico" />
+    <Resource Include="data\image\hyaline.png" />
+    <Resource Include="data\image\SpeedShark.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\image\open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\image\new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\image\open2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\image\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\image\saveAll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\image\redo.png" />
+    <Resource Include="data\image\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\image\copy.png" />
+    <Resource Include="data\image\cut.png" />
+    <Resource Include="data\image\delete.png" />
+    <Resource Include="data\image\paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\image\moveDown.png" />
+    <Resource Include="data\image\moveUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="data\image\nesting.png" />
+    <Resource Include="data\image\viewMode.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

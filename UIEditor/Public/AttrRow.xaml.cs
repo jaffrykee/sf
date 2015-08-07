@@ -47,11 +47,11 @@ namespace UIEditor
 				}
 				if(m_name == "skin")
 				{
-					mx_link.Visibility = System.Windows.Visibility.Visible;
+					mx_skinFrame.Visibility = System.Windows.Visibility.Visible;
 				}
 				else
 				{
-					mx_link.Visibility = System.Windows.Visibility.Collapsed;
+					mx_skinFrame.Visibility = System.Windows.Visibility.Collapsed;
 				}
 			}
 		}
@@ -168,10 +168,12 @@ namespace UIEditor
 			if (mx_value.Text == "")
 			{
 				mx_valueDef.Visibility = Visibility.Visible;
+				mx_link.Visibility = Visibility.Collapsed;
 			}
 			else
 			{
 				mx_valueDef.Visibility = Visibility.Hidden;
+				mx_link.Visibility = Visibility.Visible;
 			}
 			m_value = mx_value.Text;
 		}
@@ -214,6 +216,10 @@ namespace UIEditor
 			{
 				m_parent.m_xmlCtrl.findSkinAndSelect(mx_value.Text, (BoloUI.Basic)m_parent.m_basic);
 			}
+		}
+		private void mx_sel_Click(object sender, RoutedEventArgs e)
+		{
+
 		}
 	}
 }

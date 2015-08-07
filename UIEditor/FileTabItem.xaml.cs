@@ -85,7 +85,7 @@ namespace UIEditor
 				this.itemFrame.Children.Add(tabContent);
 				m_child = tabContent;
 			}
-			mx_wsBckBrush.ImageSource = new BitmapImage(new Uri(@".\data\hyaline.png", UriKind.Relative));
+			mx_wsBckBrush.ImageSource = new BitmapImage(new Uri(@".\data\image\hyaline.png", UriKind.Relative));
 		}
 
 		public void closeFile()

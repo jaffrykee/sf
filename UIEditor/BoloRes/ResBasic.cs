@@ -150,6 +150,7 @@ namespace UIEditor.BoloRes
 		}
 		public override void changeSelectItem(object obj = null)
 		{
+			m_pW.m_curItem = this;
 			if(m_xe.Name != "BoloUI")
 			{
 				BoloUI.Basic ctrlUI;

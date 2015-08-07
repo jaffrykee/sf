@@ -1,0 +1,40 @@
+﻿<Window x:Class="UIEditor.BoloUI.SelSkin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Name="mx_root"
+        Title="选择皮肤">
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition MinWidth="250" MaxWidth="400" Width="auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid Grid.Column="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<CheckBox Name="mx_isOnlyLocal"
+					  Grid.Row="0"
+					  Margin="7"
+					  Checked="mx_isOnlyLocal_Checked"
+					  Unchecked="mx_isOnlyLocal_Unchecked">
+				仅显示本文件已包含的皮肤组
+			</CheckBox>
+			<Grid Grid.Row="1" Margin="5">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<Label Grid.Column="0">搜索：</Label>
+				<TextBox Grid.Column="2"></TextBox>
+			</Grid>
+			<TreeView Name="mx_skinRoot"
+					  Grid.Row="2"
+					  Margin="5">
+			</TreeView>
+		</Grid>
+		<Grid Grid.Column="1">
+		</Grid>
+    </Grid>
+</Window>
