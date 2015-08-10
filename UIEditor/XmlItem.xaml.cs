@@ -55,23 +55,6 @@ namespace UIEditor
 
 		}
 
-		private void mx_root_DragEnter(object sender, DragEventArgs e)
-		{
-
-		}
-		private void mx_root_DragLeave(object sender, DragEventArgs e)
-		{
-
-		}
-		private void mx_root_DragOver(object sender, DragEventArgs e)
-		{
-
-		}
-		private void mx_root_Drop(object sender, DragEventArgs e)
-		{
-
-		}
-
 		private void mx_root_Selected(object sender, RoutedEventArgs e)
 		{
 			if (sender == Keyboard.FocusedElement)

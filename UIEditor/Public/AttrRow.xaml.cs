@@ -219,7 +219,16 @@ namespace UIEditor
 		}
 		private void mx_sel_Click(object sender, RoutedEventArgs e)
 		{
+			if (m_parent.m_basic != null && m_parent.m_basic.GetType().ToString() == "UIEditor.BoloUI.Basic")
+			{
+				BoloUI.SelSkin winSkin = new BoloUI.SelSkin(m_parent.m_xmlCtrl.m_openedFile.m_path, m_parent.m_basic.m_xe.OuterXml, this);
 
+				winSkin.ShowDialog();
+
+				BoloUI.SelSkin.s_pW.m_GLSkinHost.m_process.Kill();
+				BoloUI.SelSkin.s_isRun = false;
+				BoloUI.SelSkin.s_pW = null;
+			}
 		}
 	}
 }

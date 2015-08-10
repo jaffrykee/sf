@@ -195,7 +195,7 @@ namespace UIEditor
 			{
 				msgData += pairCtrlUI.Key + ":";
 			}
-			m_pW.updateGL(msgData, MainWindow.W2GTag.W2G_UI_VRECT);
+			m_pW.updateGL(msgData, W2GTag.W2G_UI_VRECT);
 		}
 		public void refreshSkinDicByPath(string path, string skinGroupName)
 		{

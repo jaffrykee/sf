@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Interop;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Diagnostics;
 
 namespace UIEditor
 {
 	public class ControlHost : HwndHost
 	{
+		public Process m_process;
+
 		IntPtr m_hwndControl;
 		IntPtr m_hwndHost;
 		int m_hostHeight, m_hostWidth;
@@ -68,7 +71,7 @@ namespace UIEditor
 				IntPtr.Zero,
 				0);
 
-			MainWindow pW = Window.GetWindow(this) as MainWindow;
+			MainWindow pW = MainWindow.s_pW;
 			string strRunMode;
 
 			if(pW.m_isDebug)
@@ -79,15 +82,29 @@ namespace UIEditor
 			{
 				strRunMode = "false";
 			}
-
-			pW.m_hwndGLParent = (IntPtr)m_hwndHost;
-			m_hwndControl = pW.m_hwndGLParent;
-			System.Diagnostics.Process.Start(
-				pW.conf_pathGlApp,
-				pW.m_hwndGLParent.ToString() + " " +
-					m_hostWidth.ToString() + " " +
-					m_hostHeight.ToString() + " " +
-					strRunMode);
+			
+			if(BoloUI.SelSkin.s_isRun)
+			{
+				BoloUI.SelSkin.s_pW.m_hwndGLParent = (IntPtr)m_hwndHost;
+				m_hwndControl = BoloUI.SelSkin.s_pW.m_hwndGLParent;
+				m_process = System.Diagnostics.Process.Start(
+					pW.conf_pathGlApp,
+					BoloUI.SelSkin.s_pW.m_hwndGLParent.ToString() + " " +
+						m_hostWidth.ToString() + " " +
+						m_hostHeight.ToString() + " " +
+						strRunMode);
+			}
+			else
+			{
+				pW.m_hwndGLParent = (IntPtr)m_hwndHost;
+				m_hwndControl = pW.m_hwndGLParent;
+				m_process = System.Diagnostics.Process.Start(
+					pW.conf_pathGlApp,
+					pW.m_hwndGLParent.ToString() + " " +
+						m_hostWidth.ToString() + " " +
+						m_hostHeight.ToString() + " " +
+						strRunMode);
+			}
 
 			return new HandleRef(this, m_hwndHost);
 		}

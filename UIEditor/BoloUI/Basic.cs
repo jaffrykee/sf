@@ -150,7 +150,7 @@ namespace UIEditor.BoloUI
 				m_pW.mx_workTabs.SelectedItem = m_rootControl.m_openedFile.m_tab;
 				m_pW.updateGL(
 					StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_vId,
-					MainWindow.W2GTag.W2G_SELECT_UI
+					W2GTag.W2G_SELECT_UI
 				);
 			}
 

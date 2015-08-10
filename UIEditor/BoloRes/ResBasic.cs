@@ -251,25 +251,5 @@ namespace UIEditor.BoloRes
 			}
 			BringIntoView(new Rect(0, 0, 50, 20));
 		}
-
-		private void mx_text_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			changeSelectItem();
-		}
-		private void mx_text_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			if (m_xe.Name == "skingroup")
-			{
-				string path = m_pW.m_skinPath + "\\" + m_xe.GetAttribute("Name") + ".xml";
-
-				m_pW.openFileByPath(path);
-			}
-		}
-		private void mx_root_Selected(object sender, RoutedEventArgs e)
-		{
-		}
-		private void mx_root_Unselected(object sender, RoutedEventArgs e)
-		{
-		}
 	}
 }

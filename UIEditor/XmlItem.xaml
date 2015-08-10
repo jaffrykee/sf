@@ -9,10 +9,6 @@
 			  Loaded="TreeViewItem_Loaded"
 			  Selected="mx_root_Selected"
 			  Unselected="mx_root_Unselected"
-			  DragEnter="mx_root_DragEnter"
-			  DragLeave="mx_root_DragLeave"
-			  DragOver="mx_root_DragOver"
-			  Drop="mx_root_Drop"
 			  PreviewMouseDoubleClick="mx_root_PreviewMouseDoubleClick">
 	<TreeViewItem.ContextMenu>
 		<ContextMenu Name="mx_menu" Loaded="mx_menu_Loaded" Unloaded="mx_menu_Unloaded">

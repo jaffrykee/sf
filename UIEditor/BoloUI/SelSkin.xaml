@@ -8,33 +8,51 @@
 			<ColumnDefinition MinWidth="250" MaxWidth="400" Width="auto"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<Grid Grid.Column="0">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Grid Grid.Column="0" Grid.Row="0">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="auto"/>
 				<RowDefinition Height="auto"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
-			<CheckBox Name="mx_isOnlyLocal"
-					  Grid.Row="0"
-					  Margin="7"
-					  Checked="mx_isOnlyLocal_Checked"
-					  Unchecked="mx_isOnlyLocal_Unchecked">
-				仅显示本文件已包含的皮肤组
-			</CheckBox>
-			<Grid Grid.Row="1" Margin="5">
+			<Grid Grid.Row="0" Margin="5">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="auto"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 				<Label Grid.Column="0">搜索：</Label>
-				<TextBox Grid.Column="2"></TextBox>
+				<TextBox Grid.Column="2" Name="mx_search" TextChanged="mx_search_TextChanged"></TextBox>
 			</Grid>
-			<TreeView Name="mx_skinRoot"
-					  Grid.Row="2"
+			<TreeView Name="mx_skinTreeFrame"
+					  Grid.Row="1"
 					  Margin="5">
+				<TreeViewItem Name="mx_rootItem" Header="请选择皮肤" IsExpanded="True">
+					<TreeViewItem Name="mx_localSkin" Header="本文件皮肤" IsExpanded="True"/>
+					<TreeViewItem Name="mx_localGroup" Header="已包含的皮肤组" IsExpanded="True"/>
+					<TreeViewItem Name="mx_otherGroup" Header="未包含的皮肤组" IsExpanded="False"/>
+				</TreeViewItem>
 			</TreeView>
 		</Grid>
-		<Grid Grid.Column="1">
+		<Grid Grid.Column="1" Grid.Row="0">
+			<Border Name="mx_viewFrame" Grid.Row="1" Grid.Column="0" Margin="5"/>
+		</Grid>
+		<Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="#ffeeeeee">
+			<WrapPanel HorizontalAlignment="Right">
+				<Button Name="mx_ok"
+						Padding="15,2,15,2"
+						Margin="5"
+						Click="mx_ok_Click">
+					确定
+				</Button>
+				<Button Name="mx_cancel"
+						Padding="15,2,15,2"
+						Margin="5"
+						Click="mx_cancel_Click">
+					取消
+				</Button>
+			</WrapPanel>
 		</Grid>
     </Grid>
 </Window>

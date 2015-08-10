@@ -20,6 +20,49 @@ using System.Text.RegularExpressions;
 
 namespace UIEditor
 {
+	#region 通讯结构
+	public enum W2GTag
+	{
+		W2G_PATH = 0x0000,
+		W2G_NORMAL_NAME = 0x0001,
+		W2G_NORMAL_DATA = 0x0011,
+		W2G_NORMAL_UPDATE = 0x0021,
+		W2G_NORMAL_TURN = 0x0101,
+		W2G_SKIN_NAME = 0x0002,
+		W2G_SKIN_DATA = 0x0012,
+		W2G_SELECT_UI = 0x0003,
+		W2G_UI_VRECT = 0x0004,
+		W2G_DRAWRECT = 0x0014,
+		W2G_VIEWMODE = 0x0005
+	};
+	public enum G2WTag
+	{
+		G2W_HWND = 0x0000,
+		G2W_EVENT = 0x0003,
+		G2W_UI_VRECT = 0x0004,
+	};
+	public struct COPYDATASTRUCT_SEND
+	{
+		public IntPtr dwData;
+		public int cbData;
+		[MarshalAs(UnmanagedType.LPStr)]
+		public string lpData;
+	}
+	public struct COPYDATASTRUCT_SENDEX
+	{
+		public IntPtr dwData;
+		public int cbData;
+		public IntPtr lpData;
+	}
+	public struct COPYDATASTRUCT
+	{
+		public IntPtr dwData;
+		public int cbData;
+		[MarshalAs(UnmanagedType.LPStr)]
+		public IntPtr lpData;
+	}
+	#endregion
+
 	public partial class MainWindow : Window
 	{
 		public static MainWindow s_pW;
@@ -65,6 +108,8 @@ namespace UIEditor
 		public int m_downY;
 		public string m_pasteFilePath;
 
+		ControlHost mx_GLHost;
+
 		public string conf_pathGlApp = @".\dsuieditor.exe";
 		public string conf_pathConf = @".\conf.xml";
 		public XmlDocument m_docConf;
@@ -94,7 +139,7 @@ namespace UIEditor
 
 			m_xdTest = new XmlDocument();
 			// w=\"400\" h=\"300\"
-			m_strTestXml = "<label w=\"960\" h=\"640\" baseID=\"testCtrl\" text=\"Test\"/>";
+			m_strTestXml = "<label w=\"960\" h=\"640\" baseID=\"testCtrl\" text=\"测试Test\"/>";
 
 			m_xdTest.LoadXml(m_strTestXml);
 			m_xeTest = m_xdTest.DocumentElement;
@@ -449,7 +494,6 @@ namespace UIEditor
 
 		//============================================================
 
-		ControlHost mx_GLHost;
 		#region WIN32消息相关
 
 		#region WIN32预定义
@@ -568,48 +612,6 @@ namespace UIEditor
 			ref COPYDATASTRUCT_SENDEX IParam);
 		#endregion
 
-		#endregion
-
-		#region 通讯结构
-		public enum W2GTag
-		{
-			W2G_PATH = 0x0000,
-			W2G_NORMAL_NAME = 0x0001,
-			W2G_NORMAL_DATA = 0x0011,
-			W2G_NORMAL_TURN = 0x0101,
-			W2G_SKIN_NAME = 0x0002,
-			W2G_SKIN_DATA = 0x0012,
-			W2G_SELECT_UI = 0x0003,
-			W2G_UI_VRECT = 0x0004,
-			W2G_DRAWRECT = 0x0014,
-			W2G_VIEWMODE = 0x0005
-		};
-		public enum G2WTag
-		{
-			G2W_HWND = 0x0000,
-			G2W_EVENT = 0x0003,
-			G2W_UI_VRECT = 0x0004,
-		};
-		public struct COPYDATASTRUCT_SEND
-		{
-			public IntPtr dwData;
-			public int cbData;
-			[MarshalAs(UnmanagedType.LPStr)]
-			public string lpData;
-		}
-		public struct COPYDATASTRUCT_SENDEX
-		{
-			public IntPtr dwData;
-			public int cbData;
-			public IntPtr lpData;
-		}
-		public struct COPYDATASTRUCT
-		{
-			public IntPtr dwData;
-			public int cbData;
-			[MarshalAs(UnmanagedType.LPStr)]
-			public IntPtr lpData;
-		}
 		#endregion
 
 		private struct KBDLLHOOKSTRUCT
@@ -938,10 +940,11 @@ namespace UIEditor
 					//SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
 					break;
 				case WM_QUIT:
-					SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
+					//规避GL端报错窗口，因为也没有什么要保存的。
+					mx_GLHost.m_process.Kill();
 					break;
 				case WM_DESTROY:
-					SendMessage(m_hwndGL, WM_QUIT, m_hwndGLParent, IntPtr.Zero);
+					mx_GLHost.m_process.Kill();
 					break;
 				case WM_KEYDOWN:
 					if (m_curItem != null)
@@ -1164,8 +1167,8 @@ namespace UIEditor
 			}
 
 			string buffer = newDoc.InnerXml;
-			updateGL(fileName, MainWindow.W2GTag.W2G_NORMAL_NAME);
-			updateGL(buffer, MainWindow.W2GTag.W2G_NORMAL_DATA);
+			updateGL(fileName, W2GTag.W2G_NORMAL_NAME);
+			updateGL(buffer, W2GTag.W2G_NORMAL_DATA);
 			((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).refreshVRect();
 		}
 		private void addTmpEvent(XmlDocument doc, XmlElement xeParent)
@@ -2141,7 +2144,7 @@ namespace UIEditor
 			}
 		}
 
-		public void refreshSearch(TreeViewItem viewItem, string key)
+		static public void refreshSearch(TreeViewItem viewItem, string key)
 		{
 			if(viewItem.Items.Count > 0)
 			{
