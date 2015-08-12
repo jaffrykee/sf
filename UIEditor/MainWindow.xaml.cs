@@ -63,6 +63,32 @@ namespace UIEditor
 	}
 	#endregion
 
+	#region 皮肤属性文本
+	public enum ApprSuffix
+	{
+		APPRSUF_NORMAL = 0,					//正常状态
+		APPRSUF_PRESSED = 1,				//按下状态
+		APPRSUF_DISABLED = 2,				//禁用状态
+		APPRSUF_CHECKED_NORMAL = 3,			//选中 - 正常状态
+		APPRSUF_CHECKED_PRESSED = 4,		//选中 - 按下状态
+		APPRSUF_CHECKED_DISABLED = 5,		//选中 - 禁用状态
+		APPRSUF_NORMAL_BORDER = 6,			//正常边框
+		APPRSUF_NORMAL_FILLED = 7,			//正常填充
+		APPRSUF_NORMAL_BACKGROUND = 8,		//正常背景
+		APPRSUF_NORMAL_FILLEDHEAD = 9,		//正常填充头
+		APPRSUF_NORMAL_FILLEDTAIL = 10,		//正常填充尾
+		APPRSUF_SELECT = 11,				//选中
+		APPRSUF_NORMAL_FILLEDSLIDER = 12,	//正常填充滑块
+		APPRSUF_TIPS = 13,					//tips
+		APPRSUF_MESSAGE_TIPS_NORMAL = 14,	//消息提示正常
+		APPRSUF_MESSAGE_TIPS_LIGHT = 15,	//消息提示亮
+		APPRSUF_NORMAL_PRE_GROWTH = 16,		//预增长
+		APPRSUF_KEYSELECT_NOMAL = 17,		//按键选中
+		APPRSUF_KEYSELECT_CHECK = 18,		//按键选中 - 选中
+		APPRSUF_MAX
+	};
+	#endregion
+
 	public partial class MainWindow : Window
 	{
 		public static MainWindow s_pW;
@@ -659,11 +685,17 @@ namespace UIEditor
 					charArr = Encoding.UTF8.GetBytes(buffer);
 					len = charArr.Length;
 				}
-
 				fixed (byte* tmpBuff = charArr)
 				{
 					msgData.dwData = (IntPtr)msgTag;
-					msgData.lpData = (IntPtr)tmpBuff;
+					if(len != 0)
+					{
+						msgData.lpData = (IntPtr)tmpBuff;
+					}
+					else
+					{
+						msgData.lpData = (IntPtr)0;
+					}
 					msgData.cbData = len + 1;
 					SendMessage(m_hwndGL, WM_COPYDATA, (int)m_hwndGLParent, ref msgData);
 				}
@@ -755,7 +787,7 @@ namespace UIEditor
 										lastCtrl = pairCtrlDef.Value;
 
 										BoloUI.SelButton selCtrlButton = new BoloUI.SelButton(this, pairCtrlDef.Value);
-										selCtrlButton.mx_radio.Content = pairCtrlDef.Value.mx_root.Header;
+										selCtrlButton.mx_radio.Content = pairCtrlDef.Value.mx_radio.Content;
 										mx_selCtrlLstFrame.Children.Add(selCtrlButton);
 										m_mapXeSel.Add(pairCtrlDef.Value.m_xe, selCtrlButton);
 									}
@@ -918,6 +950,24 @@ namespace UIEditor
 											{
 												s_pW.m_curItem.moveDownItem();
 											}
+										}
+										return 1;
+									case VK_Y:
+										s_pW.curFileRedo();
+										if (Keyboard.FocusedElement.GetType().ToString() == "System.Windows.Controls.TextBox")
+										{
+											TextBox tb = (TextBox)Keyboard.FocusedElement;
+
+											tb.SelectionStart = tb.Text.Length;
+										}
+										return 1;
+									case VK_Z:
+										s_pW.curFileUndo();
+										if (Keyboard.FocusedElement.GetType().ToString() == "System.Windows.Controls.TextBox")
+										{
+											TextBox tb = (TextBox)Keyboard.FocusedElement;
+
+											tb.SelectionStart = tb.Text.Length;
 										}
 										return 1;
 									default:
@@ -1221,11 +1271,20 @@ namespace UIEditor
 		{
 			public Dictionary<string, AttrDef_T> m_mapAttrDef;
 			public AttrList m_attrListUI;
+			public Dictionary<ApprSuffix, bool> m_mapApprSuffix;
 
-			public CtrlDef_T(Dictionary<string, AttrDef_T> mapAttrDef, AttrList attrListUI)
+			public CtrlDef_T(Dictionary<string, AttrDef_T> mapAttrDef, AttrList attrListUI, Dictionary<ApprSuffix, bool> mapApprSuffix = null)
 			{
 				m_mapAttrDef = mapAttrDef;
 				m_attrListUI = attrListUI;
+				if (mapApprSuffix == null)
+				{
+					m_mapApprSuffix = MainWindow.s_pW.conf_mapApprSufEnable;
+				}
+				else
+				{
+					m_mapApprSuffix = mapApprSuffix;
+				}
 			}
 		}
 		public class SkinDef_T
@@ -1240,6 +1299,55 @@ namespace UIEditor
 			}
 		}
 
+		#region m_mapApprSuf
+		Dictionary<ApprSuffix, string> conf_mapApprSuf = new Dictionary<ApprSuffix, string>
+		{
+			{ ApprSuffix.APPRSUF_NORMAL, "正常状态"},
+			{ ApprSuffix.APPRSUF_PRESSED, "按下状态"},
+			{ ApprSuffix.APPRSUF_DISABLED, "禁用状态"},
+			{ ApprSuffix.APPRSUF_CHECKED_NORMAL, "选中 - 正常状态"},
+			{ ApprSuffix.APPRSUF_CHECKED_PRESSED, "选中 - 按下状态"},
+			{ ApprSuffix.APPRSUF_CHECKED_DISABLED, "选中 - 禁用状态"},
+			{ ApprSuffix.APPRSUF_NORMAL_BORDER, "正常边框"},
+			{ ApprSuffix.APPRSUF_NORMAL_FILLED, "正常填充"},
+			{ ApprSuffix.APPRSUF_NORMAL_BACKGROUND, "正常背景"},
+			{ ApprSuffix.APPRSUF_NORMAL_FILLEDHEAD, "正常填充头"},
+			{ ApprSuffix.APPRSUF_NORMAL_FILLEDTAIL, "正常填充尾"},
+			{ ApprSuffix.APPRSUF_SELECT, "选中"},
+			{ ApprSuffix.APPRSUF_NORMAL_FILLEDSLIDER, "正常填充滑块"},
+			{ ApprSuffix.APPRSUF_TIPS, "tips"},
+			{ ApprSuffix.APPRSUF_MESSAGE_TIPS_NORMAL, "消息提示正常"},
+			{ ApprSuffix.APPRSUF_MESSAGE_TIPS_LIGHT, "消息提示亮"},
+			{ ApprSuffix.APPRSUF_NORMAL_PRE_GROWTH, "预增长"},
+			{ ApprSuffix.APPRSUF_KEYSELECT_NOMAL, "按键选中"},
+			{ ApprSuffix.APPRSUF_KEYSELECT_CHECK, "按键选中 - 选中"}
+		};
+
+		Dictionary<ApprSuffix, bool> conf_mapApprSufEnable = new Dictionary<ApprSuffix, bool>
+		{
+			{ ApprSuffix.APPRSUF_NORMAL, true},
+			{ ApprSuffix.APPRSUF_PRESSED, true},
+			{ ApprSuffix.APPRSUF_DISABLED, true},
+			{ ApprSuffix.APPRSUF_CHECKED_NORMAL, true},
+			{ ApprSuffix.APPRSUF_CHECKED_PRESSED, true},
+			{ ApprSuffix.APPRSUF_CHECKED_DISABLED, true},
+			{ ApprSuffix.APPRSUF_NORMAL_BORDER, true},
+			{ ApprSuffix.APPRSUF_NORMAL_FILLED, true},
+			{ ApprSuffix.APPRSUF_NORMAL_BACKGROUND, true},
+			{ ApprSuffix.APPRSUF_NORMAL_FILLEDHEAD, true},
+			{ ApprSuffix.APPRSUF_NORMAL_FILLEDTAIL, true},
+			{ ApprSuffix.APPRSUF_SELECT, true},
+			{ ApprSuffix.APPRSUF_NORMAL_FILLEDSLIDER, true},
+			{ ApprSuffix.APPRSUF_TIPS, true},
+			{ ApprSuffix.APPRSUF_MESSAGE_TIPS_NORMAL, true},
+			{ ApprSuffix.APPRSUF_MESSAGE_TIPS_LIGHT, true},
+			{ ApprSuffix.APPRSUF_NORMAL_PRE_GROWTH, true},
+			{ ApprSuffix.APPRSUF_KEYSELECT_NOMAL, true},
+			{ ApprSuffix.APPRSUF_KEYSELECT_CHECK, true}
+		};
+		#endregion
+
+		#region conf
 		Dictionary<string, AttrDef_T> conf_mapBaseAttrDef = new Dictionary<string, AttrDef_T>
 			{
 				#region Base
@@ -1635,6 +1743,7 @@ namespace UIEditor
 				{"Height", new AttrDef_T("int")},
 				#endregion
 			};
+		#endregion
 
 		public void initResMap(Dictionary<string, SkinDef_T> mapResDef)
 		{
@@ -1656,14 +1765,106 @@ namespace UIEditor
 			m_mapCtrlDef = new Dictionary<string, CtrlDef_T>
 			{
 				#region boloUI控件的定义
-				{ "basic", new CtrlDef_T(conf_mapBaseAttrDef, null)},
+				{ "basic", new CtrlDef_T(conf_mapBaseAttrDef, null,
+						new Dictionary<ApprSuffix, bool>
+						{
+							{ ApprSuffix.APPRSUF_NORMAL, true},
+							{ ApprSuffix.APPRSUF_PRESSED, true},
+							{ ApprSuffix.APPRSUF_DISABLED, true},
+							{ ApprSuffix.APPRSUF_CHECKED_NORMAL, false},
+							{ ApprSuffix.APPRSUF_CHECKED_PRESSED, false},
+							{ ApprSuffix.APPRSUF_CHECKED_DISABLED, false},
+							{ ApprSuffix.APPRSUF_NORMAL_BORDER, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLED, false},
+							{ ApprSuffix.APPRSUF_NORMAL_BACKGROUND, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDHEAD, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDTAIL, false},
+							{ ApprSuffix.APPRSUF_SELECT, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDSLIDER, false},
+							{ ApprSuffix.APPRSUF_TIPS, true},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_NORMAL, false},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_LIGHT, false},
+							{ ApprSuffix.APPRSUF_NORMAL_PRE_GROWTH, false},
+							{ ApprSuffix.APPRSUF_KEYSELECT_NOMAL, true},
+							{ ApprSuffix.APPRSUF_KEYSELECT_CHECK, true}
+						}
+					)},
 				{ "panel", new CtrlDef_T(conf_mapPanelAttrDef, null)},
 				{ "label", new CtrlDef_T(conf_mapLabelAttrDef, null)},
-				{ "button", new CtrlDef_T(conf_mapButtonAttrDef, null)},
+				{ "button", new CtrlDef_T(conf_mapButtonAttrDef, null,
+						new Dictionary<ApprSuffix, bool>
+						{
+							{ ApprSuffix.APPRSUF_NORMAL, true},
+							{ ApprSuffix.APPRSUF_PRESSED, true},
+							{ ApprSuffix.APPRSUF_DISABLED, true},
+							{ ApprSuffix.APPRSUF_CHECKED_NORMAL, false},
+							{ ApprSuffix.APPRSUF_CHECKED_PRESSED, false},
+							{ ApprSuffix.APPRSUF_CHECKED_DISABLED, false},
+							{ ApprSuffix.APPRSUF_NORMAL_BORDER, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLED, false},
+							{ ApprSuffix.APPRSUF_NORMAL_BACKGROUND, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDHEAD, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDTAIL, false},
+							{ ApprSuffix.APPRSUF_SELECT, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDSLIDER, false},
+							{ ApprSuffix.APPRSUF_TIPS, true},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_NORMAL, true},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_LIGHT, true},
+							{ ApprSuffix.APPRSUF_NORMAL_PRE_GROWTH, false},
+							{ ApprSuffix.APPRSUF_KEYSELECT_NOMAL, true},
+							{ ApprSuffix.APPRSUF_KEYSELECT_CHECK, true}
+						}
+					)},
 				{ "skillbutton", new CtrlDef_T(conf_mapSkillButtonAttrDef, null)},
-				{ "progress", new CtrlDef_T(conf_mapProgressAttrDef, null)},
+				{ "progress", new CtrlDef_T(conf_mapProgressAttrDef, null,
+						new Dictionary<ApprSuffix, bool>
+						{
+							{ ApprSuffix.APPRSUF_NORMAL, true},
+							{ ApprSuffix.APPRSUF_PRESSED, true},
+							{ ApprSuffix.APPRSUF_DISABLED, true},
+							{ ApprSuffix.APPRSUF_CHECKED_NORMAL, false},
+							{ ApprSuffix.APPRSUF_CHECKED_PRESSED, false},
+							{ ApprSuffix.APPRSUF_CHECKED_DISABLED, false},
+							{ ApprSuffix.APPRSUF_NORMAL_BORDER, true},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLED, true},
+							{ ApprSuffix.APPRSUF_NORMAL_BACKGROUND, true},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDHEAD, true},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDTAIL, true},
+							{ ApprSuffix.APPRSUF_SELECT, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDSLIDER, true},
+							{ ApprSuffix.APPRSUF_TIPS, true},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_NORMAL, false},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_LIGHT, false},
+							{ ApprSuffix.APPRSUF_NORMAL_PRE_GROWTH, true},
+							{ ApprSuffix.APPRSUF_KEYSELECT_NOMAL, true},
+							{ ApprSuffix.APPRSUF_KEYSELECT_CHECK, true}
+						}
+					)},
 				{ "radio", new CtrlDef_T(conf_mapRadioAttrDef, null)},
-				{ "check", new CtrlDef_T(conf_mapCheckAttrDef, null)},
+				{ "check", new CtrlDef_T(conf_mapCheckAttrDef, null,
+						new Dictionary<ApprSuffix, bool>
+						{
+							{ ApprSuffix.APPRSUF_NORMAL, true},
+							{ ApprSuffix.APPRSUF_PRESSED, true},
+							{ ApprSuffix.APPRSUF_DISABLED, true},
+							{ ApprSuffix.APPRSUF_CHECKED_NORMAL, true},
+							{ ApprSuffix.APPRSUF_CHECKED_PRESSED, true},
+							{ ApprSuffix.APPRSUF_CHECKED_DISABLED, true},
+							{ ApprSuffix.APPRSUF_NORMAL_BORDER, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLED, false},
+							{ ApprSuffix.APPRSUF_NORMAL_BACKGROUND, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDHEAD, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDTAIL, false},
+							{ ApprSuffix.APPRSUF_SELECT, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDSLIDER, false},
+							{ ApprSuffix.APPRSUF_TIPS, true},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_NORMAL, false},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_LIGHT, false},
+							{ ApprSuffix.APPRSUF_NORMAL_PRE_GROWTH, false},
+							{ ApprSuffix.APPRSUF_KEYSELECT_NOMAL, true},
+							{ ApprSuffix.APPRSUF_KEYSELECT_CHECK, true}
+						}
+					)},
 				{ "listPanel", new CtrlDef_T(conf_mapListPanelAttrDef, null)},
 				{ "tabPanel", new CtrlDef_T(conf_mapTabPanelAttrDef, null)},
 				{ "pagePanel", new CtrlDef_T(conf_mapPagePanelAttrDef, null)},
@@ -1673,7 +1874,30 @@ namespace UIEditor
 				{ "scriptPanel", new CtrlDef_T(conf_mapScriptPanelAttrDef, null)},
 				{ "countDown", new CtrlDef_T(conf_mapCountDownAttrDef, null)},
 				{ "apartPanel", new CtrlDef_T(conf_mapApartPanelAttrDef, null)},
-				{ "draggedPanel", new CtrlDef_T(conf_mapDraggedPanelAttrDef, null)},
+				{ "draggedPanel", new CtrlDef_T(conf_mapDraggedPanelAttrDef, null,
+						new Dictionary<ApprSuffix, bool>
+						{
+							{ ApprSuffix.APPRSUF_NORMAL, true},
+							{ ApprSuffix.APPRSUF_PRESSED, true},
+							{ ApprSuffix.APPRSUF_DISABLED, true},
+							{ ApprSuffix.APPRSUF_CHECKED_NORMAL, false},
+							{ ApprSuffix.APPRSUF_CHECKED_PRESSED, false},
+							{ ApprSuffix.APPRSUF_CHECKED_DISABLED, false},
+							{ ApprSuffix.APPRSUF_NORMAL_BORDER, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLED, false},
+							{ ApprSuffix.APPRSUF_NORMAL_BACKGROUND, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDHEAD, false},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDTAIL, false},
+							{ ApprSuffix.APPRSUF_SELECT, true},
+							{ ApprSuffix.APPRSUF_NORMAL_FILLEDSLIDER, false},
+							{ ApprSuffix.APPRSUF_TIPS, true},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_NORMAL, false},
+							{ ApprSuffix.APPRSUF_MESSAGE_TIPS_LIGHT, false},
+							{ ApprSuffix.APPRSUF_NORMAL_PRE_GROWTH, false},
+							{ ApprSuffix.APPRSUF_KEYSELECT_NOMAL, true},
+							{ ApprSuffix.APPRSUF_KEYSELECT_CHECK, true}
+						}
+					)},
 				{ "turnTable", new CtrlDef_T(conf_mapTurnTableAttrDef, null)},
 				{ "drawModel", new CtrlDef_T(conf_mapDrawModelAttrDef, null)},
 				{ "dropList", new CtrlDef_T(conf_mapDropListAttrDef, null)},
@@ -1996,7 +2220,7 @@ namespace UIEditor
 				}
 			}
 		}
-		private void mx_toolUndo_Click(object sender, RoutedEventArgs e)
+		public bool curFileUndo()
 		{
 			OpenedFile openFileDef;
 
@@ -2008,9 +2232,19 @@ namespace UIEditor
 				openFileDef.m_lstOpt != null)
 			{
 				openFileDef.m_lstOpt.undo();
+
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
-		private void mx_toolRedo_Click(object sender, RoutedEventArgs e)
+		private void mx_toolUndo_Click(object sender, RoutedEventArgs e)
+		{
+			curFileUndo();
+		}
+		public bool curFileRedo()
 		{
 			OpenedFile openFileDef;
 
@@ -2022,7 +2256,17 @@ namespace UIEditor
 				openFileDef.m_lstOpt != null)
 			{
 				openFileDef.m_lstOpt.redo();
+
+				return true;
 			}
+			else
+			{
+				return false;
+			}
+		}
+		private void mx_toolRedo_Click(object sender, RoutedEventArgs e)
+		{
+			curFileRedo();
 		}
 
 		private void mx_toolCut_Click(object sender, RoutedEventArgs e)

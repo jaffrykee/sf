@@ -55,11 +55,6 @@ namespace UIEditor.BoloUI
 		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
 			initHeader();
-			if(m_setFocus)
-			{
-				this.Focus();
-				m_setFocus = false;
-			}
 		}
 
 		override protected void addChild()
@@ -76,6 +71,11 @@ namespace UIEditor.BoloUI
 					{
 						var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, m_rootControl, false) as TreeViewItem;
 						this.Items.Add(treeChild);
+
+						if (xe.Name != "event")
+						{
+							this.IsExpanded = true;
+						}
 					}
 					else
 					{
@@ -97,12 +97,12 @@ namespace UIEditor.BoloUI
 
 				if (StringDic.m_mapStrControl.TryGetValue(m_xe.Name, out ctrlTip))
 				{
-					mx_root.Header = "<" + ctrlTip + ">";
-					mx_root.ToolTip = m_xe.Name;
+					mx_radio.Content = "<" + ctrlTip + ">";
+					mx_radio.ToolTip = m_xe.Name;
 				}
 				else
 				{
-					mx_root.Header = "<" + m_xe.Name + ">";
+					mx_radio.Content = "<" + m_xe.Name + ">";
 				}
 				if (m_isCtrl && m_xe.Name != "event")
 				{
@@ -111,7 +111,7 @@ namespace UIEditor.BoloUI
 				}
 				else
 				{
-					mx_root.Header = "<" + m_xe.Name + ">";
+					mx_radio.Content = "<" + m_xe.Name + ">";
 					if (m_xe.GetAttribute("Name") != "")
 					{
 						name = m_xe.GetAttribute("Name");
@@ -133,11 +133,11 @@ namespace UIEditor.BoloUI
 
 				if (m_pW.m_vCtrlName)
 				{
-					mx_root.Header += name;
+					mx_radio.Content += name;
 				}
 				if (m_pW.m_vCtrlId)
 				{
-					mx_root.Header += "(" + id + ")";
+					mx_radio.Content += "(" + id + ")";
 				}
 			}
 		}
@@ -228,10 +228,7 @@ namespace UIEditor.BoloUI
 			}
 
 			m_pW.m_attrBinding = tmp;
-			if (!this.Focus())
-			{
-				m_setFocus = true;
-			}
+			mx_radio.IsChecked = true;
 			BringIntoView(new Rect(0, 0, 50, 20));
 
 			SelButton selBn;
@@ -239,6 +236,7 @@ namespace UIEditor.BoloUI
 			if (m_pW.m_mapXeSel != null && m_pW.m_mapXeSel.TryGetValue(m_xe, out selBn) && selBn != null)
 			{
 				selBn.mx_radio.IsChecked = true;
+				selBn.m_isVcheck = true;
 			}
 		}
 		public bool checkPointInFence(int x, int y)

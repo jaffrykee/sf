@@ -45,11 +45,6 @@ namespace UIEditor.BoloRes
 			Dictionary<string, MainWindow.SkinDef_T> mapSkinDef;
 
 			initHeader();
-			if (m_setFocus)
-			{
-				this.Focus();
-				m_setFocus = false;
-			}
 
 			mx_addNode.Items.Clear();
 			if(m_xe.Name == "BoloUI")
@@ -78,23 +73,28 @@ namespace UIEditor.BoloRes
 			}
 		}
 
+		public void addResItem(XmlElement newXe)
+		{
+			ResBasic treeChild;
+			if (m_xe.Name == "BoloUI")
+			{
+				treeChild = new ResBasic(newXe, m_rootControl, m_pW.m_mapSkinResDef[newXe.Name]);
+			}
+			else
+			{
+				treeChild = new ResBasic(newXe, m_rootControl, m_curDeepDef.m_mapEnChild[newXe.Name]);
+			}
+
+			m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe));
+		}
 		void insertSkinItem_Click(object sender, RoutedEventArgs e)
 		{
 			if (sender.GetType().ToString() == "System.Windows.Controls.MenuItem")
 			{
 				MenuItem ctrlItem = (MenuItem)sender;
 				XmlElement newXe = m_xe.OwnerDocument.CreateElement(ctrlItem.ToolTip.ToString());
-				ResBasic treeChild;
-				if(m_xe.Name == "BoloUI")
-				{
-					treeChild = new ResBasic(newXe, m_rootControl, m_pW.m_mapSkinResDef[newXe.Name]);
-				}
-				else
-				{
-					treeChild = new ResBasic(newXe, m_rootControl, m_curDeepDef.m_mapEnChild[newXe.Name]);
-				}
 
-				m_rootControl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe));
+				addResItem(newXe);
 			}
 			//throw new NotImplementedException();
 		}
@@ -117,6 +117,10 @@ namespace UIEditor.BoloRes
 							{
 								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), xe, m_rootControl, skinPtr) as TreeViewItem;
 								this.Items.Add(treeChild);
+								if (xe.Name != "event")
+								{
+									this.IsExpanded = true;
+								}
 							}
 						}
 					}
@@ -133,19 +137,19 @@ namespace UIEditor.BoloRes
 
 				if (StringDic.m_mapStrNode.TryGetValue(m_xe.Name, out ctrlTip))
 				{
-					mx_root.Header = "<" + ctrlTip + ">";
-					mx_root.ToolTip = m_xe.Name;
+					mx_radio.Content = "<" + ctrlTip + ">";
+					mx_radio.ToolTip = m_xe.Name;
 				}
 				else
 				{
-					mx_root.Header = "<" + m_xe.Name + ">";
+					mx_radio.Content = "<" + m_xe.Name + ">";
 				}
 				if (m_curDeepDef.m_mapAttrDef != null)
 				{
 					name = m_xe.GetAttribute(m_curDeepDef.m_mapAttrDef.ToList().First().Key);
 				}
 
-				mx_root.Header += name;
+				mx_radio.Content += name;
 			}
 		}
 		public override void changeSelectItem(object obj = null)
@@ -221,8 +225,6 @@ namespace UIEditor.BoloRes
 						if (ctrlUI == null && m_rootControl.m_skinViewCtrlUI == null)
 						{
 							xeView = m_pW.m_xeTest;
-							((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
-							m_pW.updateXmlToGL(m_rootControl, xeView, false);
 						}
 						else
 						{
@@ -230,25 +232,22 @@ namespace UIEditor.BoloRes
 							{
 								m_rootControl.m_skinViewCtrlUI = ctrlUI;
 							}
-							xeView = m_rootControl.m_skinViewCtrlUI.m_xe;
-							m_rootControl.m_skinViewCtrlUI.m_rootControl.m_openedFile.m_lstOpt.addOperation(
-								new XmlOperation.HistoryNode(
-									xeView,
-									"skin",
-									m_rootControl.m_skinViewCtrlUI.m_xe.GetAttribute("skin"),
-									xeSkin.GetAttribute("Name")
-								)
-							);
-							m_pW.updateXmlToGL(m_rootControl, xeView, true);
+							xeView = m_rootControl.m_xmlDoc.CreateElement(m_rootControl.m_skinViewCtrlUI.m_xe.Name);
+
+							xeView.SetAttribute("dock", "4");
+							xeView.SetAttribute("baseID", "selSkinTestCtrl");
+							if(m_rootControl.m_skinViewCtrlUI.m_xe.GetAttribute("text") != "")
+							{
+								xeView.SetAttribute("text", m_rootControl.m_skinViewCtrlUI.m_xe.GetAttribute("text"));
+							}
 						}
+						((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
+						m_pW.updateXmlToGL(m_rootControl, xeView, false);
 					}
 					//todo 更改皮肤预览
 				}
 			}
-			if(!this.Focus())
-			{
-				m_setFocus = true;
-			}
+			mx_radio.IsChecked = true;
 			BringIntoView(new Rect(0, 0, 50, 20));
 		}
 	}

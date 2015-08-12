@@ -21,7 +21,6 @@ namespace UIEditor
 		public XmlControl m_rootControl;
 		public MainWindow m_pW;
 		public XmlElement m_xe;
-		public bool m_setFocus;
 		public bool m_isCtrl;
 		public string m_type;
 
@@ -40,7 +39,6 @@ namespace UIEditor
 
 		protected virtual void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
 		{
-
 		}
 		public virtual void changeSelectItem(object obj = null)
 		{
@@ -55,15 +53,9 @@ namespace UIEditor
 
 		}
 
-		private void mx_root_Selected(object sender, RoutedEventArgs e)
+		private void mx_radio_Checked(object sender, RoutedEventArgs e)
 		{
-			if (sender == Keyboard.FocusedElement)
-			{
-				changeSelectItem();
-			}
-		}
-		private void mx_root_Unselected(object sender, RoutedEventArgs e)
-		{
+			changeSelectItem();
 		}
 
 		public void refreshItemMenu()

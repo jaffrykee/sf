@@ -22,17 +22,26 @@ namespace UIEditor.BoloUI
 	{
 		public MainWindow m_pW;
 		public Basic m_ctrlUI;
+		public bool m_isVcheck;
 
 		public SelButton(MainWindow pW, Basic ctrl)
 		{
 			InitializeComponent();
 			m_pW = pW;
 			m_ctrlUI = ctrl;
+			m_isVcheck = false;
 		}
 
 		private void mx_radio_Checked(object sender, RoutedEventArgs e)
 		{
-			m_ctrlUI.changeSelectItem();
+			if (!m_isVcheck)
+			{
+				m_ctrlUI.changeSelectItem();
+			}
+			else
+			{
+				m_isVcheck = false;
+			}
 		}
 	}
 }

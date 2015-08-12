@@ -166,7 +166,6 @@ namespace UIEditor.XmlOperation
 							if (srcItem != null)
 							{
 								srcItem.Items.Insert(index, treeChild);
-								treeChild.Focus();
 							}
 						}
 					}

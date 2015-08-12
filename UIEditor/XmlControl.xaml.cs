@@ -272,14 +272,14 @@ namespace UIEditor
 							m_treeSkin = new BoloRes.ResBasic(m_xeRoot, this, null);
 
 							m_pW.mx_treeCtrlFrame.Items.Add(m_treeUI);
-							m_treeUI.mx_root.Header = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-							m_treeUI.mx_root.Header = m_treeUI.mx_root.Header.ToString().Replace("_", "__");
-							m_treeUI.mx_root.ToolTip = m_openedFile.m_path;
+							m_treeUI.mx_radio.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+							m_treeUI.mx_radio.Content = m_treeUI.mx_radio.Content.ToString().Replace("_", "__");
+							m_treeUI.mx_radio.ToolTip = m_openedFile.m_path;
 							m_treeUI.IsExpanded = true;
 							m_pW.mx_treeSkinFrame.Items.Add(m_treeSkin);
-							m_treeSkin.mx_root.Header = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-							m_treeSkin.mx_root.Header = m_treeSkin.mx_root.Header.ToString().Replace("_", "__");
-							m_treeSkin.mx_root.ToolTip = m_openedFile.m_path;
+							m_treeSkin.mx_radio.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
+							m_treeSkin.mx_radio.Content = m_treeSkin.mx_radio.Content.ToString().Replace("_", "__");
+							m_treeSkin.mx_radio.ToolTip = m_openedFile.m_path;
 							m_treeSkin.IsExpanded = true;
 
 							m_treeUI.Items.Clear();

@@ -18,24 +18,18 @@
 		<RoutedUICommand x:Key="btnClick_mx_toolOpen" Text="Button Click" />
 		<RoutedUICommand x:Key="btnClick_mx_toolSave" Text="Button Click" />
 		<RoutedUICommand x:Key="btnClick_mx_toolSaveAll" Text="Button Click" />
-		<RoutedUICommand x:Key="btnClick_mx_toolUndo" Text="Button Click" />
-		<RoutedUICommand x:Key="btnClick_mx_toolRedo" Text="Button Click" />
 	</Window.Resources>
 	<Window.InputBindings>
 		<KeyBinding Key="N" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolNew}" />
 		<KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolOpen}" />
 		<KeyBinding Key="S" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolSave}" />
 		<KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{StaticResource btnClick_mx_toolSaveAll}" />
-		<KeyBinding Key="Z" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolUndo}" />
-		<KeyBinding Key="Y" Modifiers="Ctrl" Command="{StaticResource btnClick_mx_toolRedo}" />
 	</Window.InputBindings>
 	<Window.CommandBindings>
 		<CommandBinding Command="{StaticResource btnClick_mx_toolNew}" Executed="mx_newFile_Click" />
 		<CommandBinding Command="{StaticResource btnClick_mx_toolOpen}" Executed="openProj" />
 		<CommandBinding Command="{StaticResource btnClick_mx_toolSave}" Executed="mx_toolSave_Click" />
 		<CommandBinding Command="{StaticResource btnClick_mx_toolSaveAll}" Executed="mx_toolSaveAll_Click" />
-		<CommandBinding Command="{StaticResource btnClick_mx_toolUndo}" Executed="mx_toolUndo_Click" />
-		<CommandBinding Command="{StaticResource btnClick_mx_toolRedo}" Executed="mx_toolRedo_Click" />
 	</Window.CommandBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -310,7 +304,7 @@
 									 CaretBrush="Black"
 									 Margin="5"
 									 TextChanged="mx_search_TextChanged"/>
-							<TreeView Background="#08080808" Grid.Row="1">
+							<TreeView Grid.Row="1">
 								<TreeViewItem Name="mx_treePro">
 									<TreeViewItem.ContextMenu>
 										<ContextMenu>
@@ -371,7 +365,7 @@
 										 Margin="5"
 										 TextChanged="mx_uiSearch_TextChanged"/>
 							</Grid>
-							<TreeView Grid.Row="1" Name="mx_treeCtrlFrame" Background="#08080808">
+							<TreeView Grid.Row="1" Name="mx_treeCtrlFrame">
 							</TreeView>
 						</Grid>
 					</TabItem>
@@ -393,7 +387,7 @@
 									 CaretBrush="Black"
 									 Margin="5"
 									 TextChanged="mx_skinSearch_TextChanged"/>
-							<TreeView Name="mx_treeSkinFrame" Grid.Row="1" Background="#08080808">
+							<TreeView Name="mx_treeSkinFrame" Grid.Row="1">
 							</TreeView>
 						</Grid>
 					</TabItem>

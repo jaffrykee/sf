@@ -29,7 +29,7 @@ namespace UIEditor.BoloUI
 		public XmlDocument m_docView;
 		public XmlElement m_testCtrl;
 		public bool m_isInitPath;
-		public string m_curSkin;
+		public TreeViewItem m_curSkin;
 		public AttrRow m_rowSkin;
 
 		public static bool s_isRun;
@@ -42,6 +42,7 @@ namespace UIEditor.BoloUI
 			m_isInitPath = false;
 			m_path = path;
 			m_rowSkin = rowSkin;
+			m_curSkin = null;
 			InitializeComponent();
 
 			m_docView = new XmlDocument();
@@ -53,7 +54,11 @@ namespace UIEditor.BoloUI
 			xePanel.SetAttribute("dock", "4");
 			xePanel.InnerXml = xmlData;
 			m_testCtrl = (XmlElement)xePanel.FirstChild;
+			m_testCtrl.RemoveAllAttributes();
+			m_testCtrl.SetAttribute("dock", "4");
 			m_testCtrl.SetAttribute("baseID", "selSkinTestCtrl");
+			m_testCtrl.SetAttribute("text", "测试Test123");
+			m_testCtrl.SetAttribute("autoSize", "true");
 			m_docView.AppendChild(xeRoot);
 			#region 显示皮肤树
 			OpenedFile fileDef;
@@ -89,6 +94,7 @@ namespace UIEditor.BoloUI
 											#endregion
 										}
 										break;
+									case "publicskin":
 									case "skin":
 										{
 											#region 本地皮肤
@@ -103,8 +109,8 @@ namespace UIEditor.BoloUI
 												skinItem.Selected += skinItem_Selected;
 
 												mx_localSkin.Items.Add(skinItem);
-												
-												XmlElement xeSkin = m_docView.CreateElement("skin");
+
+												XmlElement xeSkin = m_docView.CreateElement(xe.Name);
 												xeSkin.SetAttribute("Name", skinName);
 												xeSkin.InnerXml = xe.InnerXml;
 												xeRoot.AppendChild(xeSkin);
@@ -169,11 +175,10 @@ namespace UIEditor.BoloUI
 			}
 			if(sender.GetType().ToString() == "System.Windows.Controls.TreeViewItem")
 			{
-				TreeViewItem skinItem = (TreeViewItem)sender;
+				m_curSkin = (TreeViewItem)sender;
 
-				m_testCtrl.SetAttribute("skin", skinItem.Header.ToString());
-				updateGL("selSkinTest.xml:selSkinTestCtrl:skin:" + skinItem.Header.ToString(), W2GTag.W2G_NORMAL_UPDATE);
-				m_curSkin = skinItem.Header.ToString();
+				m_testCtrl.SetAttribute("skin", m_curSkin.Header.ToString());
+				updateGL("selSkinTest.xml:selSkinTestCtrl:skin:" + m_curSkin.Header.ToString(), W2GTag.W2G_NORMAL_UPDATE);
 			}
 		}
 
@@ -272,7 +277,7 @@ namespace UIEditor.BoloUI
 					docGroup.Load(skinGroupPath);
 					foreach (XmlNode xng in docGroup.DocumentElement.ChildNodes)
 					{
-						if (xng.NodeType == XmlNodeType.Element && xng.Name == "skin")
+						if (xng.NodeType == XmlNodeType.Element && (xng.Name == "skin" || xng.Name == "publicskin"))
 						{
 							XmlElement xeg = (XmlElement)xng;
 							string xegName = xeg.GetAttribute("Name");
@@ -306,7 +311,21 @@ namespace UIEditor.BoloUI
 
 		private void mx_ok_Click(object sender, RoutedEventArgs e)
 		{
-			m_rowSkin.m_value = m_curSkin;
+			if (m_curSkin != null)
+			{
+				if (m_curSkin.Parent.GetType().ToString() == "System.Windows.Controls.TreeViewItem" &&
+					((TreeViewItem)m_curSkin.Parent).Parent == mx_otherGroup)
+				{
+					if (((TreeViewItem)m_curSkin.Parent).Header.ToString() != "publicskin")
+					{
+						XmlElement newXe = m_rowSkin.m_parent.m_xe.OwnerDocument.CreateElement("skingroup");
+
+						newXe.SetAttribute("Name", ((TreeViewItem)m_curSkin.Parent).Header.ToString());
+						m_rowSkin.m_parent.m_xmlCtrl.m_treeSkin.addResItem(newXe);
+					}
+				}
+				m_rowSkin.m_value = m_curSkin.Header.ToString();
+			}
 			this.Close();
 		}
 		private void mx_cancel_Click(object sender, RoutedEventArgs e)

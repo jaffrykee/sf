@@ -17,6 +17,7 @@ namespace UIEditor
 		public static void initDic()
 		{
 			//\{ ("[a-z]*"), "[\u4e00-\u9fa5]*"}
+			#region m_lstAddControl
 			m_lstAddControl = new List<string>
 			{
 // 				"basic",
@@ -51,6 +52,9 @@ namespace UIEditor
 				"event",
 				"tooltip"
 			};
+			#endregion
+
+			#region m_mapStrControl
 			m_mapStrControl = new Dictionary<string, string>
 			{
 				{ "basic", "基本"},
@@ -77,7 +81,9 @@ namespace UIEditor
 				{ "event", "事件"},
 				{ "tooltip", "说明"}
 			};
+			#endregion
 
+			#region m_mapStrNode
 			m_mapStrNode = new Dictionary<string, string>
 			{
 				{"BoloUIEvent", "事件组"},
@@ -91,7 +97,9 @@ namespace UIEditor
 				{"imageShape", "图形"},
 				{"textShape", "文本"}
 			};
+			#endregion
 
+			#region m_mapStrAttr
 			m_mapStrAttr = new Dictionary<string, string>
 			{
 				{"ImageName", "图片名"},
@@ -189,6 +197,7 @@ namespace UIEditor
 				{"bkW_L", "左边框宽度"},
 				{"bkW_R", "右边框宽度"}
 			};
+			#endregion
 		}
 
 		public static void getNameAndTip(MenuItem menuItem, string key, Dictionary<string, string> mapStr)
