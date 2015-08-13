@@ -1,1 +1,0 @@
-../../../clientlib/DsEngine3D;../../../clientlib/3rdlib/OpenALLib/include;../../../clientlib/3rdlib/libPNG;../../../clientlib/3rdlib/glew/include;../../../clientlib/BoloGUIRenderSystem;../../../clientlib/DsBoloScriptLib;../../../clientlib/DsBoloUI;../../../clientlib/3rdlib/freetype/include
