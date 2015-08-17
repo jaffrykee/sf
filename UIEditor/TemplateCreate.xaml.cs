@@ -71,7 +71,7 @@ namespace UIEditor
 						XmlElement xeConfig = (XmlElement)MainWindow.s_pW.m_docConf.SelectSingleNode("Config");
 
 						createTmpl(xeConfig);
-						xeConfig.OwnerDocument.Save(MainWindow.s_pW.conf_pathConf);
+						xeConfig.OwnerDocument.Save(MainWindow.conf_pathConf);
 					}
 				}
 				else if (mx_pathProj.IsChecked == true)

@@ -148,7 +148,7 @@ namespace UIEditor.XmlOperation
 					{
 						treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), dstXe, xmlCtrl, false) as System.Windows.Controls.TreeViewItem;
 					}
-					else if (pW.m_mapAllResDef.TryGetValue(dstXe.Name, out skinPtr))
+					else if (pW.m_mapSkinAllDef.TryGetValue(dstXe.Name, out skinPtr))
 					{
 						treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), dstXe, xmlCtrl, skinPtr) as System.Windows.Controls.TreeViewItem;
 					}

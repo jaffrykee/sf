@@ -257,7 +257,7 @@ namespace UIEditor
 				{
 					treeChild = new BoloUI.Basic(xeCopy, m_rootControl);
 				}
-				else if (m_pW.m_mapAllResDef.TryGetValue(xeCopy.Name, out skinPtr))
+				else if (m_pW.m_mapSkinAllDef.TryGetValue(xeCopy.Name, out skinPtr))
 				{
 					treeChild = new BoloRes.ResBasic(xeCopy, m_rootControl, skinPtr);
 				}
@@ -300,7 +300,7 @@ namespace UIEditor
 						else if(m_type == "Skin")
 						{
 							MainWindow.SkinDef_T skinDef;
-							if(m_pW.m_mapAllResDef.TryGetValue(m_xe.Name, out skinDef))
+							if(m_pW.m_mapSkinAllDef.TryGetValue(m_xe.Name, out skinDef))
 							{
 								MainWindow.SkinDef_T skinChildDef;
 								if(skinDef.m_mapEnChild != null && skinDef.m_mapEnChild.Count > 0
@@ -316,7 +316,7 @@ namespace UIEditor
 									{
 										if (((XmlElement)m_xe.ParentNode).Name == "BoloUI")
 										{
-											if (m_pW.m_mapSkinResDef.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
+											if (m_pW.m_mapSkinTreeDef.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
 											{
 												m_rootControl.m_openedFile.m_lstOpt.addOperation(
 													new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, ((XmlElement)m_xe.ParentNode))
@@ -325,7 +325,7 @@ namespace UIEditor
 										}
 										else
 										{
-											if (m_pW.m_mapAllResDef.TryGetValue(((XmlElement)m_xe.ParentNode).Name, out skinDef))
+											if (m_pW.m_mapSkinAllDef.TryGetValue(((XmlElement)m_xe.ParentNode).Name, out skinDef))
 											{
 												if (skinDef.m_mapEnChild.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
 												{
@@ -460,7 +460,7 @@ namespace UIEditor
 				MenuItem ctrlMenuItem = new MenuItem();
 				bool isNull = true;
 
-				StringDic.getNameAndTip(ctrlMenuItem, addStr, StringDic.m_mapStrControl);
+				MainWindow.s_pW.m_strDic.getNameAndTip(ctrlMenuItem, StringDic.conf_ctrlTipDic, addStr);
 				if (m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template") != null &&
 					m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
 				{
@@ -498,8 +498,10 @@ namespace UIEditor
 			mx_addCtrl.Items.Clear();
 			if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 			{
-				foreach (string addStr in StringDic.m_lstAddControl)
+				foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapCtrlDef.ToList())
 				{
+					string addStr = pairCtrlDef.Key;
+
 					if (addStr == "Separator")
 					{
 						mx_addCtrl.Items.Add(new Separator());
@@ -517,15 +519,24 @@ namespace UIEditor
 					foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrl in m_pW.m_mapPanelCtrlDef.ToList())
 					{
 						MenuItem ctrlItem = new MenuItem();
+						string name = MainWindow.s_pW.m_strDic.getWordByKey(pairCtrl.Key);
+						string tip = MainWindow.s_pW.m_strDic.getWordByKey(pairCtrl.Key, StringDic.conf_ctrlTipDic);
 
-						ctrlItem.ToolTip = pairCtrl.Key;
-						if (StringDic.m_mapStrControl[pairCtrl.Key] == null || StringDic.m_mapStrControl[pairCtrl.Key] == "")
+						if (tip != "")
 						{
-							ctrlItem.Header = pairCtrl.Key;
+							ctrlItem.ToolTip = tip;
 						}
 						else
 						{
-							ctrlItem.Header = StringDic.m_mapStrControl[pairCtrl.Key];
+							ctrlItem.ToolTip = pairCtrl.Key;
+						}
+						if (name != "")
+						{
+							ctrlItem.Header = name;
+						}
+						else
+						{
+							ctrlItem.Header = pairCtrl.Key;
 						}
 						ctrlItem.Click += insertCtrlItem_Click;
 						mx_addCtrl.Items.Add(ctrlItem);

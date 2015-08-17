@@ -4,208 +4,154 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using System.Threading.Tasks;
+using System.Xml;
+using System.IO;
 
 namespace UIEditor
 {
-	static class StringDic
+	public class StringDic
 	{
-		public static List<string> m_lstAddControl;
-		public static Dictionary<string, string> m_mapStrControl;
-		public static Dictionary<string, string> m_mapStrNode;
-		public static Dictionary<string, string> m_mapStrAttr;
+		public string m_curLang;
+		public string m_pathDic;
+		public Dictionary<string, Dictionary<string, Dictionary<string, string>>> m_mapStrDic;
 
-		public static void initDic()
+		public const string conf_ctrlTipDic = "CtrlTip";
+		public const string conf_ctrlAttrTipDic = "CtrlAttrTip";
+	
+
+		public StringDic(string lang, string pathDic)
 		{
-			//\{ ("[a-z]*"), "[\u4e00-\u9fa5]*"}
-			#region m_lstAddControl
-			m_lstAddControl = new List<string>
-			{
-// 				"basic",
-// 				"Separator",
-
-				"panel",
-				"listPanel",
-				"tabPanel",
-				"pagePanel",
-				"Separator",
-				
-				"button",
-				"skillbutton",
-				"radio",
-				"check",
-				"Separator",
-
-				"label",
-				"progress",
-				"virtualpad",
-				"richText",
-				"pageText",
-				"scriptPanel",
-				"countDown",
-				"apartPanel",
-				"draggedPanel",
-				"turnTable",
-				"drawModel",
-				"dropList",
-				"Separator",
-
-				"event",
-				"tooltip"
-			};
-			#endregion
-
-			#region m_mapStrControl
-			m_mapStrControl = new Dictionary<string, string>
-			{
-				{ "basic", "基本"},
-				{ "panel", "面板"},
-				{ "label", "标签"},
-				{ "button", "按钮"},
-				{ "skillbutton", "技能按钮"},
-				{ "progress", "进度条"},
-				{ "radio", "单选按钮"},
-				{ "check", "复选按钮"},
-				{ "listPanel", "列表面板"},
-				{ "tabPanel", "选项卡面板"},
-				{ "pagePanel", "pagePanel"},
-				{ "virtualpad", "虚拟按盘"},
-				{ "richText", "富文本框"},
-				{ "pageText", "pageText"},
-				{ "scriptPanel", "脚本面板"},
-				{ "countDown", "计时控件"},
-				{ "apartPanel", "拆分面板"},
-				{ "draggedPanel", "draggedPanel"},
-				{ "turnTable", "turnTable"},
-				{ "drawModel", "drawModel"},
-				{ "dropList", "dropList"},
-				{ "event", "事件"},
-				{ "tooltip", "说明"}
-			};
-			#endregion
-
-			#region m_mapStrNode
-			m_mapStrNode = new Dictionary<string, string>
-			{
-				{"BoloUIEvent", "事件组"},
-				{"skingroup", "皮肤组"},
-				{"resource", "资源"},
-				{"publicresource", "公共资源"},
-				{"skin", "皮肤"},
-				{"publicskin", "公共皮肤"},
-
-				{"apperance", "外观节点"},
-				{"imageShape", "图形"},
-				{"textShape", "文本"}
-			};
-			#endregion
-
-			#region m_mapStrAttr
-			m_mapStrAttr = new Dictionary<string, string>
-			{
-				{"ImageName", "图片名"},
-				{"Dock", "停靠"},
-				{"NineGrid", "是否NineGrid(九宫格)"},
-				{"NGX", "NGX"},
-				{"NGY", "NGY"},
-				{"NGWidth", "NG宽"},
-				{"NGHeight", "NG长"},
-				{"LIGHT", "LIGHT"},
-				{"Color", "颜色"},
-
-				{"X", "横坐标"},
-				{"Y", "纵坐标"},
-				{"Width", "宽度"},
-				{"Height", "高度"},
-				{"topBorder", "顶边距"},
-				{"bottomBorder", "底边距"},
-				{"leftBorder", "左边距"},
-				{"rightBorder", "右边距"},
-				{"Anchor", "锚点"},
-				{"angle", "旋转角度"},
-				{"mirrorType", "镜像"},
-
-				{"Font", "字体"},
-				{"fontSize", "字体大小"},
-				{"Color0", "字体颜色0"},
-				{"Color1", "字体颜色1"},
-				{"Color2", "字体颜色2"},
-				{"Style", "字体类型"},
-
-				{"name", "name"},
-				{"baseID", "baseID"},
-				{"text", "文本"},
-				{"alpha", "透明度"},
-				{"x", "x"},
-				{"y", "y"},
-				{"w", "宽"},
-				{"h", "高"},
-				{"maxWidth", "最大宽度"},
-				{"maxHeight", "最大高度"},
-				{"minWidth", "最小宽度"},
-				{"minHeight", "最小高度"},
-				{"visible", "可见性"},
-				{"enable", "可用性"},
-				{"dock", "停靠方式"},
-				{"docklayer", "停靠层"},
-				{"anchor", "边界锚"},
-				{"anchorSelf", "自身锚点"},
-				{"canFocus", "可以激活"},
-				{"skin", "皮肤"},
-				{"tips", "tips"},
-				{"tipCx", "tipCx"},
-				{"tipCy", "tipCy"},
-				{"tipMaxWidth", "tipMaxWidth"},
-				{"tipText", "tipText"},
-				{"showStyle", "showStyle"},
-				{"movieSpe", "movieSpe"},
-				{"rotateType", "旋转中心"},
-				{"movieLayer", "movieLayer"},
-				{"scalePerX", "缩放百分比X"},
-				{"scalePerY", "缩放百分比Y"},
-				{"onSelectByKey", "onSelectByKey"},
-				{"canSelectByKey", "canSelectByKey"},
-				{"canAutoBuildTopKey", "canAutoBuildTopKey"},
-				{"canAutoBuildLeftKey", "canAutoBuildLeftKey"},
-				{"assignTopKeyBaseID", "assignTopKeyBaseID"},
-				{"assignBottomKeyBaseID", "assignBottomKeyBaseID"},
-				{"assignLeftKeyBaseID", "assignLeftKeyBaseID"},
-				{"assignRightKeyBaseID", "assignRightKeyBaseID"},
-				{"scrollBorder", "滚动条边距"},
-				{"hScrollHeight", "水平滚动条高度"},
-				{"vScrollWidth", "垂直滚动条宽度"},
-				{"vScrollSliderHeight", "垂直滚动滑块高度"},
-				{"hScrollSliderWidth", "水平滚动滑块宽度"},
-				{"scrollSliderBorder", "滚动滑块边距"},
-				{"scrollSliderAutosize", "滚动滑块大小自适应"},
-				{"scrollDecay", "滚动条滑动衰减"},
-				{"scrollPickupInterval", "滚动条初速度采样间隔"},
-				{"scrollSpeed", "滚动条滚动速度"},
-				{"scrollInitPos", "滚动条初始位置"},
-				{"rememberScrollPos", "滚动条位置保留"},
-				{"scrollParentLayerWhenGetFocus", "焦点滚动父容器层数"},
-				{"isMaskAreaByKey", "isMaskAreaByKey"},
-				{"ownEvt", "独占事件"},
-				{"isEffectParentAutosize", "扩充父容器"},
-				{"canUsedEvent", "可使用事件"},
-				{"canHandleEvent", "可独占事件"},
-
-				{"own", "独占屏幕"},
-				{"autoSize", "自适应大小"},
-				{"backSpeed", "复位速度"},
-				{"bkH_B", "下边框高度"},
-				{"bkH_T", "上边框高度"},
-				{"bkW_L", "左边框宽度"},
-				{"bkW_R", "右边框宽度"}
-			};
-			#endregion
+			m_curLang = lang;
+			m_pathDic = pathDic;
+			refreshStrDic();
 		}
 
-		public static void getNameAndTip(MenuItem menuItem, string key, Dictionary<string, string> mapStr)
+		public void loadStrDicByPath(string path)
+		{
+
+			XmlDocument docDic = new XmlDocument();
+
+			docDic.Load(path);
+			if (docDic.DocumentElement.Name == "DicRoot")
+			{
+				foreach (XmlNode xn in docDic.DocumentElement.ChildNodes)
+				{
+					if (xn.NodeType == XmlNodeType.Element)
+					{
+						XmlElement xe = (XmlElement)xn;
+
+						switch (xe.Name)
+						{
+							case "DefDic":
+								{
+									foreach (XmlNode xnRow in xe.ChildNodes)
+									{
+										if (xnRow.NodeType == XmlNodeType.Element)
+										{
+											XmlElement xeRow = (XmlElement)xnRow;
+
+											addWordRowToDic(xeRow, m_mapStrDic["DefDic"]);
+										}
+									}
+								}
+								break;
+							case "SubDic":
+								{
+									string keyDic = xe.GetAttribute("key");
+									Dictionary<string, Dictionary<string, string>> subDic;
+
+									if (keyDic != "")
+									{
+										if (!m_mapStrDic.TryGetValue(keyDic, out subDic))
+										{
+											subDic = new Dictionary<string, Dictionary<string, string>>();
+
+											m_mapStrDic.Add(keyDic, subDic);
+										}
+										foreach (XmlNode xnRow in xe.ChildNodes)
+										{
+											if (xnRow.NodeType == XmlNodeType.Element)
+											{
+												XmlElement xeRow = (XmlElement)xnRow;
+
+												addWordRowToDic(xeRow, subDic);
+											}
+										}
+									}
+								}
+								break;
+							default:
+								break;
+						}
+					}
+				}
+			}
+		}
+		public static void addWordRowToDic(XmlElement xeRow, Dictionary<string, Dictionary<string, string>> mapDic)
+		{
+			if (xeRow.Name == "row" && xeRow.GetAttribute("key") != "")
+			{
+				string rowKey = xeRow.GetAttribute("key");
+				Dictionary<string, string> mapTmp;
+
+				if (!mapDic.TryGetValue(rowKey, out mapTmp))
+				{
+					mapDic.Add(rowKey, new Dictionary<string, string>());
+					foreach (XmlNode xnLang in xeRow.ChildNodes)
+					{
+						if (xnLang.NodeType == XmlNodeType.Element)
+						{
+							XmlElement xeLang = (XmlElement)xnLang;
+							string strLang;
+
+							if (!mapDic[rowKey].TryGetValue(xeLang.Name, out strLang))
+							{
+								mapDic[rowKey].Add(xeLang.Name, xeLang.InnerText);
+							}
+						}
+					}
+				}
+			}
+		}
+		public void refreshStrDic()
+		{
+			string dicPath = m_pathDic + m_curLang;
+			DirectoryInfo di = new DirectoryInfo(dicPath);
+			FileInfo[] arrFi = di.GetFiles("*.xml");
+
+			m_mapStrDic = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
+
+			m_mapStrDic.Add("DefDic", new Dictionary<string, Dictionary<string, string>>());
+			foreach (FileInfo fi in arrFi)
+			{
+				#region 遍历每一个子词典
+				loadStrDicByPath(fi.FullName);
+				#endregion
+			}
+		}
+		public string getWordByKey(string key, string dicName = "DefDic")
+		{
+			Dictionary<string, Dictionary<string, string>> dicData;
+			Dictionary<string, string> mapLang;
+			string retStr;
+
+			if (dicName != null && dicName != "" &&
+				m_mapStrDic.TryGetValue(dicName, out dicData) &&
+				dicData.TryGetValue(key, out mapLang) &&
+				mapLang.TryGetValue(m_curLang, out retStr))
+			{
+				return retStr;
+			}
+
+			return "";
+		}
+
+		public void getNameAndTip(MenuItem menuItem, string tipDic, string key, string nameDic = "DefDic")
 		{
 			string strName;
 
-			menuItem.ToolTip = key;
-			if (mapStr.TryGetValue(key, out strName) && strName != "")
+			strName = getWordByKey(key, nameDic);
+			if (strName != "")
 			{
 				menuItem.Header = strName;
 			}
@@ -213,8 +159,17 @@ namespace UIEditor
 			{
 				menuItem.Header = key;
 			}
-		}
 
+			strName = getWordByKey(key, tipDic);
+			if (strName != "")
+			{
+				menuItem.ToolTip = strName;
+			}
+			else
+			{
+				menuItem.ToolTip = key;
+			}
+		}
 		public static string getRandString(int pwdlen = 16, string pwdchars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 		{
 			string tmpstr = "";

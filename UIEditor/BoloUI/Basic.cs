@@ -92,18 +92,28 @@ namespace UIEditor.BoloUI
 		{
 			if(m_xe.Name != "BoloUI")
 			{
-				string ctrlTip;
+				string ctrlName = MainWindow.s_pW.m_strDic.getWordByKey(m_xe.Name);
+				string ctrlTip = MainWindow.s_pW.m_strDic.getWordByKey(m_xe.Name, StringDic.conf_ctrlTipDic);
 				string name = "", id = "";
 
-				if (StringDic.m_mapStrControl.TryGetValue(m_xe.Name, out ctrlTip))
+				if (ctrlName != "")
 				{
-					mx_radio.Content = "<" + ctrlTip + ">";
-					mx_radio.ToolTip = m_xe.Name;
+					mx_radio.Content = "<" + ctrlName + ">";
 				}
 				else
 				{
 					mx_radio.Content = "<" + m_xe.Name + ">";
 				}
+
+				if (ctrlTip != "")
+				{
+					mx_radio.ToolTip = ctrlTip;
+				}
+				else
+				{
+					mx_radio.ToolTip = m_xe.Name;
+				}
+
 				if (m_isCtrl && m_xe.Name != "event")
 				{
 					name = m_xe.GetAttribute("name");
@@ -140,6 +150,7 @@ namespace UIEditor.BoloUI
 					mx_radio.Content += "(" + id + ")";
 				}
 			}
+			mx_radio.Content = mx_radio.Content.ToString().Replace("_", "__");
 		}
 		public override void changeSelectItem(object obj = null)
 		{

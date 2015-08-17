@@ -100,13 +100,14 @@ namespace UIEditor
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
 		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
 		public Dictionary<string, XmlElement> m_mapStrSkin;
+
 		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
 		public Dictionary<string, CtrlDef_T> m_mapPanelCtrlDef;
-		public Dictionary<string, SkinDef_T> m_mapEventDef;
-		public Dictionary<string, SkinDef_T> m_mapShapeChildDef;
-		public Dictionary<string, SkinDef_T> m_mapSkinChildDef;
-		public Dictionary<string, SkinDef_T> m_mapSkinResDef;
-		public Dictionary<string, SkinDef_T> m_mapAllResDef;
+
+		public Dictionary<string, SkinDef_T> m_mapSkinTreeDef;
+		public Dictionary<string, SkinDef_T> m_mapSkinAllDef;
+		public Dictionary<string, Dictionary<string, AttrDef_T>> m_mapSkinAttrDef;
+
 		public Dictionary<XmlElement, BoloUI.SelButton> m_mapXeSel;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
@@ -124,7 +125,6 @@ namespace UIEditor
 
 		public string m_curFile;	//todo
 		public XmlItem m_curItem;
-		private int m_dep;
 
 		public XmlElement m_xePaste;
 
@@ -133,19 +133,20 @@ namespace UIEditor
 		public int m_downX;
 		public int m_downY;
 		public string m_pasteFilePath;
+		public StringDic m_strDic;
 
 		ControlHost mx_GLHost;
 		public string m_curLang;
-		public Dictionary<string, Dictionary<string, Dictionary<string, string>>> m_mapStrDic;
 
-		public string conf_pathGlApp = @".\dsuieditor.exe";
-		public string conf_pathConf = @".\conf.xml";
+		public const string conf_pathGlApp = @".\dsuieditor.exe";
+		public const string conf_pathConf = @".\conf.xml";
+		public const string conf_pathPlugInBoloUI = @".\data\PlugIn\BoloUI\";
+		public const string conf_pathStringDic = @".\data\Lang\";
 		public XmlDocument m_docConf;
 		public bool m_isDebug;
 
 		public MainWindow()
 		{
-			StringDic.initDic();
 			s_pW = this;
 			m_skinPath = "";
 			m_projPath = "";
@@ -153,11 +154,11 @@ namespace UIEditor
 			m_hwndGLParent = IntPtr.Zero;
 			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
 			m_attrBinding = true;
-			m_curLang = "zh-CN";
+			m_strDic = new StringDic("zh-CN", conf_pathStringDic);
 			InitializeComponent();
 			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
 			m_mapStrSkin = new Dictionary<string, XmlElement>();
-			m_mapAllResDef = new Dictionary<string, SkinDef_T>();
+			m_mapSkinAllDef = new Dictionary<string, SkinDef_T>();
 			m_dpiSysX = 96.0f;
 			m_dpiSysY = 96.0f;
 			m_curFile = "";
@@ -1252,22 +1253,31 @@ namespace UIEditor
 			}
 		}
 
-	#region xml控件名、属性名、默认值、取值范围等。
+		#region 资源读取
 		public class AttrDef_T
 		{
+			//右侧属性工具栏的UI
 			public AttrRow m_attrRowUI;
+			//数据类型
 			public string m_type;
+			//子类型
+			public string m_subType;
+			//默认值(废弃)
 			public string m_defValue;
+			//枚举
 			public bool m_isEnum;
-			public List<string> m_lstEnumValue;
+			//常用项
+			public bool m_isCommon;
+			//枚举列表
+			public Dictionary<string, string> m_mapEnum;
 
-			public AttrDef_T(string type = "int", string defValue = null, AttrRow rowUI = null, bool isEnum = false, List<string> lstEnumValue = null)
+			public AttrDef_T(string type = "int", string defValue = null, AttrRow rowUI = null, bool isEnum = false, Dictionary<string, string> mapEnum = null)
 			{
 				m_attrRowUI = rowUI;
 				m_type = type;
 				m_defValue = defValue;
 				m_isEnum = isEnum;
-				m_lstEnumValue = lstEnumValue;
+				m_mapEnum = mapEnum;
 			}
 		}
 		public class CtrlDef_T
@@ -1275,6 +1285,7 @@ namespace UIEditor
 			public Dictionary<string, AttrDef_T> m_mapAttrDef;
 			public AttrList m_attrListUI;
 			public Dictionary<string, string> m_mapApprSuffix;
+			public bool m_isFrame;
 
 			public CtrlDef_T(Dictionary<string, AttrDef_T> mapAttrDef, AttrList attrListUI, Dictionary<string, string> mapApprSuffix = null)
 			{
@@ -1301,528 +1312,14 @@ namespace UIEditor
 				m_mapAttrDef = mapAttrDef;
 			}
 		}
-
-		#region s_mapApprSuf
-		static Dictionary<string, string> s_mapApprSuf = new Dictionary<string, string>
-		{
-			{"0", "正常状态"},
-			{"1", "按下状态"},
-			{"2", "禁用状态"},
-			{"3", "选中 - 正常状态"},
-			{"4", "选中 - 按下状态"},
-			{"5", "选中 - 禁用状态"},
-			{"6", "正常边框"},
-			{"7", "正常填充"},
-			{"8", "正常背景"},
-			{"9", "正常填充头"},
-			{"10", "正常填充尾"},
-			{"11", "选中"},
-			{"12", "正常填充滑块"},
-			{"13", "tips"},
-			{"14", "消息提示正常"},
-			{"15", "消息提示亮"},
-			{"16", "预增长"},
-			{"17", "按键选中"},
-			{"18", "按键选中 - 选中"}
-		};
-		#endregion
-
-		#region conf
-		Dictionary<string, AttrDef_T> conf_mapBaseAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region Base
-				{"name", new AttrDef_T("string")},
-				{"baseID", new AttrDef_T("string")},
-				{"text", new AttrDef_T("string")},
-				{"alpha", new AttrDef_T("int")},
-				{"x", new AttrDef_T("int")},
-				{"y", new AttrDef_T("int")},
-				{"w", new AttrDef_T("int")},
-				{"h", new AttrDef_T("int")},
-				{"maxWidth", new AttrDef_T("int")},
-				{"maxHeight", new AttrDef_T("int")},
-				{"minWidth", new AttrDef_T("int")},
-				{"minHeight", new AttrDef_T("int")},
-				{"leftBorder", new AttrDef_T("int")},
-				{"rightBorder", new AttrDef_T("int")},
-				{"topBorder", new AttrDef_T("int")},
-				{"bottomBorder", new AttrDef_T("int")},
-				{"visible", new AttrDef_T("bool")},
-				{"enable", new AttrDef_T("bool")},
-				{"dock", new AttrDef_T("int")},
-				{"docklayer", new AttrDef_T("int")},
-				{"anchor", new AttrDef_T("int")},
-				{"anchorSelf", new AttrDef_T("int")},
-				{"canFocus", new AttrDef_T("bool")},
-				{"skin", new AttrDef_T("string")},
-				{"tips", new AttrDef_T("bool")},
-				{"tipCx", new AttrDef_T("int")},
-				{"tipCy", new AttrDef_T("int")},
-				{"tipMaxWidth", new AttrDef_T("int")},
-				{"tipText", new AttrDef_T("string")},
-				{"showStyle", new AttrDef_T("int")},
-				{"movieSpe", new AttrDef_T("int")},
-				{"angle", new AttrDef_T("int")},
-				{"rotateType", new AttrDef_T("int")},
-				{"movieLayer", new AttrDef_T("int")},
-				{"scalePerX", new AttrDef_T("int")},
-				{"scalePerY", new AttrDef_T("int")},
-				{"onSelectByKey", new AttrDef_T("bool")},
-				{"canSelectByKey", new AttrDef_T("bool")},
-				{"canAutoBuildTopKey", new AttrDef_T("bool")},
-				{"canAutoBuildLeftKey", new AttrDef_T("bool")},
-				{"assignTopKeyBaseID", new AttrDef_T("string")},
-				{"assignBottomKeyBaseID", new AttrDef_T("string")},
-				{"assignLeftKeyBaseID", new AttrDef_T("string")},
-				{"assignRightKeyBaseID", new AttrDef_T("string")},
-				{"scrollBorder", new AttrDef_T("int")},
-				{"hScrollHeight", new AttrDef_T("int")},
-				{"vScrollWidth", new AttrDef_T("int")},
-				{"vScrollSliderHeight", new AttrDef_T("int")},
-				{"hScrollSliderWidth", new AttrDef_T("int")},
-				{"scrollSliderBorder", new AttrDef_T("int")},
-				{"scrollSliderAutosize", new AttrDef_T("bool")},
-				{"scrollDecay", new AttrDef_T("int")},
-				{"scrollPickupInterval", new AttrDef_T("int")},
-				{"scrollSpeed", new AttrDef_T("int")},
-				{"scrollInitPos", new AttrDef_T("int")},
-				{"rememberScrollPos", new AttrDef_T("bool")},
-				{"scrollParentLayerWhenGetFocus", new AttrDef_T("int")},
-				{"isMaskAreaByKey", new AttrDef_T("bool")},
-				{"ownEvt", new AttrDef_T("bool")},
-				{"isEffectParentAutosize", new AttrDef_T("bool")},
-				{"canUsedEvent", new AttrDef_T("bool")},
-				{"canHandleEvent", new AttrDef_T("bool")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapPanelAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region Panel
-				{"isEnableScroll", new AttrDef_T("bool")},
-				{"own", new AttrDef_T("bool")},
-				{"autoSize", new AttrDef_T("bool")},
-				{"backSpeed", new AttrDef_T("int")},
-				{"bkH_T", new AttrDef_T("int")},
-				{"bkH_B", new AttrDef_T("int")},
-				{"bkW_L", new AttrDef_T("int")},
-				{"bkW_R", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapLabelAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region Label
-				{"bgColor", new AttrDef_T("color")},
-				{"speed", new AttrDef_T("int")},
-				{"autoSize", new AttrDef_T("bool")},
-				{"autoFontSize", new AttrDef_T("bool")},
-				{"scrollcountType", new AttrDef_T("int")},
-				{"scrollTime", new AttrDef_T("int")},
-				{"scrollRate", new AttrDef_T("int")},
-				{"scrollRateHalf", new AttrDef_T("int")},
-				{"scrollTimeMax", new AttrDef_T("int")},
-				{"startXPer", new AttrDef_T("int")},
-				{"defaultMsgTime", new AttrDef_T("int")},
-				{"nextUIevent", new AttrDef_T("bool")},
-				{"nextUIeventType", new AttrDef_T("int")},
-				{"drawType", new AttrDef_T("int")},
-				{"ellipsisWhenTooLong", new AttrDef_T("bool")},
-				{"reelScrollDerection", new AttrDef_T("int")},
-				{"reelScrollSpeed", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapButtonAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region Button
-				{"wordWhole", new AttrDef_T("bool")},
-				{"interval", new AttrDef_T("int")},
-				{"blinktimes", new AttrDef_T("int")},
-				{"blinkTextAreaX", new AttrDef_T("int")},
-				{"blinkTextAreaY", new AttrDef_T("int")},
-				{"blinkTextAreaW", new AttrDef_T("int")},
-				{"blinkTextAreaH", new AttrDef_T("int")},
-				{"slideOri", new AttrDef_T("int")},
-				{"pressedEndBlink", new AttrDef_T("bool")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapSkillButtonAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region SkillButton
-				{"cdStyle", new AttrDef_T("int")},
-				{"cdTime", new AttrDef_T("int")},
-				{"cdRange", new AttrDef_T("int")},
-				{"cdRGB", new AttrDef_T("color")},
-				{"cdEx", new AttrDef_T("int")},
-				{"cdEy", new AttrDef_T("int")},
-				{"cdExN", new AttrDef_T("int")},
-				{"cdEyN", new AttrDef_T("int")},
-				{"showCdTime", new AttrDef_T("bool")},
-				{"clockwiseRad", new AttrDef_T("int")},
-				{"clockwiseOffsetx", new AttrDef_T("int")},
-				{"clockwiseOffsety", new AttrDef_T("int")},
-				{"clockwiseAngle", new AttrDef_T("int")},
-				{"clockwiseOriginAngle", new AttrDef_T("int")},
-				{"progressIncrease", new AttrDef_T("bool")},
-				{"disableWhenBeginCold", new AttrDef_T("bool")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapProgressAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region Progress
-				{"min", new AttrDef_T("int")},
-				{"max", new AttrDef_T("int")},
-				{"value", new AttrDef_T("int")},
-				{"ori", new AttrDef_T("int")},
-				{"track", new AttrDef_T("bool")},
-				{"sliderWidth", new AttrDef_T("int")},
-				{"sliderHeight", new AttrDef_T("int")},
-				{"changeSpeed", new AttrDef_T("int")},
-				{"changeRate", new AttrDef_T("int")},
-				{"clockwiseRad", new AttrDef_T("int")},
-				{"clockwiseOffsetx", new AttrDef_T("int")},
-				{"clockwiseOffsety", new AttrDef_T("int")},
-				{"clockwiseAngle", new AttrDef_T("int")},
-				{"clockwiseOriginAngle", new AttrDef_T("int")},
-				{"sliderShowType", new AttrDef_T("int")},
-				{"fillHeadTailShowType", new AttrDef_T("int")},
-				{"preGrowthValue", new AttrDef_T("int")},
-				{"decaySpeed", new AttrDef_T("int")},
-				{"beginDecay", new AttrDef_T("bool")},
-				{"sliderLeftFill", new AttrDef_T("bool")},
-				{"delayValueRate", new AttrDef_T("int")},
-				{"gridValue", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapRadioAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region Radio
-				{"select", new AttrDef_T("bool")},
-				{"ntw", new AttrDef_T("int")},
-				{"wordWhole", new AttrDef_T("bool")},
-				{"checkLayer", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapCheckAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region Check
-				{"select", new AttrDef_T("bool")},
-				{"ntw", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapListPanelAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region ListPanel
-				{"lineHeight", new AttrDef_T("int")},
-				{"own", new AttrDef_T("bool")},
-				{"cel", new AttrDef_T("int")},
-				{"celCountMax", new AttrDef_T("int")},
-				{"select", new AttrDef_T("int")},
-				{"autoSize", new AttrDef_T("bool")},
-				{"maxSize", new AttrDef_T("int")},
-				{"bkH_T", new AttrDef_T("int")},
-				{"bkH_B", new AttrDef_T("int")},
-				{"backSpeed", new AttrDef_T("int")},
-				{"appendOri", new AttrDef_T("int")},
-				{"lineSpace", new AttrDef_T("int")},
-				{"removeExceedFromHead", new AttrDef_T("bool")},
-				{"onBottomEventPercent", new AttrDef_T("int")},
-				{"middleSelect", new AttrDef_T("int")},
-				{"isMiddleCardList", new AttrDef_T("bool")},
-				{"middleCardBorder", new AttrDef_T("int")},
-				{"middleCardZoomValue", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapTabPanelAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region TabPanel
-				{"cascadeOrder", new AttrDef_T("int")},
-				{"alignment", new AttrDef_T("int")},
-				{"tabIndent", new AttrDef_T("int")},
-				{"tabInterval", new AttrDef_T("int")},
-				{"tabPageSpacing", new AttrDef_T("int")},
-				{"tabWidth", new AttrDef_T("int")},
-				{"tabHeight", new AttrDef_T("int")},
-				{"own", new AttrDef_T("bool")},
-				{"duiqi", new AttrDef_T("int")},
-				{"wordWhole", new AttrDef_T("bool")},
-				{"tabChangeTime", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapPagePanelAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region PagePanel
-				{"speed", new AttrDef_T("int")},
-				{"own", new AttrDef_T("bool")},
-				{"switchType", new AttrDef_T("int")},
-				{"controlRotateType", new AttrDef_T("int")},
-				{"turnEnable", new AttrDef_T("bool")},
-				{"switchPageNeedlen", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapVirtualPadAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region VirtualPad
-				{"vStyle", new AttrDef_T("int")},
-				{"fingerpadr", new AttrDef_T("int")},
-				{"pf", new AttrDef_T("int")},
-				{"areaMaxWidthPer", new AttrDef_T("int")},
-				{"areaMaxHeightPer", new AttrDef_T("int")},
-				{"setAx", new AttrDef_T("int")},
-				{"setAy", new AttrDef_T("int")},
-				{"backTime", new AttrDef_T("int")},
-				{"clickTime", new AttrDef_T("int")},
-				{"interval", new AttrDef_T("int")},
-				{"blinktimes", new AttrDef_T("int")},
-				{"padToFingerDistanceMax", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapRichTextAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region RichText
-				{"maxLength", new AttrDef_T("int")},
-				{"maxLine", new AttrDef_T("int")},
-				{"readOnly", new AttrDef_T("bool")},
-				{"passwordChar", new AttrDef_T("bool")},
-				{"wrodWrap", new AttrDef_T("bool")},
-				{"vScrollBoarder", new AttrDef_T("int")},
-				{"lineSpacing", new AttrDef_T("int")},
-				{"speed", new AttrDef_T("int")},
-				{"wordWhole", new AttrDef_T("bool")},
-				{"autoSize", new AttrDef_T("bool")},
-				{"richTips", new AttrDef_T("string")},
-				{"convertIndex", new AttrDef_T("int")},
-				{"inputType", new AttrDef_T("int")},
-				{"bkH_T", new AttrDef_T("int")},
-				{"bkH_B", new AttrDef_T("int")},
-				{"beforeSkins", new AttrDef_T("string")},
-				{"scrollTime", new AttrDef_T("int")},
-				{"scrollTextSpeed", new AttrDef_T("int")},
-				{"scrollText", new AttrDef_T("bool")},
-				{"scrollcountType", new AttrDef_T("int")},
-				{"backSpeed", new AttrDef_T("int")},
-				{"textAnchorType", new AttrDef_T("int")},
-				{"independentDrawSub", new AttrDef_T("bool")},
-				{"alignBottomText", new AttrDef_T("bool")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapPageTextAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region PageText
-				{"pressedWidth", new AttrDef_T("int")},
-				{"pressedHeight", new AttrDef_T("int")},
-				{"PageNumHeight", new AttrDef_T("int")},
-				{"PageNumWidth", new AttrDef_T("int")},
-				{"PageNumIndent", new AttrDef_T("int")},
-				{"lineSpacing", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapScriptPanelAttrDef = new Dictionary<string, AttrDef_T>
-			{
-			};
-		Dictionary<string, AttrDef_T> conf_mapCountDownAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region CountDown
-				{"start", new AttrDef_T("bool")},
-				{"unit", new AttrDef_T("int")},
-				{"days", new AttrDef_T("int")},
-				{"hours", new AttrDef_T("int")},
-				{"minutes", new AttrDef_T("int")},
-				{"seconds", new AttrDef_T("int")},
-				{"milliseconds", new AttrDef_T("int")},
-				{"countType", new AttrDef_T("int")},
-				{"timeout", new AttrDef_T("int")},
-				{"countChangeRate", new AttrDef_T("float")},
-				{"autoShowLength", new AttrDef_T("int")},
-				{"timePreset", new AttrDef_T("time")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapApartPanelAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region ApartPanel
-				{"own", new AttrDef_T("bool")},
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapDraggedPanelAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region DraggedPanel
-				{"canDraggedCopy", new AttrDef_T("bool")},
-				{"getInfoIndex", new AttrDef_T("int")},
-				{"copyTime", new AttrDef_T("int")},
-				{"own", new AttrDef_T("bool")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapTurnTableAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region TurnTable
-				{"tableCount", new AttrDef_T("int")},
-				{"resultIndexString", new AttrDef_T("string")},
-				{"interval", new AttrDef_T("int")},
-				{"turnTime", new AttrDef_T("int")},
-				{"maxTurntime", new AttrDef_T("int")},
-				{"turnType", new AttrDef_T("int")},
-				{"defaultRun", new AttrDef_T("bool")},
-				{"maxSpeed", new AttrDef_T("int")},
-				{"runAcceleration", new AttrDef_T("int")},
-				{"backAcceleration", new AttrDef_T("int")},
-				{"tableInterval", new AttrDef_T("int")},
-				{"lineSpace", new AttrDef_T("int")},
-				{"backTime", new AttrDef_T("int")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapDrawModelAttrDef = new Dictionary<string, AttrDef_T>
-			{
-			};
-		Dictionary<string, AttrDef_T> conf_mapDropListAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region DropList
-				{"appendOri", new AttrDef_T("int")},
-				{"packWidth", new AttrDef_T("int")},
-				{"packHeight", new AttrDef_T("int")},
-				{"expansionWidth", new AttrDef_T("int")},
-				{"expansionHeight", new AttrDef_T("int")},
-				{"lineSpace", new AttrDef_T("int")},
-				{"ignoreParentClip", new AttrDef_T("bool")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapEventAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region Event
-				{"type", new AttrDef_T("string")},
-				{"function", new AttrDef_T("string")},
-				{"sound", new AttrDef_T("string")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapRootEventAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region RootEvent
-				{"type", new AttrDef_T("string")},
-				{"function", new AttrDef_T("string")},
-				{"sound", new AttrDef_T("string")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapToolTipAttrDef = new Dictionary<string, AttrDef_T>
-			{
-			};
-
-		Dictionary<string, AttrDef_T> conf_mapResAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region 资源
-				{"name", new AttrDef_T("string")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapSkinGroupAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region 皮肤组
-				{"Name", new AttrDef_T("string")}
-				#endregion
-			};
-		Dictionary<string, AttrDef_T> conf_mapSkinAttrDef = new Dictionary<string, AttrDef_T>
-			{
-				#region 皮肤
-				{"Name", new AttrDef_T("string")},
-				{"Width", new AttrDef_T("int")},
-				{"Height", new AttrDef_T("int")},
-				#endregion
-			};
-		#endregion
-
-		void loadStrDicByPath(string path)
-		{
-			XmlDocument docStr = new XmlDocument();
-
-			docStr.Load(path);
-		}
-		static void addWordRowToDic(XmlElement xeRow, Dictionary<string, Dictionary<string, string>> mapDic)
-		{
-			if (xeRow.Name == "row" && xeRow.GetAttribute("key") != "")
-			{
-				string rowKey = xeRow.GetAttribute("key");
-				Dictionary<string, string> mapTmp;
-
-				if (!mapDic.TryGetValue(rowKey, out mapTmp))
-				{
-					mapDic.Add(rowKey, new Dictionary<string, string>());
-					foreach (XmlNode xnLang in xeRow.ChildNodes)
-					{
-						if (xnLang.NodeType == XmlNodeType.Element)
-						{
-							XmlElement xeLang = (XmlElement)xnLang;
-							string strLang;
-
-							if (!mapDic[rowKey].TryGetValue(xeLang.Name, out strLang))
-							{
-								mapDic[rowKey].Add(xeLang.Name, xeLang.InnerText);
-							}
-						}
-					}
-				}
-			}
-		}
-		void refreshStrDic()
-		{
-			string dicPath = @".\data\Lang\zh-CN";
-			DirectoryInfo di = new DirectoryInfo(dicPath);
-			FileInfo[] arrFi = di.GetFiles("*.xml");
-
-			m_mapStrDic = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
-
-			m_mapStrDic.Add("DefDic", new Dictionary<string, Dictionary<string, string>>());
-			foreach(FileInfo fi in arrFi)
-			{
-				XmlDocument docDic = new XmlDocument();
-
-				docDic.Load(fi.FullName);
-				if(docDic.DocumentElement.Name == "DicRoot")
-				{
-					foreach(XmlNode xn in docDic.DocumentElement.ChildNodes)
-					{
-						if(xn.NodeType == XmlNodeType.Element)
-						{
-							XmlElement xe = (XmlElement)xn;
-
-							switch(xe.Name)
-							{
-								case "DefDic":
-									{
-										foreach(XmlNode xnRow in xe.ChildNodes)
-										{
-											if(xnRow.NodeType == XmlNodeType.Element)
-											{
-												XmlElement xeRow = (XmlElement)xnRow;
-
-												addWordRowToDic(xeRow, m_mapStrDic["DefDic"]);
-											}
-										}
-									}
-									break;
-								case "SubDic":
-									{
-										foreach (XmlNode xnRow in xe.ChildNodes)
-										{
-											if (xnRow.NodeType == XmlNodeType.Element)
-											{
-												XmlElement xeRow = (XmlElement)xnRow;
-
-												addWordRowToDic(xeRow, m_mapStrDic["DefDic"]);
-											}
-										}
-									}
-									break;
-								default:
-									break;
-							}
-						}
-					}
-				}
-			}
-		}
 		public void initResMap(Dictionary<string, SkinDef_T> mapResDef)
 		{
-			foreach(KeyValuePair<string, SkinDef_T> pairSkinDef in mapResDef.ToList())
+			foreach (KeyValuePair<string, SkinDef_T> pairSkinDef in mapResDef.ToList())
 			{
 				SkinDef_T skinDef;
-				if (!m_mapAllResDef.TryGetValue(pairSkinDef.Key, out skinDef))
+				if (!m_mapSkinAllDef.TryGetValue(pairSkinDef.Key, out skinDef))
 				{
-					m_mapAllResDef.Add(pairSkinDef.Key, pairSkinDef.Value);
+					m_mapSkinAllDef.Add(pairSkinDef.Key, pairSkinDef.Value);
 					if (pairSkinDef.Value.m_mapEnChild != null && pairSkinDef.Value.m_mapEnChild.Count > 0)
 					{
 						initResMap(pairSkinDef.Value.m_mapEnChild);
@@ -1834,253 +1331,319 @@ namespace UIEditor
 		{
 
 		}
-		void refreshSkinApprSuf(Dictionary<string, CtrlDef_T> mapCtrlDef)
+		bool refreshSkinApprSuf()
 		{
-			string confPath = "./data/PlugIn/BoloUI/SkinApprSuf.xml";
-			string strPath = "./data/Lang/" + m_curLang + "/BoloUIMain.xml";
+			string confPath = conf_pathPlugInBoloUI + @"SkinApprSuf.xml";
 			XmlDocument docConf = new XmlDocument();
-			XmlDocument docStr = new XmlDocument();
 
 			docConf.Load(confPath);
-			docStr.Load(strPath);
+
+			if(docConf.DocumentElement.Name == "SkinApprSuf")
+			{
+				XmlElement xeRoot = docConf.DocumentElement;
+
+				foreach(XmlNode xnCtrl in xeRoot.ChildNodes)
+				{
+					if (xnCtrl.NodeType == XmlNodeType.Element)
+					{
+						XmlElement xeCtrl = (XmlElement)xnCtrl;
+
+						if(xeCtrl.Name == "CtrlConf")
+						{
+							if(xeCtrl.GetAttribute("key") != "")
+							{
+								string ctrlKey = xeCtrl.GetAttribute("key");
+								CtrlDef_T ctrlDef;
+
+								if(m_mapCtrlDef.TryGetValue(ctrlKey, out ctrlDef))
+								{
+									ctrlDef.m_mapApprSuffix = new Dictionary<string, string>();
+									foreach(XmlNode xnRow in xeCtrl.ChildNodes)
+									{
+										if(xnRow.NodeType == XmlNodeType.Element)
+										{
+											XmlElement xeRow = (XmlElement)xnRow;
+
+											if(xeRow.Name == "intRow" && xeRow.InnerText != "")
+											{
+												ctrlDef.m_mapApprSuffix.Add(xeRow.InnerText, m_strDic.getWordByKey(xeRow.InnerText, "SkinApprSuf"));
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+		public void addAttrConf(XmlElement xe, Dictionary<string, AttrDef_T> mapAttrDef)
+		{
+			foreach (XmlNode xnAttr in xe.ChildNodes)
+			{
+				if (xnAttr.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xeAttr = (XmlElement)xnAttr;
+
+					if (xeAttr.Name == "AttrDef")
+					{
+						string keyAttr = xeAttr.GetAttribute("key");
+
+						if (keyAttr != "")
+						{
+							AttrDef_T attrDef;
+
+							if (!mapAttrDef.TryGetValue(keyAttr, out attrDef))
+							{
+								attrDef = new AttrDef_T();
+								if (xeAttr.GetAttribute("type") != "")
+								{
+									attrDef.m_type = xeAttr.GetAttribute("type");
+								}
+								else
+								{
+									attrDef.m_type = "string";
+								}
+								if (xeAttr.GetAttribute("isEnum") == "true")
+								{
+									attrDef.m_isEnum = true;
+									attrDef.m_mapEnum = new Dictionary<string, string>();
+									foreach (XmlNode xnEnum in xeAttr.ChildNodes)
+									{
+										if (xnEnum.NodeType == XmlNodeType.Element)
+										{
+											XmlElement xeEnum = (XmlElement)xnEnum;
+
+											if (xeEnum.Name == "row")
+											{
+												attrDef.m_mapEnum.Add(xeEnum.InnerText, "");
+											}
+										}
+									}
+								}
+								else
+								{
+									attrDef.m_isEnum = false;
+								}
+								if (xeAttr.GetAttribute("isCommon") == "true")
+								{
+									attrDef.m_isCommon = true;
+								}
+								else
+								{
+									attrDef.m_isCommon = false;
+								}
+								attrDef.m_subType = xeAttr.GetAttribute("subType");
+								mapAttrDef.Add(keyAttr, attrDef);
+							}
+						}
+					}
+				}
+			}
+		}
+		public bool initCtrlDef()
+		{
+			string confPath = conf_pathPlugInBoloUI + @"CtrlAttrDef.xml";
+			XmlDocument docDef = new XmlDocument();
+
+			docDef.Load(confPath);
+			m_mapCtrlDef = new Dictionary<string, CtrlDef_T>();
+			m_mapPanelCtrlDef = new Dictionary<string, CtrlDef_T>();
+
+			if(docDef.DocumentElement.Name == "CtrlAttrDef")
+			{
+				XmlElement xeRoot = docDef.DocumentElement;
+				string nameDic;
+				string tipDic;
+				Dictionary<string, Dictionary<string, string>> mapNameDic;
+				Dictionary<string, Dictionary<string, string>> mapTipDic;
+
+				#region 词典
+				if (xeRoot.GetAttribute("nameDic") != "")
+				{
+					nameDic = xeRoot.GetAttribute("nameDic");
+				}
+				else
+				{
+					nameDic = "DefDic";
+				}
+				if(m_strDic.m_mapStrDic.TryGetValue(nameDic, out mapNameDic))
+				{
+
+				}
+				else
+				{
+					if(m_strDic.m_mapStrDic.TryGetValue("DefDic", out mapNameDic))
+					{
+
+					}
+					else
+					{
+						return false;
+					}
+				}
+				if (xeRoot.GetAttribute("tipDic") != "")
+				{
+					tipDic = xeRoot.GetAttribute("tipDic");
+				}
+				else
+				{
+					tipDic = "DefDic";
+				}
+				if (m_strDic.m_mapStrDic.TryGetValue(tipDic, out mapTipDic))
+				{
+
+				}
+				else
+				{
+					if (m_strDic.m_mapStrDic.TryGetValue("DefDic", out mapTipDic))
+					{
+
+					}
+					else
+					{
+						return false;
+					}
+				}
+				#endregion
+
+				#region conf
+				foreach (XmlNode xnCtrl in xeRoot.ChildNodes)
+				{
+					if (xnCtrl.NodeType == XmlNodeType.Element)
+					{
+						XmlElement xeCtrl = (XmlElement)xnCtrl;
+
+						if (xeCtrl.Name == "CtrlDef" && xeCtrl.GetAttribute("key") != "")
+						{
+							string keyCtrl = xeCtrl.GetAttribute("key");
+							CtrlDef_T ctrlDef;
+
+							if (!m_mapCtrlDef.TryGetValue(keyCtrl, out ctrlDef))
+							{
+								Dictionary<string, AttrDef_T> mapAttrDef = new Dictionary<string, AttrDef_T>();
+								string isFrame = xeCtrl.GetAttribute("isFrame");
+
+								ctrlDef = new CtrlDef_T(mapAttrDef, null);
+								if(isFrame == "true")
+								{
+									ctrlDef.m_isFrame = true;
+									m_mapPanelCtrlDef.Add(keyCtrl, ctrlDef);
+								}
+								else
+								{
+									ctrlDef.m_isFrame = false;
+								}
+								m_mapCtrlDef.Add(keyCtrl, ctrlDef);
+
+								addAttrConf(xeCtrl, mapAttrDef);
+
+								AttrList attrListUI = new AttrList(keyCtrl, this);
+								ctrlDef.m_attrListUI = attrListUI;
+							}
+						}
+					}
+				}
+				refreshSkinApprSuf();
+				#endregion
+
+				return true;
+			}
+
+			return false;
+		}
+		public void addSkinNodeConf(XmlElement xe, Dictionary<string, SkinDef_T> mapSkinTreeDef)
+		{
+			foreach (XmlNode xnNode in xe.ChildNodes)
+			{
+				if (xnNode.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xeNode = (XmlElement)xnNode;
+
+					if (xeNode.Name == "node")
+					{
+						string keySkin = xeNode.GetAttribute("key");
+						SkinDef_T skinDef;
+
+						if (keySkin != "" && !mapSkinTreeDef.TryGetValue(keySkin, out skinDef))
+						{
+							Dictionary<string, AttrDef_T> mapAttrDef;
+							if (m_mapSkinAttrDef.TryGetValue(keySkin, out mapAttrDef))
+							{
+								Dictionary<string, SkinDef_T> mapTree = new Dictionary<string, SkinDef_T>();
+
+								addSkinNodeConf(xeNode, mapTree);
+								skinDef = new SkinDef_T(mapTree, mapAttrDef);
+								mapSkinTreeDef.Add(keySkin, skinDef);
+							}
+						}
+					}
+				}
+			}
+		}
+		public bool initSkinDef()
+		{
+
+			#region 属性设置
+			string attrPath = conf_pathPlugInBoloUI + @"SkinAttrDef.xml";
+			XmlDocument docAttr = new XmlDocument();
+			docAttr.Load(attrPath);
+
+			if(docAttr.DocumentElement.Name != "SkinAttrDef")
+			{
+				return false;
+			}
+
+			m_mapSkinAttrDef = new Dictionary<string, Dictionary<string, AttrDef_T>>();
+			XmlElement xe = docAttr.DocumentElement;
+
+			foreach(XmlNode xnSkinDef in xe.ChildNodes)
+			{
+				if(xnSkinDef.NodeType == XmlNodeType.Element)
+				{
+					XmlElement xeSkinDef = (XmlElement)xnSkinDef;
+					string keySkin = xeSkinDef.GetAttribute("key");
+
+					if (xeSkinDef.Name == "SkinDef" && keySkin != "")
+					{
+						Dictionary<string, AttrDef_T> mapAttrDef = new Dictionary<string,AttrDef_T>();
+
+						addAttrConf(xeSkinDef, mapAttrDef);
+						m_mapSkinAttrDef.Add(keySkin, mapAttrDef);
+					}
+				}
+			}
+			#endregion
+
+			#region 节点设置
+			string nodePath = conf_pathPlugInBoloUI + @"SkinNodes.xml";
+			XmlDocument docNode = new XmlDocument();
+
+			docNode.Load(nodePath);
+
+			if (docNode.DocumentElement.Name != "SkinNodes")
+			{
+				return false;
+			}
+
+			m_mapSkinTreeDef = new Dictionary<string, SkinDef_T>();
+			XmlElement xeRoot = docNode.DocumentElement;
+
+			addSkinNodeConf(xeRoot, m_mapSkinTreeDef);
+			#endregion
+
+			return true;
 		}
 		public void initXmlValueDef()
 		{
-			m_mapCtrlDef = new Dictionary<string, CtrlDef_T>
-			{
-				#region boloUI控件的定义
-				{ "basic", new CtrlDef_T(conf_mapBaseAttrDef, null)},
-				{ "panel", new CtrlDef_T(conf_mapPanelAttrDef, null)},
-				{ "label", new CtrlDef_T(conf_mapLabelAttrDef, null)},
-				{ "button", new CtrlDef_T(conf_mapButtonAttrDef, null)},
-				{ "skillbutton", new CtrlDef_T(conf_mapSkillButtonAttrDef, null)},
-				{ "progress", new CtrlDef_T(conf_mapProgressAttrDef, null)},
-				{ "radio", new CtrlDef_T(conf_mapRadioAttrDef, null)},
-				{ "check", new CtrlDef_T(conf_mapCheckAttrDef, null)},
-				{ "listPanel", new CtrlDef_T(conf_mapListPanelAttrDef, null)},
-				{ "tabPanel", new CtrlDef_T(conf_mapTabPanelAttrDef, null)},
-				{ "pagePanel", new CtrlDef_T(conf_mapPagePanelAttrDef, null)},
-				{ "virtualpad", new CtrlDef_T(conf_mapVirtualPadAttrDef, null)},
-				{ "richText", new CtrlDef_T(conf_mapRichTextAttrDef, null)},
-				{ "pageText", new CtrlDef_T(conf_mapPageTextAttrDef, null)},
-				{ "scriptPanel", new CtrlDef_T(conf_mapScriptPanelAttrDef, null)},
-				{ "countDown", new CtrlDef_T(conf_mapCountDownAttrDef, null)},
-				{ "apartPanel", new CtrlDef_T(conf_mapApartPanelAttrDef, null)},
-				{ "draggedPanel", new CtrlDef_T(conf_mapDraggedPanelAttrDef, null)},
-				{ "turnTable", new CtrlDef_T(conf_mapTurnTableAttrDef, null)},
-				{ "drawModel", new CtrlDef_T(conf_mapDrawModelAttrDef, null)},
-				{ "dropList", new CtrlDef_T(conf_mapDropListAttrDef, null)},
-				{ "event", new CtrlDef_T(conf_mapEventAttrDef, null)},
-				{ "tooltip", new CtrlDef_T(conf_mapToolTipAttrDef, null)}
-				#endregion
-			};
-			refreshSkinApprSuf(m_mapCtrlDef);
+			initCtrlDef();
+			initSkinDef();
 
-			#region boloUI的skin节点类型定义
+			initResMap(m_mapSkinTreeDef);
 
-			#endregion
-
-			m_mapPanelCtrlDef = new Dictionary<string, CtrlDef_T>
-			{
-				#region boloUI父控件的定义
-				{ "panel",		m_mapCtrlDef["panel"]},
-				{ "listPanel",	m_mapCtrlDef["listPanel"]},
-				{ "tabPanel",	m_mapCtrlDef["tabPanel"]},
-				{ "pagePanel",	m_mapCtrlDef["pagePanel"]},
-				{ "apartPanel", m_mapCtrlDef["apartPanel"]}
-				#endregion
-			};
-
-			m_mapEventDef = new Dictionary<string, SkinDef_T>
-			{
-				#region BoloUIEvent（事件组）
-				{
-					"event",
-					new SkinDef_T(null, conf_mapRootEventAttrDef)
-				}
-				#endregion
-			};
-
-			m_mapShapeChildDef = new Dictionary<string, SkinDef_T>
-			{
-				#region shape的子节点
-				{"animation",
-					new SkinDef_T(
-						new Dictionary<string, SkinDef_T>
-						{
-							{"frame",
-								new SkinDef_T(
-									new Dictionary<string, SkinDef_T>(),
-									new Dictionary<string, AttrDef_T>
-									{
-										{"image", new AttrDef_T("string")},
-										{"time", new AttrDef_T("int")},
-										{"x", new AttrDef_T("int")},
-										{"y", new AttrDef_T("int")},
-										{"w", new AttrDef_T("int")},
-										{"h", new AttrDef_T("int")},
-										{"X", new AttrDef_T("int")},
-										{"Y", new AttrDef_T("int")},
-										{"Width", new AttrDef_T("int")},
-										{"Height", new AttrDef_T("int")},
-										{"topBorder", new AttrDef_T("int")},
-										{"bottomBorder", new AttrDef_T("int")},
-										{"leftBorder", new AttrDef_T("int")},
-										{"rightBorder", new AttrDef_T("int")},
-										{"Anchor", new AttrDef_T("int")},
-										{"angle", new AttrDef_T("int")},
-										{"rotateType", new AttrDef_T("int")},
-										{"mirrorType", new AttrDef_T("int")},
-										
-										{"ImageName", new AttrDef_T("string")},
-										{"Dock", new AttrDef_T("int")},
-										{"NineGrid", new AttrDef_T("bool")},
-										{"NGX", new AttrDef_T("int")},
-										{"NGY", new AttrDef_T("int")},
-										{"NGWidth", new AttrDef_T("int")},
-										{"NGHeight", new AttrDef_T("int")},
-										{"LIGHT", new AttrDef_T("bool")},
-										{"Color", new AttrDef_T("color")},
-
-										{"Font", new AttrDef_T("int")},
-										{"Color0", new AttrDef_T("color")},
-										{"Color1", new AttrDef_T("color")},
-										{"Color2", new AttrDef_T("color")},
-										{"Style", new AttrDef_T("int")},
-										{"fontSize", new AttrDef_T("int")}
-									}
-								)
-							}
-						},
-						new Dictionary<string, AttrDef_T>
-						{
-							{"loop", new AttrDef_T("bool")}
-						}
-					)
-				}
-				#endregion
-			};
-
-			m_mapSkinChildDef = new Dictionary<string, SkinDef_T>
-			{
-				#region skin的子节点
-				{"apperance",
-					new SkinDef_T(
-						new Dictionary<string, SkinDef_T>
-						{
-							{"imageShape",
-								new SkinDef_T(
-									m_mapShapeChildDef,
-									new Dictionary<string, AttrDef_T>
-									{
-										{"ImageName", new AttrDef_T("string")},
-										{"Dock", new AttrDef_T("int")},
-										{"NineGrid", new AttrDef_T("bool")},
-										{"NGX", new AttrDef_T("int")},
-										{"NGY", new AttrDef_T("int")},
-										{"NGWidth", new AttrDef_T("int")},
-										{"NGHeight", new AttrDef_T("int")},
-										{"LIGHT", new AttrDef_T("bool")},
-										{"Color", new AttrDef_T("color")},
-										
-										{"X", new AttrDef_T("int")},
-										{"Y", new AttrDef_T("int")},
-										{"Width", new AttrDef_T("int")},
-										{"Height", new AttrDef_T("int")},
-										{"topBorder", new AttrDef_T("int")},
-										{"bottomBorder", new AttrDef_T("int")},
-										{"leftBorder", new AttrDef_T("int")},
-										{"rightBorder", new AttrDef_T("int")},
-										{"Anchor", new AttrDef_T("int")},
-										{"angle", new AttrDef_T("int")},
-										{"rotateType", new AttrDef_T("int")},
-										{"mirrorType", new AttrDef_T("int")}
-									}
-								)
-							},
-							{"textShape",
-								new SkinDef_T(
-									m_mapShapeChildDef,
-									new Dictionary<string, AttrDef_T>
-									{
-										{"Font", new AttrDef_T("int")},
-										{"Color", new AttrDef_T("color")},
-										{"Color0", new AttrDef_T("color")},
-										{"Color1", new AttrDef_T("color")},
-										{"Color2", new AttrDef_T("color")},
-										{"Style", new AttrDef_T("int")},
-										{"fontSize", new AttrDef_T("int")},
-										
-										{"X", new AttrDef_T("int")},
-										{"Y", new AttrDef_T("int")},
-										{"Width", new AttrDef_T("int")},
-										{"Height", new AttrDef_T("int")},
-										{"topBorder", new AttrDef_T("int")},
-										{"bottomBorder", new AttrDef_T("int")},
-										{"leftBorder", new AttrDef_T("int")},
-										{"rightBorder", new AttrDef_T("int")},
-										{"Anchor", new AttrDef_T("int")},
-										{"angle", new AttrDef_T("int")},
-										{"rotateType", new AttrDef_T("int")},
-										{"mirrorType", new AttrDef_T("int")}
-									}
-								)
-							}
-						},
-						new Dictionary<string, AttrDef_T>
-						{
-							{"id", new AttrDef_T("string")}
-						}
-					)
-				}
-				#endregion
-			};
-
-			m_mapSkinResDef = new Dictionary<string, SkinDef_T>
-			{
-				#region 皮肤与资源等的定义
-				{"BoloUIEvent",
-					new SkinDef_T(
-						m_mapEventDef,
-						null
-					)
-				},
-				{"skingroup",
-					new SkinDef_T(
-						null,
-						conf_mapSkinGroupAttrDef
-					)
-				},
-				{"resource",
-					new SkinDef_T(
-						null,
-						conf_mapResAttrDef
-					)
-				},
-				{"publicresource",
-					new SkinDef_T(
-						null,
-						conf_mapResAttrDef
-					)
-				},
-				{"skin",
-					new SkinDef_T(
-						m_mapSkinChildDef,
-						conf_mapSkinAttrDef
-					)
-				},
-				{"publicskin",
-					new SkinDef_T(
-						m_mapSkinChildDef,
-						conf_mapSkinAttrDef
-					)
-				}
-				#endregion
-			};
-
-			initResMap(m_mapSkinResDef);
-
-			foreach(KeyValuePair<string, CtrlDef_T> pairCtrlDef in m_mapCtrlDef.ToList())
+			foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in m_mapCtrlDef.ToList())
 			{
 				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI = new AttrList(pairCtrlDef.Key, this));
 				m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI.Visibility = Visibility.Collapsed;
@@ -2093,12 +1656,12 @@ namespace UIEditor
 				mx_toolArea.Children.Remove(m_otherAttrList);
 				m_otherAttrList = null;
 			}
-			foreach(AttrList attrList in mx_toolArea.Children)
+			foreach (AttrList attrList in mx_toolArea.Children)
 			{
 				attrList.Visibility = Visibility.Collapsed;
 			}
 		}
-	#endregion
+		#endregion
 
 		public void refreshAllCtrlUIHeader()
 		{

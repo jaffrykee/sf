@@ -49,7 +49,7 @@ namespace UIEditor.BoloRes
 			mx_addNode.Items.Clear();
 			if(m_xe.Name == "BoloUI")
 			{
-				mapSkinDef = m_pW.m_mapSkinResDef;
+				mapSkinDef = m_pW.m_mapSkinTreeDef;
 			}
 			else
 			{
@@ -61,7 +61,7 @@ namespace UIEditor.BoloRes
 				{
 					MenuItem skinMenuItem = new MenuItem();
 
-					StringDic.getNameAndTip(skinMenuItem, pairSkinDef.Key, StringDic.m_mapStrNode);
+					MainWindow.s_pW.m_strDic.getNameAndTip(skinMenuItem, StringDic.conf_ctrlTipDic, pairSkinDef.Key);
 					skinMenuItem.Click += insertSkinItem_Click;
 					mx_addNode.Items.Add(skinMenuItem);
 				}
@@ -78,7 +78,7 @@ namespace UIEditor.BoloRes
 			ResBasic treeChild;
 			if (m_xe.Name == "BoloUI")
 			{
-				treeChild = new ResBasic(newXe, m_rootControl, m_pW.m_mapSkinResDef[newXe.Name]);
+				treeChild = new ResBasic(newXe, m_rootControl, m_pW.m_mapSkinTreeDef[newXe.Name]);
 			}
 			else
 			{
@@ -131,19 +131,28 @@ namespace UIEditor.BoloRes
 		{
 			if(m_curDeepDef != null)
 			{
-				string ctrlTip;
+				string ctrlName = MainWindow.s_pW.m_strDic.getWordByKey(m_xe.Name);
+				string ctrlTip = MainWindow.s_pW.m_strDic.getWordByKey(m_xe.Name, StringDic.conf_ctrlTipDic);
 				string name = "";
-				//string id = "";
 
-				if (StringDic.m_mapStrNode.TryGetValue(m_xe.Name, out ctrlTip))
+				if (ctrlName != "")
 				{
-					mx_radio.Content = "<" + ctrlTip + ">";
-					mx_radio.ToolTip = m_xe.Name;
+					mx_radio.Content = "<" + ctrlName + ">";
 				}
 				else
 				{
 					mx_radio.Content = "<" + m_xe.Name + ">";
 				}
+
+				if (ctrlTip != "")
+				{
+					mx_radio.ToolTip = ctrlTip;
+				}
+				else
+				{
+					mx_radio.ToolTip = m_xe.Name;
+				}
+
 				if (m_curDeepDef.m_mapAttrDef != null)
 				{
 					name = m_xe.GetAttribute(m_curDeepDef.m_mapAttrDef.ToList().First().Key);
@@ -151,6 +160,7 @@ namespace UIEditor.BoloRes
 
 				mx_radio.Content += name;
 			}
+			mx_radio.Content = mx_radio.Content.ToString().Replace("_", "__");
 		}
 		public override void changeSelectItem(object obj = null)
 		{

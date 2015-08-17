@@ -34,16 +34,24 @@ namespace UIEditor
 			{
 				mt_name = value;
 
-				string outStr;
-				if(StringDic.m_mapStrAttr.TryGetValue(value, out outStr) && outStr != "")
+				string outStr = MainWindow.s_pW.m_strDic.getWordByKey(value);
+				if(outStr != "")
 				{
+					string tip = MainWindow.s_pW.m_strDic.getWordByKey(value, StringDic.conf_ctrlAttrTipDic);
+
 					mx_name.Content = outStr;
-					mx_name.ToolTip = value;
+					if(tip != "")
+					{
+						mx_name.ToolTip = tip;
+					}
+					else
+					{
+						mx_name.ToolTip = value;
+					}
 				}
 				else
 				{
 					mx_name.Content = value;
-					mx_name.ToolTip = "";
 				}
 				if(m_name == "skin")
 				{
@@ -130,7 +138,7 @@ namespace UIEditor
 			}
 		}
 		public bool m_isEnum;
-		public List<string> m_lstEnumValue;
+		public Dictionary<string, string> m_mapEnum;
 
 		public AttrRow(string type = "string", string name = "", string value = "", AttrList parent = null)
 		{
@@ -140,7 +148,7 @@ namespace UIEditor
 			mt_type = type;
 			m_parent = parent;
 			m_isEnum = false;
-			m_lstEnumValue = null;
+			m_mapEnum = null;
 		}
 		public AttrRow(MainWindow.AttrDef_T attrDef, string name = "", string value = "", AttrList parent = null)
 		{
@@ -150,7 +158,7 @@ namespace UIEditor
 			mt_type = attrDef.m_type;
 			m_parent = parent;
 			m_isEnum = attrDef.m_isEnum;
-			m_lstEnumValue = attrDef.m_lstEnumValue;
+			m_mapEnum = attrDef.m_mapEnum;
 		}
 		private void mx_root_Loaded(object sender, RoutedEventArgs e)
 		{

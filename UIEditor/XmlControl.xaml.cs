@@ -273,12 +273,10 @@ namespace UIEditor
 
 							m_pW.mx_treeCtrlFrame.Items.Add(m_treeUI);
 							m_treeUI.mx_radio.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-							m_treeUI.mx_radio.Content = m_treeUI.mx_radio.Content.ToString().Replace("_", "__");
 							m_treeUI.mx_radio.ToolTip = m_openedFile.m_path;
 							m_treeUI.IsExpanded = true;
 							m_pW.mx_treeSkinFrame.Items.Add(m_treeSkin);
 							m_treeSkin.mx_radio.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path);
-							m_treeSkin.mx_radio.Content = m_treeSkin.mx_radio.Content.ToString().Replace("_", "__");
 							m_treeSkin.mx_radio.ToolTip = m_openedFile.m_path;
 							m_treeSkin.IsExpanded = true;
 
@@ -303,7 +301,7 @@ namespace UIEditor
 										m_isOnlySkin = false;
 										m_xeRootCtrl = xe;
 									}
-									else if (m_pW.m_mapSkinResDef.TryGetValue(xe.Name, out skinPtr))
+									else if (m_pW.m_mapSkinTreeDef.TryGetValue(xe.Name, out skinPtr))
 									{
 										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), xe, this, skinPtr) as TreeViewItem;
 										m_treeSkin.Items.Add(treeChild);

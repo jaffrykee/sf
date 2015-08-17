@@ -88,7 +88,7 @@ namespace UIEditor
 				BoloUI.SelSkin.s_pW.m_hwndGLParent = (IntPtr)m_hwndHost;
 				m_hwndControl = BoloUI.SelSkin.s_pW.m_hwndGLParent;
 				m_process = System.Diagnostics.Process.Start(
-					pW.conf_pathGlApp,
+					MainWindow.conf_pathGlApp,
 					BoloUI.SelSkin.s_pW.m_hwndGLParent.ToString() + " " +
 						m_hostWidth.ToString() + " " +
 						m_hostHeight.ToString() + " " +
@@ -99,7 +99,7 @@ namespace UIEditor
 				pW.m_hwndGLParent = (IntPtr)m_hwndHost;
 				m_hwndControl = pW.m_hwndGLParent;
 				m_process = System.Diagnostics.Process.Start(
-					pW.conf_pathGlApp,
+					MainWindow.conf_pathGlApp,
 					pW.m_hwndGLParent.ToString() + " " +
 						m_hostWidth.ToString() + " " +
 						m_hostHeight.ToString() + " " +
