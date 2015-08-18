@@ -402,19 +402,11 @@
 			</ScrollViewer>
 		</Grid>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="2" Width="5" HorizontalAlignment="Left"/>
-		<Grid Name="mx_drawFrame" Grid.Row="3" Grid.Column="1" Visibility="Collapsed">
-			<Grid.RowDefinitions>
-				<RowDefinition Name="mx_glR0" Height="50"/>
-				<RowDefinition Name="mx_glR1" Height="*"/>
-				<RowDefinition Name="mx_glR2" Height="17"/>
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Name="mx_glC0" Width="*"/>
-				<ColumnDefinition Name="mx_glC1" Width="{Binding ElementName=mx_glR2, Path=Height}"/>
-			</Grid.ColumnDefinitions>
-			<Border Name="mx_GLCtrl" Grid.Row="1" Grid.Column="0" Margin="5"/>
-		</Grid>
-		<DockPanel Name="mx_normalFrame" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" Margin="0,0,0,5">
+		<DockPanel Name="mx_normalFrame"
+				   Grid.Row="2"
+				   Grid.RowSpan="2"
+				   Grid.Column="1"
+				   Margin="0,0,0,5">
 			<TabControl Name="mx_workTabs"
 						Margin="0,0,0,10"
 						BorderThickness="0,3,0,0"
@@ -422,6 +414,28 @@
 						Style="{StaticResource TabControlStyle1}">
 			</TabControl>
 		</DockPanel>
+		<Grid Name="mx_drawFrame" Grid.Row="3" Grid.Column="1" Visibility="Collapsed">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="55"/>
+				<RowDefinition Name="mx_glY" Height="0"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Name="mx_glX" Width="0"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid Grid.Row="2" Grid.Column="1" Margin="5,0,20,20">
+				<Border Name="mx_GLCtrl" SizeChanged="mx_GLCtrl_SizeChanged"/>
+			</Grid>
+			<ScrollViewer Name="mx_GLScroll"
+						  Grid.Row="2"
+						  Grid.Column="1"
+						  HorizontalScrollBarVisibility="Visible"
+						  VerticalScrollBarVisibility="Visible"
+						  ScrollChanged="mx_GLScroll_ScrollChanged">
+				<Grid Width="960" Height="640" Margin="5,0,0,0"></Grid>
+			</ScrollViewer>
+		</Grid>
 		<GridSplitter Name="mx_debugSplitter" Grid.Row="4" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
 		<DockPanel Grid.Row="4" Grid.Column="1" Margin="0,5,0,0">
 			<Grid>

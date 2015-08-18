@@ -12,35 +12,37 @@
 	<StackPanel Margin="2,2,2,2">
 		<Border BorderThickness="1" BorderBrush="#ffffffff" Background="#ff444444" CornerRadius="2">
 			<Label Name="mx_title"
-				Foreground="White"
-				Margin="0,0,0,0"
-				Padding="5,1,0,1"
-				Content="a"/>
+				   Foreground="White"
+				   Margin="0,0,0,0"
+				   Padding="5,1,0,1"
+				   Content="a"/>
 		</Border>
 		<StackPanel Name="mx_frame">
 			<Grid Name="mx_setting"
-					HorizontalAlignment="Right"
-					Margin="2,2,2,2"
-					MinWidth="250">
+				  HorizontalAlignment="Right"
+				  Margin="2,2,2,2"
+				  MinWidth="250">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Name="mx_cs0" Width="125"/>
 					<ColumnDefinition Name="mx_cs1" Width="*"/>
 				</Grid.ColumnDefinitions>
 				<CheckBox Name="mx_onlySetted"
-					Grid.Column="0"
-					IsChecked="True"
-					Checked="mx_onlySetted_Checked"
-					Unchecked="mx_onlySetted_Unchecked"
-					VerticalAlignment="Center"
-					Margin="10,0,0,0"
-					Content="隐藏未赋值的项"/>
-				<CheckBox Name="mx_onlyMain"
-					Checked="mx_onlyMain_Checked"
-					Unchecked="mx_onlyMain_Unchecked"
-					Grid.Column="1"
-					VerticalAlignment="Center"
-					Margin="10,0,0,0"
-					Content="只显示常用项"/>
+						  Grid.Column="0"
+						  VerticalAlignment="Center"
+						  Margin="10,0,0,0"
+						  Checked="mx_onlySetted_Checked"
+						  Unchecked="mx_onlySetted_Unchecked">
+					隐藏未赋值的项
+				</CheckBox>
+				<CheckBox Name="mx_onlyCommon"
+						  Grid.Column="1"
+						  VerticalAlignment="Center"
+						  Margin="10,0,0,0"
+						  IsChecked="True"
+						  Checked="mx_onlyCommon_Checked"
+						  Unchecked="mx_onlyCommon_Unchecked">
+					只显示常用项
+				</CheckBox>
 			</Grid>
 		</StackPanel>
 	</StackPanel>

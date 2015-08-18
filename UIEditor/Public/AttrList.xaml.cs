@@ -58,24 +58,21 @@ namespace UIEditor
 
 		public void clearRowValue()
 		{
-			bool tmp = m_pW.m_attrBinding;
-			m_pW.m_attrBinding = false;
-
 			foreach (object row in mx_frame.Children)
 			{
 				if (row.GetType() == Type.GetType("UIEditor.AttrRow"))
 				{
-					((AttrRow)row).m_value = "";
+					((AttrRow)row).m_preValue = "";
 				}
 			}
-			m_pW.m_attrBinding = tmp;
 		}
 
 		public void refreshRowVisible()
 		{
 			bool onlySetted;
+			bool onlyCommon;
 
-			if (mx_onlySetted.IsChecked == true)
+			if (mx_onlySetted != null && mx_onlySetted.IsChecked == true)
 			{
 				onlySetted = true;
 			}
@@ -83,30 +80,44 @@ namespace UIEditor
 			{
 				onlySetted = false;
 			}
+			if (mx_onlyCommon != null && mx_onlyCommon.IsChecked == true)
+			{
+				onlyCommon = true;
+			}
+			else
+			{
+				onlyCommon = false;
+			}
+			foreach (object row in mx_frame.Children)
+			{
+				if (row.GetType() == Type.GetType("UIEditor.AttrRow"))
+				{
+					((AttrRow)row).mx_root.Visibility = Visibility.Visible;
+				}
+			}
 			if(onlySetted)
 			{
 				foreach (object row in mx_frame.Children)
 				{
 					if (row.GetType() == Type.GetType("UIEditor.AttrRow"))
 					{
-						if (((AttrRow)row).m_value == "")
+						if (((AttrRow)row).m_preValue == "")
 						{
 							((AttrRow)row).mx_root.Visibility = Visibility.Collapsed;
-						}
-						else
-						{
-							((AttrRow)row).mx_root.Visibility = Visibility.Visible;
 						}
 					}
 				}
 			}
-			else
+			if (onlyCommon)
 			{
 				foreach (object row in mx_frame.Children)
 				{
-					if(row.GetType() == Type.GetType("UIEditor.AttrRow"))
+					if (row.GetType() == Type.GetType("UIEditor.AttrRow"))
 					{
-						((AttrRow)row).mx_root.Visibility = Visibility.Visible;
+						if (((AttrRow)row).m_isCommon == false)
+						{
+							((AttrRow)row).mx_root.Visibility = Visibility.Collapsed;
+						}
 					}
 				}
 			}
@@ -121,13 +132,13 @@ namespace UIEditor
 		{
 			refreshRowVisible();
 		}
-		private void mx_onlyMain_Checked(object sender, RoutedEventArgs e)
+		private void mx_onlyCommon_Checked(object sender, RoutedEventArgs e)
 		{
-			//todo
+			refreshRowVisible();
 		}
-		private void mx_onlyMain_Unchecked(object sender, RoutedEventArgs e)
+		private void mx_onlyCommon_Unchecked(object sender, RoutedEventArgs e)
 		{
-			//todo
+			refreshRowVisible();
 		}
 	}
 }
