@@ -1,0 +1,130 @@
+<SkinAttrDef nameDic="" tipDic="">
+	<SkinDef key="BoloUIEvent"></SkinDef>
+	<SkinDef key="skingroup">
+		<AttrDef key="Name" type="string" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="resource">
+		<AttrDef key="name" type="string" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="publicresource">
+		<AttrDef key="name" type="string" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="skin">
+		<AttrDef key="Name" type="string" isEnum="false"/>
+		<AttrDef key="Width" type="int" isEnum="false"/>
+		<AttrDef key="Height" type="int" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="publicskin">
+		<AttrDef key="Name" type="string" isEnum="false"/>
+		<AttrDef key="Width" type="int" isEnum="false"/>
+		<AttrDef key="Height" type="int" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="event">
+		<AttrDef key="type" type="string" isEnum="false"/>
+		<AttrDef key="function" type="string" isEnum="false"/>
+		<AttrDef key="sound" type="string" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="apperance">
+		<AttrDef key="id" type="string" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="imageShape">
+		<AttrDef key="ImageName" type="string" isEnum="false"/>
+		<AttrDef key="Dock" type="int" subType="Dock" isEnum="true">
+			<row>0</row>
+			<row>1</row>
+			<row>2</row>
+			<row>3</row>
+			<row>4</row>
+			<row>5</row>
+		</AttrDef>
+		<AttrDef key="NineGrid" type="bool" isEnum="false"/>
+		<AttrDef key="NGX" type="int" isEnum="false"/>
+		<AttrDef key="NGY" type="int" isEnum="false"/>
+		<AttrDef key="NGWidth" type="int" isEnum="false"/>
+		<AttrDef key="NGHeight" type="int" isEnum="false"/>
+		<AttrDef key="LIGHT" type="bool" isEnum="false"/>
+		<AttrDef key="Color" type="Color" isEnum="false"/>
+		<!-- c -->
+		<AttrDef key="X" type="int" isEnum="false"/>
+		<AttrDef key="Y" type="int" isEnum="false"/>
+		<AttrDef key="Width" type="int" isEnum="false"/>
+		<AttrDef key="Height" type="int" isEnum="false"/>
+		<AttrDef key="topBorder" type="int" isEnum="false"/>
+		<AttrDef key="bottomBorder" type="int" isEnum="false"/>
+		<AttrDef key="leftBorder" type="int" isEnum="false"/>
+		<AttrDef key="rightBorder" type="int" isEnum="false"/>
+		<AttrDef key="Anchor" type="int" subType="SkinAnchor" isEnum="false"/>
+		<AttrDef key="angle" type="int" isEnum="false"/>
+		<AttrDef key="rotateType" type="int" isEnum="false"/>
+		<AttrDef key="mirrorType" type="int" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="textShape">
+		<AttrDef key="Font" type="int" isEnum="false"/>
+		<AttrDef key="Color" type="Color" isEnum="false"/>
+		<AttrDef key="Color0" type="Color" isEnum="false"/>
+		<AttrDef key="Color1" type="Color" isEnum="false"/>
+		<AttrDef key="Color2" type="Color" isEnum="false"/>
+		<AttrDef key="Style" type="int" isEnum="false"/>
+		<AttrDef key="fontSize" type="int" isEnum="false"/>
+		<!-- c -->
+		<AttrDef key="X" type="int" isEnum="false"/>
+		<AttrDef key="Y" type="int" isEnum="false"/>
+		<AttrDef key="Width" type="int" isEnum="false"/>
+		<AttrDef key="Height" type="int" isEnum="false"/>
+		<AttrDef key="topBorder" type="int" isEnum="false"/>
+		<AttrDef key="bottomBorder" type="int" isEnum="false"/>
+		<AttrDef key="leftBorder" type="int" isEnum="false"/>
+		<AttrDef key="rightBorder" type="int" isEnum="false"/>
+		<AttrDef key="Anchor" type="int" subType="SkinAnchor" isEnum="false"/>
+		<AttrDef key="angle" type="int" isEnum="false"/>
+		<AttrDef key="rotateType" type="int" isEnum="false"/>
+		<AttrDef key="mirrorType" type="int" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="animation">
+		<AttrDef key="loop" type="bool" isEnum="false"/>
+	</SkinDef>
+	<SkinDef key="frame">
+		<AttrDef key="image" type="string" isEnum="false"/>
+		<AttrDef key="time" type="int" isEnum="false"/>
+		<AttrDef key="x" type="int" isEnum="false"/>
+		<AttrDef key="y" type="int" isEnum="false"/>
+		<AttrDef key="w" type="int" isEnum="false"/>
+		<AttrDef key="h" type="int" isEnum="false"/>
+		<AttrDef key="X" type="int" isEnum="false"/>
+		<AttrDef key="Y" type="int" isEnum="false"/>
+		<AttrDef key="Width" type="int" isEnum="false"/>
+		<AttrDef key="Height" type="int" isEnum="false"/>
+		<AttrDef key="topBorder" type="int" isEnum="false"/>
+		<AttrDef key="bottomBorder" type="int" isEnum="false"/>
+		<AttrDef key="leftBorder" type="int" isEnum="false"/>
+		<AttrDef key="rightBorder" type="int" isEnum="false"/>
+		<AttrDef key="Anchor" type="int" subType="SkinAnchor" isEnum="false"/>
+		<AttrDef key="angle" type="int" isEnum="false"/>
+		<AttrDef key="rotateType" type="int" isEnum="false"/>
+		<AttrDef key="mirrorType" type="int" isEnum="false"/>
+		<!-- c -->
+		<AttrDef key="ImageName" type="string" isEnum="false"/>
+		<AttrDef key="Dock" type="int" subType="Dock" isEnum="true">
+			<row>0</row>
+			<row>1</row>
+			<row>2</row>
+			<row>3</row>
+			<row>4</row>
+			<row>5</row>
+		</AttrDef>
+		<AttrDef key="NineGrid" type="bool" isEnum="false"/>
+		<AttrDef key="NGX" type="int" isEnum="false"/>
+		<AttrDef key="NGY" type="int" isEnum="false"/>
+		<AttrDef key="NGWidth" type="int" isEnum="false"/>
+		<AttrDef key="NGHeight" type="int" isEnum="false"/>
+		<AttrDef key="LIGHT" type="bool" isEnum="false"/>
+		<AttrDef key="Color" type="Color" isEnum="false"/>
+		<!-- c -->
+		<AttrDef key="Font" type="int" isEnum="false"/>
+		<AttrDef key="Color0" type="Color" isEnum="false"/>
+		<AttrDef key="Color1" type="Color" isEnum="false"/>
+		<AttrDef key="Color2" type="Color" isEnum="false"/>
+		<AttrDef key="Style" type="int" isEnum="false"/>
+		<AttrDef key="fontSize" type="int" isEnum="false"/>
+	</SkinDef>
+</SkinAttrDef>

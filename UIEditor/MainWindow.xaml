@@ -446,21 +446,25 @@
 					SizeChanged="mx_debug_SizeChanged"/>
 			</Grid>
 		</DockPanel>
-		<ScrollViewer Name="mx_drawFrame"
+		<ScrollViewer Name="mx_scrollFrame"
 					  Grid.Row="3" Grid.Column="1"
 					  Visibility="Visible"
 					  HorizontalScrollBarVisibility="Visible"
 					  VerticalScrollBarVisibility="Visible"
-					  ScrollChanged="mx_GLScroll_ScrollChanged">
-			<Grid Width="960" Height="640" HorizontalAlignment="Left" VerticalAlignment="Top">
-				<Border Name="mx_GLCtrl"
-						Width="{Binding ElementName=mx_drawFrame, Path=ActualWidth}"
-						Height="{Binding ElementName=mx_drawFrame, Path=ActualHeight}"
-						HorizontalAlignment="Left"
-						VerticalAlignment="Top"
-						Padding="25,25,25,25"
-						SizeChanged="mx_GLCtrl_SizeChanged"/>
+					  ScrollChanged="mx_scrollFrame_ScrollChanged">
+			<Grid Width="960" Height="640" HorizontalAlignment="Left" VerticalAlignment="Top" ClipToBounds="True">
 			</Grid>
 		</ScrollViewer>
+		<Grid Name="mx_drawFrame"
+			  Grid.Row="3" Grid.Column="1">
+			<Border Name="mx_GLCtrl"
+				Width="{Binding ElementName=mx_drawFrame, Path=ActualWidth}"
+				Height="{Binding ElementName=mx_drawFrame, Path=ActualHeight}"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Padding="0,0,25,25"
+				SizeChanged="mx_GLCtrl_SizeChanged">
+			</Border>
+		</Grid>
 	</Grid>
 </Window>

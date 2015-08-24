@@ -219,6 +219,9 @@ namespace UIEditor
 			{
 				MessageBox.Show("Failed to set hook, error = " + Marshal.GetLastWin32Error());
 			}
+		}
+		private void mx_root_Loaded(object sender, RoutedEventArgs e)
+		{
 
 			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
 
@@ -226,9 +229,6 @@ namespace UIEditor
 			{
 				source.AddHook(WndProc);
 			}
-		}
-		private void mx_root_Loaded(object sender, RoutedEventArgs e)
-		{
 			mx_GLHost = new ControlHost();
 			mx_GLCtrl.Child = mx_GLHost;
 			mx_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
@@ -402,6 +402,7 @@ namespace UIEditor
 			{
 				if (File.Exists(path))
 				{
+					m_curFile = path;
 					m_mapOpenedFiles[path] = new OpenedFile(path);
 				}
 				else
@@ -2195,11 +2196,23 @@ namespace UIEditor
 			}
 		}
 
-		private void mx_GLScroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		public static extern int MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool BRePaint);
+
+		static double s_x = 0;
+		static double s_y = 0;
+		private void mx_scrollFrame_ScrollChanged(object sender, ScrollChangedEventArgs e)
 		{
-			mx_debug.Text += "sw:" + mx_drawFrame.ActualWidth + "\t" + "sh:" + mx_drawFrame.ActualHeight + "\t" +
-				"sx:" + mx_drawFrame.HorizontalOffset + "\t" + "sy:" + mx_drawFrame.VerticalOffset + "\r\n";
-			mx_GLCtrl.BringIntoView(new Rect(200, 200, 200, 200));
+			mx_debug.Text += "sw:" + mx_scrollFrame.ActualWidth + "\t" + "sh:" + mx_scrollFrame.ActualHeight + "\t" +
+				"sx:" + mx_scrollFrame.HorizontalOffset + "\t" + "sy:" + mx_scrollFrame.VerticalOffset + "\r\n";
+
+			double dx = s_x - mx_scrollFrame.HorizontalOffset;
+			double dy = s_y - mx_scrollFrame.VerticalOffset;
+
+			s_x = mx_scrollFrame.HorizontalOffset;
+			s_y = mx_scrollFrame.VerticalOffset;
+			MoveWindow(m_hwndGL, (int)-s_x, (int)-s_y, 960, 640, true);
+			
 			//mx_drawFrame.BringIntoView(new Rect(mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset, mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset));
 			//mx_GLHost.BringIntoView(new Rect(mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset, mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset));
 			//mx_glX.Width = new GridLength(mx_GLScroll.HorizontalOffset);
