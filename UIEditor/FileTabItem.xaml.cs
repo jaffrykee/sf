@@ -20,28 +20,26 @@ namespace UIEditor
 	/// </summary>
 	public partial class FileTabItem : UserControl
 	{
+		public OpenedFile m_fileDef;
 		public string m_filePath;
 		public string m_fileType;
 		public object m_child;
 
-		public FileTabItem()
+		public FileTabItem(OpenedFile fileDef)
 		{
-			InitializeComponent();
 			m_filePath = "";
-		}
+			InitializeComponent();
 
-		private void tabFrameLoaded(object sender, RoutedEventArgs e)
-		{
 			if (m_filePath == "")
 			{
 				UserControl tabContent;
 				MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
 
-				m_filePath = ((ToolTip)((TabItem)this.Parent).ToolTip).Content.ToString();
+				m_filePath = fileDef.m_path;
 				this.filePath.Text = m_filePath;
 
 				m_fileType = StringDic.getFileType(m_filePath).ToLower();
-				switch(m_fileType)
+				switch (m_fileType)
 				{
 					case "bmp":
 					case "cut":
@@ -67,18 +65,18 @@ namespace UIEditor
 					case "wal":
 					case "act":
 					case "pal":
-						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.PngControl"), this) as UserControl;
+						tabContent = new PngControl(this, fileDef);
 						break;
 					case "xml":
-						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.XmlControl"), this) as UserControl;
+						tabContent = new XmlControl(this, fileDef);
 						break;
 					case "htm":
 					case "html":
 					case "php":
-						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.HtmlControl"), this) as UserControl;
+						tabContent = new HtmlControl(this, fileDef);
 						break;
 					default:
-						tabContent = Activator.CreateInstance(Type.GetType("UIEditor.UnknownControl"), this) as UserControl;
+						tabContent = new UnknownControl(this, fileDef);
 						break;
 				}
 				this.itemFrame.Children.Clear();

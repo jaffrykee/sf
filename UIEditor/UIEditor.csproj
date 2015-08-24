@@ -9,12 +9,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UIEditor</RootNamespace>
     <AssemblyName>UIEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <ExpressionBlendVersion>12.0.50716.0</ExpressionBlendVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <PublishUrl>发布\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,31 +33,38 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>E:\clienttools\UI编辑器2\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;/unsafe</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>E:\mmo2013001\artist\3d地图编辑器\</OutputPath>
-    <DefineConstants>TRACE;/unsafe</DefineConstants>
+    <OutputPath>E:\clienttools\UI编辑器2\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>data\image\SpeedShark.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevIL.NET2">
+    <Reference Include="DevIL.NET2, Version=1.1.2619.31671, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Public\DevILDotNet_1.3\DevIL.NET2.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
@@ -106,6 +115,7 @@
     <Compile Include="PackImage.xaml.cs">
       <DependentUpon>PackImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Public\LocalConst.cs" />
     <Compile Include="TemplateCreate.xaml.cs">
       <DependentUpon>TemplateCreate.xaml</DependentUpon>
     </Compile>
@@ -351,6 +361,9 @@
   <ItemGroup>
     <Resource Include="data\image\nesting.png" />
     <Resource Include="data\image\viewMode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="data\a.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

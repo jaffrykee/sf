@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
 			 Name="mx_root"
              >
-	<Grid Loaded="tabFrameLoaded">
+	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>

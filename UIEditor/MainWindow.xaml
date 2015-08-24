@@ -35,14 +35,14 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="55"/>
 			<RowDefinition Height="*" MinHeight="50"/>
 			<RowDefinition Height="250" MinHeight="100"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="250" MinWidth="100" MaxWidth="400"/>
 			<ColumnDefinition Width="*" MinWidth="50"/>
-			<ColumnDefinition Width="275" MinWidth="275"/>
+			<ColumnDefinition Width="350" MinWidth="250"/>
 		</Grid.ColumnDefinitions>
 		<Menu Grid.Row="0" Grid.Column="0" Background="#18181818" Grid.ColumnSpan="3" VerticalAlignment="Top">
 			<MenuItem Header="文件">
@@ -273,7 +273,6 @@
 								  Unchecked="mx_isViewMode_Unchecked">
 							<Image Source="pack://application:,,,/data/image/viewMode.png"/>
 						</CheckBox>
-						<Separator/>
 						<Button Name="mx_btnNesting"
 								ToolTip="图片打包"
 								Click="mx_btnNesting_Click">
@@ -396,12 +395,15 @@
 		</DockPanel>
 		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="0" Width="5"></GridSplitter>
 		<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Margin="5,0,0,0" Background="#ffdddddd">
-			<ScrollViewer Name="mx_toolScroll" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" SizeChanged="ScrollViewer_SizeChanged">
+			<ScrollViewer Name="mx_toolScroll"
+						  HorizontalScrollBarVisibility="Auto"
+						  VerticalScrollBarVisibility="Auto"
+						  SizeChanged="ScrollViewer_SizeChanged">
 				<StackPanel Name="mx_toolArea" Width="auto">
 				</StackPanel>
 			</ScrollViewer>
 		</Grid>
-		<GridSplitter Grid.Row="2" Grid.RowSpan="4" Grid.Column="2" Width="5" HorizontalAlignment="Left"/>
+		<GridSplitter Grid.Row="2" Grid.RowSpan="3" Grid.Column="2" Width="5" HorizontalAlignment="Left"/>
 		<DockPanel Name="mx_normalFrame"
 				   Grid.Row="2"
 				   Grid.RowSpan="2"
@@ -414,28 +416,6 @@
 						Style="{StaticResource TabControlStyle1}">
 			</TabControl>
 		</DockPanel>
-		<Grid Name="mx_drawFrame" Grid.Row="3" Grid.Column="1" Visibility="Collapsed">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="55"/>
-				<RowDefinition Name="mx_glY" Height="0"/>
-				<RowDefinition Height="*"/>
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Name="mx_glX" Width="0"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
-			<Grid Grid.Row="2" Grid.Column="1" Margin="5,0,20,20">
-				<Border Name="mx_GLCtrl" SizeChanged="mx_GLCtrl_SizeChanged"/>
-			</Grid>
-			<ScrollViewer Name="mx_GLScroll"
-						  Grid.Row="2"
-						  Grid.Column="1"
-						  HorizontalScrollBarVisibility="Visible"
-						  VerticalScrollBarVisibility="Visible"
-						  ScrollChanged="mx_GLScroll_ScrollChanged">
-				<Grid Width="960" Height="640" Margin="5,0,0,0"></Grid>
-			</ScrollViewer>
-		</Grid>
 		<GridSplitter Name="mx_debugSplitter" Grid.Row="4" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
 		<DockPanel Grid.Row="4" Grid.Column="1" Margin="0,5,0,0">
 			<Grid>
@@ -466,5 +446,21 @@
 					SizeChanged="mx_debug_SizeChanged"/>
 			</Grid>
 		</DockPanel>
+		<ScrollViewer Name="mx_drawFrame"
+					  Grid.Row="3" Grid.Column="1"
+					  Visibility="Visible"
+					  HorizontalScrollBarVisibility="Visible"
+					  VerticalScrollBarVisibility="Visible"
+					  ScrollChanged="mx_GLScroll_ScrollChanged">
+			<Grid Width="960" Height="640" HorizontalAlignment="Left" VerticalAlignment="Top">
+				<Border Name="mx_GLCtrl"
+						Width="{Binding ElementName=mx_drawFrame, Path=ActualWidth}"
+						Height="{Binding ElementName=mx_drawFrame, Path=ActualHeight}"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						Padding="25,25,25,25"
+						SizeChanged="mx_GLCtrl_SizeChanged"/>
+			</Grid>
+		</ScrollViewer>
 	</Grid>
 </Window>

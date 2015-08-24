@@ -19,7 +19,6 @@ namespace UIEditor
 	public partial class XmlItem : TreeViewItem
 	{
 		public XmlControl m_rootControl;
-		public MainWindow m_pW;
 		public XmlElement m_xe;
 		public bool m_isCtrl;
 		public string m_type;
@@ -33,13 +32,9 @@ namespace UIEditor
 			InitializeComponent();
 			m_rootControl = rootControl;
 			m_xe = xe;
-			m_pW = rootControl.m_pW;
 			m_rootControl.m_mapXeItem[xe] = this;
 		}
 
-		protected virtual void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
-		{
-		}
 		public virtual void changeSelectItem(object obj = null)
 		{
 
@@ -76,9 +71,9 @@ namespace UIEditor
 							mx_delete.IsEnabled = false;
 							mx_moveUp.IsEnabled = false;
 							mx_moveDown.IsEnabled = false;
-							if (m_pW.m_xePaste != null)
+							if (MainWindow.s_pW.m_xePaste != null)
 							{
-								if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_pW.m_xePaste.Name, out panelCtrlDef))
+								if (MainWindow.s_pW.m_mapPanelCtrlDef.TryGetValue(MainWindow.s_pW.m_xePaste.Name, out panelCtrlDef))
 								{
 									mx_paste.IsEnabled = true;
 								}
@@ -99,7 +94,7 @@ namespace UIEditor
 							mx_delete.IsEnabled = true;
 							mx_moveUp.IsEnabled = true;
 							mx_moveDown.IsEnabled = true;
-							if (m_pW.m_xePaste != null)
+							if (MainWindow.s_pW.m_xePaste != null)
 							{
 								mx_paste.IsEnabled = true;
 							}
@@ -132,7 +127,7 @@ namespace UIEditor
 							mx_cut.IsEnabled = true;
 							mx_copy.IsEnabled = true;
 						}
-						if (m_pW.m_xePaste != null)
+						if (MainWindow.s_pW.m_xePaste != null)
 						{
 							mx_paste.IsEnabled = true;
 						}
@@ -230,34 +225,34 @@ namespace UIEditor
 
 		public void cutItem()
 		{
-			m_pW.m_xePaste = (XmlElement)m_xe.CloneNode(true);
+			MainWindow.s_pW.m_xePaste = (XmlElement)m_xe.CloneNode(true);
 			m_rootControl.m_openedFile.m_lstOpt.addOperation(
 				new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_DELETE, m_xe)
 				);
 		}
 		public void copyItem()
 		{
-			m_pW.m_xePaste = (XmlElement)m_xe.CloneNode(true);
+			MainWindow.s_pW.m_xePaste = (XmlElement)m_xe.CloneNode(true);
 		}
 		public void pasteItem()
 		{
 			XmlElement xeCopy;
 
-			if (m_pW.m_xePaste != null)
+			if (MainWindow.s_pW.m_xePaste != null)
 			{
 				MainWindow.CtrlDef_T ctrlPtr;
 				MainWindow.SkinDef_T skinPtr;
 				XmlItem treeChild = null;
 
 				xeCopy = m_xe.OwnerDocument.CreateElement("tmp");
-				xeCopy.InnerXml = m_pW.m_xePaste.OuterXml;
+				xeCopy.InnerXml = MainWindow.s_pW.m_xePaste.OuterXml;
 				xeCopy = (XmlElement)xeCopy.FirstChild;
 
-				if (m_pW.m_mapCtrlDef.TryGetValue(xeCopy.Name, out ctrlPtr))
+				if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(xeCopy.Name, out ctrlPtr))
 				{
 					treeChild = new BoloUI.Basic(xeCopy, m_rootControl);
 				}
-				else if (m_pW.m_mapSkinAllDef.TryGetValue(xeCopy.Name, out skinPtr))
+				else if (MainWindow.s_pW.m_mapSkinAllDef.TryGetValue(xeCopy.Name, out skinPtr))
 				{
 					treeChild = new BoloRes.ResBasic(xeCopy, m_rootControl, skinPtr);
 				}
@@ -275,13 +270,13 @@ namespace UIEditor
 						{
 							MainWindow.CtrlDef_T panelCtrlDef;
 
-							if (m_xe.Name == "BoloUI" && m_pW.m_mapPanelCtrlDef.TryGetValue(treeChild.m_xe.Name, out panelCtrlDef))
+							if (m_xe.Name == "BoloUI" && MainWindow.s_pW.m_mapPanelCtrlDef.TryGetValue(treeChild.m_xe.Name, out panelCtrlDef))
 							{
 								m_rootControl.m_openedFile.m_lstOpt.addOperation(
 									new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
 									);
 							}
-							else if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
+							else if (MainWindow.s_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 							{
 								m_rootControl.m_openedFile.m_lstOpt.addOperation(
 									new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, m_xe)
@@ -300,7 +295,7 @@ namespace UIEditor
 						else if(m_type == "Skin")
 						{
 							MainWindow.SkinDef_T skinDef;
-							if(m_pW.m_mapSkinAllDef.TryGetValue(m_xe.Name, out skinDef))
+							if(MainWindow.s_pW.m_mapSkinAllDef.TryGetValue(m_xe.Name, out skinDef))
 							{
 								MainWindow.SkinDef_T skinChildDef;
 								if(skinDef.m_mapEnChild != null && skinDef.m_mapEnChild.Count > 0
@@ -316,7 +311,7 @@ namespace UIEditor
 									{
 										if (((XmlElement)m_xe.ParentNode).Name == "BoloUI")
 										{
-											if (m_pW.m_mapSkinTreeDef.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
+											if (MainWindow.s_pW.m_mapSkinTreeDef.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
 											{
 												m_rootControl.m_openedFile.m_lstOpt.addOperation(
 													new XmlOperation.HistoryNode(XmlOperation.XmlOptType.NODE_INSERT, treeChild.m_xe, ((XmlElement)m_xe.ParentNode))
@@ -325,7 +320,7 @@ namespace UIEditor
 										}
 										else
 										{
-											if (m_pW.m_mapSkinAllDef.TryGetValue(((XmlElement)m_xe.ParentNode).Name, out skinDef))
+											if (MainWindow.s_pW.m_mapSkinAllDef.TryGetValue(((XmlElement)m_xe.ParentNode).Name, out skinDef))
 											{
 												if (skinDef.m_mapEnChild.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
 												{
@@ -407,9 +402,9 @@ namespace UIEditor
 		{
 			if (m_xe.Name == "skingroup")
 			{
-				string path = m_pW.m_skinPath + "\\" + m_xe.GetAttribute("Name") + ".xml";
+				string path = MainWindow.s_pW.m_skinPath + "\\" + m_xe.GetAttribute("Name") + ".xml";
 
-				m_pW.openFileByPath(path);
+				MainWindow.s_pW.openFileByPath(path);
 			}
 		}
 		private void showTmpl(MenuItem ctrlMenuItem, XmlElement xeTmpls, string addStr)
@@ -455,23 +450,23 @@ namespace UIEditor
 		{
 			MainWindow.CtrlDef_T ctrlDef;
 
-			if (m_pW.m_mapCtrlDef.TryGetValue(addStr, out ctrlDef) && ctrlDef != null)
+			if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(addStr, out ctrlDef) && ctrlDef != null)
 			{
 				MenuItem ctrlMenuItem = new MenuItem();
 				bool isNull = true;
 
 				MainWindow.s_pW.m_strDic.getNameAndTip(ctrlMenuItem, StringDic.conf_ctrlTipDic, addStr);
-				if (m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template") != null &&
-					m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
+				if (MainWindow.s_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template") != null &&
+					MainWindow.s_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
 				{
 					isNull = false;
-					XmlElement xeTmpls = (XmlElement)m_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
+					XmlElement xeTmpls = (XmlElement)MainWindow.s_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
 
 					showTmpl(ctrlMenuItem, xeTmpls, addStr);
 				}
 
-				if (m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template") != null &&
-					m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
+				if (MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template") != null &&
+					MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
 				{
 					if (!isNull)
 					{
@@ -479,7 +474,7 @@ namespace UIEditor
 					}
 					isNull = false;
 
-					XmlElement xeTmpls = (XmlElement)m_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
+					XmlElement xeTmpls = (XmlElement)MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
 
 					showTmpl(ctrlMenuItem, xeTmpls, addStr);
 				}
@@ -496,27 +491,24 @@ namespace UIEditor
 			MainWindow.CtrlDef_T panelCtrlDef;
 
 			mx_addCtrl.Items.Clear();
-			if (m_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
+			if (MainWindow.s_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 			{
-				foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapCtrlDef.ToList())
+				foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertCtrlDef.ToList())
 				{
-					string addStr = pairCtrlDef.Key;
-
-					if (addStr == "Separator")
-					{
-						mx_addCtrl.Items.Add(new Separator());
-					}
-					else
-					{
-						showTmplGroup(addStr);
-					}
+					showTmplGroup(pairCtrlDef.Key);
+				}
+				mx_addCtrl.Items.Add(new Separator());
+				foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertAllCtrlDef.ToList())
+				{
+					showTmplGroup(pairCtrlDef.Key);
 				}
 			}
 			else
 			{
 				if (m_xe.Name == "BoloUI")
 				{
-					foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrl in m_pW.m_mapPanelCtrlDef.ToList())
+					//<inc>showTmplGroup(pairCtrlDef.Key);
+					foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrl in MainWindow.s_pW.m_mapPanelCtrlDef.ToList())
 					{
 						MenuItem ctrlItem = new MenuItem();
 						string name = MainWindow.s_pW.m_strDic.getWordByKey(pairCtrl.Key);

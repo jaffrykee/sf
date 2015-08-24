@@ -42,6 +42,9 @@ namespace UIEditor
 			m_fileType = StringDic.getFileType(m_path);
 			m_tab = new TabItem();
 
+			pW.mx_workTabs.Items.Add(m_tab);
+			pW.mx_workTabs.SelectedItem = m_tab;
+
 			m_tab.Template = (ControlTemplate)(App.Current.Resources["TmplFileItem"]);
 			m_tab.Unloaded += new RoutedEventHandler(pW.eventCloseFile);
 			ToolTip tabTip = new ToolTip();
@@ -49,12 +52,11 @@ namespace UIEditor
 			m_tab.Header = StringDic.getFileNameWithoutPath(path);
 			m_tab.Header = m_tab.Header.ToString().Replace("_", "__");
 			m_tab.ToolTip = tabTip;
-			var tabContent = Activator.CreateInstance(Type.GetType("UIEditor.FileTabItem")) as UserControl;
+
+			UserControl tabContent = new UIEditor.FileTabItem(this);
+
 			m_tab.Content = tabContent;
 			m_tabItem = (FileTabItem)tabContent;
-
-			pW.mx_workTabs.Items.Add(m_tab);
-			pW.mx_workTabs.SelectedItem = m_tab;
 		}
 
 		public bool frameIsXmlCtrl()

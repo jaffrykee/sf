@@ -29,10 +29,11 @@ namespace UIEditor.BoloUI
 			m_type = "CtrlUI";
 			InitializeComponent();
 			MainWindow.CtrlDef_T ctrlDef;
+			m_isCtrl = true;
 
 			if (isRoot == false)
 			{
-				if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef) && ctrlDef != null)
+				if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef) && ctrlDef != null)
 				{
 					m_isCtrl = true;
 				}
@@ -51,9 +52,6 @@ namespace UIEditor.BoloUI
 				}
 				addChild();
 			}
-		}
-		override protected void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
-		{
 			initHeader();
 		}
 
@@ -67,15 +65,10 @@ namespace UIEditor.BoloUI
 					XmlElement xe = (XmlElement)xnf;
 					MainWindow.CtrlDef_T ctrlPtr;
 
-					if (m_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
+					if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
 					{
 						var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.Basic"), xe, m_rootControl, false) as TreeViewItem;
 						this.Items.Add(treeChild);
-
-						if (xe.Name != "event")
-						{
-							this.IsExpanded = true;
-						}
 					}
 					else
 					{
@@ -95,14 +88,15 @@ namespace UIEditor.BoloUI
 				string ctrlName = MainWindow.s_pW.m_strDic.getWordByKey(m_xe.Name);
 				string ctrlTip = MainWindow.s_pW.m_strDic.getWordByKey(m_xe.Name, StringDic.conf_ctrlTipDic);
 				string name = "", id = "";
+				string tmpCon = "";
 
 				if (ctrlName != "")
 				{
-					mx_radio.Content = "<" + ctrlName + ">";
+					tmpCon = "<" + ctrlName + ">";
 				}
 				else
 				{
-					mx_radio.Content = "<" + m_xe.Name + ">";
+					tmpCon = "<" + m_xe.Name + ">";
 				}
 
 				if (ctrlTip != "")
@@ -121,7 +115,7 @@ namespace UIEditor.BoloUI
 				}
 				else
 				{
-					mx_radio.Content = "<" + m_xe.Name + ">";
+					tmpCon = "<" + m_xe.Name + ">";
 					if (m_xe.GetAttribute("Name") != "")
 					{
 						name = m_xe.GetAttribute("Name");
@@ -141,43 +135,44 @@ namespace UIEditor.BoloUI
 					}
 				}
 
-				if (m_pW.m_vCtrlName)
+				if (MainWindow.s_pW.m_vCtrlName)
 				{
-					mx_radio.Content += name;
+					tmpCon += name;
 				}
-				if (m_pW.m_vCtrlId)
+				if (MainWindow.s_pW.m_vCtrlId)
 				{
-					mx_radio.Content += "(" + id + ")";
+					tmpCon += "(" + id + ")";
 				}
+
+				mx_radio.Content = tmpCon.Replace("_", "__");
 			}
-			mx_radio.Content = mx_radio.Content.ToString().Replace("_", "__");
 		}
 		public override void changeSelectItem(object obj = null)
 		{
-			m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_ctrlFrame;
+			MainWindow.s_pW.mx_leftToolFrame.SelectedItem = MainWindow.s_pW.mx_ctrlFrame;
 			if (m_vId != "")
 			{
-				m_pW.m_curFile = m_rootControl.m_openedFile.m_path;
-				m_pW.mx_workTabs.SelectedItem = m_rootControl.m_openedFile.m_tab;
-				m_pW.updateGL(
+				MainWindow.s_pW.m_curFile = m_rootControl.m_openedFile.m_path;
+				MainWindow.s_pW.mx_workTabs.SelectedItem = m_rootControl.m_openedFile.m_tab;
+				MainWindow.s_pW.updateGL(
 					StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_vId,
 					W2GTag.W2G_SELECT_UI
 				);
 			}
 
-			bool tmp = m_pW.m_attrBinding;
-			m_pW.m_attrBinding = false;
-
-			m_pW.m_curItem = this;
-			m_pW.hiddenAllAttr();
+			MainWindow.s_pW.m_curItem = this;
+			MainWindow.s_pW.hiddenAllAttr();
 			MainWindow.CtrlDef_T ctrlDef;
 
-			if (m_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
+			if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
 			{
-				if (m_xe.Name != "event")
+				if (ctrlDef.m_hasBasic == true)
 				{
-					m_pW.m_mapCtrlDef["basic"].m_attrListUI.Visibility = Visibility.Visible;
-					m_pW.m_mapCtrlDef["basic"].m_attrListUI.clearRowValue();
+					foreach(KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
+					{
+						pairCtrlDef.Value.m_attrListUI.Visibility = Visibility.Visible;
+						pairCtrlDef.Value.m_attrListUI.clearRowValue();
+					}
 				}
 				ctrlDef.m_attrListUI.Visibility = Visibility.Visible;
 				ctrlDef.m_attrListUI.clearRowValue();
@@ -190,13 +185,19 @@ namespace UIEditor.BoloUI
 				if (m_isCtrl)
 				{
 					MainWindow.AttrDef_T attrDef;
-					if (m_pW.m_mapCtrlDef["basic"].m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
+					bool tmpFound = false;
+
+					foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
 					{
-						attrDef.m_attrRowUI.m_value = attr.Value;
+						if (!tmpFound && pairCtrlDef.Value.m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
+						{
+							attrDef.m_attrRowUI.m_preValue = attr.Value;
+							tmpFound = true;
+						}
 					}
-					else if (ctrlDef.m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
+					if (!tmpFound && ctrlDef.m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
 					{
-						attrDef.m_attrRowUI.m_value = attr.Value;
+						attrDef.m_attrRowUI.m_preValue = attr.Value;
 					}
 					else
 					{
@@ -210,44 +211,45 @@ namespace UIEditor.BoloUI
 
 				if (isOther)
 				{
-					if (m_pW.m_otherAttrList == null)
+					if (MainWindow.s_pW.m_otherAttrList == null)
 					{
-						m_pW.m_otherAttrList = new AttrList("other", m_pW);
-						m_pW.mx_toolArea.Children.Add(m_pW.m_otherAttrList);
+						MainWindow.s_pW.m_otherAttrList = new AttrList("other");
+						MainWindow.s_pW.mx_toolArea.Children.Add(MainWindow.s_pW.m_otherAttrList);
 					}
-					m_pW.m_otherAttrList.mx_frame.Children.Add(new AttrRow("string", attr.Name, attr.Value, m_pW.m_otherAttrList));
+					MainWindow.s_pW.m_otherAttrList.mx_frame.Children.Add(new AttrRow("string", attr.Name, attr.Value, MainWindow.s_pW.m_otherAttrList));
 				}
 			}
 			if (m_isCtrl)
 			{
-				m_pW.m_mapCtrlDef["basic"].m_attrListUI.refreshRowVisible();
-				m_pW.m_mapCtrlDef["basic"].m_attrListUI.m_xmlCtrl = m_rootControl;
-				m_pW.m_mapCtrlDef["basic"].m_attrListUI.m_basic = this;
-				m_pW.m_mapCtrlDef["basic"].m_attrListUI.m_xe = m_xe;
+				foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
+				{
+					pairCtrlDef.Value.m_attrListUI.refreshRowVisible();
+					pairCtrlDef.Value.m_attrListUI.m_xmlCtrl = m_rootControl;
+					pairCtrlDef.Value.m_attrListUI.m_basic = this;
+					pairCtrlDef.Value.m_attrListUI.m_xe = m_xe;
+				}
 				ctrlDef.m_attrListUI.refreshRowVisible();
 				ctrlDef.m_attrListUI.m_xmlCtrl = m_rootControl;
 				ctrlDef.m_attrListUI.m_basic = this;
 				ctrlDef.m_attrListUI.m_xe = m_xe;
 			}
-			if (m_pW.m_otherAttrList != null)
+			if (MainWindow.s_pW.m_otherAttrList != null)
 			{
-				m_pW.m_otherAttrList.refreshRowVisible();
-				m_pW.m_otherAttrList.Visibility = Visibility.Visible;
-				m_pW.m_otherAttrList.m_xmlCtrl = m_rootControl;
-				m_pW.m_otherAttrList.m_basic = this;
-				m_pW.m_otherAttrList.m_xe = m_xe;
+				MainWindow.s_pW.m_otherAttrList.refreshRowVisible();
+				MainWindow.s_pW.m_otherAttrList.Visibility = Visibility.Visible;
+				MainWindow.s_pW.m_otherAttrList.m_xmlCtrl = m_rootControl;
+				MainWindow.s_pW.m_otherAttrList.m_basic = this;
+				MainWindow.s_pW.m_otherAttrList.m_xe = m_xe;
 			}
 
-			m_pW.m_attrBinding = tmp;
 			mx_radio.IsChecked = true;
 			BringIntoView(new Rect(0, 0, 50, 20));
 
 			SelButton selBn;
 
-			if (m_pW.m_mapXeSel != null && m_pW.m_mapXeSel.TryGetValue(m_xe, out selBn) && selBn != null)
+			if (MainWindow.s_pW.m_mapXeSel != null && MainWindow.s_pW.m_mapXeSel.TryGetValue(m_xe, out selBn) && selBn != null)
 			{
 				selBn.mx_radio.IsChecked = true;
-				selBn.m_isVcheck = true;
 			}
 		}
 		public bool checkPointInFence(int x, int y)

@@ -5,9 +5,8 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 		mc:Ignorable="d"
 			  Name="mx_root"
-			  IsExpanded="False"
+			  IsExpanded="True"
 			  Padding="0"
-			  Loaded="TreeViewItem_Loaded"
 			  PreviewMouseDoubleClick="mx_root_PreviewMouseDoubleClick">
 	<TreeViewItem.Header>
 		<RadioButton Name="mx_radio"

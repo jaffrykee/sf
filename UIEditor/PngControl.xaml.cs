@@ -28,12 +28,12 @@ namespace UIEditor
 		public int m_imgWidth;
 		public bool m_loaded;
 
-		public PngControl(FileTabItem parent)
+		public PngControl(FileTabItem parent, OpenedFile fileDef)
 		{
 			InitializeComponent();
 			m_parent = parent;
 			m_loaded = false;
-			m_openedFile = MainWindow.s_pW.m_mapOpenedFiles[m_parent.m_filePath];
+			m_openedFile = fileDef;
 			m_openedFile.m_frame = this;
 		}
 

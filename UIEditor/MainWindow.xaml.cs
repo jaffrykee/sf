@@ -103,6 +103,10 @@ namespace UIEditor
 
 		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
 		public Dictionary<string, CtrlDef_T> m_mapPanelCtrlDef;
+		public Dictionary<string, CtrlDef_T> m_mapBasicCtrlDef;
+		public Dictionary<string, CtrlDef_T> m_mapHasBasicCtrlDef;
+		public Dictionary<string, CtrlDef_T> m_mapEnInsertCtrlDef;
+		public Dictionary<string, CtrlDef_T> m_mapEnInsertAllCtrlDef;
 
 		public Dictionary<string, SkinDef_T> m_mapSkinTreeDef;
 		public Dictionary<string, SkinDef_T> m_mapSkinAllDef;
@@ -115,7 +119,6 @@ namespace UIEditor
 		public IntPtr m_hwndGLParent;
 		public IntPtr m_hwndGL;
 		public AttrList m_otherAttrList;
-		public bool m_attrBinding;		//xml属性绑定用，上锁和解锁必须成对出现
 		public bool m_vCtrlName;
 		public bool m_vCtrlId;
 
@@ -153,7 +156,6 @@ namespace UIEditor
 			m_hwndGL = IntPtr.Zero;
 			m_hwndGLParent = IntPtr.Zero;
 			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
-			m_attrBinding = true;
 			m_strDic = new StringDic("zh-CN", conf_pathStringDic);
 			InitializeComponent();
 			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
@@ -217,20 +219,20 @@ namespace UIEditor
 			{
 				MessageBox.Show("Failed to set hook, error = " + Marshal.GetLastWin32Error());
 			}
-		}
-		private void mx_root_Loaded(object sender, RoutedEventArgs e)
-		{
+
 			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
 
 			if (source != null)
 			{
 				source.AddHook(WndProc);
 			}
-
+		}
+		private void mx_root_Loaded(object sender, RoutedEventArgs e)
+		{
 			mx_GLHost = new ControlHost();
 			mx_GLCtrl.Child = mx_GLHost;
 			mx_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
-			if(m_isDebug)
+			if (m_isDebug)
 			{
 				mx_debugTools.Visibility = System.Windows.Visibility.Visible;
 			}
@@ -238,6 +240,7 @@ namespace UIEditor
 			{
 				mx_debugTools.Visibility = System.Windows.Visibility.Collapsed;
 			}
+			mx_drawFrame.Visibility = System.Windows.Visibility.Collapsed;
 		}
 
 		public void openProjByPath(string projPath, string projName)
@@ -440,6 +443,8 @@ namespace UIEditor
 		private void mx_workTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			m_curItem = null;
+			mx_treeCtrlFrame.Items.Clear();
+			mx_treeSkinFrame.Items.Clear();
 			if (((TabItem)mx_workTabs.SelectedItem) != null)
 			{
 				if (((ToolTip)((TabItem)mx_workTabs.SelectedItem).ToolTip) != null)
@@ -448,8 +453,6 @@ namespace UIEditor
 					string fileType = StringDic.getFileType(tabPath);
 
 					m_curFile = tabPath;
-					mx_treeCtrlFrame.Items.Clear();
-					mx_treeSkinFrame.Items.Clear();
 					if (fileType == "xml")
 					{
 						string fileName = StringDic.getFileNameWithoutPath(tabPath);
@@ -528,71 +531,102 @@ namespace UIEditor
 
 		#region WIN32预定义
 		internal const int
-			WM_DESTROY			= 0x0002,
-			WM_CLOSE			= 0x0010,
-			WM_QUIT				= 0x0012,
-			WM_COPYDATA			= 0x004A,
-			WM_COMMAND			= 0x0111,
-			
-			WM_KEYDOWN			= 0x0100,
+			WM_DESTROY = 0x0002,
+			WM_CLOSE = 0x0010,
+			WM_QUIT = 0x0012,
+			WM_COPYDATA = 0x004A,
+			WM_COMMAND = 0x0111,
 
-			WM_MOUSEFIRST		= 0x0200,
-			WM_MOUSEMOVE		= 0x0200,
-			WM_LBUTTONDOWN		= 0x0201,
-			WM_LBUTTONUP		= 0x0202,
-			WM_LBUTTONDBLCLK	= 0x0203,
-			WM_RBUTTONDOWN		= 0x0204,
-			WM_RBUTTONUP		= 0x0205,
-			WM_RBUTTONDBLCLK	= 0x0206,
-			WM_MBUTTONDOWN		= 0x0207,
-			WM_MBUTTONUP		= 0x0208,
-			WM_MBUTTONDBLCLK	= 0x0209,
-			
-			LBN_SELCHANGE		= 0x0001,
-			LB_GETCURSEL		= 0x0188,
-			LB_GETTEXTLEN		= 0x018A,
-			LB_ADDSTRING		= 0x0180,
-			LB_GETTEXT			= 0x0189,
-			LB_DELETESTRING		= 0x0182,
-			LB_GETCOUNT			= 0x018B,
+			WM_KEYDOWN = 0x0100,
 
-			VK_PRIOR	= 0x21,
-			VK_NEXT		= 0x22,
-			VK_LEFT		= 0x25,
-			VK_UP		= 0x26,
-			VK_RIGHT	= 0x27,
-			VK_DOWN		= 0x28,
-			VK_DELETE	= 0x2E,
+			WM_MOUSEFIRST = 0x0200,
+			WM_MOUSEMOVE = 0x0200,
+			WM_LBUTTONDOWN = 0x0201,
+			WM_LBUTTONUP = 0x0202,
+			WM_LBUTTONDBLCLK = 0x0203,
+			WM_RBUTTONDOWN = 0x0204,
+			WM_RBUTTONUP = 0x0205,
+			WM_RBUTTONDBLCLK = 0x0206,
+			WM_MBUTTONDOWN = 0x0207,
+			WM_MBUTTONUP = 0x0208,
+			WM_MBUTTONDBLCLK = 0x0209,
 
-			VK_OEM_PLUS		= 0xBB,
-			VK_OEM_MINUS	= 0xBD,
+			LBN_SELCHANGE = 0x0001,
+			LB_GETCURSEL = 0x0188,
+			LB_GETTEXTLEN = 0x018A,
+			LB_ADDSTRING = 0x0180,
+			LB_GETTEXT = 0x0189,
+			LB_DELETESTRING = 0x0182,
+			LB_GETCOUNT = 0x018B,
 
-			VK_A	= 0x41,
-			VK_B	= 0x42,
-			VK_C	= 0x43,
-			VK_D	= 0x44,
-			VK_E	= 0x45,
-			VK_F	= 0x46,
-			VK_G	= 0x47,
-			VK_H	= 0x48,
-			VK_I	= 0x49,
-			VK_J	= 0x4A,
-			VK_K	= 0x4B,
-			VK_L	= 0x4C,
-			VK_M	= 0x4D,
-			VK_N	= 0x4E,
-			VK_O	= 0x4F,
-			VK_P	= 0x50,
-			VK_Q	= 0x51,
-			VK_R	= 0x52,
-			VK_S	= 0x53,
-			VK_T	= 0x54,
-			VK_U	= 0x55,
-			VK_V	= 0x56,
-			VK_W	= 0x57,
-			VK_X	= 0x58,
-			VK_Y	= 0x59,
-			VK_Z	= 0x5A;
+			VK_PRIOR = 0x21,
+			VK_NEXT = 0x22,
+			VK_LEFT = 0x25,
+			VK_UP = 0x26,
+			VK_RIGHT = 0x27,
+			VK_DOWN = 0x28,
+			VK_DELETE = 0x2E,
+
+			VK_OEM_PLUS = 0xBB,
+			VK_OEM_MINUS = 0xBD,
+
+			VK_A = 0x41,
+			VK_B = 0x42,
+			VK_C = 0x43,
+			VK_D = 0x44,
+			VK_E = 0x45,
+			VK_F = 0x46,
+			VK_G = 0x47,
+			VK_H = 0x48,
+			VK_I = 0x49,
+			VK_J = 0x4A,
+			VK_K = 0x4B,
+			VK_L = 0x4C,
+			VK_M = 0x4D,
+			VK_N = 0x4E,
+			VK_O = 0x4F,
+			VK_P = 0x50,
+			VK_Q = 0x51,
+			VK_R = 0x52,
+			VK_S = 0x53,
+			VK_T = 0x54,
+			VK_U = 0x55,
+			VK_V = 0x56,
+			VK_W = 0x57,
+			VK_X = 0x58,
+			VK_Y = 0x59,
+			VK_Z = 0x5A,
+
+			//WM_NCHITTEST消息处理返回值
+			HTERROR = -2,
+			HTTRANSPARENT = -1,
+			HTNOWHERE = 0,
+			HTCLIENT = 1,
+			HTCAPTION = 2,
+			HTSYSMENU = 3,
+			HTGROWBOX = 4,
+			HTSIZE = HTGROWBOX,
+			HTMENU = 5,
+			HTHSCROLL = 6,
+			HTVSCROLL = 7,
+			HTMINBUTTON = 8,
+			HTMAXBUTTON = 9,
+			HTLEFT = 10,
+			HTRIGHT = 11,
+			HTTOP = 12,
+			HTTOPLEFT = 13,
+			HTTOPRIGHT = 14,
+			HTBOTTOM = 15,
+			HTBOTTOMLEFT = 16,
+			HTBOTTOMRIGHT = 17,
+			HTBORDER = 18,
+			HTREDUCE = HTMINBUTTON,
+			HTZOOM = HTMAXBUTTON,
+			HTSIZEFIRST = HTLEFT,
+			HTSIZELAST = HTBOTTOMRIGHT,
+			HTOBJECT = 19,
+			HTCLOSE = 20,
+			HTHELP = 21;
 		#endregion
 
 		#region SendMessage函数接口
@@ -711,6 +745,7 @@ namespace UIEditor
 			switch (msg)
 			{
 				case WM_MOUSEMOVE:
+					#region WM_MOUSEMOVE
 					{
 						if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Control) == System.Windows.Forms.Keys.Control)
 						{
@@ -741,8 +776,10 @@ namespace UIEditor
 							}
 						}
 					}
+					#endregion
 					break;
 				case WM_LBUTTONDOWN:
+					#region WM_LBUTTONDOWN
 					{
 						if (m_curFile != null && m_curFile != "")
 						{
@@ -764,8 +801,10 @@ namespace UIEditor
 						m_downX = pX;
 						m_downY = pY;
 					}
+					#endregion
 					break;
 				case WM_LBUTTONUP:
+					#region WM_LBUTTONUP
 					{
 						if(m_isMouseDown == true)
 						{
@@ -779,7 +818,8 @@ namespace UIEditor
 
 								mx_selCtrlLstFrame.Children.Clear();
 								m_mapXeSel.Clear();
-								foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
+								foreach (KeyValuePair<string, BoloUI.Basic> pairCtrlDef in
+									((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.ToList())
 								{
 									if (pairCtrlDef.Value.checkPointInFence(pX, pY))
 									{
@@ -807,7 +847,8 @@ namespace UIEditor
 							}
 							else
 							{
-								if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Control) == System.Windows.Forms.Keys.Control)
+								if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Control) ==
+									System.Windows.Forms.Keys.Control)
 								{
 									if (m_curItem != null && m_curItem.m_type == "CtrlUI")
 									{
@@ -846,6 +887,7 @@ namespace UIEditor
 						m_isMouseDown = false;
 						m_isCtrlMoved = false;
 					}
+					#endregion
 					break;
 				case WM_LBUTTONDBLCLK:
 					break;
@@ -862,6 +904,7 @@ namespace UIEditor
 				case WM_MBUTTONDBLCLK:
 					break;
 				case WM_COPYDATA:
+					#region WM_COPYDATA
 					unsafe
 					{
 						COPYDATASTRUCT msgData = *(COPYDATASTRUCT*)lParam;
@@ -913,6 +956,7 @@ namespace UIEditor
 								break;
 						}
 					}
+					#endregion
 					break;
 				default:
 					break;
@@ -995,12 +1039,19 @@ namespace UIEditor
 					break;
 				case WM_QUIT:
 					//规避GL端报错窗口，因为也没有什么要保存的。
-					mx_GLHost.m_process.Kill();
+					if (!mx_GLHost.m_process.HasExited)
+					{
+						mx_GLHost.m_process.Kill();
+					}
 					break;
 				case WM_DESTROY:
-					mx_GLHost.m_process.Kill();
+					if (!mx_GLHost.m_process.HasExited)
+					{
+						mx_GLHost.m_process.Kill();
+					}
 					break;
 				case WM_KEYDOWN:
+					#region WM_KEYDOWN
 					if (m_curItem != null)
 					{
 						if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Control) == System.Windows.Forms.Keys.Control)
@@ -1127,6 +1178,7 @@ namespace UIEditor
 								break;
 						}
 					}
+					#endregion
 					break;
 				default:
 					break;
@@ -1223,7 +1275,7 @@ namespace UIEditor
 			string buffer = newDoc.InnerXml;
 			updateGL(fileName, W2GTag.W2G_NORMAL_NAME);
 			updateGL(buffer, W2GTag.W2G_NORMAL_DATA);
-			((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).refreshVRect();
+			xmlCtrl.refreshVRect();
 		}
 		private void addTmpEvent(XmlDocument doc, XmlElement xeParent)
 		{
@@ -1269,9 +1321,9 @@ namespace UIEditor
 			//常用项
 			public bool m_isCommon;
 			//枚举列表
-			public Dictionary<string, string> m_mapEnum;
+			public Dictionary<string, ComboBoxItem> m_mapEnum;
 
-			public AttrDef_T(string type = "int", string defValue = null, AttrRow rowUI = null, bool isEnum = false, Dictionary<string, string> mapEnum = null)
+			public AttrDef_T(string type = "int", string defValue = null, AttrRow rowUI = null, bool isEnum = false, Dictionary<string, ComboBoxItem> mapEnum = null)
 			{
 				m_attrRowUI = rowUI;
 				m_type = type;
@@ -1286,6 +1338,10 @@ namespace UIEditor
 			public AttrList m_attrListUI;
 			public Dictionary<string, string> m_mapApprSuffix;
 			public bool m_isFrame;
+			public bool m_isBasic;
+			public bool m_hasBasic;
+			public bool m_enInsert;
+			public bool m_enInsertAll;
 
 			public CtrlDef_T(Dictionary<string, AttrDef_T> mapAttrDef, AttrList attrListUI, Dictionary<string, string> mapApprSuffix = null)
 			{
@@ -1409,7 +1465,7 @@ namespace UIEditor
 								if (xeAttr.GetAttribute("isEnum") == "true")
 								{
 									attrDef.m_isEnum = true;
-									attrDef.m_mapEnum = new Dictionary<string, string>();
+									attrDef.m_mapEnum = new Dictionary<string, ComboBoxItem>();
 									foreach (XmlNode xnEnum in xeAttr.ChildNodes)
 									{
 										if (xnEnum.NodeType == XmlNodeType.Element)
@@ -1418,7 +1474,7 @@ namespace UIEditor
 
 											if (xeEnum.Name == "row")
 											{
-												attrDef.m_mapEnum.Add(xeEnum.InnerText, "");
+												attrDef.m_mapEnum.Add(xeEnum.InnerText, null);
 											}
 										}
 									}
@@ -1451,6 +1507,10 @@ namespace UIEditor
 			docDef.Load(confPath);
 			m_mapCtrlDef = new Dictionary<string, CtrlDef_T>();
 			m_mapPanelCtrlDef = new Dictionary<string, CtrlDef_T>();
+			m_mapBasicCtrlDef = new Dictionary<string, CtrlDef_T>();
+			m_mapHasBasicCtrlDef = new Dictionary<string, CtrlDef_T>();
+			m_mapEnInsertCtrlDef = new Dictionary<string, CtrlDef_T>();
+			m_mapEnInsertAllCtrlDef = new Dictionary<string, CtrlDef_T>();
 
 			if(docDef.DocumentElement.Name == "CtrlAttrDef")
 			{
@@ -1525,6 +1585,9 @@ namespace UIEditor
 							{
 								Dictionary<string, AttrDef_T> mapAttrDef = new Dictionary<string, AttrDef_T>();
 								string isFrame = xeCtrl.GetAttribute("isFrame");
+								string isBasic = xeCtrl.GetAttribute("isBasic");
+								string hasBasic = xeCtrl.GetAttribute("hasBasic");
+								string enInsert = xeCtrl.GetAttribute("enInsert");
 
 								ctrlDef = new CtrlDef_T(mapAttrDef, null);
 								if(isFrame == "true")
@@ -1536,11 +1599,45 @@ namespace UIEditor
 								{
 									ctrlDef.m_isFrame = false;
 								}
+								if (isBasic == "true")
+								{
+									ctrlDef.m_isBasic = true;
+									m_mapBasicCtrlDef.Add(keyCtrl, ctrlDef);
+								}
+								else
+								{
+									ctrlDef.m_isBasic = false;
+								}
+								if (hasBasic == "false")
+								{
+									ctrlDef.m_hasBasic = false;
+								}
+								else
+								{
+									ctrlDef.m_hasBasic = true;
+									m_mapHasBasicCtrlDef.Add(keyCtrl, ctrlDef);
+								}
+								if (enInsert == "false")
+								{
+									ctrlDef.m_enInsert = false;
+									ctrlDef.m_enInsertAll = false;
+								}
+								else if(enInsert == "all")
+								{
+									ctrlDef.m_enInsert = false;
+									ctrlDef.m_enInsertAll = true;
+									m_mapEnInsertAllCtrlDef.Add(keyCtrl, ctrlDef);
+								}
+								else
+								{
+									ctrlDef.m_enInsert = true;
+									ctrlDef.m_enInsertAll = false;
+									m_mapEnInsertCtrlDef.Add(keyCtrl, ctrlDef);
+								}
 								m_mapCtrlDef.Add(keyCtrl, ctrlDef);
-
 								addAttrConf(xeCtrl, mapAttrDef);
 
-								AttrList attrListUI = new AttrList(keyCtrl, this);
+								AttrList attrListUI = new AttrList(keyCtrl);
 								ctrlDef.m_attrListUI = attrListUI;
 							}
 						}
@@ -1645,7 +1742,7 @@ namespace UIEditor
 
 			foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in m_mapCtrlDef.ToList())
 			{
-				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI = new AttrList(pairCtrlDef.Key, this));
+				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI);
 				m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI.Visibility = Visibility.Collapsed;
 			}
 		}
@@ -2070,6 +2167,11 @@ namespace UIEditor
 
 		private void mx_GLCtrl_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
+			if (mx_GLCtrl != null && mx_GLHost != null)
+			{
+				mx_debug.Text += "bw:" + mx_GLCtrl.ActualWidth + "\t" + "bh:" + mx_GLCtrl.ActualHeight + "\t" +
+					"gw:" + mx_GLHost.ActualWidth + "\t" + "gh:" + mx_GLHost.ActualHeight + "\r\n";
+			}
 		}
 
 		private void mx_isViewMode_Checked(object sender, RoutedEventArgs e)
@@ -2091,6 +2193,17 @@ namespace UIEditor
 				ImageTools.ImageNesting winNesting = new ImageTools.ImageNesting(m_projPath + "\\images\\", "*.png", 1);
 				winNesting.ShowDialog();
 			}
+		}
+
+		private void mx_GLScroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
+		{
+			mx_debug.Text += "sw:" + mx_drawFrame.ActualWidth + "\t" + "sh:" + mx_drawFrame.ActualHeight + "\t" +
+				"sx:" + mx_drawFrame.HorizontalOffset + "\t" + "sy:" + mx_drawFrame.VerticalOffset + "\r\n";
+			mx_GLCtrl.BringIntoView(new Rect(200, 200, 200, 200));
+			//mx_drawFrame.BringIntoView(new Rect(mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset, mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset));
+			//mx_GLHost.BringIntoView(new Rect(mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset, mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset));
+			//mx_glX.Width = new GridLength(mx_GLScroll.HorizontalOffset);
+			//mx_glX.Width = new GridLength(mx_GLScroll.HorizontalOffset);
 		}
 	}
 }

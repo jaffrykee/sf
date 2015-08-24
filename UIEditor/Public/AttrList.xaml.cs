@@ -23,24 +23,17 @@ namespace UIEditor
 	public partial class AttrList : Grid
 	{
 		public string m_name;
-		public MainWindow m_pW;
 		public XmlElement m_xe;
 		public XmlControl m_xmlCtrl;
 		public XmlItem m_basic;
 
-		public AttrList(string name = "", MainWindow pW = null)
+		public AttrList(string name = "")
 		{
 			m_name = name;
-			m_pW = pW;
 			this.InitializeComponent();
-		}
-
-		private void mx_root_Loaded(object sender, RoutedEventArgs e)
-		{
-			m_pW = Window.GetWindow(this) as MainWindow;
 
 			MainWindow.CtrlDef_T ctrlDef;
-			if (m_pW.m_mapCtrlDef.TryGetValue(m_name, out ctrlDef))
+			if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(m_name, out ctrlDef))
 			{
 				foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in ctrlDef.m_mapAttrDef.ToList())
 				{
@@ -53,7 +46,13 @@ namespace UIEditor
 				//todo
 			}
 
-			mx_title.Content = m_name;
+			string ctrlWord = MainWindow.s_pW.m_strDic.getWordByKey(m_name);
+
+			if (ctrlWord == "")
+			{
+				ctrlWord = m_name;
+			}
+			mx_title.Content = ctrlWord;
 		}
 
 		public void clearRowValue()
@@ -121,7 +120,7 @@ namespace UIEditor
 					}
 				}
 			}
-			m_pW.mx_toolScroll.ScrollToRightEnd();
+			MainWindow.s_pW.mx_toolScroll.ScrollToRightEnd();
 		}
 
 		private void mx_onlySetted_Checked(object sender, RoutedEventArgs e)

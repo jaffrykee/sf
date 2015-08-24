@@ -21,18 +21,17 @@ namespace UIEditor
 	public partial class HtmlControl : UserControl
 	{
 		public FileTabItem m_tabItem;
+		public OpenedFile m_openedFile;
 
-		public HtmlControl(FileTabItem tabItem)
+		public HtmlControl(FileTabItem tabItem, OpenedFile fileDef)
 		{
 			m_tabItem = tabItem;
+			m_openedFile = fileDef;
 			InitializeComponent();
 			//mx_browser.Source = new Uri(tabItem.m_filePath, UriKind.Relative);
 			string path = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
 
 			mx_browser.Source = new Uri("file:///" + path + "\\" + m_tabItem.m_filePath);
-		}
-		private void mx_root_Loaded(object sender, RoutedEventArgs e)
-		{
 		}
 	}
 }

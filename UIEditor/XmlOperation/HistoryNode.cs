@@ -46,7 +46,6 @@ namespace UIEditor.XmlOperation
 
 		public HistoryNode(XmlOptType optType, XmlElement dstXe, XmlElement srcXe = null, int newIndex = 0)
 		{
-
 			m_optType = optType;
 			m_dstXe = dstXe;
 			switch (optType)

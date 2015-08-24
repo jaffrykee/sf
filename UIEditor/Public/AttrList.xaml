@@ -7,9 +7,8 @@
 	mc:Ignorable="d"
 	x:Class="UIEditor.AttrList"
 	x:Name="mx_root"
-	Loaded="mx_root_Loaded"
-	Background="#ffcccccc">
-	<StackPanel Margin="2,2,2,2">
+	Background="#ffd0d0d0">
+	<StackPanel Margin="2">
 		<Border BorderThickness="1" BorderBrush="#ffffffff" Background="#ff444444" CornerRadius="2">
 			<Label Name="mx_title"
 				   Foreground="White"
@@ -19,9 +18,9 @@
 		</Border>
 		<StackPanel Name="mx_frame">
 			<Grid Name="mx_setting"
-				  HorizontalAlignment="Right"
-				  Margin="2,2,2,2"
-				  MinWidth="250">
+				  MinWidth="250"
+				  Margin="5"
+				  HorizontalAlignment="Right">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Name="mx_cs0" Width="125"/>
 					<ColumnDefinition Name="mx_cs1" Width="*"/>

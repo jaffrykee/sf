@@ -39,17 +39,15 @@ namespace UIEditor.BoloRes
 				}
 				addChild();
 			}
-		}
-		protected override void TreeViewItem_Loaded(object sender, RoutedEventArgs e)
-		{
+
 			Dictionary<string, MainWindow.SkinDef_T> mapSkinDef;
 
 			initHeader();
 
 			mx_addNode.Items.Clear();
-			if(m_xe.Name == "BoloUI")
+			if (m_xe.Name == "BoloUI")
 			{
-				mapSkinDef = m_pW.m_mapSkinTreeDef;
+				mapSkinDef = MainWindow.s_pW.m_mapSkinTreeDef;
 			}
 			else
 			{
@@ -78,7 +76,7 @@ namespace UIEditor.BoloRes
 			ResBasic treeChild;
 			if (m_xe.Name == "BoloUI")
 			{
-				treeChild = new ResBasic(newXe, m_rootControl, m_pW.m_mapSkinTreeDef[newXe.Name]);
+				treeChild = new ResBasic(newXe, m_rootControl, MainWindow.s_pW.m_mapSkinTreeDef[newXe.Name]);
 			}
 			else
 			{
@@ -117,10 +115,6 @@ namespace UIEditor.BoloRes
 							{
 								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), xe, m_rootControl, skinPtr) as TreeViewItem;
 								this.Items.Add(treeChild);
-								if (xe.Name != "event")
-								{
-									this.IsExpanded = true;
-								}
 							}
 						}
 					}
@@ -134,14 +128,15 @@ namespace UIEditor.BoloRes
 				string ctrlName = MainWindow.s_pW.m_strDic.getWordByKey(m_xe.Name);
 				string ctrlTip = MainWindow.s_pW.m_strDic.getWordByKey(m_xe.Name, StringDic.conf_ctrlTipDic);
 				string name = "";
+				string tmpCon = "";
 
 				if (ctrlName != "")
 				{
-					mx_radio.Content = "<" + ctrlName + ">";
+					tmpCon = "<" + ctrlName + ">";
 				}
 				else
 				{
-					mx_radio.Content = "<" + m_xe.Name + ">";
+					tmpCon = "<" + m_xe.Name + ">";
 				}
 
 				if (ctrlTip != "")
@@ -153,23 +148,23 @@ namespace UIEditor.BoloRes
 					mx_radio.ToolTip = m_xe.Name;
 				}
 
-				if (m_curDeepDef.m_mapAttrDef != null)
+				if (m_curDeepDef.m_mapAttrDef != null && m_curDeepDef.m_mapAttrDef.ToList().Count > 0)
 				{
 					name = m_xe.GetAttribute(m_curDeepDef.m_mapAttrDef.ToList().First().Key);
 				}
 
-				mx_radio.Content += name;
+				tmpCon += name;
+				mx_radio.Content = tmpCon.Replace("_", "__");
 			}
-			mx_radio.Content = mx_radio.Content.ToString().Replace("_", "__");
 		}
 		public override void changeSelectItem(object obj = null)
 		{
-			m_pW.m_curItem = this;
+			MainWindow.s_pW.m_curItem = this;
 			if(m_xe.Name != "BoloUI")
 			{
 				BoloUI.Basic ctrlUI;
-				m_pW.mx_leftToolFrame.SelectedItem = m_pW.mx_skinFrame;
-				m_pW.hiddenAllAttr();
+				MainWindow.s_pW.mx_leftToolFrame.SelectedItem = MainWindow.s_pW.mx_skinFrame;
+				MainWindow.s_pW.hiddenAllAttr();
 
 				if (obj != null && obj.GetType().ToString() == "UIEditor.BoloUI.Basic")
 				{
@@ -186,23 +181,23 @@ namespace UIEditor.BoloRes
 						ctrlUI = null;
 					}
 				}
-				if (m_pW.m_otherAttrList == null)
+				if (MainWindow.s_pW.m_otherAttrList == null)
 				{
-					m_pW.m_otherAttrList = new AttrList("基本", m_pW);
-					m_pW.mx_toolArea.Children.Add(m_pW.m_otherAttrList);
+					MainWindow.s_pW.m_otherAttrList = new AttrList("基本");
+					MainWindow.s_pW.mx_toolArea.Children.Add(MainWindow.s_pW.m_otherAttrList);
 				}
 				if (m_curDeepDef.m_mapAttrDef != null)
 				{
 					foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in m_curDeepDef.m_mapAttrDef.ToList())
 					{
-						pairAttrDef.Value.m_attrRowUI = new AttrRow(pairAttrDef.Value, pairAttrDef.Key, m_xe.GetAttribute(pairAttrDef.Key), m_pW.m_otherAttrList);
-						m_pW.m_otherAttrList.mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);
+						pairAttrDef.Value.m_attrRowUI = new AttrRow(pairAttrDef.Value, pairAttrDef.Key, m_xe.GetAttribute(pairAttrDef.Key), MainWindow.s_pW.m_otherAttrList);
+						MainWindow.s_pW.m_otherAttrList.mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);
 					}
 				}
-				m_pW.m_otherAttrList.refreshRowVisible();
-				m_pW.m_otherAttrList.m_xmlCtrl = m_rootControl;
-				m_pW.m_otherAttrList.m_basic = this;
-				m_pW.m_otherAttrList.m_xe = m_xe;
+				MainWindow.s_pW.m_otherAttrList.refreshRowVisible();
+				MainWindow.s_pW.m_otherAttrList.m_xmlCtrl = m_rootControl;
+				MainWindow.s_pW.m_otherAttrList.m_basic = this;
+				MainWindow.s_pW.m_otherAttrList.m_xe = m_xe;
 
 				//预览皮肤
 				XmlElement xeSkin = null;
@@ -234,7 +229,7 @@ namespace UIEditor.BoloRes
 
 						if (ctrlUI == null && m_rootControl.m_skinViewCtrlUI == null)
 						{
-							xeView = m_pW.m_xeTest;
+							xeView = MainWindow.s_pW.m_xeTest;
 						}
 						else
 						{
@@ -252,7 +247,7 @@ namespace UIEditor.BoloRes
 							}
 						}
 						((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
-						m_pW.updateXmlToGL(m_rootControl, xeView, false);
+						MainWindow.s_pW.updateXmlToGL(m_rootControl, xeView, false);
 					}
 					//todo 更改皮肤预览
 				}

@@ -23,20 +23,12 @@ namespace UIEditor
 		FileTabItem m_parent;
 		public OpenedFile m_openedFile;
 
-		public UnknownControl(FileTabItem parent)
+		public UnknownControl(FileTabItem parent, OpenedFile fileDef)
 		{
 			InitializeComponent();
 			m_parent = parent;
-			m_openedFile = MainWindow.s_pW.m_mapOpenedFiles[m_parent.m_filePath];
+			m_openedFile = fileDef;
 			m_openedFile.m_frame = this;
-		}
-
-		private void tabFrameLoaded(object sender, RoutedEventArgs e)
-		{
-		}
-
-		private void closeFileTab(object sender, RoutedEventArgs e)
-		{
 		}
 	}
 }

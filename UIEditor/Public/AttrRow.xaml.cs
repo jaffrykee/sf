@@ -25,8 +25,10 @@ namespace UIEditor
 		private string mt_name;
 		private string mt_value;
 		private string mt_type;
-		public MainWindow m_pW;
 		public AttrList m_parent;
+		public bool m_isCommon;
+		public string m_subType;
+		public bool m_eventLock;
 		public string m_name
 		{
 			get { return mt_name; }
@@ -40,18 +42,19 @@ namespace UIEditor
 					string tip = MainWindow.s_pW.m_strDic.getWordByKey(value, StringDic.conf_ctrlAttrTipDic);
 
 					mx_name.Content = outStr;
-					if(tip != "")
+					if (tip != "")
 					{
-						mx_name.ToolTip = tip;
+						mx_root.ToolTip = tip;
 					}
 					else
 					{
-						mx_name.ToolTip = value;
+						mx_root.ToolTip = value;
 					}
 				}
 				else
 				{
 					mx_name.Content = value;
+					mx_root.ToolTip = value;
 				}
 				if(m_name == "skin")
 				{
@@ -63,44 +66,83 @@ namespace UIEditor
 				}
 			}
 		}
+		private void setValue(bool isPre, string value)
+		{
+			if (m_eventLock)
+			{
+				return;
+			}
+			m_eventLock = true;
+			if (!m_isEnum)
+			{
+				switch (m_type)
+				{
+					case "bool":
+						{
+							if (value == "")
+							{
+								mx_defaultBool.IsChecked = true;
+							}
+							else
+							{
+								mx_defaultBool.IsChecked = false;
+								switch (value)
+								{
+									case "true":
+										mx_valueBool.IsChecked = true;
+										break;
+									case "false":
+										mx_valueBool.IsChecked = false;
+										break;
+									default:
+										//todo 这里是非法值的处理，还没有想好机制
+										mx_defaultBool.IsChecked = true;
+										break;
+								}
+							}
+						}
+						break;
+					default:
+						break;
+				}
+			}
+			else
+			{
+				ComboBoxItem selCb;
+
+				if (m_mapEnum != null && m_mapEnum.TryGetValue(value, out selCb) && selCb != null)
+				{
+					selCb.IsSelected = true;
+				}
+				else
+				{
+					mx_defaultEnum.IsSelected = true;
+				}
+			}
+
+			if (!isPre && m_parent != null && m_parent.m_xmlCtrl != null && m_parent.m_xe != null && mt_value != value)
+			{
+				m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_basic.m_xe, m_name, mt_value, value));
+			}
+
+			mt_value = value;
+			mx_value.Text = value;
+			m_eventLock = false;
+		}
+		public string m_preValue
+		{
+			get { return mt_value; }
+			set
+			{
+				setValue(true, value);
+			}
+		}
 		public string m_value
 		{
 			get { return mt_value; }
 			set
 			{
-				if (m_type == "bool")
-				{
-					if (value == "")
-					{
-						mx_defaultBool.IsChecked = true;
-					}
-					else
-					{
-						mx_defaultBool.IsChecked = false;
-						switch (value)
-						{
-							case "true":
-								mx_valueBool.IsChecked = true;
-								break;
-							case "false":
-								mx_valueBool.IsChecked = false;
-								break;
-							default:
-								//todo 这里是非法值的处理，还没有想好机制
-								mx_defaultBool.IsChecked = true;
-								break;
-						}
-					}
-				}
-				XmlItem curItem = m_pW.m_curItem;
-
-				if (m_pW.m_attrBinding && m_parent != null && m_parent.m_xmlCtrl != null && m_parent.m_xe != null && mt_value != value)
-				{
-					m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_basic.m_xe, m_name, mt_value, value));
-				}
-
-				mt_value = value;
-				mx_value.Text = value;
+				setValue(false, value);
 			}
 		}
 		public string m_type
@@ -134,11 +176,33 @@ namespace UIEditor
 					mx_boolFrame.Visibility = Visibility.Collapsed;
 					mx_normalFrame.Visibility = Visibility.Collapsed;
 					mx_enumFrame.Visibility = Visibility.Visible;
+
+					if(m_mapEnum != null && m_mapEnum.Count() > 0)
+					{
+						foreach (KeyValuePair<string, ComboBoxItem> pairEnum in m_mapEnum.ToList())
+						{
+							ComboBoxItem cbEnum = new ComboBoxItem();
+							string strEnum = "";
+							if(m_subType != null && m_subType != "")
+							{
+								strEnum = MainWindow.s_pW.m_strDic.getWordByKey(pairEnum.Key, StringDic.conf_ctrlAttrTipDic + "_" + m_subType);
+							}
+
+							if(strEnum == "")
+							{
+								strEnum = pairEnum.Key;
+							}
+							cbEnum.Content = strEnum;
+							cbEnum.ToolTip = pairEnum.Key;
+							m_mapEnum[pairEnum.Key] = cbEnum;
+							mx_valueEnum.Items.Add(cbEnum);
+						}
+					}
 				}
 			}
 		}
 		public bool m_isEnum;
-		public Dictionary<string, string> m_mapEnum;
+		public Dictionary<string, ComboBoxItem> m_mapEnum;
 
 		public AttrRow(string type = "string", string name = "", string value = "", AttrList parent = null)
 		{
@@ -149,6 +213,12 @@ namespace UIEditor
 			m_parent = parent;
 			m_isEnum = false;
 			m_mapEnum = null;
+			m_isCommon = false;
+			m_subType = "";
+
+			m_name = mt_name;
+			m_preValue = mt_value;
+			m_type = mt_type;
 		}
 		public AttrRow(MainWindow.AttrDef_T attrDef, string name = "", string value = "", AttrList parent = null)
 		{
@@ -159,16 +229,12 @@ namespace UIEditor
 			m_parent = parent;
 			m_isEnum = attrDef.m_isEnum;
 			m_mapEnum = attrDef.m_mapEnum;
-		}
-		private void mx_root_Loaded(object sender, RoutedEventArgs e)
-		{
-			m_pW = Window.GetWindow(this) as MainWindow;
+			m_isCommon = attrDef.m_isCommon;
+			m_subType = attrDef.m_subType;
+
 			m_name = mt_name;
-			m_value = mt_value;
+			m_preValue = mt_value;
 			m_type = mt_type;
-			//todo & totest
-// 			this.mx_name.Content = m_name;
-// 			this.mx_value.Text = m_value;
 		}
 
 		private void mx_value_TextChanged(object sender, TextChangedEventArgs e)
@@ -216,7 +282,13 @@ namespace UIEditor
 		}
 		private void mx_valueEnum_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			//((ComboBox)sender).SelectedItem
+			if((ComboBox)sender != null && ((ComboBox)sender).SelectedItem != null &&
+				((ComboBox)sender).SelectedItem.GetType().ToString() == "System.Windows.Controls.ComboBoxItem")
+			{
+				ComboBoxItem selCb = (ComboBoxItem)(((ComboBox)sender).SelectedItem);
+
+				m_value = selCb.ToolTip.ToString();
+			}
 		}
 		private void mx_link_Click(object sender, RoutedEventArgs e)
 		{
@@ -233,9 +305,12 @@ namespace UIEditor
 
 				winSkin.ShowDialog();
 
-				BoloUI.SelSkin.s_pW.m_GLSkinHost.m_process.Kill();
-				BoloUI.SelSkin.s_isRun = false;
-				BoloUI.SelSkin.s_pW = null;
+				if (!BoloUI.SelSkin.s_pW.m_GLSkinHost.m_process.HasExited)
+				{
+					BoloUI.SelSkin.s_pW.m_GLSkinHost.m_process.Kill();
+					BoloUI.SelSkin.s_isRun = false;
+					BoloUI.SelSkin.s_pW = null;
+				}
 			}
 		}
 	}

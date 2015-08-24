@@ -215,7 +215,7 @@ namespace UIEditor.XmlOperation
 		}
 		public void undo()
 		{
-			if (m_curNode.Previous != null && m_curNode != null && m_curNode != m_headNode)
+			if (m_curNode != null && m_curNode.Previous != null && m_curNode != m_headNode)
 			{
 				undoOperation();
 				m_curNode = m_curNode.Previous;
@@ -224,7 +224,7 @@ namespace UIEditor.XmlOperation
 		}
 		public void redo()
 		{
-			if (m_curNode.Next != null && m_curNode != null && m_curNode.Next != m_headNode)
+			if (m_curNode != null && m_curNode.Next != null && m_curNode.Next != m_headNode)
 			{
 				m_curNode = m_curNode.Next;
 				redoOperation();
