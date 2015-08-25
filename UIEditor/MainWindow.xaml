@@ -186,7 +186,7 @@
 					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
 				<ToolBarTray Grid.Row="0">
-					<ToolBar HorizontalAlignment="Left">
+					<ToolBar HorizontalAlignment="Left" Height="32">
 						<Button Name="mx_toolNew"
 								IsEnabled="False"
 								Click="mx_newFile_Click"
@@ -263,10 +263,15 @@
 						</Button>
 					</ToolBar>
 					<ToolBar Name="mx_debugTools" HorizontalAlignment="Left">
-						<Label>调试模式：</Label>
+						<Label VerticalAlignment="Center">调试模式：</Label>
 						<TextBox MinWidth="100" Name="mx_hwndDebug"></TextBox>
 					</ToolBar>
-					<ToolBar Name="mx_viewModeTools" HorizontalAlignment="Left">
+					<ToolBar Name="mx_viewModeTools" HorizontalAlignment="Left" Height="32">
+						<Label VerticalAlignment="Center">宽：</Label>
+						<TextBox Name="mx_screenWidth" TextChanged="mx_screenSize_TextChanged" Width="50"></TextBox>
+						<Label VerticalAlignment="Center">高：</Label>
+						<TextBox Name="mx_screenHeight" TextChanged="mx_screenSize_TextChanged" Width="50"></TextBox>
+						<Separator/>
 						<CheckBox Name="mx_isViewMode"
 								  ToolTip="预览模式"
 								  Checked="mx_isViewMode_Checked"
@@ -421,7 +426,6 @@
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="auto"/>
-					<RowDefinition Height="auto"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
 				<!-- Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" -->
@@ -429,30 +433,56 @@
 						   Grid.Row="0"
 						   Background="#ffcccccc"
 						   Orientation="Horizontal"/>
-				<StackPanel Grid.Row="1" Orientation="Horizontal">
-					<Button Width="auto" Margin="10,2,2,2" Padding="2" Click="mx_bClearDebug_Click">
-						clear
-					</Button>
-				</StackPanel>
-				<TextBox
-					Name="mx_debug"
-					Grid.Row="2"
-					TextWrapping="Wrap"
-					AcceptsReturn="True"
-					VerticalScrollBarVisibility="Visible"
-					HorizontalAlignment="Stretch"
-					IsReadOnly="True"
-					TextChanged="mx_debug_TextChanged"
-					SizeChanged="mx_debug_SizeChanged"/>
+				<TabControl Grid.Row="1"
+							Style="{StaticResource TabControlStyle1}"
+							TabStripPlacement="Bottom"
+							Margin="0,0,0,10"
+							BorderThickness="0,0,0,3">
+					<TabItem Header="文本内容">
+						<Grid Background="#ffffffff">
+							<Label HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#11000000" FontSize="100" Padding="0,0,20,0">只能看不能写</Label>
+							<TextBox Name="mx_xmlText"
+									 Background="#00000000"
+									 AcceptsReturn="True"
+									 VerticalScrollBarVisibility="Visible"
+									 HorizontalScrollBarVisibility="Visible"
+									 HorizontalAlignment="Stretch"
+									 IsReadOnly="True"
+									 FontFamily="Consolas"/>
+						</Grid>
+					</TabItem>
+					<TabItem Header="输出">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<WrapPanel>
+								<Button Grid.Row="0" Margin="10,2,2,2" Padding="10,0,10,0" Click="mx_bClearDebug_Click">
+									清空
+								</Button>
+							</WrapPanel>
+							<TextBox Name="mx_debug"
+									 Grid.Row="1"
+									 AcceptsReturn="True"
+									 VerticalScrollBarVisibility="Visible"
+									 HorizontalScrollBarVisibility="Visible"
+									 HorizontalAlignment="Stretch"
+									 IsReadOnly="True"
+									 TextChanged="mx_debug_TextChanged"
+									 SizeChanged="mx_debug_SizeChanged"/>
+						</Grid>
+					</TabItem>
+				</TabControl>
 			</Grid>
 		</DockPanel>
 		<ScrollViewer Name="mx_scrollFrame"
 					  Grid.Row="3" Grid.Column="1"
-					  Visibility="Visible"
-					  HorizontalScrollBarVisibility="Visible"
-					  VerticalScrollBarVisibility="Visible"
+					  Visibility="{Binding ElementName=mx_drawFrame, Path=Visibility}"
+					  HorizontalScrollBarVisibility="Auto"
+					  VerticalScrollBarVisibility="Auto"
 					  ScrollChanged="mx_scrollFrame_ScrollChanged">
-			<Grid Width="960" Height="640" HorizontalAlignment="Left" VerticalAlignment="Top" ClipToBounds="True">
+			<Grid Name="mx_scrollGrid" HorizontalAlignment="Left" VerticalAlignment="Top" ClipToBounds="True">
 			</Grid>
 		</ScrollViewer>
 		<Grid Name="mx_drawFrame"
@@ -462,8 +492,7 @@
 				Height="{Binding ElementName=mx_drawFrame, Path=ActualHeight}"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Top"
-				Padding="0,0,25,25"
-				SizeChanged="mx_GLCtrl_SizeChanged">
+				Padding="0,0,25,25">
 			</Border>
 		</Grid>
 	</Grid>

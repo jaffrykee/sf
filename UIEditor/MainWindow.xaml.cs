@@ -33,7 +33,8 @@ namespace UIEditor
 		W2G_SELECT_UI = 0x0003,
 		W2G_UI_VRECT = 0x0004,
 		W2G_DRAWRECT = 0x0014,
-		W2G_VIEWMODE = 0x0005
+		W2G_VIEWMODE = 0x0005,
+		W2G_VIEWSIZE = 0x0015
 	};
 	public enum G2WTag
 	{
@@ -111,6 +112,7 @@ namespace UIEditor
 		public Dictionary<string, SkinDef_T> m_mapSkinTreeDef;
 		public Dictionary<string, SkinDef_T> m_mapSkinAllDef;
 		public Dictionary<string, Dictionary<string, AttrDef_T>> m_mapSkinAttrDef;
+		public StringDic m_strDic;
 
 		public Dictionary<XmlElement, BoloUI.SelButton> m_mapXeSel;
 		public float m_dpiSysX;
@@ -121,6 +123,35 @@ namespace UIEditor
 		public AttrList m_otherAttrList;
 		public bool m_vCtrlName;
 		public bool m_vCtrlId;
+
+		private int mt_screenWidth;
+		public int m_screenWidth
+		{
+			get { return mt_screenWidth; }
+			set
+			{
+				mt_screenWidth = value;
+				if(mx_scrollGrid != null)
+				{
+					mx_scrollGrid.Width = value;
+					updateGL(mt_screenWidth.ToString() + ":" + mt_screenHeight.ToString(), W2GTag.W2G_VIEWSIZE);
+				}
+			}
+		}
+		private int mt_screenHeight;
+		public int m_screenHeight
+		{
+			get { return mt_screenHeight; }
+			set
+			{
+				mt_screenHeight = value;
+				if(mx_scrollGrid != null)
+				{
+					mx_scrollGrid.Height = value;
+					updateGL(mt_screenWidth.ToString() + ":" + mt_screenHeight.ToString(), W2GTag.W2G_VIEWSIZE);
+				}
+			}
+		}
 
 		public XmlDocument m_xdTest;
 		public XmlElement m_xeTest;
@@ -136,7 +167,6 @@ namespace UIEditor
 		public int m_downX;
 		public int m_downY;
 		public string m_pasteFilePath;
-		public StringDic m_strDic;
 
 		ControlHost mx_GLHost;
 		public string m_curLang;
@@ -158,6 +188,8 @@ namespace UIEditor
 			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
 			m_strDic = new StringDic("zh-CN", conf_pathStringDic);
 			InitializeComponent();
+			m_screenWidth = 960;
+			m_screenHeight = 640;
 			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
 			m_mapStrSkin = new Dictionary<string, XmlElement>();
 			m_mapSkinAllDef = new Dictionary<string, SkinDef_T>();
@@ -229,7 +261,7 @@ namespace UIEditor
 			{
 				source.AddHook(WndProc);
 			}
-			mx_GLHost = new ControlHost();
+			mx_GLHost = new ControlHost(m_screenWidth, m_screenHeight);
 			mx_GLCtrl.Child = mx_GLHost;
 			mx_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
 			if (m_isDebug)
@@ -473,6 +505,7 @@ namespace UIEditor
 							{
 								hiddenGLAttr();
 							}
+							((XmlControl)openFile.m_frame).refreshXmlText();
 						}
 					}
 					else
@@ -1337,6 +1370,7 @@ namespace UIEditor
 		{
 			public Dictionary<string, AttrDef_T> m_mapAttrDef;
 			public AttrList m_attrListUI;
+			public Dictionary<string, string> m_mapApprPrefix;
 			public Dictionary<string, string> m_mapApprSuffix;
 			public bool m_isFrame;
 			public bool m_isBasic;
@@ -1388,42 +1422,66 @@ namespace UIEditor
 		{
 
 		}
-		bool refreshSkinApprSuf()
+		void refreshSkinApprFix(bool isPreConf)
 		{
-			string confPath = conf_pathPlugInBoloUI + @"SkinApprSuf.xml";
+			string confPath;
+
+			if(isPreConf)
+			{
+				confPath = conf_pathPlugInBoloUI + @"SkinApprPre.xml";
+			}
+			else
+			{
+				confPath = conf_pathPlugInBoloUI + @"SkinApprSuf.xml";
+			}
 			XmlDocument docConf = new XmlDocument();
 
 			docConf.Load(confPath);
 
-			if(docConf.DocumentElement.Name == "SkinApprSuf")
-			{
-				XmlElement xeRoot = docConf.DocumentElement;
+			XmlElement xeRoot = docConf.DocumentElement;
+			string nameDic = xeRoot.GetAttribute("nameDic");
 
-				foreach(XmlNode xnCtrl in xeRoot.ChildNodes)
+			if (nameDic != "")
+			{
+				foreach (XmlNode xnCtrl in xeRoot.ChildNodes)
 				{
 					if (xnCtrl.NodeType == XmlNodeType.Element)
 					{
 						XmlElement xeCtrl = (XmlElement)xnCtrl;
 
-						if(xeCtrl.Name == "CtrlConf")
+						if (xeCtrl.Name == "CtrlConf")
 						{
-							if(xeCtrl.GetAttribute("key") != "")
+							if (xeCtrl.GetAttribute("key") != "")
 							{
 								string ctrlKey = xeCtrl.GetAttribute("key");
 								CtrlDef_T ctrlDef;
 
-								if(m_mapCtrlDef.TryGetValue(ctrlKey, out ctrlDef))
+								if (m_mapCtrlDef.TryGetValue(ctrlKey, out ctrlDef))
 								{
-									ctrlDef.m_mapApprSuffix = new Dictionary<string, string>();
-									foreach(XmlNode xnRow in xeCtrl.ChildNodes)
+									if (isPreConf)
 									{
-										if(xnRow.NodeType == XmlNodeType.Element)
+										ctrlDef.m_mapApprPrefix = new Dictionary<string, string>();
+									}
+									else
+									{
+										ctrlDef.m_mapApprSuffix = new Dictionary<string, string>();
+									}
+									foreach (XmlNode xnRow in xeCtrl.ChildNodes)
+									{
+										if (xnRow.NodeType == XmlNodeType.Element)
 										{
 											XmlElement xeRow = (XmlElement)xnRow;
 
-											if(xeRow.Name == "intRow" && xeRow.InnerText != "")
+											if (xeRow.Name == "row" && xeRow.InnerText != "")
 											{
-												ctrlDef.m_mapApprSuffix.Add(xeRow.InnerText, m_strDic.getWordByKey(xeRow.InnerText, "SkinApprSuf"));
+												if (isPreConf)
+												{
+													ctrlDef.m_mapApprPrefix.Add(xeRow.InnerText, m_strDic.getWordByKey(xeRow.InnerText, "SkinApprPre"));
+												}
+												else
+												{
+													ctrlDef.m_mapApprSuffix.Add(xeRow.InnerText, m_strDic.getWordByKey(xeRow.InnerText, "SkinApprSuf"));
+												}
 											}
 										}
 									}
@@ -1433,8 +1491,11 @@ namespace UIEditor
 					}
 				}
 			}
-
-			return false;
+		}
+		void refreshSkinApprDef()
+		{
+			refreshSkinApprFix(true);
+			refreshSkinApprFix(false);
 		}
 		public void addAttrConf(XmlElement xe, Dictionary<string, AttrDef_T> mapAttrDef)
 		{
@@ -1644,8 +1705,9 @@ namespace UIEditor
 						}
 					}
 				}
-				refreshSkinApprSuf();
 				#endregion
+
+				refreshSkinApprDef();
 
 				return true;
 			}
@@ -1807,7 +1869,21 @@ namespace UIEditor
 		}
 		private void mx_debug_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			mx_debug.ScrollToEnd();
+			if (sender.GetType().ToString() == "System.Windows.Controls.TextBox")
+			{
+				TextBox tb = (TextBox)sender;
+
+				tb.ScrollToEnd();
+			}
+		}
+		private void mx_debug_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			if (sender.GetType().ToString() == "System.Windows.Controls.TextBox")
+			{
+				TextBox tb = (TextBox)sender;
+
+				tb.ScrollToEnd();
+			}
 		}
 		private void mx_checkVName_Checked(object sender, RoutedEventArgs e)
 		{
@@ -2161,19 +2237,6 @@ namespace UIEditor
 				mx_debug.Text += "<错误>没有找到文件：" + path + "。\r\n";
 			}
 		}
-		private void mx_debug_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			mx_debug.ScrollToEnd();
-		}
-
-		private void mx_GLCtrl_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			if (mx_GLCtrl != null && mx_GLHost != null)
-			{
-				mx_debug.Text += "bw:" + mx_GLCtrl.ActualWidth + "\t" + "bh:" + mx_GLCtrl.ActualHeight + "\t" +
-					"gw:" + mx_GLHost.ActualWidth + "\t" + "gh:" + mx_GLHost.ActualHeight + "\r\n";
-			}
-		}
 
 		private void mx_isViewMode_Checked(object sender, RoutedEventArgs e)
 		{
@@ -2203,20 +2266,30 @@ namespace UIEditor
 		static double s_y = 0;
 		private void mx_scrollFrame_ScrollChanged(object sender, ScrollChangedEventArgs e)
 		{
+			/*
 			mx_debug.Text += "sw:" + mx_scrollFrame.ActualWidth + "\t" + "sh:" + mx_scrollFrame.ActualHeight + "\t" +
 				"sx:" + mx_scrollFrame.HorizontalOffset + "\t" + "sy:" + mx_scrollFrame.VerticalOffset + "\r\n";
-
+			*/
 			double dx = s_x - mx_scrollFrame.HorizontalOffset;
 			double dy = s_y - mx_scrollFrame.VerticalOffset;
 
 			s_x = mx_scrollFrame.HorizontalOffset;
 			s_y = mx_scrollFrame.VerticalOffset;
-			MoveWindow(m_hwndGL, (int)-s_x, (int)-s_y, 960, 640, true);
-			
-			//mx_drawFrame.BringIntoView(new Rect(mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset, mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset));
-			//mx_GLHost.BringIntoView(new Rect(mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset, mx_GLScroll.HorizontalOffset, mx_GLScroll.VerticalOffset));
-			//mx_glX.Width = new GridLength(mx_GLScroll.HorizontalOffset);
-			//mx_glX.Width = new GridLength(mx_GLScroll.HorizontalOffset);
+			MoveWindow(m_hwndGL, (int)-s_x, (int)-s_y, m_screenWidth, m_screenHeight, true);
+		}
+
+		private void mx_screenSize_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if (mx_screenWidth != null && mx_screenHeight != null && mx_screenWidth.Text != "" && mx_screenHeight.Text != "")
+			{
+				int tw, th;
+
+				if(int.TryParse(mx_screenWidth.Text, out tw) && int.TryParse(mx_screenHeight.Text, out th))
+				{
+					m_screenWidth = tw;
+					m_screenHeight = th;
+				}
+			}
 		}
 	}
 }

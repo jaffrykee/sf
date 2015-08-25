@@ -134,6 +134,7 @@ namespace UIEditor.XmlOperation
 					}
 				}
 			}
+			m_xmlCtrl.refreshXmlText();
 		}
 		public void undoOperation()
 		{
@@ -212,6 +213,7 @@ namespace UIEditor.XmlOperation
 					}
 				}
 			}
+			m_xmlCtrl.refreshXmlText();
 		}
 		public void undo()
 		{

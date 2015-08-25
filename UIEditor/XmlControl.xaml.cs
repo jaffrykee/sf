@@ -252,6 +252,21 @@ namespace UIEditor
 
 			refreshSkinDicByPath(path, skinGroupName);
 		}
+		public void refreshXmlText()
+		{
+			StringBuilder strb = new StringBuilder();
+			using (StringWriter sw = new StringWriter(strb))
+			{
+				XmlWriterSettings settings = new XmlWriterSettings();
+				settings.Indent = true;
+				settings.IndentChars = "    ";
+				settings.NewLineOnAttributes = false;
+				XmlWriter xmlWriter = XmlWriter.Create(sw, settings);
+				m_xmlDoc.Save(xmlWriter);
+				xmlWriter.Close();
+			}
+			MainWindow.s_pW.mx_xmlText.Text = strb.ToString();
+		}
 		public void refreshControl()
 		{
 			MainWindow.s_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
@@ -259,6 +274,8 @@ namespace UIEditor
 			m_xmlDoc = new XmlDocument();
 			m_xmlDoc.Load(m_openedFile.m_path);
 			m_xeRoot = m_xmlDoc.DocumentElement;
+
+			refreshXmlText();
 
 			if (m_xeRoot != null)
 			{

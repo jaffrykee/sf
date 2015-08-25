@@ -7,12 +7,12 @@
 		Width="auto">
     <Grid>
 		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200"/>
 			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="970"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="640"/>
 			<RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 		<Grid Grid.Column="0" Grid.Row="0">
 			<Grid.RowDefinitions>
