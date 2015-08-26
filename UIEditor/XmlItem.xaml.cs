@@ -254,7 +254,7 @@ namespace UIEditor
 				}
 				else if (MainWindow.s_pW.m_mapSkinAllDef.TryGetValue(xeCopy.Name, out skinPtr))
 				{
-					treeChild = new BoloRes.ResBasic(xeCopy, m_rootControl, skinPtr);
+					treeChild = new BoloUI.ResBasic(xeCopy, m_rootControl, skinPtr);
 				}
 				if (treeChild != null)
 				{

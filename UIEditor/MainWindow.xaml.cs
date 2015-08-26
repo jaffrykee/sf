@@ -17,6 +17,7 @@ using System.Xml;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Text.RegularExpressions;
+using UIEditor.BoloUI;
 
 namespace UIEditor
 {
@@ -62,6 +63,25 @@ namespace UIEditor
 		[MarshalAs(UnmanagedType.LPStr)]
 		public IntPtr lpData;
 	}
+
+	public class MsgManager
+	{
+		public ControlHost m_GLHost;
+		public IntPtr m_hwndGL;
+		public IntPtr m_hwndGLParent;
+		public IntPtr m_hwndGLFrame;
+
+		public MsgManager(bool isInit = false, double width = 960, double height = 640)
+		{
+			m_hwndGL = IntPtr.Zero;
+			m_hwndGLParent = IntPtr.Zero;
+			m_hwndGLFrame = IntPtr.Zero;
+			if(!isInit)
+			{
+				m_GLHost = new ControlHost(this, width, height);
+			}
+		}
+	}
 	#endregion
 
 	#region 皮肤属性文本
@@ -95,12 +115,13 @@ namespace UIEditor
 		public static MainWindow s_pW;
 
 		public string m_skinPath;
+		public string m_imagePath;
 		public string m_projPath;
 		public string m_projName;
 		public XmlDocument m_docProj;
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
-		public Dictionary<string, XmlDocument> m_mapStrSkinGroup;
-		public Dictionary<string, XmlElement> m_mapStrSkin;
+		public Dictionary<string, SkinIndex> m_mapSkinIndex;
+		public Dictionary<string, ImageIndex> m_mapImageIndex;
 
 		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
 		public Dictionary<string, CtrlDef_T> m_mapPanelCtrlDef;
@@ -117,12 +138,11 @@ namespace UIEditor
 		public Dictionary<XmlElement, BoloUI.SelButton> m_mapXeSel;
 		public float m_dpiSysX;
 		public float m_dpiSysY;
-		public IntPtr m_hwndGLFrame;
-		public IntPtr m_hwndGLParent;
-		public IntPtr m_hwndGL;
 		public AttrList m_otherAttrList;
 		public bool m_vCtrlName;
 		public bool m_vCtrlId;
+
+		public MsgManager m_msgMng;
 
 		private int mt_screenWidth;
 		public int m_screenWidth
@@ -168,7 +188,6 @@ namespace UIEditor
 		public int m_downY;
 		public string m_pasteFilePath;
 
-		ControlHost mx_GLHost;
 		public string m_curLang;
 
 		public const string conf_pathGlApp = @".\dsuieditor.exe";
@@ -183,15 +202,12 @@ namespace UIEditor
 			s_pW = this;
 			m_skinPath = "";
 			m_projPath = "";
-			m_hwndGL = IntPtr.Zero;
-			m_hwndGLParent = IntPtr.Zero;
+			m_msgMng = new MsgManager(true);
 			m_mapOpenedFiles = new Dictionary<string, OpenedFile>();
 			m_strDic = new StringDic("zh-CN", conf_pathStringDic);
 			InitializeComponent();
 			m_screenWidth = 960;
 			m_screenHeight = 640;
-			m_mapStrSkinGroup = new Dictionary<string, XmlDocument>();
-			m_mapStrSkin = new Dictionary<string, XmlElement>();
 			m_mapSkinAllDef = new Dictionary<string, SkinDef_T>();
 			m_dpiSysX = 96.0f;
 			m_dpiSysY = 96.0f;
@@ -254,16 +270,15 @@ namespace UIEditor
 		}
 		private void mx_root_Loaded(object sender, RoutedEventArgs e)
 		{
-
 			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
 
 			if (source != null)
 			{
 				source.AddHook(WndProc);
 			}
-			mx_GLHost = new ControlHost(m_screenWidth, m_screenHeight);
-			mx_GLCtrl.Child = mx_GLHost;
-			mx_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
+			m_msgMng = new MsgManager(false, m_screenWidth, m_screenHeight);
+			mx_GLCtrl.Child = m_msgMng.m_GLHost;
+			m_msgMng.m_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
 			if (m_isDebug)
 			{
 				mx_debugTools.Visibility = System.Windows.Visibility.Visible;
@@ -313,6 +328,7 @@ namespace UIEditor
 			initXmlValueDef();
 			//refreshImage(path + "\\images");
 			m_skinPath = m_projPath + "\\skin";
+			m_imagePath = m_projPath + "\\images";
 			if (Directory.Exists(m_skinPath))
 			{
 				if (File.Exists(m_skinPath + "\\publicskin.xml"))
@@ -332,6 +348,14 @@ namespace UIEditor
 					MessageBoxImage.Error
 				);
 			}
+		}
+		public void refreshImageTree()
+		{
+
+		}
+		public void refreshSkinTree()
+		{
+
 		}
 		public void openProjSelectBox(string projPath = null)
 		{
@@ -378,8 +402,6 @@ namespace UIEditor
 		}
 		public void refreshProjTree(string path, TreeViewItem rootItem, bool rootNode)
 		{
-			m_mapStrSkinGroup.Clear();
-			m_mapStrSkin.Clear();
 			rootItem.Items.Clear();
 
 			int i = 0;
@@ -418,6 +440,8 @@ namespace UIEditor
 				rootItem.ToolTip = rootTip;
 				rootItem.IsExpanded = true;
 				rootItem.Header = "UI工程目录(" + i + "个目录和" + j + "个项目)";
+
+				SkinIndex.refreshSkinIndex();
 			}
 		}
 
@@ -739,7 +763,7 @@ namespace UIEditor
 		{
 			if (mx_hwndDebug.Text != "")
 			{
-				m_hwndGL = (IntPtr)long.Parse(mx_hwndDebug.Text);
+				m_msgMng.m_hwndGL = (IntPtr)long.Parse(mx_hwndDebug.Text);
 			}
 			unsafe
 			{
@@ -769,7 +793,7 @@ namespace UIEditor
 						msgData.lpData = (IntPtr)0;
 					}
 					msgData.cbData = len + 1;
-					SendMessage(m_hwndGL, WM_COPYDATA, (int)m_hwndGLParent, ref msgData);
+					SendMessage(m_msgMng.m_hwndGL, WM_COPYDATA, (int)m_msgMng.m_hwndGLParent, ref msgData);
 				}
 			}
 		}
@@ -946,7 +970,7 @@ namespace UIEditor
 						switch ((G2WTag)((COPYDATASTRUCT*)lParam)->dwData)
 						{
 							case G2WTag.G2W_HWND:
-								m_hwndGL = wParam;
+								m_msgMng.m_hwndGL = wParam;
 								break;
 							case G2WTag.G2W_EVENT:
 								{
@@ -1073,15 +1097,15 @@ namespace UIEditor
 					break;
 				case WM_QUIT:
 					//规避GL端报错窗口，因为也没有什么要保存的。
-					if (!mx_GLHost.m_process.HasExited)
+					if (!m_msgMng.m_GLHost.m_process.HasExited)
 					{
-						mx_GLHost.m_process.Kill();
+						m_msgMng.m_GLHost.m_process.Kill();
 					}
 					break;
 				case WM_DESTROY:
-					if (!mx_GLHost.m_process.HasExited)
+					if (!m_msgMng.m_GLHost.m_process.HasExited)
 					{
-						mx_GLHost.m_process.Kill();
+						m_msgMng.m_GLHost.m_process.Kill();
 					}
 					break;
 				case WM_KEYDOWN:
@@ -1845,7 +1869,7 @@ namespace UIEditor
 			{
 				if (pairOpenedFile.Value.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
 				{
-					foreach (KeyValuePair<string, BoloRes.ResBasic> pairSkin in ((XmlControl)pairOpenedFile.Value.m_frame).m_mapSkin.ToList())
+					foreach (KeyValuePair<string, BoloUI.ResBasic> pairSkin in ((XmlControl)pairOpenedFile.Value.m_frame).m_mapSkin.ToList())
 					{
 						if (pairSkin.Value != null)
 						{
@@ -2275,7 +2299,7 @@ namespace UIEditor
 
 			s_x = mx_scrollFrame.HorizontalOffset;
 			s_y = mx_scrollFrame.VerticalOffset;
-			MoveWindow(m_hwndGL, (int)-s_x, (int)-s_y, m_screenWidth, m_screenHeight, true);
+			MoveWindow(m_msgMng.m_hwndGL, (int)-s_x, (int)-s_y, m_screenWidth, m_screenHeight, true);
 		}
 
 		private void mx_screenSize_TextChanged(object sender, TextChangedEventArgs e)

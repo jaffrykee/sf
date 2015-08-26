@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 
-namespace UIEditor.BoloRes
+namespace UIEditor.BoloUI
 {
 	public class ResBasic : UIEditor.XmlItem
 	{
@@ -113,7 +113,7 @@ namespace UIEditor.BoloRes
 						{
 							if (skinPtr != null)
 							{
-								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), xe, m_rootControl, skinPtr) as TreeViewItem;
+								var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.ResBasic"), xe, m_rootControl, skinPtr) as TreeViewItem;
 								this.Items.Add(treeChild);
 							}
 						}
@@ -239,12 +239,18 @@ namespace UIEditor.BoloRes
 							}
 							xeView = m_rootControl.m_xmlDoc.CreateElement(m_rootControl.m_skinViewCtrlUI.m_xe.Name);
 
-							xeView.SetAttribute("dock", "4");
-							xeView.SetAttribute("baseID", "selSkinTestCtrl");
-							if(m_rootControl.m_skinViewCtrlUI.m_xe.GetAttribute("text") != "")
+							foreach (XmlAttribute attr in m_rootControl.m_skinViewCtrlUI.m_xe.Attributes)
 							{
-								xeView.SetAttribute("text", m_rootControl.m_skinViewCtrlUI.m_xe.GetAttribute("text"));
+								xeView.SetAttribute(attr.Name, attr.Value);
 							}
+
+							xeView.SetAttribute("baseID", "selSkinTestCtrl");
+							xeView.RemoveAttribute("x");
+							xeView.RemoveAttribute("y");
+							xeView.RemoveAttribute("visible");
+							xeView.RemoveAttribute("dock");
+							xeView.RemoveAttribute("anchor");
+							xeView.RemoveAttribute("anchorSelf");
 						}
 						((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
 						MainWindow.s_pW.updateXmlToGL(m_rootControl, xeView, false);

@@ -186,7 +186,7 @@
 					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
 				<ToolBarTray Grid.Row="0">
-					<ToolBar HorizontalAlignment="Left" Height="32">
+					<ToolBar HorizontalAlignment="Left">
 						<Button Name="mx_toolNew"
 								IsEnabled="False"
 								Click="mx_newFile_Click"
@@ -266,7 +266,7 @@
 						<Label VerticalAlignment="Center">调试模式：</Label>
 						<TextBox MinWidth="100" Name="mx_hwndDebug"></TextBox>
 					</ToolBar>
-					<ToolBar Name="mx_viewModeTools" HorizontalAlignment="Left" Height="32">
+					<ToolBar Name="mx_viewModeTools" HorizontalAlignment="Left">
 						<Label VerticalAlignment="Center">宽：</Label>
 						<TextBox Name="mx_screenWidth" TextChanged="mx_screenSize_TextChanged" Width="50"></TextBox>
 						<Label VerticalAlignment="Center">高：</Label>

@@ -89,14 +89,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BoloRes\ResBasic.cs" />
+    <Compile Include="BoloUI\ImageIndex.cs" />
+    <Compile Include="BoloUI\ResBasic.cs" />
     <Compile Include="BoloUI\Basic.cs" />
     <Compile Include="BoloUI\CtrlTemplate.xaml.cs">
       <DependentUpon>CtrlTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoloUI\SelImage.xaml.cs">
+      <DependentUpon>SelImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BoloUI\SelSkin.xaml.cs">
       <DependentUpon>SelSkin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoloUI\SkinEditor.xaml.cs">
+      <DependentUpon>SkinEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BoloUI\SkinIndex.cs" />
     <Compile Include="FileMenu.xaml.cs">
       <DependentUpon>FileMenu.xaml</DependentUpon>
     </Compile>
@@ -168,7 +176,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BoloUI\SelImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BoloUI\SelSkin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoloUI\SkinEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

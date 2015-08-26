@@ -125,7 +125,7 @@ namespace UIEditor.XmlOperation
 								m_pW.refreshAllCtrlUIHeader();
 								break;
 							case "Skin":
-								((BoloRes.ResBasic)dstItem).changeSelectItem();
+								((BoloUI.ResBasic)dstItem).changeSelectItem();
 								m_pW.refreshAllSkinHeader();
 								break;
 							default:
@@ -205,7 +205,7 @@ namespace UIEditor.XmlOperation
 							m_pW.refreshAllCtrlUIHeader();
 							break;
 						case "Skin":
-							((BoloRes.ResBasic)dstItem).changeSelectItem();
+							((BoloUI.ResBasic)dstItem).changeSelectItem();
 							m_pW.refreshAllSkinHeader();
 							break;
 						default:

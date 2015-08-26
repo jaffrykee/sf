@@ -32,7 +32,7 @@ namespace UIEditor
 		public int m_maxX;
 		public int m_maxY;
 
-		public PackImage(XmlControl parent)
+		public PackImage(XmlControl parent, bool isRePack = true)
 		{
 			InitializeComponent();
 			m_parent = parent;
@@ -80,43 +80,55 @@ namespace UIEditor
 			mx_canvas.Width = m_imgWidth;
 			mx_canvas.Height = m_imgHeight;
 
+			string pngPath = m_parent.m_openedFile.m_path.Remove(m_parent.m_openedFile.m_path.LastIndexOf("."));
+			string tgaPath = pngPath + ".tga";
+
 			m_tgaImg = new System.Drawing.Bitmap(m_imgWidth, m_imgHeight);
 			System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(m_tgaImg);
 			g.Clear(System.Drawing.Color.FromArgb(0x00, 0x00, 0x00, 0x00));
 
-			string pngPath = m_parent.m_openedFile.m_path.Remove(m_parent.m_openedFile.m_path.LastIndexOf("."));
-
-			foreach (KeyValuePair<string, System.Drawing.Rectangle> pairImgRect in m_mapImgRect)
+			if(isRePack)
 			{
-				addPicToGraphics(
-					pngPath + "\\" + pairImgRect.Key + ".png",
-					pairImgRect.Value,
-					g);
-			}
-			g.Dispose();
-			string tgaPath = pngPath + ".tga";
-			if (System.IO.File.Exists(tgaPath))
-			{
-				System.IO.File.Delete(tgaPath);
-			}
-			DevIL.DevIL.SaveBitmap(tgaPath, m_tgaImg);
-			if (m_imgHeight <= 4096)
-			{
-				ip = m_tgaImg.GetHbitmap();
-				m_imgSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-					ip, IntPtr.Zero, Int32Rect.Empty,
-					System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-				MainWindow.DeleteObject(ip);
-
-				System.Windows.Controls.Image cImg = new System.Windows.Controls.Image();
-				cImg.Source = m_imgSource;
-				cImg.Stretch = Stretch.Uniform;
-				mx_canvas.Children.Insert(0, cImg);
+				foreach (KeyValuePair<string, System.Drawing.Rectangle> pairImgRect in m_mapImgRect)
+				{
+					addPicToGraphics(
+						pngPath + "\\" + pairImgRect.Key + ".png",
+						pairImgRect.Value,
+						g);
+				}
+				g.Dispose();
+				if (System.IO.File.Exists(tgaPath))
+				{
+					System.IO.File.Delete(tgaPath);
+				}
+				DevIL.DevIL.SaveBitmap(tgaPath, m_tgaImg);
+				if (m_imgHeight > 4096)
+				{
+					MainWindow.s_pW.mx_debug.Text += "<警告>图片尺寸过大，不提供预览功能\r\n";
+					return;
+				}
 			}
 			else
 			{
-				MainWindow.s_pW.mx_debug.Text += "<警告>图片尺寸过大，不提供预览功能\r\n";
+				System.Drawing.Bitmap bmp = DevIL.DevIL.LoadBitmap(tgaPath);
+				g.DrawImage(bmp,
+					0,
+					0,
+					bmp.Width,
+					bmp.Height);
+				g.Dispose();
 			}
+
+			ip = m_tgaImg.GetHbitmap();
+			m_imgSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+				ip, IntPtr.Zero, Int32Rect.Empty,
+				System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+			MainWindow.DeleteObject(ip);
+
+			System.Windows.Controls.Image cImg = new System.Windows.Controls.Image();
+			cImg.Source = m_imgSource;
+			cImg.Stretch = Stretch.Uniform;
+			mx_canvas.Children.Insert(0, cImg);
 		}
 		public static bool addPicToGraphics(string path, System.Drawing.Rectangle rect, System.Drawing.Graphics g)
 		{

@@ -14,12 +14,13 @@ namespace UIEditor
 	{
 		public Process m_process;
 
-		IntPtr m_hwndControl;
-		IntPtr m_hwndHost;
-		int m_hostHeight, m_hostWidth;
+		MsgManager m_msgMng;
+		int m_hostHeight;
+		int m_hostWidth;
 
-		public ControlHost(double width = 960, double height = 640)
+		public ControlHost(MsgManager msgMng,double width = 960, double height = 640)
 		{
+			m_msgMng = msgMng;
 			m_hostWidth = (int)width;
 			m_hostHeight = (int)height;
 			//(PresentationSource.FromVisual(this) as System.Windows.Interop.HwndSource).AddHook(new System.Windows.Interop.HwndSourceHook(WndProc));
@@ -37,11 +38,6 @@ namespace UIEditor
 			WS_CLIPCHILDREN = 0x02000000,
 			WS_BORDER = 0x00800000;
 
-		public IntPtr hwndListBox
-		{
-			get { return m_hwndControl; }
-		}
-
 		//PInvoke declarations
 		[DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Unicode)]
 		internal static extern IntPtr CreateWindowEx(
@@ -58,10 +54,9 @@ namespace UIEditor
 
 		protected override HandleRef BuildWindowCore(HandleRef hwndParent)
 		{
-			m_hwndControl = IntPtr.Zero;
-			m_hwndHost = IntPtr.Zero;
+			m_msgMng.m_hwndGLParent = IntPtr.Zero;
 
-			m_hwndHost = CreateWindowEx(
+			m_msgMng.m_hwndGLParent = CreateWindowEx(
 				0, "static", "",
 				WS_CHILD | WS_VISIBLE,
 				0, 0,
@@ -71,10 +66,9 @@ namespace UIEditor
 				IntPtr.Zero,
 				0);
 
-			MainWindow pW = MainWindow.s_pW;
 			string strRunMode;
 
-			if(pW.m_isDebug)
+			if (MainWindow.s_pW.m_isDebug)
 			{
 				strRunMode = "true";
 			}
@@ -82,31 +76,15 @@ namespace UIEditor
 			{
 				strRunMode = "false";
 			}
-			
-			if(BoloUI.SelSkin.s_isRun)
-			{
-				BoloUI.SelSkin.s_pW.m_hwndGLParent = (IntPtr)m_hwndHost;
-				m_hwndControl = BoloUI.SelSkin.s_pW.m_hwndGLParent;
-				m_process = System.Diagnostics.Process.Start(
-					MainWindow.conf_pathGlApp,
-					BoloUI.SelSkin.s_pW.m_hwndGLParent.ToString() + " " +
-						m_hostWidth.ToString() + " " +
-						m_hostHeight.ToString() + " " +
-						strRunMode);
-			}
-			else
-			{
-				pW.m_hwndGLParent = (IntPtr)m_hwndHost;
-				m_hwndControl = pW.m_hwndGLParent;
-				m_process = System.Diagnostics.Process.Start(
-					MainWindow.conf_pathGlApp,
-					pW.m_hwndGLParent.ToString() + " " +
-						m_hostWidth.ToString() + " " +
-						m_hostHeight.ToString() + " " +
-						strRunMode);
-			}
 
-			return new HandleRef(this, m_hwndHost);
+			m_process = System.Diagnostics.Process.Start(
+				MainWindow.conf_pathGlApp,
+				m_msgMng.m_hwndGLParent.ToString() + " " +
+					m_hostWidth.ToString() + " " +
+					m_hostHeight.ToString() + " " +
+					strRunMode);
+
+			return new HandleRef(this, m_msgMng.m_hwndGLParent);
 		}
 
 		protected override IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)

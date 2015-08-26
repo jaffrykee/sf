@@ -35,6 +35,7 @@ namespace UIEditor
 				UserControl tabContent;
 				MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
 
+				m_fileDef = fileDef;
 				m_filePath = fileDef.m_path;
 				this.filePath.Text = m_filePath;
 
@@ -66,6 +67,7 @@ namespace UIEditor
 					case "act":
 					case "pal":
 						tabContent = new PngControl(this, fileDef);
+						MainWindow.s_pW.mx_drawFrame.Visibility = System.Windows.Visibility.Collapsed;
 						break;
 					case "xml":
 						tabContent = new XmlControl(this, fileDef);
@@ -77,6 +79,7 @@ namespace UIEditor
 						break;
 					default:
 						tabContent = new UnknownControl(this, fileDef);
+						MainWindow.s_pW.mx_drawFrame.Visibility = System.Windows.Visibility.Collapsed;
 						break;
 				}
 				this.itemFrame.Children.Clear();
@@ -90,7 +93,7 @@ namespace UIEditor
 		{
 			TabItem tabItem = (TabItem)this.Parent;
 			string tabPath = ((ToolTip)tabItem.ToolTip).Content.ToString();
-			MainWindow pW = Window.GetWindow(this) as MainWindow;
+			MainWindow pW = MainWindow.s_pW;
 
 			if (pW.m_mapOpenedFiles[pW.m_curFile].haveDiffToFile())
 			{
@@ -120,6 +123,12 @@ namespace UIEditor
 				pW.mx_treeSkinFrame.Items.Clear();
 			}
 			pW.hiddenAllAttr();
+
+			BoloUI.SkinIndex skinIndex;
+			if(pW.m_mapSkinIndex.TryGetValue(m_fileDef.m_path, out skinIndex))
+			{
+				skinIndex.m_xmlCtrl = null;
+			}
 		}
 		private void closeFileTab(object sender, RoutedEventArgs e)
 		{

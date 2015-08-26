@@ -40,11 +40,11 @@
 			<Grid Name="mx_skinFrame" Grid.Column="1">
 				<WrapPanel>
 					<Button Name="mx_sel"
-						Content="选择"
-						Click="mx_sel_Click"/>
+							Content="选择"
+							Click="mx_sel_Click"/>
 					<Button Name="mx_link"
-						Content="→"
-						Click="mx_link_Click"/>
+							Content="→"
+							Click="mx_link_Click"/>
 				</WrapPanel>
 			</Grid>
 		</Grid>

@@ -15,11 +15,6 @@ using System.Xml;
 
 namespace UIEditor
 {
-	public enum AttrType
-	{
-		boloCtrl,
-		boloRes
-	};
 	public partial class AttrList : Grid
 	{
 		public string m_name;

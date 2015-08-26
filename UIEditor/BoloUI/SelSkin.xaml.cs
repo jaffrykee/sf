@@ -22,22 +22,17 @@ namespace UIEditor.BoloUI
 	public partial class SelSkin : Window
 	{
 		public string m_path;
-		public ControlHost m_GLSkinHost;
-		public IntPtr m_hwndGLFrame;
-		public IntPtr m_hwndGLParent;
-		public IntPtr m_hwndGL;
 		public XmlDocument m_docView;
 		public XmlElement m_testCtrl;
 		public bool m_isInitPath;
 		public TreeViewItem m_curSkin;
 		public AttrRow m_rowSkin;
+		public MsgManager m_msgMng;
 
-		public static bool s_isRun;
 		public static SelSkin s_pW;
 
 		public SelSkin(string path, string xmlData, AttrRow rowSkin)
 		{
-			s_isRun = true;
 			s_pW = this;
 			m_isInitPath = false;
 			m_path = path;
@@ -54,11 +49,26 @@ namespace UIEditor.BoloUI
 			xePanel.SetAttribute("dock", "4");
 			xePanel.InnerXml = xmlData;
 			m_testCtrl = (XmlElement)xePanel.FirstChild;
+			string attrW = m_testCtrl.GetAttribute("w");
+			string attrH = m_testCtrl.GetAttribute("h");
+			string attrText = m_testCtrl.GetAttribute("text");
 			m_testCtrl.RemoveAllAttributes();
-			m_testCtrl.SetAttribute("dock", "4");
 			m_testCtrl.SetAttribute("baseID", "selSkinTestCtrl");
-			m_testCtrl.SetAttribute("text", "测试Test123");
-			m_testCtrl.SetAttribute("autoSize", "true");
+			if (attrW == "")
+			{
+				attrW = "300";
+			}
+			if (attrH == "")
+			{
+				attrH = "200";
+			}
+			if (attrText == "")
+			{
+				attrText = "测试Test123";
+			}
+			m_testCtrl.SetAttribute("w", attrW);
+			m_testCtrl.SetAttribute("h", attrH);
+			m_testCtrl.SetAttribute("text", attrText);
 			m_docView.AppendChild(xeRoot);
 			#region 显示皮肤树
 			OpenedFile fileDef;
@@ -150,6 +160,10 @@ namespace UIEditor.BoloUI
 
 			xeRoot.AppendChild(xePanel);
 
+			this.Owner = MainWindow.s_pW;
+		}
+		private void mx_root_Loaded(object sender, RoutedEventArgs e)
+		{
 			HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
 
 			if (source != null)
@@ -157,9 +171,9 @@ namespace UIEditor.BoloUI
 				source.AddHook(WndProc);
 			}
 
-			m_GLSkinHost = new ControlHost();
-			mx_viewFrame.Child = m_GLSkinHost;
-			m_GLSkinHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
+			m_msgMng = new MsgManager();
+			mx_viewFrame.Child = m_msgMng.m_GLHost;
+			m_msgMng.m_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
 		}
 
 		void skinItem_Selected(object sender, RoutedEventArgs e)
@@ -189,12 +203,10 @@ namespace UIEditor.BoloUI
 				case MainWindow.WM_COPYDATA:
 					break;
 				case MainWindow.WM_QUIT:
-					MainWindow.SendMessage(m_hwndGL, MainWindow.WM_QUIT, m_hwndGLParent, IntPtr.Zero);
-					s_isRun = false;
+					MainWindow.SendMessage(m_msgMng.m_hwndGL, MainWindow.WM_QUIT, m_msgMng.m_hwndGLParent, IntPtr.Zero);
 					break;
 				case MainWindow.WM_DESTROY:
-					MainWindow.SendMessage(m_hwndGL, MainWindow.WM_QUIT, m_hwndGLParent, IntPtr.Zero);
-					s_isRun = false;
+					MainWindow.SendMessage(m_msgMng.m_hwndGL, MainWindow.WM_QUIT, m_msgMng.m_hwndGLParent, IntPtr.Zero);
 					break;
 				default:
 					break;
@@ -215,7 +227,7 @@ namespace UIEditor.BoloUI
 						switch ((G2WTag)((COPYDATASTRUCT*)lParam)->dwData)
 						{
 							case G2WTag.G2W_HWND:
-								m_hwndGL = wParam;
+								m_msgMng.m_hwndGL = wParam;
 								break;
 							default:
 								break;
@@ -252,7 +264,7 @@ namespace UIEditor.BoloUI
 					msgData.dwData = (IntPtr)msgTag;
 					msgData.lpData = (IntPtr)tmpBuff;
 					msgData.cbData = len + 1;
-					MainWindow.SendMessage(m_hwndGL, MainWindow.WM_COPYDATA, (int)m_hwndGLParent, ref msgData);
+					MainWindow.SendMessage(m_msgMng.m_hwndGL, MainWindow.WM_COPYDATA, (int)m_msgMng.m_hwndGLParent, ref msgData);
 				}
 			}
 		}

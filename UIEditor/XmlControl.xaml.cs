@@ -25,7 +25,7 @@ namespace UIEditor
 		//以baseID为索引的UI们
 		public Dictionary<string, BoloUI.Basic> m_mapCtrlUI;
 		public Dictionary<string, string> m_mapSkinLink;
-		public Dictionary<string, BoloRes.ResBasic> m_mapSkin;
+		public Dictionary<string, BoloUI.ResBasic> m_mapSkin;
 		public Dictionary<XmlElement, XmlItem> m_mapXeItem;
 		public XmlDocument m_xmlDoc;
 		public XmlElement m_xeRootCtrl;
@@ -34,7 +34,7 @@ namespace UIEditor
 		public BoloUI.Basic m_skinViewCtrlUI;
 
 		public BoloUI.Basic m_treeUI;
-		public BoloRes.ResBasic m_treeSkin;
+		public BoloUI.ResBasic m_treeSkin;
 
 		public XmlControl(FileTabItem parent, OpenedFile fileDef)
 		{
@@ -42,7 +42,7 @@ namespace UIEditor
 			m_parent = parent;
 			m_mapCtrlUI = new Dictionary<string, BoloUI.Basic>();
 			m_mapSkinLink = new Dictionary<string, string>();
-			m_mapSkin = new Dictionary<string, BoloRes.ResBasic>();
+			m_mapSkin = new Dictionary<string, BoloUI.ResBasic>();
 			m_mapXeItem = new Dictionary<XmlElement, XmlItem>();
 			m_isOnlySkin = true;
 			m_skinViewCtrlUI = null;
@@ -50,7 +50,27 @@ namespace UIEditor
 
 			m_openedFile = fileDef;
 			m_openedFile.m_frame = this;
+			
+			BoloUI.SkinIndex skinIndex;
+			if(MainWindow.s_pW.m_mapSkinIndex.TryGetValue(m_openedFile.m_path, out skinIndex))
+			{
+				skinIndex.m_xmlCtrl = this;
+			}
 			refreshControl();
+		}
+		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
+		{
+			MainWindow.s_pW.mx_selCtrlLstFrame.Children.Clear();
+			if (MainWindow.s_pW.mx_treeCtrlFrame.Items.Count > 0 && MainWindow.s_pW.mx_treeCtrlFrame.Items[0] != null)
+			{
+				TreeViewItem firstItem = (TreeViewItem)MainWindow.s_pW.mx_treeCtrlFrame.Items[0];
+
+				if (firstItem.Header.ToString() == StringDic.getFileNameWithoutPath(m_openedFile.m_path))
+				{
+					MainWindow.s_pW.mx_treeCtrlFrame.Items.Clear();
+					MainWindow.s_pW.mx_treeSkinFrame.Items.Clear();
+				}
+			}
 		}
 
 		public void checkBaseId_old(XmlNode xn)
@@ -120,7 +140,7 @@ namespace UIEditor
 						if (skinFile.m_frame.GetType().ToString() == "UIEditor.XmlControl")
 						{
 							XmlControl xmlCtrl = (XmlControl)skinFile.m_frame;
-							BoloRes.ResBasic skinBasic;
+							BoloUI.ResBasic skinBasic;
 
 							if(xmlCtrl.m_mapSkin.TryGetValue(skinName, out skinBasic))
 							{
@@ -147,7 +167,7 @@ namespace UIEditor
 		public bool findSkinAndSelect(string skinName, BoloUI.Basic ctrlUI = null)
 		{
 			string groupName;
-			BoloRes.ResBasic skinBasic;
+			BoloUI.ResBasic skinBasic;
 
 			if (m_mapSkin.TryGetValue(skinName, out skinBasic))
 			{
@@ -165,6 +185,26 @@ namespace UIEditor
 				MainWindow.s_pW.mx_debug.Text += "<警告>然而，并没有这个皮肤。(" + skinName + ")\r\n";
 			}
 			return false;
+		}
+		public string tryFindSkin(string skinName)
+		{
+			string groupName;
+			BoloUI.ResBasic skinBasic;
+
+			if (m_mapSkin.TryGetValue(skinName, out skinBasic))
+			{
+				return m_openedFile.m_path;
+			}
+			else if (m_mapSkinLink.TryGetValue(skinName, out groupName))
+			{
+				string path = MainWindow.s_pW.m_skinPath + "\\" + groupName + ".xml";
+
+				return path;
+			}
+			else
+			{
+				return "";
+			}
 		}
 		public void refreshBoloUIView(bool changeItem = false)
 		{
@@ -271,8 +311,16 @@ namespace UIEditor
 		{
 			MainWindow.s_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
 
-			m_xmlDoc = new XmlDocument();
-			m_xmlDoc.Load(m_openedFile.m_path);
+			BoloUI.SkinIndex skinIndex;
+			if(MainWindow.s_pW.m_mapSkinIndex.TryGetValue(m_openedFile.m_path, out skinIndex))
+			{
+				m_xmlDoc = skinIndex.m_doc;
+			}
+			else
+			{
+				m_xmlDoc = new XmlDocument();
+				m_xmlDoc.Load(m_openedFile.m_path);
+			}
 			m_xeRoot = m_xmlDoc.DocumentElement;
 
 			refreshXmlText();
@@ -286,7 +334,7 @@ namespace UIEditor
 							m_showGL = true;
 							m_openedFile.m_lstOpt = new XmlOperation.HistoryList(MainWindow.s_pW, this, 65535);
 							m_treeUI = new BoloUI.Basic(m_xeRoot, this, true);
-							m_treeSkin = new BoloRes.ResBasic(m_xeRoot, this, null);
+							m_treeSkin = new BoloUI.ResBasic(m_xeRoot, this, null);
 
 							MainWindow.s_pW.mx_treeCtrlFrame.Items.Add(m_treeUI);
 							m_treeUI.mx_radio.Content = StringDic.getFileNameWithoutPath(m_openedFile.m_path).Replace("_", "__");
@@ -320,7 +368,7 @@ namespace UIEditor
 									}
 									else if (MainWindow.s_pW.m_mapSkinTreeDef.TryGetValue(xe.Name, out skinPtr))
 									{
-										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloRes.ResBasic"), xe, this, skinPtr) as TreeViewItem;
+										var treeChild = Activator.CreateInstance(Type.GetType("UIEditor.BoloUI.ResBasic"), xe, this, skinPtr) as TreeViewItem;
 										m_treeSkin.Items.Add(treeChild);
 										treeChild.IsExpanded = false;
 										if (xe.Name == "skingroup")
@@ -335,7 +383,7 @@ namespace UIEditor
 							MainWindow.s_pW.updateXmlToGL(this);
 							if (m_openedFile.m_preViewSkinName != null && m_openedFile.m_preViewSkinName != "")
 							{
-								BoloRes.ResBasic skinBasic;
+								BoloUI.ResBasic skinBasic;
 
 								if (m_mapSkin.TryGetValue(m_openedFile.m_preViewSkinName, out skinBasic))
 								{
@@ -351,7 +399,7 @@ namespace UIEditor
 					case "UIImageResource":
 						{
 							m_showGL = false;
-							mx_root.AddChild(new PackImage(this));
+							mx_root.AddChild(new PackImage(this, false));
 							MainWindow.s_pW.mx_debug.Text += ("<提示>todo。" + "\r\n");
 						}
 						break;
@@ -366,26 +414,12 @@ namespace UIEditor
 				else
 				{
 					MainWindow.s_pW.hiddenGLAttr();
+					MainWindow.s_pW.mx_drawFrame.Visibility = System.Windows.Visibility.Collapsed;
 				}
 			}
 			else
 			{
 				MainWindow.s_pW.mx_debug.Text += ("<错误>xml文件格式错误。" + "\r\n");
-			}
-		}
-
-		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
-		{
-			MainWindow.s_pW.mx_selCtrlLstFrame.Children.Clear();
-			if (MainWindow.s_pW.mx_treeCtrlFrame.Items.Count > 0 && MainWindow.s_pW.mx_treeCtrlFrame.Items[0] != null)
-			{
-				TreeViewItem firstItem = (TreeViewItem)MainWindow.s_pW.mx_treeCtrlFrame.Items[0];
-
-				if(firstItem.Header.ToString() == StringDic.getFileNameWithoutPath(m_openedFile.m_path))
-				{
-					MainWindow.s_pW.mx_treeCtrlFrame.Items.Clear();
-					MainWindow.s_pW.mx_treeSkinFrame.Items.Clear();
-				}
 			}
 		}
 	}

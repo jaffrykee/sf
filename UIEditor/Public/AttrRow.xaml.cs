@@ -56,13 +56,15 @@ namespace UIEditor
 					mx_name.Content = value;
 					mx_root.ToolTip = value;
 				}
-				if(m_name == "skin")
+				switch(m_name)
 				{
-					mx_skinFrame.Visibility = System.Windows.Visibility.Visible;
-				}
-				else
-				{
-					mx_skinFrame.Visibility = System.Windows.Visibility.Collapsed;
+					case "skin":
+					case "ImageName":
+						mx_skinFrame.Visibility = System.Windows.Visibility.Visible;
+						break;
+					default:
+						mx_skinFrame.Visibility = System.Windows.Visibility.Collapsed;
+						break;
 				}
 			}
 		}
@@ -242,12 +244,10 @@ namespace UIEditor
 			if (mx_value.Text == "")
 			{
 				mx_valueDef.Visibility = Visibility.Visible;
-				mx_link.Visibility = Visibility.Collapsed;
 			}
 			else
 			{
 				mx_valueDef.Visibility = Visibility.Hidden;
-				mx_link.Visibility = Visibility.Visible;
 			}
 			m_value = mx_value.Text;
 		}
@@ -301,15 +301,28 @@ namespace UIEditor
 		{
 			if (m_parent.m_basic != null && m_parent.m_basic.GetType().ToString() == "UIEditor.BoloUI.Basic")
 			{
-				BoloUI.SelSkin winSkin = new BoloUI.SelSkin(m_parent.m_xmlCtrl.m_openedFile.m_path, m_parent.m_basic.m_xe.OuterXml, this);
-
-				winSkin.ShowDialog();
-
-				if (!BoloUI.SelSkin.s_pW.m_GLSkinHost.m_process.HasExited)
+				switch(m_name)
 				{
-					BoloUI.SelSkin.s_pW.m_GLSkinHost.m_process.Kill();
-					BoloUI.SelSkin.s_isRun = false;
-					BoloUI.SelSkin.s_pW = null;
+					case "skin":
+						{
+							BoloUI.SelSkin winSkin = new BoloUI.SelSkin(m_parent.m_xmlCtrl.m_openedFile.m_path, m_parent.m_basic.m_xe.OuterXml, this);
+
+							winSkin.ShowDialog();
+
+							if (!BoloUI.SelSkin.s_pW.m_msgMng.m_GLHost.m_process.HasExited)
+							{
+								BoloUI.SelSkin.s_pW.m_msgMng.m_GLHost.m_process.Kill();
+								BoloUI.SelSkin.s_pW = null;
+							}
+						}
+						break;
+					case "ImageName":
+						{
+
+						}
+						break;
+					default:
+						break;
 				}
 			}
 		}
