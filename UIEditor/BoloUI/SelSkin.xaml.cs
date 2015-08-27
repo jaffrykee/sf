@@ -220,11 +220,17 @@ namespace UIEditor.BoloUI
 			switch (msg)
 			{
 				case MainWindow.WM_COPYDATA:
-					unsafe
 					{
-						COPYDATASTRUCT msgData = *(COPYDATASTRUCT*)lParam;
-						string strData = Marshal.PtrToStringAnsi(msgData.lpData, msgData.cbData);
-						switch ((G2WTag)((COPYDATASTRUCT*)lParam)->dwData)
+						G2WTag tag;
+						string strData = "";
+
+						unsafe
+						{
+							COPYDATASTRUCT msgData = *(COPYDATASTRUCT*)lParam;
+							strData = Marshal.PtrToStringAnsi(msgData.lpData, msgData.cbData);
+							tag = (G2WTag)((COPYDATASTRUCT*)lParam)->dwData;
+						}
+						switch (tag)
 						{
 							case G2WTag.G2W_HWND:
 								m_msgMng.m_hwndGL = wParam;
@@ -242,23 +248,22 @@ namespace UIEditor.BoloUI
 		}
 		public void updateGL(string buffer, W2GTag msgTag = W2GTag.W2G_NORMAL_DATA)
 		{
+			int len;
+			byte[] charArr;
+			COPYDATASTRUCT_SENDEX msgData;
+
+			if (msgTag == W2GTag.W2G_PATH)
+			{
+				charArr = Encoding.Default.GetBytes(buffer);
+				len = charArr.Length;
+			}
+			else
+			{
+				charArr = Encoding.UTF8.GetBytes(buffer);
+				len = charArr.Length;
+			}
 			unsafe
 			{
-				int len;
-				byte[] charArr;
-				COPYDATASTRUCT_SENDEX msgData;
-
-				if (msgTag == W2GTag.W2G_PATH)
-				{
-					charArr = Encoding.Default.GetBytes(buffer);
-					len = charArr.Length;
-				}
-				else
-				{
-					charArr = Encoding.UTF8.GetBytes(buffer);
-					len = charArr.Length;
-				}
-
 				fixed (byte* tmpBuff = charArr)
 				{
 					msgData.dwData = (IntPtr)msgTag;

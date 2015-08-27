@@ -28,7 +28,6 @@ namespace UIEditor
 		public AttrList m_parent;
 		public bool m_isCommon;
 		public string m_subType;
-		public bool m_eventLock;
 		public string m_name
 		{
 			get { return mt_name; }
@@ -70,66 +69,63 @@ namespace UIEditor
 		}
 		private void setValue(bool isPre, string value)
 		{
-			if (m_eventLock)
+			if (mt_value != value)
 			{
-				return;
-			}
-			m_eventLock = true;
-			if (!m_isEnum)
-			{
-				switch (m_type)
+				if (!isPre && m_parent != null && m_parent.m_xmlCtrl != null &&
+					m_parent.m_xe != null && m_parent.m_xmlCtrl.m_openedFile != null &&
+					m_parent.m_xmlCtrl.m_openedFile.m_lstOpt != null && m_parent.m_basic != null)
 				{
-					case "bool":
-						{
-							if (value == "")
+					m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_basic.m_xe, m_name, mt_value, value));
+				}
+				mt_value = value;
+				mx_value.Text = value;
+				if (!m_isEnum)
+				{
+					switch (m_type)
+					{
+						case "bool":
 							{
-								mx_defaultBool.IsChecked = true;
-							}
-							else
-							{
-								mx_defaultBool.IsChecked = false;
-								switch (value)
+								if (value == "")
 								{
-									case "true":
-										mx_valueBool.IsChecked = true;
-										break;
-									case "false":
-										mx_valueBool.IsChecked = false;
-										break;
-									default:
-										//todo 这里是非法值的处理，还没有想好机制
-										mx_defaultBool.IsChecked = true;
-										break;
+									mx_defaultBool.IsChecked = true;
+								}
+								else
+								{
+									mx_defaultBool.IsChecked = false;
+									switch (value)
+									{
+										case "true":
+											mx_valueBool.IsChecked = true;
+											break;
+										case "false":
+											mx_valueBool.IsChecked = false;
+											break;
+										default:
+											//todo 这里是非法值的处理，还没有想好机制
+											mx_defaultBool.IsChecked = true;
+											break;
+									}
 								}
 							}
-						}
-						break;
-					default:
-						break;
-				}
-			}
-			else
-			{
-				ComboBoxItem selCb;
-
-				if (m_mapEnum != null && m_mapEnum.TryGetValue(value, out selCb) && selCb != null)
-				{
-					selCb.IsSelected = true;
+							break;
+						default:
+							break;
+					}
 				}
 				else
 				{
-					mx_defaultEnum.IsSelected = true;
+					ComboBoxItem selCb;
+
+					if (m_mapEnum != null && m_mapEnum.TryGetValue(value, out selCb) && selCb != null)
+					{
+						selCb.IsSelected = true;
+					}
+					else
+					{
+						mx_defaultEnum.IsSelected = true;
+					}
 				}
 			}
-
-			if (!isPre && m_parent != null && m_parent.m_xmlCtrl != null && m_parent.m_xe != null && mt_value != value)
-			{
-				m_parent.m_xmlCtrl.m_openedFile.m_lstOpt.addOperation(new XmlOperation.HistoryNode(m_parent.m_basic.m_xe, m_name, mt_value, value));
-			}
-
-			mt_value = value;
-			mx_value.Text = value;
-			m_eventLock = false;
 		}
 		public string m_preValue
 		{
@@ -225,18 +221,15 @@ namespace UIEditor
 		public AttrRow(MainWindow.AttrDef_T attrDef, string name = "", string value = "", AttrList parent = null)
 		{
 			InitializeComponent();
-			mt_name = name;
-			mt_value = value;
-			mt_type = attrDef.m_type;
 			m_parent = parent;
 			m_isEnum = attrDef.m_isEnum;
 			m_mapEnum = attrDef.m_mapEnum;
 			m_isCommon = attrDef.m_isCommon;
 			m_subType = attrDef.m_subType;
 
-			m_name = mt_name;
-			m_preValue = mt_value;
-			m_type = mt_type;
+			m_name = name;
+			m_preValue = value;
+			m_type = attrDef.m_type;
 		}
 
 		private void mx_value_TextChanged(object sender, TextChangedEventArgs e)

@@ -41,6 +41,8 @@ namespace UIEditor.ImageTools
 		public string m_filter;
 		public int m_deep;
 
+		public static ImageNesting s_pW;
+
 		public const int conf_maxSizeOfPreset = 2048;
 
 		public ImageNesting(string path, string filter = "*.png", int deep = 0)
@@ -49,6 +51,16 @@ namespace UIEditor.ImageTools
 			m_filter = filter;
 			m_deep = deep;
 			InitializeComponent();
+			this.Owner = MainWindow.s_pW;
+			s_pW = this;
+		}
+		private void mx_root_Loaded(object sender, RoutedEventArgs e)
+		{
+			s_pW = this;
+		}
+		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
+		{
+			s_pW = null;
 		}
 
 		public static int getMaxHeight(List<RectNode> lstRectNode)

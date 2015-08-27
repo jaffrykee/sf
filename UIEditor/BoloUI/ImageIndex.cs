@@ -49,10 +49,17 @@ namespace UIEditor.BoloUI
 			{
 				XmlDocument imgDoc = new XmlDocument();
 
-				imgDoc.Load(fi.FullName);
-				if(imgDoc.DocumentElement.Name == "UIImageResource")
+				try
 				{
-					MainWindow.s_pW.m_mapImageIndex.Add(fi.FullName, new ImageIndex(imgDoc));
+					imgDoc.Load(fi.FullName);
+					if (imgDoc.DocumentElement.Name == "UIImageResource")
+					{
+						MainWindow.s_pW.m_mapImageIndex.Add(fi.FullName, new ImageIndex(imgDoc));
+					}
+				}
+				catch
+				{
+
 				}
 			}
 		}

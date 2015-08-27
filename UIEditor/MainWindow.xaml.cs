@@ -765,22 +765,22 @@ namespace UIEditor
 			{
 				m_msgMng.m_hwndGL = (IntPtr)long.Parse(mx_hwndDebug.Text);
 			}
+			int len;
+			byte[] charArr;
+			COPYDATASTRUCT_SENDEX msgData;
+
+			if (msgTag == W2GTag.W2G_PATH)
+			{
+				charArr = Encoding.Default.GetBytes(buffer);
+				len = charArr.Length;
+			}
+			else
+			{
+				charArr = Encoding.UTF8.GetBytes(buffer);
+				len = charArr.Length;
+			}
 			unsafe
 			{
-				int len;
-				byte[] charArr;
-				COPYDATASTRUCT_SENDEX msgData;
-
-				if (msgTag == W2GTag.W2G_PATH)
-				{
-					charArr = Encoding.Default.GetBytes(buffer);
-					len = charArr.Length;
-				}
-				else
-				{
-					charArr = Encoding.UTF8.GetBytes(buffer);
-					len = charArr.Length;
-				}
 				fixed (byte* tmpBuff = charArr)
 				{
 					msgData.dwData = (IntPtr)msgTag;
@@ -963,56 +963,94 @@ namespace UIEditor
 					break;
 				case WM_COPYDATA:
 					#region WM_COPYDATA
+					G2WTag tag;
+					string strData;
 					unsafe
 					{
 						COPYDATASTRUCT msgData = *(COPYDATASTRUCT*)lParam;
-						string strData = Marshal.PtrToStringAnsi(msgData.lpData, msgData.cbData);
-						switch ((G2WTag)((COPYDATASTRUCT*)lParam)->dwData)
-						{
-							case G2WTag.G2W_HWND:
-								m_msgMng.m_hwndGL = wParam;
-								break;
-							case G2WTag.G2W_EVENT:
+						strData = Marshal.PtrToStringAnsi(msgData.lpData, msgData.cbData);
+						tag = (G2WTag)((COPYDATASTRUCT*)lParam)->dwData;
+					}
+					switch (tag)
+					{
+						case G2WTag.G2W_HWND:
+							m_msgMng.m_hwndGL = wParam;
+							break;
+						case G2WTag.G2W_EVENT:
+							{
+								string[] sArray = Regex.Split(strData, ":", RegexOptions.IgnoreCase);
+								if (sArray.Length >= 2)
 								{
-									string[] sArray = Regex.Split(strData, ":", RegexOptions.IgnoreCase);
-									if (sArray.Length >= 2)
-									{
-										string id = sArray[0];
-										string ent = sArray[1];
+									string id = sArray[0];
+									string ent = sArray[1];
 
-										switch(ent)
+									switch(ent)
+									{
+										case "click":
+											BoloUI.Basic tmpCtrl;
+											if (((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.TryGetValue(id, out tmpCtrl))
+											{
+												tmpCtrl.changeSelectItem();
+												tmpCtrl.IsSelected = true;
+											}
+											break;
+										default:
+											break;
+									}
+								}
+							}
+							break;
+						case G2WTag.G2W_UI_VRECT:
+							{
+								string[] sArray = Regex.Split(strData, ":", RegexOptions.IgnoreCase);
+
+								mx_debug.Text += "没有找到：";
+								for(int i = 5; i < sArray.Length; i+=5)
+								{
+									string baseId = sArray[i - 5];
+									OpenedFile fileDef;
+									if(m_mapOpenedFiles.TryGetValue(m_curFile, out fileDef))
+									{
+										BoloUI.Basic curCtrl;
+
+										if(fileDef.m_frame != null)
 										{
-											case "click":
-												BoloUI.Basic tmpCtrl;
-												if (((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI.TryGetValue(id, out tmpCtrl))
+											if(fileDef.m_frame.GetType().ToString() == "UIEditor.XmlControl")
+											{
+												XmlControl xmlCtrl = (XmlControl)fileDef.m_frame;
+
+												if (xmlCtrl.m_mapCtrlUI.TryGetValue(baseId, out curCtrl))
 												{
-													tmpCtrl.changeSelectItem();
-													tmpCtrl.IsSelected = true;
+													curCtrl.m_selX = int.Parse(sArray[i - 4]);
+													curCtrl.m_selY = int.Parse(sArray[i - 3]);
+													curCtrl.m_selW = int.Parse(sArray[i - 2]);
+													curCtrl.m_selH = int.Parse(sArray[i - 1]);
 												}
-												break;
-											default:
-												break;
+												else
+												{
+													mx_debug.Text += baseId + ":";
+												}
+											}
+											else
+											{
+
+											}
+										}
+										else
+										{
+
 										}
 									}
-								}
-								break;
-							case G2WTag.G2W_UI_VRECT:
-								{
-									string[] sArray = Regex.Split(strData, ":", RegexOptions.IgnoreCase);
-									for(int i = 5; i < sArray.Length; i+=5)
+									else
 									{
-										string baseId = sArray[i - 5];
-										BoloUI.Basic curCtrl = ((XmlControl)m_mapOpenedFiles[m_curFile].m_frame).m_mapCtrlUI[baseId];
-										curCtrl.m_selX = int.Parse(sArray[i - 4]);
-										curCtrl.m_selY = int.Parse(sArray[i - 3]);
-										curCtrl.m_selW = int.Parse(sArray[i - 2]);
-										curCtrl.m_selH = int.Parse(sArray[i - 1]);
+
 									}
 								}
-								break;
-							default:
-								break;
-						}
+								mx_debug.Text += "\r\n";
+							}
+							break;
+						default:
+							break;
 					}
 					#endregion
 					break;
@@ -1393,7 +1431,7 @@ namespace UIEditor
 		public class CtrlDef_T
 		{
 			public Dictionary<string, AttrDef_T> m_mapAttrDef;
-			public AttrList m_attrListUI;
+			public AttrList m_ctrlAttrList;
 			public Dictionary<string, string> m_mapApprPrefix;
 			public Dictionary<string, string> m_mapApprSuffix;
 			public bool m_isFrame;
@@ -1405,7 +1443,7 @@ namespace UIEditor
 			public CtrlDef_T(Dictionary<string, AttrDef_T> mapAttrDef, AttrList attrListUI, Dictionary<string, string> mapApprSuffix = null)
 			{
 				m_mapAttrDef = mapAttrDef;
-				m_attrListUI = attrListUI;
+				m_ctrlAttrList = attrListUI;
 				if (mapApprSuffix != null)
 				{
 					m_mapApprSuffix = mapApprSuffix;
@@ -1420,11 +1458,13 @@ namespace UIEditor
 		{
 			public Dictionary<string, SkinDef_T> m_mapEnChild;
 			public Dictionary<string, AttrDef_T> m_mapAttrDef;
+			public AttrList m_skinAttrList;
 
-			public SkinDef_T(Dictionary<string, SkinDef_T> mapChild, Dictionary<string, AttrDef_T> mapAttrDef)
+			public SkinDef_T(Dictionary<string, SkinDef_T> mapChild, Dictionary<string, AttrDef_T> mapAttrDef, AttrList attrListUI)
 			{
 				m_mapEnChild = mapChild;
 				m_mapAttrDef = mapAttrDef;
+				m_skinAttrList = attrListUI;
 			}
 		}
 		public void initResMap(Dictionary<string, SkinDef_T> mapResDef)
@@ -1724,7 +1764,7 @@ namespace UIEditor
 								addAttrConf(xeCtrl, mapAttrDef);
 
 								AttrList attrListUI = new AttrList(keyCtrl);
-								ctrlDef.m_attrListUI = attrListUI;
+								ctrlDef.m_ctrlAttrList = attrListUI;
 							}
 						}
 					}
@@ -1759,7 +1799,7 @@ namespace UIEditor
 								Dictionary<string, SkinDef_T> mapTree = new Dictionary<string, SkinDef_T>();
 
 								addSkinNodeConf(xeNode, mapTree);
-								skinDef = new SkinDef_T(mapTree, mapAttrDef);
+								skinDef = new SkinDef_T(mapTree, mapAttrDef, null);
 								mapSkinTreeDef.Add(keySkin, skinDef);
 							}
 						}
@@ -1769,7 +1809,6 @@ namespace UIEditor
 		}
 		public bool initSkinDef()
 		{
-
 			#region 属性设置
 			string attrPath = conf_pathPlugInBoloUI + @"SkinAttrDef.xml";
 			XmlDocument docAttr = new XmlDocument();
@@ -1829,8 +1868,8 @@ namespace UIEditor
 
 			foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in m_mapCtrlDef.ToList())
 			{
-				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI);
-				m_mapCtrlDef[pairCtrlDef.Key].m_attrListUI.Visibility = Visibility.Collapsed;
+				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_ctrlAttrList);
+				m_mapCtrlDef[pairCtrlDef.Key].m_ctrlAttrList.Visibility = Visibility.Collapsed;
 			}
 		}
 		public void hiddenAllAttr()

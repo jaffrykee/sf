@@ -51,11 +51,6 @@ namespace UIEditor
 			m_openedFile = fileDef;
 			m_openedFile.m_frame = this;
 			
-			BoloUI.SkinIndex skinIndex;
-			if(MainWindow.s_pW.m_mapSkinIndex.TryGetValue(m_openedFile.m_path, out skinIndex))
-			{
-				skinIndex.m_xmlCtrl = this;
-			}
 			refreshControl();
 		}
 		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
@@ -311,17 +306,16 @@ namespace UIEditor
 		{
 			MainWindow.s_pW.mx_debug.Text += "=====" + m_openedFile.m_path + "=====\r\n";
 
-			BoloUI.SkinIndex skinIndex;
-			if(MainWindow.s_pW.m_mapSkinIndex.TryGetValue(m_openedFile.m_path, out skinIndex))
-			{
-				m_xmlDoc = skinIndex.m_doc;
-			}
-			else
+			try
 			{
 				m_xmlDoc = new XmlDocument();
 				m_xmlDoc.Load(m_openedFile.m_path);
+				m_xeRoot = m_xmlDoc.DocumentElement;
 			}
-			m_xeRoot = m_xmlDoc.DocumentElement;
+			catch
+			{
+				return;
+			}
 
 			refreshXmlText();
 
@@ -399,7 +393,14 @@ namespace UIEditor
 					case "UIImageResource":
 						{
 							m_showGL = false;
-							mx_root.AddChild(new PackImage(this, false));
+							if (ImageTools.ImageNesting.s_pW != null)
+							{
+								mx_root.AddChild(new PackImage(this, true));
+							}
+							else
+							{
+								mx_root.AddChild(new PackImage(this, false));
+							}
 							MainWindow.s_pW.mx_debug.Text += ("<提示>todo。" + "\r\n");
 						}
 						break;

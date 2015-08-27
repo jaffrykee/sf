@@ -123,12 +123,6 @@ namespace UIEditor
 				pW.mx_treeSkinFrame.Items.Clear();
 			}
 			pW.hiddenAllAttr();
-
-			BoloUI.SkinIndex skinIndex;
-			if(pW.m_mapSkinIndex.TryGetValue(m_fileDef.m_path, out skinIndex))
-			{
-				skinIndex.m_xmlCtrl = null;
-			}
 		}
 		private void closeFileTab(object sender, RoutedEventArgs e)
 		{

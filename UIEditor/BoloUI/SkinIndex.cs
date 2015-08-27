@@ -10,13 +10,11 @@ namespace UIEditor.BoloUI
 	public class SkinIndex
 	{
 		public XmlDocument m_doc;
-		public XmlControl m_xmlCtrl;
 		public Dictionary<string, XmlElement> m_mapSkinXe;
 
-		public SkinIndex(XmlDocument doc, XmlControl xmlCtrl = null)
+		public SkinIndex(XmlDocument doc)
 		{
 			m_doc = doc;
-			m_xmlCtrl = xmlCtrl;
 			m_mapSkinXe = new Dictionary<string, XmlElement>();
 
 			if(m_doc.DocumentElement.Name == "BoloUI")
@@ -48,10 +46,17 @@ namespace UIEditor.BoloUI
 			{
 				XmlDocument skinDoc = new XmlDocument();
 
-				skinDoc.Load(fi.FullName);
-				if (skinDoc.DocumentElement.Name == "BoloUI")
+				try
 				{
-					MainWindow.s_pW.m_mapSkinIndex.Add(fi.FullName, new SkinIndex(skinDoc));
+					skinDoc.Load(fi.FullName);
+					if (skinDoc.DocumentElement.Name == "BoloUI")
+					{
+						MainWindow.s_pW.m_mapSkinIndex.Add(fi.FullName, new SkinIndex(skinDoc));
+					}
+				}
+				catch
+				{
+
 				}
 			}
 		}

@@ -3,6 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="图片打包"
 		Name="mx_root"
+		WindowStyle="ToolWindow"
+		ShowInTaskbar="False"
+		Loaded="mx_root_Loaded"
+		Unloaded="mx_root_Unloaded"
 		Width="1280"
 		Height="900">
 	<Grid Name="mx_rootGrid" Background="#22333333">

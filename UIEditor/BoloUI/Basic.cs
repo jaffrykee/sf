@@ -170,12 +170,12 @@ namespace UIEditor.BoloUI
 				{
 					foreach(KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
 					{
-						pairCtrlDef.Value.m_attrListUI.Visibility = Visibility.Visible;
-						pairCtrlDef.Value.m_attrListUI.clearRowValue();
+						pairCtrlDef.Value.m_ctrlAttrList.Visibility = Visibility.Visible;
+						pairCtrlDef.Value.m_ctrlAttrList.clearRowValue();
 					}
 				}
-				ctrlDef.m_attrListUI.Visibility = Visibility.Visible;
-				ctrlDef.m_attrListUI.clearRowValue();
+				ctrlDef.m_ctrlAttrList.Visibility = Visibility.Visible;
+				ctrlDef.m_ctrlAttrList.clearRowValue();
 			}
 
 			foreach (XmlAttribute attr in m_xe.Attributes)
@@ -223,15 +223,15 @@ namespace UIEditor.BoloUI
 			{
 				foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
 				{
-					pairCtrlDef.Value.m_attrListUI.refreshRowVisible();
-					pairCtrlDef.Value.m_attrListUI.m_xmlCtrl = m_rootControl;
-					pairCtrlDef.Value.m_attrListUI.m_basic = this;
-					pairCtrlDef.Value.m_attrListUI.m_xe = m_xe;
+					pairCtrlDef.Value.m_ctrlAttrList.refreshRowVisible();
+					pairCtrlDef.Value.m_ctrlAttrList.m_xmlCtrl = m_rootControl;
+					pairCtrlDef.Value.m_ctrlAttrList.m_basic = this;
+					pairCtrlDef.Value.m_ctrlAttrList.m_xe = m_xe;
 				}
-				ctrlDef.m_attrListUI.refreshRowVisible();
-				ctrlDef.m_attrListUI.m_xmlCtrl = m_rootControl;
-				ctrlDef.m_attrListUI.m_basic = this;
-				ctrlDef.m_attrListUI.m_xe = m_xe;
+				ctrlDef.m_ctrlAttrList.refreshRowVisible();
+				ctrlDef.m_ctrlAttrList.m_xmlCtrl = m_rootControl;
+				ctrlDef.m_ctrlAttrList.m_basic = this;
+				ctrlDef.m_ctrlAttrList.m_xe = m_xe;
 			}
 			if (MainWindow.s_pW.m_otherAttrList != null)
 			{
