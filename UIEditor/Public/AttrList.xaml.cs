@@ -28,6 +28,7 @@ namespace UIEditor
 			this.InitializeComponent();
 
 			MainWindow.CtrlDef_T ctrlDef;
+			MainWindow.SkinDef_T skinDef;
 			if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(m_name, out ctrlDef))
 			{
 				foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in ctrlDef.m_mapAttrDef.ToList())
@@ -36,9 +37,13 @@ namespace UIEditor
 					mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);
 				}
 			}
-			else
+			else if(MainWindow.s_pW.m_mapSkinAllDef.TryGetValue(m_name, out skinDef))
 			{
-				//todo
+				foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in skinDef.m_mapAttrDef.ToList())
+				{
+					pairAttrDef.Value.m_attrRowUI = new AttrRow(pairAttrDef.Value, pairAttrDef.Key, "", this);
+					mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);
+				}
 			}
 
 			string ctrlWord = MainWindow.s_pW.m_strDic.getWordByKey(m_name);

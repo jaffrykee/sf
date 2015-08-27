@@ -49,7 +49,7 @@
 			</Grid>
 		</Grid>
 	</Grid>
-	<Grid Name="mx_boolFrame" Visibility="Collapsed">
+	<Grid Name="mx_boolFrame" Visibility="Visible">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Name="mx_cb0" Width="*"/>
 			<ColumnDefinition Name="mx_cb1" Width="10"/>
@@ -64,14 +64,15 @@
 			Checked="mx_valueBool_Checked"
 			Unchecked="mx_valueBool_Unchecked"/>
 		<CheckBox Name="mx_defaultBool"
-			Grid.Column="2"
-			VerticalAlignment="Center"
-			Margin="10,0,0,0"
-			Content="[默认值]"
-			Checked="mx_defaultBool_Checked"
-			Unchecked="mx_defaultBool_Unchecked"/>
+				  Grid.Column="2"
+				  VerticalAlignment="Center"
+				  Margin="10,0,0,0"
+				  Content="[默认值]"
+				  IsChecked="True"
+				  Checked="mx_defaultBool_Checked"
+				  Unchecked="mx_defaultBool_Unchecked"/>
 	</Grid>
-	<Grid Name="mx_enumFrame" Visibility="Visible">
+	<Grid Name="mx_enumFrame" Visibility="Collapsed">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Name="mx_ce0" Width="*"/>
 			<ColumnDefinition Name="mx_ce1" Width="10"/>

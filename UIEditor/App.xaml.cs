@@ -13,5 +13,10 @@ namespace UIEditor
     /// </summary>
     public partial class App : Application
     {
-    }
+		private void mx_app_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+		{
+			Public.ErrorInfo winError = new Public.ErrorInfo(e.Exception.ToString());
+			winError.ShowDialog();
+		}
+	}
 }

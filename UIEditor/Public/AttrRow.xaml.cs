@@ -28,6 +28,9 @@ namespace UIEditor
 		public AttrList m_parent;
 		public bool m_isCommon;
 		public string m_subType;
+
+		private bool m_eventLock;
+
 		public string m_name
 		{
 			get { return mt_name; }
@@ -69,7 +72,7 @@ namespace UIEditor
 		}
 		private void setValue(bool isPre, string value)
 		{
-			if (mt_value != value)
+			if (mt_value != value && m_eventLock == false)
 			{
 				if (!isPre && m_parent != null && m_parent.m_xmlCtrl != null &&
 					m_parent.m_xe != null && m_parent.m_xmlCtrl.m_openedFile != null &&
@@ -79,6 +82,7 @@ namespace UIEditor
 				}
 				mt_value = value;
 				mx_value.Text = value;
+				m_eventLock = true;
 				if (!m_isEnum)
 				{
 					switch (m_type)
@@ -125,6 +129,7 @@ namespace UIEditor
 						mx_defaultEnum.IsSelected = true;
 					}
 				}
+				m_eventLock = false;
 			}
 		}
 		public string m_preValue
@@ -213,6 +218,7 @@ namespace UIEditor
 			m_mapEnum = null;
 			m_isCommon = false;
 			m_subType = "";
+			m_eventLock = false;
 
 			m_name = mt_name;
 			m_preValue = mt_value;
@@ -226,6 +232,7 @@ namespace UIEditor
 			m_mapEnum = attrDef.m_mapEnum;
 			m_isCommon = attrDef.m_isCommon;
 			m_subType = attrDef.m_subType;
+			m_eventLock = false;
 
 			m_name = name;
 			m_preValue = value;

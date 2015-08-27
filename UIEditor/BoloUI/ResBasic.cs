@@ -181,23 +181,27 @@ namespace UIEditor.BoloUI
 						ctrlUI = null;
 					}
 				}
-				if (MainWindow.s_pW.m_otherAttrList == null)
+				MainWindow.SkinDef_T skinDef;
+				if(MainWindow.s_pW.m_mapSkinAllDef.TryGetValue(m_xe.Name, out skinDef))
 				{
-					MainWindow.s_pW.m_otherAttrList = new AttrList("基本");
-					MainWindow.s_pW.mx_toolArea.Children.Add(MainWindow.s_pW.m_otherAttrList);
-				}
-				if (m_curDeepDef.m_mapAttrDef != null)
-				{
-					foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in m_curDeepDef.m_mapAttrDef.ToList())
+					skinDef.m_skinAttrList.Visibility = Visibility.Visible;
+					skinDef.m_skinAttrList.clearRowValue();
+
+					skinDef.m_skinAttrList.refreshRowVisible();
+					skinDef.m_skinAttrList.m_xmlCtrl = m_rootControl;
+					skinDef.m_skinAttrList.m_basic = this;
+					skinDef.m_skinAttrList.m_xe = m_xe;
+
+					foreach (XmlAttribute attr in m_xe.Attributes)
 					{
-						pairAttrDef.Value.m_attrRowUI = new AttrRow(pairAttrDef.Value, pairAttrDef.Key, m_xe.GetAttribute(pairAttrDef.Key), MainWindow.s_pW.m_otherAttrList);
-						MainWindow.s_pW.m_otherAttrList.mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);
+						MainWindow.AttrDef_T attrDef;
+
+						if(skinDef.m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
+						{
+							attrDef.m_attrRowUI.m_preValue = attr.Value;
+						}
 					}
 				}
-				MainWindow.s_pW.m_otherAttrList.refreshRowVisible();
-				MainWindow.s_pW.m_otherAttrList.m_xmlCtrl = m_rootControl;
-				MainWindow.s_pW.m_otherAttrList.m_basic = this;
-				MainWindow.s_pW.m_otherAttrList.m_xe = m_xe;
 
 				//预览皮肤
 				XmlElement xeSkin = null;

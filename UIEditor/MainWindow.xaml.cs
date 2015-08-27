@@ -1762,9 +1762,6 @@ namespace UIEditor
 								}
 								m_mapCtrlDef.Add(keyCtrl, ctrlDef);
 								addAttrConf(xeCtrl, mapAttrDef);
-
-								AttrList attrListUI = new AttrList(keyCtrl);
-								ctrlDef.m_ctrlAttrList = attrListUI;
 							}
 						}
 					}
@@ -1868,8 +1865,15 @@ namespace UIEditor
 
 			foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in m_mapCtrlDef.ToList())
 			{
-				mx_toolArea.Children.Add(m_mapCtrlDef[pairCtrlDef.Key].m_ctrlAttrList);
-				m_mapCtrlDef[pairCtrlDef.Key].m_ctrlAttrList.Visibility = Visibility.Collapsed;
+				pairCtrlDef.Value.m_ctrlAttrList = new AttrList(pairCtrlDef.Key);
+				mx_toolArea.Children.Add(pairCtrlDef.Value.m_ctrlAttrList);
+				pairCtrlDef.Value.m_ctrlAttrList.Visibility = Visibility.Collapsed;
+			}
+			foreach (KeyValuePair<string, SkinDef_T> pairSkinDef in m_mapSkinAllDef.ToList())
+			{
+				pairSkinDef.Value.m_skinAttrList = new AttrList(pairSkinDef.Key);
+				mx_toolArea.Children.Add(pairSkinDef.Value.m_skinAttrList);
+				pairSkinDef.Value.m_skinAttrList.Visibility = Visibility.Collapsed;
 			}
 		}
 		public void hiddenAllAttr()
