@@ -18,15 +18,24 @@ namespace UIEditor.BoloUI
 	/// </summary>
 	public partial class SelImage : Window
 	{
-		public SelImage()
+		public AttrRow m_rowSkin;
+
+		static public SelImage s_pW;
+
+		public SelImage(AttrRow rowSkin)
 		{
+			s_pW = this;
+			m_rowSkin = rowSkin;
 			InitializeComponent();
 			this.Owner = MainWindow.s_pW;
 		}
-
 		private void mx_root_Loaded(object sender, RoutedEventArgs e)
 		{
 
+		}
+		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
+		{
+			s_pW = null;
 		}
 
 		private void mx_search_TextChanged(object sender, TextChangedEventArgs e)

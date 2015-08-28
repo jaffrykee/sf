@@ -89,6 +89,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoloUI\DefConfig\AttrDef_T.cs" />
+    <Compile Include="BoloUI\DefConfig\CtrlDef_T.cs" />
+    <Compile Include="BoloUI\DefConfig\DefConfig.cs" />
     <Compile Include="BoloUI\ImageIndex.cs" />
     <Compile Include="BoloUI\ResBasic.cs" />
     <Compile Include="BoloUI\Basic.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="BoloUI\SelSkin.xaml.cs">
       <DependentUpon>SelSkin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoloUI\DefConfig\SkinDef_T.cs" />
     <Compile Include="BoloUI\SkinEditor.xaml.cs">
       <DependentUpon>SkinEditor.xaml</DependentUpon>
     </Compile>
@@ -114,6 +118,7 @@
     <Compile Include="ImageTools\ImageNesting.xaml.cs">
       <DependentUpon>ImageNesting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MsgManager.cs" />
     <Compile Include="NewFile\FileTypeRadio.xaml.cs">
       <DependentUpon>FileTypeRadio.xaml</DependentUpon>
     </Compile>

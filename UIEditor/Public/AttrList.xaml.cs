@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using UIEditor.BoloUI;
+using UIEditor.BoloUI.DefConfig;
 
 namespace UIEditor
 {
@@ -22,24 +24,14 @@ namespace UIEditor
 		public XmlControl m_xmlCtrl;
 		public XmlItem m_basic;
 
-		public AttrList(string name = "")
+		public AttrList(string name = "", Dictionary<string, AttrDef_T> mapAttrDef = null)
 		{
 			m_name = name;
 			this.InitializeComponent();
 
-			MainWindow.CtrlDef_T ctrlDef;
-			MainWindow.SkinDef_T skinDef;
-			if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(m_name, out ctrlDef))
+			if(mapAttrDef != null)
 			{
-				foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in ctrlDef.m_mapAttrDef.ToList())
-				{
-					pairAttrDef.Value.m_attrRowUI = new AttrRow(pairAttrDef.Value, pairAttrDef.Key, "", this);
-					mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);
-				}
-			}
-			else if(MainWindow.s_pW.m_mapSkinAllDef.TryGetValue(m_name, out skinDef))
-			{
-				foreach (KeyValuePair<string, MainWindow.AttrDef_T> pairAttrDef in skinDef.m_mapAttrDef.ToList())
+				foreach (KeyValuePair<string, AttrDef_T> pairAttrDef in mapAttrDef.ToList())
 				{
 					pairAttrDef.Value.m_attrRowUI = new AttrRow(pairAttrDef.Value, pairAttrDef.Key, "", this);
 					mx_frame.Children.Add(pairAttrDef.Value.m_attrRowUI);

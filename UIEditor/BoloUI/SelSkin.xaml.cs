@@ -175,6 +175,10 @@ namespace UIEditor.BoloUI
 			mx_viewFrame.Child = m_msgMng.m_GLHost;
 			m_msgMng.m_GLHost.MessageHook += new HwndSourceHook(ControlMsgFilter);
 		}
+		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
+		{
+			s_pW = null;
+		}
 
 		void skinItem_Selected(object sender, RoutedEventArgs e)
 		{

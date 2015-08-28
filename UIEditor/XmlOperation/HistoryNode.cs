@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml;
+using UIEditor.BoloUI;
+using UIEditor.BoloUI.DefConfig;
 
 namespace UIEditor.XmlOperation
 {
@@ -94,7 +96,7 @@ namespace UIEditor.XmlOperation
 				if (fileT.m_frame.GetType() == Type.GetType("UIEditor.XmlControl"))
 				{
 					XmlControl xmlCtrl = (XmlControl)fileT.m_frame;
-					MainWindow.CtrlDef_T nullCtrlDef;
+					CtrlDef_T nullCtrlDef;
 					XmlItem dstItem;
 
 					if (xmlCtrl.m_mapXeItem.TryGetValue(dstXe, out dstItem))
@@ -132,7 +134,7 @@ namespace UIEditor.XmlOperation
 		}
 		static public bool insertItemByXe(MainWindow pW, string path, XmlElement dstXe, XmlElement srcXe, int index = 0)
 		{
-			MainWindow.CtrlDef_T nullCtrlDef;
+			CtrlDef_T nullCtrlDef;
 			OpenedFile fileT;
 
 			if (pW.m_mapOpenedFiles.TryGetValue(path, out fileT))
@@ -141,7 +143,7 @@ namespace UIEditor.XmlOperation
 				{
 					XmlControl xmlCtrl = (XmlControl)fileT.m_frame;
 					TreeViewItem treeChild;
-					MainWindow.SkinDef_T skinPtr;
+					SkinDef_T skinPtr;
 
 					if (pW.m_mapCtrlDef.TryGetValue(dstXe.Name, out nullCtrlDef))
 					{

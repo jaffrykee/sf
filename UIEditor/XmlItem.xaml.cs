@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using UIEditor.BoloUI;
+using UIEditor.BoloUI.DefConfig;
 
 namespace UIEditor
 {
@@ -64,7 +66,7 @@ namespace UIEditor
 						mx_addNode.Visibility = System.Windows.Visibility.Collapsed;
 						if (m_xe.Name == "BoloUI")
 						{
-							MainWindow.CtrlDef_T panelCtrlDef;
+							CtrlDef_T panelCtrlDef;
 
 							mx_cut.IsEnabled = false;
 							mx_copy.IsEnabled = false;
@@ -240,8 +242,8 @@ namespace UIEditor
 
 			if (MainWindow.s_pW.m_xePaste != null)
 			{
-				MainWindow.CtrlDef_T ctrlPtr;
-				MainWindow.SkinDef_T skinPtr;
+				CtrlDef_T ctrlPtr;
+				SkinDef_T skinPtr;
 				XmlItem treeChild = null;
 
 				xeCopy = m_xe.OwnerDocument.CreateElement("tmp");
@@ -268,7 +270,7 @@ namespace UIEditor
 					{
 						if(m_type == "CtrlUI")
 						{
-							MainWindow.CtrlDef_T panelCtrlDef;
+							CtrlDef_T panelCtrlDef;
 
 							if (m_xe.Name == "BoloUI" && MainWindow.s_pW.m_mapPanelCtrlDef.TryGetValue(treeChild.m_xe.Name, out panelCtrlDef))
 							{
@@ -294,10 +296,10 @@ namespace UIEditor
 						}
 						else if(m_type == "Skin")
 						{
-							MainWindow.SkinDef_T skinDef;
+							SkinDef_T skinDef;
 							if(MainWindow.s_pW.m_mapSkinAllDef.TryGetValue(m_xe.Name, out skinDef))
 							{
-								MainWindow.SkinDef_T skinChildDef;
+								SkinDef_T skinChildDef;
 								if(skinDef.m_mapEnChild != null && skinDef.m_mapEnChild.Count > 0
 									&& skinDef.m_mapEnChild.TryGetValue(treeChild.m_xe.Name, out skinChildDef))
 								{
@@ -448,7 +450,7 @@ namespace UIEditor
 		}
 		public void showTmplGroup(string addStr)
 		{
-			MainWindow.CtrlDef_T ctrlDef;
+			CtrlDef_T ctrlDef;
 
 			if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(addStr, out ctrlDef) && ctrlDef != null)
 			{
@@ -488,17 +490,17 @@ namespace UIEditor
 		}
 		private void mx_addCtrl_Loaded(object sender, RoutedEventArgs e)
 		{
-			MainWindow.CtrlDef_T panelCtrlDef;
+			CtrlDef_T panelCtrlDef;
 
 			mx_addCtrl.Items.Clear();
 			if (MainWindow.s_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 			{
-				foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertCtrlDef.ToList())
+				foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertCtrlDef.ToList())
 				{
 					showTmplGroup(pairCtrlDef.Key);
 				}
 				mx_addCtrl.Items.Add(new Separator());
-				foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertAllCtrlDef.ToList())
+				foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertAllCtrlDef.ToList())
 				{
 					showTmplGroup(pairCtrlDef.Key);
 				}
@@ -508,7 +510,7 @@ namespace UIEditor
 				if (m_xe.Name == "BoloUI")
 				{
 					//<inc>showTmplGroup(pairCtrlDef.Key);
-					foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrl in MainWindow.s_pW.m_mapPanelCtrlDef.ToList())
+					foreach (KeyValuePair<string, CtrlDef_T> pairCtrl in MainWindow.s_pW.m_mapPanelCtrlDef.ToList())
 					{
 						MenuItem ctrlItem = new MenuItem();
 						string name = MainWindow.s_pW.m_strDic.getWordByKey(pairCtrl.Key);

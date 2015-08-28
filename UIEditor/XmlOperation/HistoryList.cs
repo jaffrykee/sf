@@ -108,7 +108,17 @@ namespace UIEditor.XmlOperation
 				default:
 					return;
 			}
-			m_pW.updateXmlToGL(m_xmlCtrl);
+			if (m_xmlCtrl.m_isOnlySkin && m_xmlCtrl.m_skinViewCtrlUI != null && m_xmlCtrl.m_skinViewCtrlUI.m_xe != null)
+			{
+				XmlElement xeView;
+
+				BoloUI.ResBasic.resetXeView(m_xmlCtrl.m_skinViewCtrlUI.m_xe, out xeView);
+				m_pW.updateXmlToGL(m_xmlCtrl, xeView, false);
+			}
+			else
+			{
+				m_pW.updateXmlToGL(m_xmlCtrl);
+			}
 
 			if (!isAddOpt)
 			{

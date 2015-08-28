@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using UIEditor.BoloUI;
+using UIEditor.BoloUI.DefConfig;
 
 namespace UIEditor
 {
@@ -61,8 +63,12 @@ namespace UIEditor
 				switch(m_name)
 				{
 					case "skin":
+						mx_skinFrame.Visibility = System.Windows.Visibility.Visible;
+						mx_link.Visibility = System.Windows.Visibility.Visible;
+						break;
 					case "ImageName":
 						mx_skinFrame.Visibility = System.Windows.Visibility.Visible;
+						mx_link.Visibility = System.Windows.Visibility.Collapsed;
 						break;
 					default:
 						mx_skinFrame.Visibility = System.Windows.Visibility.Collapsed;
@@ -209,6 +215,10 @@ namespace UIEditor
 
 		public AttrRow(string type = "string", string name = "", string value = "", AttrList parent = null)
 		{
+			if(name == "function")
+			{
+
+			}
 			InitializeComponent();
 			mt_name = name;
 			mt_value = value;
@@ -224,8 +234,12 @@ namespace UIEditor
 			m_preValue = mt_value;
 			m_type = mt_type;
 		}
-		public AttrRow(MainWindow.AttrDef_T attrDef, string name = "", string value = "", AttrList parent = null)
+		public AttrRow(AttrDef_T attrDef, string name = "", string value = "", AttrList parent = null)
 		{
+			if (name == "function")
+			{
+
+			}
 			InitializeComponent();
 			m_parent = parent;
 			m_isEnum = attrDef.m_isEnum;
@@ -294,7 +308,20 @@ namespace UIEditor
 		{
 			if (m_parent.m_basic != null && m_parent.m_basic.GetType().ToString() == "UIEditor.BoloUI.Basic")
 			{
-				m_parent.m_xmlCtrl.findSkinAndSelect(mx_value.Text, (BoloUI.Basic)m_parent.m_basic);
+				switch (m_name)
+				{
+					case "skin":
+						{
+							m_parent.m_xmlCtrl.findSkinAndSelect(mx_value.Text, (BoloUI.Basic)m_parent.m_basic);
+						}
+						break;
+					case "ImageName":
+						{
+						}
+						break;
+					default:
+						break;
+				}
 			}
 		}
 		private void mx_sel_Click(object sender, RoutedEventArgs e)
@@ -316,9 +343,19 @@ namespace UIEditor
 							}
 						}
 						break;
+					default:
+						break;
+				}
+			}
+			if (m_parent.m_basic != null && m_parent.m_basic.GetType().ToString() == "UIEditor.BoloUI.ResBasic")
+			{
+				switch (m_name)
+				{
 					case "ImageName":
 						{
+							BoloUI.SelImage winImage = new BoloUI.SelImage(this);
 
+							winImage.ShowDialog();
 						}
 						break;
 					default:

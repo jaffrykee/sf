@@ -7,7 +7,8 @@
 		ShowInTaskbar="False"
 		Height="auto"
 		Width="auto"
-		Loaded="mx_root_Loaded">
+		Loaded="mx_root_Loaded"
+		Unloaded="mx_root_Unloaded">
     <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="200"/>

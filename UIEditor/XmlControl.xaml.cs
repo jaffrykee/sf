@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Xml;
+using UIEditor.BoloUI;
+using UIEditor.BoloUI.DefConfig;
 
 namespace UIEditor
 {
@@ -64,48 +66,6 @@ namespace UIEditor
 				{
 					MainWindow.s_pW.mx_treeCtrlFrame.Items.Clear();
 					MainWindow.s_pW.mx_treeSkinFrame.Items.Clear();
-				}
-			}
-		}
-
-		public void checkBaseId_old(XmlNode xn)
-		{
-			if (xn != null)
-			{
-				if (xn.NodeType == XmlNodeType.Element)
-				{
-					XmlElement xe = (XmlElement)xn;
-
-					MainWindow.CtrlDef_T ctrlDef;
-
-					if (xe.Name != "event" && MainWindow.s_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlDef))
-					{
-						if (xe.GetAttribute("baseID") == "")
-						{
-							xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
-							MainWindow.s_pW.mx_debug.Text += "<警告>baseID没有赋值，已经将其替换为随机值：" + xe.GetAttribute("baseID") + "\r\n";
-							//m_openedFile.updateSaveStatus();
-						}
-
-						BoloUI.Basic tmpNull;
-						string id = xe.GetAttribute("baseID");
-
-						if (m_mapCtrlUI.TryGetValue(id, out tmpNull))
-						{
-							//baseId重复了
-							xe.SetAttribute("baseID", System.Guid.NewGuid().ToString().Substring(32 / 2));
-							MainWindow.s_pW.mx_debug.Text += "<警告>baseID(" + id + ")重复，已经将其替换为随机值：" + xe.GetAttribute("baseID") + "\r\n";
-							id = xe.GetAttribute("baseID");
-							//m_openedFile.updateSaveStatus();
-						}
-						m_mapCtrlUI[id] = null;
-					}
-				}
-
-				XmlNodeList xnl = xn.ChildNodes;
-				foreach (XmlNode xnf in xnl)
-				{
-					checkBaseId_old(xnf);
 				}
 			}
 		}
@@ -350,8 +310,8 @@ namespace UIEditor
 								if (xnf.NodeType == XmlNodeType.Element)
 								{
 									XmlElement xe = (XmlElement)xnf;
-									MainWindow.CtrlDef_T ctrlPtr;
-									MainWindow.SkinDef_T skinPtr;
+									CtrlDef_T ctrlPtr;
+									SkinDef_T skinPtr;
 
 									if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
 									{

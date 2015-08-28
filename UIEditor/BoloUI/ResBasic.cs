@@ -13,14 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using UIEditor.BoloUI;
+using UIEditor.BoloUI.DefConfig;
 
 namespace UIEditor.BoloUI
 {
 	public class ResBasic : UIEditor.XmlItem
 	{
-		public MainWindow.SkinDef_T m_curDeepDef;
+		public SkinDef_T m_curDeepDef;
 
-		public ResBasic(XmlElement xe, XmlControl rootControl, MainWindow.SkinDef_T deepDef) : base(xe, rootControl)
+		public ResBasic(XmlElement xe, XmlControl rootControl, SkinDef_T deepDef) : base(xe, rootControl)
 		{
 			m_type = "Skin";
 			InitializeComponent();
@@ -40,7 +42,7 @@ namespace UIEditor.BoloUI
 				addChild();
 			}
 
-			Dictionary<string, MainWindow.SkinDef_T> mapSkinDef;
+			Dictionary<string, SkinDef_T> mapSkinDef;
 
 			initHeader();
 
@@ -55,7 +57,7 @@ namespace UIEditor.BoloUI
 			}
 			if (mapSkinDef != null)
 			{
-				foreach (KeyValuePair<string, MainWindow.SkinDef_T> pairSkinDef in mapSkinDef.ToList())
+				foreach (KeyValuePair<string, SkinDef_T> pairSkinDef in mapSkinDef.ToList())
 				{
 					MenuItem skinMenuItem = new MenuItem();
 
@@ -105,7 +107,7 @@ namespace UIEditor.BoloUI
 				if (xnf.NodeType == XmlNodeType.Element)
 				{
 					XmlElement xe = (XmlElement)xnf;
-					MainWindow.SkinDef_T skinPtr;
+					SkinDef_T skinPtr;
 
 					if (m_curDeepDef.m_mapEnChild != null)
 					{
@@ -157,6 +159,22 @@ namespace UIEditor.BoloUI
 				mx_radio.Content = tmpCon.Replace("_", "__");
 			}
 		}
+		public static void resetXeView(XmlElement srcXe, out XmlElement xeView)
+		{
+			xeView = srcXe.OwnerDocument.CreateElement(srcXe.Name);
+
+			foreach (XmlAttribute attr in srcXe.Attributes)
+			{
+				xeView.SetAttribute(attr.Name, attr.Value);
+			}
+			xeView.SetAttribute("baseID", "selSkinTestCtrl");
+			xeView.RemoveAttribute("x");
+			xeView.RemoveAttribute("y");
+			xeView.RemoveAttribute("visible");
+			xeView.RemoveAttribute("dock");
+			xeView.RemoveAttribute("anchor");
+			xeView.RemoveAttribute("anchorSelf");
+		}
 		public override void changeSelectItem(object obj = null)
 		{
 			MainWindow.s_pW.m_curItem = this;
@@ -181,7 +199,7 @@ namespace UIEditor.BoloUI
 						ctrlUI = null;
 					}
 				}
-				MainWindow.SkinDef_T skinDef;
+				SkinDef_T skinDef;
 				if(MainWindow.s_pW.m_mapSkinAllDef.TryGetValue(m_xe.Name, out skinDef))
 				{
 					skinDef.m_skinAttrList.Visibility = Visibility.Visible;
@@ -194,7 +212,7 @@ namespace UIEditor.BoloUI
 
 					foreach (XmlAttribute attr in m_xe.Attributes)
 					{
-						MainWindow.AttrDef_T attrDef;
+						AttrDef_T attrDef;
 
 						if(skinDef.m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
 						{
@@ -241,20 +259,7 @@ namespace UIEditor.BoloUI
 							{
 								m_rootControl.m_skinViewCtrlUI = ctrlUI;
 							}
-							xeView = m_rootControl.m_xmlDoc.CreateElement(m_rootControl.m_skinViewCtrlUI.m_xe.Name);
-
-							foreach (XmlAttribute attr in m_rootControl.m_skinViewCtrlUI.m_xe.Attributes)
-							{
-								xeView.SetAttribute(attr.Name, attr.Value);
-							}
-
-							xeView.SetAttribute("baseID", "selSkinTestCtrl");
-							xeView.RemoveAttribute("x");
-							xeView.RemoveAttribute("y");
-							xeView.RemoveAttribute("visible");
-							xeView.RemoveAttribute("dock");
-							xeView.RemoveAttribute("anchor");
-							xeView.RemoveAttribute("anchorSelf");
+							resetXeView(m_rootControl.m_skinViewCtrlUI.m_xe, out xeView);
 						}
 						((XmlElement)xeView).SetAttribute("skin", xeSkin.GetAttribute("Name"));
 						MainWindow.s_pW.updateXmlToGL(m_rootControl, xeView, false);

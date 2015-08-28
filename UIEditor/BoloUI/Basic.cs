@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using UIEditor.BoloUI;
+using UIEditor.BoloUI.DefConfig;
 
 namespace UIEditor.BoloUI
 {
@@ -28,7 +30,7 @@ namespace UIEditor.BoloUI
 		{
 			m_type = "CtrlUI";
 			InitializeComponent();
-			MainWindow.CtrlDef_T ctrlDef;
+			CtrlDef_T ctrlDef;
 			m_isCtrl = true;
 
 			if (isRoot == false)
@@ -63,7 +65,7 @@ namespace UIEditor.BoloUI
 				if (xnf.NodeType == XmlNodeType.Element)
 				{
 					XmlElement xe = (XmlElement)xnf;
-					MainWindow.CtrlDef_T ctrlPtr;
+					CtrlDef_T ctrlPtr;
 
 					if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(xe.Name, out ctrlPtr))
 					{
@@ -150,10 +152,10 @@ namespace UIEditor.BoloUI
 		public override void changeSelectItem(object obj = null)
 		{
 			MainWindow.s_pW.mx_leftToolFrame.SelectedItem = MainWindow.s_pW.mx_ctrlFrame;
+			MainWindow.s_pW.m_curFile = m_rootControl.m_openedFile.m_path;
+			MainWindow.s_pW.mx_workTabs.SelectedItem = m_rootControl.m_openedFile.m_tab;
 			if (m_vId != "")
 			{
-				MainWindow.s_pW.m_curFile = m_rootControl.m_openedFile.m_path;
-				MainWindow.s_pW.mx_workTabs.SelectedItem = m_rootControl.m_openedFile.m_tab;
 				MainWindow.s_pW.updateGL(
 					StringDic.getFileNameWithoutPath(m_rootControl.m_openedFile.m_path) + ":" + m_vId,
 					W2GTag.W2G_SELECT_UI
@@ -162,13 +164,13 @@ namespace UIEditor.BoloUI
 
 			MainWindow.s_pW.m_curItem = this;
 			MainWindow.s_pW.hiddenAllAttr();
-			MainWindow.CtrlDef_T ctrlDef;
+			CtrlDef_T ctrlDef;
 
 			if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(m_xe.Name, out ctrlDef))
 			{
 				if (ctrlDef.m_hasBasic == true)
 				{
-					foreach(KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
+					foreach(KeyValuePair<string, CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
 					{
 						pairCtrlDef.Value.m_ctrlAttrList.Visibility = Visibility.Visible;
 						pairCtrlDef.Value.m_ctrlAttrList.clearRowValue();
@@ -184,10 +186,10 @@ namespace UIEditor.BoloUI
 
 				if (m_isCtrl)
 				{
-					MainWindow.AttrDef_T attrDef;
+					AttrDef_T attrDef;
 					bool tmpFound = false;
 
-					foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
+					foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
 					{
 						if (!tmpFound && pairCtrlDef.Value.m_mapAttrDef.TryGetValue(attr.Name, out attrDef))
 						{
@@ -221,7 +223,7 @@ namespace UIEditor.BoloUI
 			}
 			if (m_isCtrl)
 			{
-				foreach (KeyValuePair<string, MainWindow.CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
+				foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapBasicCtrlDef.ToList())
 				{
 					pairCtrlDef.Value.m_ctrlAttrList.refreshRowVisible();
 					pairCtrlDef.Value.m_ctrlAttrList.m_xmlCtrl = m_rootControl;
