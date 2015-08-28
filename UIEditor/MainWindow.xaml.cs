@@ -89,7 +89,7 @@ namespace UIEditor
 			set
 			{
 				mt_screenWidth = value;
-				if(mx_scrollGrid != null)
+				if (mx_scrollGrid != null)
 				{
 					mx_scrollGrid.Width = value;
 					updateGL(mt_screenWidth.ToString() + ":" + mt_screenHeight.ToString(), W2GTag.W2G_VIEWSIZE);
@@ -103,7 +103,7 @@ namespace UIEditor
 			set
 			{
 				mt_screenHeight = value;
-				if(mx_scrollGrid != null)
+				if (mx_scrollGrid != null)
 				{
 					mx_scrollGrid.Height = value;
 					updateGL(mt_screenWidth.ToString() + ":" + mt_screenHeight.ToString(), W2GTag.W2G_VIEWSIZE);
@@ -163,7 +163,7 @@ namespace UIEditor
 			m_xeTest = m_xdTest.DocumentElement;
 
 			m_docConf = new XmlDocument();
-			if(!File.Exists(conf_pathConf))
+			if (!File.Exists(conf_pathConf))
 			{
 				string initConfXml = "<Config><runMode>release</runMode><ProjHistory>E:\\mmo2013001\\artist\\client_resouce\\ui\\free</ProjHistory></Config>";
 
@@ -297,7 +297,7 @@ namespace UIEditor
 		}
 		public void openProjSelectBox(string projPath = null)
 		{
-			if(projPath == null)
+			if (projPath == null)
 			{
 				projPath = m_docConf.SelectSingleNode("Config").SelectSingleNode("ProjHistory").InnerXml;
 			}
@@ -415,7 +415,7 @@ namespace UIEditor
 		}
 		public void eventCloseFile(object sender, RoutedEventArgs e)
 		{
-			if(m_mapOpenedFiles.Count == 0)
+			if (m_mapOpenedFiles.Count == 0)
 			{
 				m_curItem = null;
 				hiddenGLAttr();
@@ -722,7 +722,7 @@ namespace UIEditor
 				fixed (byte* tmpBuff = charArr)
 				{
 					msgData.dwData = (IntPtr)msgTag;
-					if(len != 0)
+					if (len != 0)
 					{
 						msgData.lpData = (IntPtr)tmpBuff;
 					}
@@ -764,7 +764,7 @@ namespace UIEditor
 										BoloUI.Basic selItem = (BoloUI.Basic)m_curItem;
 										string msgData;
 
-										msgData = (selItem.m_selX + (pX - m_downX)).ToString() + ":" + (selItem.m_selY + (pY - m_downY)).ToString() + ":" + 
+										msgData = (selItem.m_selX + (pX - m_downX)).ToString() + ":" + (selItem.m_selY + (pY - m_downY)).ToString() + ":" +
 											selItem.m_selW.ToString() + ":" + selItem.m_selH.ToString() + ":";
 										updateGL(msgData, W2GTag.W2G_DRAWRECT);
 									}
@@ -781,9 +781,9 @@ namespace UIEditor
 						{
 							OpenedFile fileDef;
 
-							if(m_mapOpenedFiles.TryGetValue(m_curFile, out fileDef))
+							if (m_mapOpenedFiles.TryGetValue(m_curFile, out fileDef))
 							{
-								if(fileDef.m_frame.GetType().ToString() == "UIEditor.XmlControl")
+								if (fileDef.m_frame.GetType().ToString() == "UIEditor.XmlControl")
 								{
 									((XmlControl)fileDef.m_frame).refreshVRect();
 								}
@@ -802,11 +802,11 @@ namespace UIEditor
 				case WM_LBUTTONUP:
 					#region WM_LBUTTONUP
 					{
-						if(m_isMouseDown == true)
+						if (m_isMouseDown == true)
 						{
 							int pX = (int)lParam & 0xFFFF;
 							int pY = ((int)lParam >> 16) & 0xFFFF;
-							if(m_isCtrlMoved == false)
+							if (m_isCtrlMoved == false)
 							{
 								List<BoloUI.Basic> lstSelCtrl = new List<BoloUI.Basic>();
 								BoloUI.Basic selCtrl = null;
@@ -922,7 +922,7 @@ namespace UIEditor
 									string id = sArray[0];
 									string ent = sArray[1];
 
-									switch(ent)
+									switch (ent)
 									{
 										case "click":
 											BoloUI.Basic tmpCtrl;
@@ -943,17 +943,17 @@ namespace UIEditor
 								string[] sArray = Regex.Split(strData, ":", RegexOptions.IgnoreCase);
 
 								mx_debug.Text += "没有找到：";
-								for(int i = 5; i < sArray.Length; i+=5)
+								for (int i = 5; i < sArray.Length; i += 5)
 								{
 									string baseId = sArray[i - 5];
 									OpenedFile fileDef;
-									if(m_mapOpenedFiles.TryGetValue(m_curFile, out fileDef))
+									if (m_mapOpenedFiles.TryGetValue(m_curFile, out fileDef))
 									{
 										BoloUI.Basic curCtrl;
 
-										if(fileDef.m_frame != null)
+										if (fileDef.m_frame != null)
 										{
-											if(fileDef.m_frame.GetType().ToString() == "UIEditor.XmlControl")
+											if (fileDef.m_frame.GetType().ToString() == "UIEditor.XmlControl")
 											{
 												XmlControl xmlCtrl = (XmlControl)fileDef.m_frame;
 
@@ -1158,7 +1158,7 @@ namespace UIEditor
 									{
 										if (m_pasteFilePath != null && m_pasteFilePath != "")
 										{
-											
+
 										}
 									}
 									else
@@ -1228,7 +1228,7 @@ namespace UIEditor
 			}
 			foreach (XmlNode xn in srcXe.ChildNodes)
 			{
-				if(xn.NodeType == XmlNodeType.Element)
+				if (xn.NodeType == XmlNodeType.Element)
 				{
 					XmlElement xe = (XmlElement)xn;
 					XmlItem item;
@@ -1236,13 +1236,13 @@ namespace UIEditor
 
 					addVidToMsgXml(xe, newXe, dstDoc, xmlCtrl);
 
-					if(xmlCtrl.m_mapXeItem.TryGetValue(xe, out item))
+					if (xmlCtrl.m_mapXeItem.TryGetValue(xe, out item))
 					{
-						if(item.GetType().ToString() == "UIEditor.BoloUI.Basic")
+						if (item.GetType().ToString() == "UIEditor.BoloUI.Basic")
 						{
 							BoloUI.Basic uiCtrl = (BoloUI.Basic)item;
 
-							if(uiCtrl.m_vId != null && uiCtrl.m_vId != "")
+							if (uiCtrl.m_vId != null && uiCtrl.m_vId != "")
 							{
 								newXe.SetAttribute("baseID", uiCtrl.m_vId);
 							}
@@ -1267,7 +1267,7 @@ namespace UIEditor
 
 			if (xePlus != null)
 			{
-				if(isCtrlUI == false)
+				if (isCtrlUI == false)
 				{
 					string strTmp = "<panel dock=\"4\" w=\"960\" h=\"640\" name=\"background\" skin=\"BackPure\"></panel>";
 
@@ -1284,9 +1284,9 @@ namespace UIEditor
 
 					for (xn = xePlus; xn.ParentNode != null && xn.ParentNode.NodeType == XmlNodeType.Element && xn.ParentNode.Name != "BoloUI"; xn = xn.ParentNode)
 					{
-						
+
 					}
-					if(xn.ParentNode != null && xn.ParentNode.NodeType == XmlNodeType.Element && xn.ParentNode.Name == "BoloUI")
+					if (xn.ParentNode != null && xn.ParentNode.NodeType == XmlNodeType.Element && xn.ParentNode.Name == "BoloUI")
 					{
 						xe = (XmlElement)xn;
 
@@ -1301,7 +1301,7 @@ namespace UIEditor
 			//去掉所有事件(<event>)
 			nodeList = newRootXe.SelectNodes("descendant::event");
 
-			foreach(XmlNode xnEvent in nodeList)
+			foreach (XmlNode xnEvent in nodeList)
 			{
 				xnEvent.ParentNode.RemoveChild(xnEvent);
 			}
@@ -1425,9 +1425,9 @@ namespace UIEditor
 		}
 		private void mx_toolSaveAll_Click(object sender, RoutedEventArgs e)
 		{
-			foreach(KeyValuePair<string, OpenedFile> pairFile in m_mapOpenedFiles.ToList())
+			foreach (KeyValuePair<string, OpenedFile> pairFile in m_mapOpenedFiles.ToList())
 			{
-				if(pairFile.Value.frameIsXmlCtrl())
+				if (pairFile.Value.frameIsXmlCtrl())
 				{
 					((XmlControl)pairFile.Value.m_frame).m_xmlDoc.Save(pairFile.Key);
 					pairFile.Value.m_lstOpt.m_saveNode = pairFile.Value.m_lstOpt.m_curNode;
@@ -1605,11 +1605,11 @@ namespace UIEditor
 
 		static public void refreshSearch(TreeViewItem viewItem, string key)
 		{
-			if(viewItem.Items.Count > 0)
+			if (viewItem.Items.Count > 0)
 			{
-				foreach(TreeViewItem item in viewItem.Items)
+				foreach (TreeViewItem item in viewItem.Items)
 				{
-					if(key != "" && key != null)
+					if (key != "" && key != null)
 					{
 						if (item.Header.ToString().IndexOf(key, StringComparison.OrdinalIgnoreCase) < 0)
 						{
@@ -1752,7 +1752,7 @@ namespace UIEditor
 		}
 		private void mx_btnNesting_Click(object sender, RoutedEventArgs e)
 		{
-			if(m_projPath != null && m_projPath != "")
+			if (m_projPath != null && m_projPath != "")
 			{
 				if (!System.IO.Directory.Exists(m_projPath + "\\images\\"))
 				{
@@ -1788,7 +1788,7 @@ namespace UIEditor
 			{
 				int tw, th;
 
-				if(int.TryParse(mx_screenWidth.Text, out tw) && int.TryParse(mx_screenHeight.Text, out th))
+				if (int.TryParse(mx_screenWidth.Text, out tw) && int.TryParse(mx_screenHeight.Text, out th))
 				{
 					m_screenWidth = tw;
 					m_screenHeight = th;
