@@ -126,10 +126,62 @@ namespace UIEditor.BoloUI
 		public string parseApprIdFromDic(string apprId)
 		{
 			string retId = "";
+			bool isHave = false;
+			MainWindow pW = MainWindow.s_pW;
+			Dictionary<string, Dictionary<string, string>> preDic, sufDic;
 
-			apprId.LastIndexOf("");
+			if (pW.m_strDic.m_mapStrDic.TryGetValue("SkinApprPre", out preDic) &&
+				pW.m_strDic.m_mapStrDic.TryGetValue("SkinApprSuf", out sufDic))
+			{
+				foreach(KeyValuePair<string, Dictionary<string, string>> pairPreRow in preDic)
+				{
+					string preKey = "";
+					if (pairPreRow.Key == "_def")
+					{
+						preKey = "";
+					}
+					else
+					{
+						preKey = pairPreRow.Key;
+					}
+					if (preKey == "" || apprId.IndexOf(preKey) == 0)
+					{
+						string otherStr = apprId.Substring(preKey.Length);
+						foreach (KeyValuePair<string, Dictionary<string, string>> pairSufRow in sufDic)
+						{
+							if (otherStr.LastIndexOf(pairSufRow.Key) >= 0 &&
+								otherStr.LastIndexOf(pairSufRow.Key) == otherStr.Length - pairSufRow.Key.Length)
+							{
+								string tagStr = otherStr.Substring(0, otherStr.Length - pairSufRow.Key.Length);
+								if(preKey != "" || tagStr == "")
+								{
+									string newRet = pW.m_strDic.getWordByKey(pairPreRow.Key, "SkinApprPre") + tagStr +
+										pW.m_strDic.getWordByKey("的") + pW.m_strDic.getWordByKey(pairSufRow.Key, "SkinApprSuf");
 
-			return retId;
+									if (isHave == false)
+									{
+										isHave = true;
+										retId = newRet;
+									}
+									else
+									{
+										retId += " " + pW.m_strDic.getWordByKey("或者") + " " + newRet;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			if (isHave)
+			{
+				return retId;
+			}
+			else
+			{
+				return apprId;
+			}
 		}
 		public override void initHeader()
 		{
