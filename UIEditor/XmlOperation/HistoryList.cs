@@ -108,16 +108,35 @@ namespace UIEditor.XmlOperation
 				default:
 					return;
 			}
-			if (m_xmlCtrl.m_isOnlySkin && m_xmlCtrl.m_skinViewCtrlUI != null && m_xmlCtrl.m_skinViewCtrlUI.m_xe != null)
+			if (m_xmlCtrl.m_isOnlySkin)
 			{
 				XmlElement xeView;
 
-				BoloUI.ResBasic.resetXeView(m_xmlCtrl.m_skinViewCtrlUI.m_xe, out xeView);
+				if(m_xmlCtrl.m_skinViewCtrlUI != null && m_xmlCtrl.m_skinViewCtrlUI.m_xe != null)
+				{
+					BoloUI.ResBasic.resetXeView(m_xmlCtrl.m_skinViewCtrlUI.m_xe, out xeView);
+				}
+				else
+				{
+					xeView = MainWindow.s_pW.m_xeTest;
+				}
 				m_pW.updateXmlToGL(m_xmlCtrl, xeView, false);
+				XmlItem dstItem;
+
+				if (m_xmlCtrl.m_mapXeItem.TryGetValue(m_curNode.Value.m_dstXe, out dstItem))
+				{
+					dstItem.initHeader();
+				}
 			}
 			else
 			{
 				m_pW.updateXmlToGL(m_xmlCtrl);
+				XmlItem dstItem;
+
+				if (m_xmlCtrl.m_mapXeItem.TryGetValue(m_curNode.Value.m_dstXe, out dstItem))
+				{
+					dstItem.initHeader();
+				}
 			}
 
 			if (!isAddOpt)

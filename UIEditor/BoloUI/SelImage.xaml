@@ -41,7 +41,10 @@
 			</TreeView>
 		</Grid>
 		<Grid Grid.Column="1" Grid.Row="0">
-			<Canvas></Canvas>
+			<ScrollViewer>
+				<Grid Name="mx_imgFrame" Width="auto" Height="auto">
+				</Grid>
+			</ScrollViewer>
 		</Grid>
 		<Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="#ffeeeeee">
 			<WrapPanel HorizontalAlignment="Right">

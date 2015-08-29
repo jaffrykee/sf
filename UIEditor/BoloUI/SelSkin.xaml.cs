@@ -180,7 +180,7 @@ namespace UIEditor.BoloUI
 			s_pW = null;
 		}
 
-		void skinItem_Selected(object sender, RoutedEventArgs e)
+		private void skinItem_Selected(object sender, RoutedEventArgs e)
 		{
 			if(m_isInitPath == false)
 			{

@@ -18,10 +18,6 @@ using UIEditor.BoloUI.DefConfig;
 
 namespace UIEditor
 {
-	/// <summary>
-	/// AttrRow.xaml 的交互逻辑
-	/// </summary>
-
 	public partial class AttrRow : Grid
 	{
 		private string mt_name;
@@ -215,10 +211,6 @@ namespace UIEditor
 
 		public AttrRow(string type = "string", string name = "", string value = "", AttrList parent = null)
 		{
-			if(name == "function")
-			{
-
-			}
 			InitializeComponent();
 			mt_name = name;
 			mt_value = value;
@@ -236,10 +228,6 @@ namespace UIEditor
 		}
 		public AttrRow(AttrDef_T attrDef, string name = "", string value = "", AttrList parent = null)
 		{
-			if (name == "function")
-			{
-
-			}
 			InitializeComponent();
 			m_parent = parent;
 			m_isEnum = attrDef.m_isEnum;

@@ -123,6 +123,14 @@ namespace UIEditor.BoloUI
 				}
 			}
 		}
+		public string parseApprIdFromDic(string apprId)
+		{
+			string retId = "";
+
+			apprId.LastIndexOf("");
+
+			return retId;
+		}
 		public override void initHeader()
 		{
 			if(m_curDeepDef != null)
@@ -155,6 +163,10 @@ namespace UIEditor.BoloUI
 					name = m_xe.GetAttribute(m_curDeepDef.m_mapAttrDef.ToList().First().Key);
 				}
 
+				if (m_xe.Name == "apperance")
+				{
+					name = parseApprIdFromDic(name);
+				}
 				tmpCon += name;
 				mx_radio.Content = tmpCon.Replace("_", "__");
 			}
