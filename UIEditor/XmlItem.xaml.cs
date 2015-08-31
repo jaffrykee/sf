@@ -62,8 +62,6 @@ namespace UIEditor
 				case "CtrlUI":
 					{
 						#region
-						mx_addCtrl.Visibility = System.Windows.Visibility.Visible;
-						mx_addNode.Visibility = System.Windows.Visibility.Collapsed;
 						if (m_xe.Name == "BoloUI")
 						{
 							CtrlDef_T panelCtrlDef;
@@ -111,8 +109,6 @@ namespace UIEditor
 				case "Skin":
 					{
 						#region
-						mx_addCtrl.Visibility = System.Windows.Visibility.Collapsed;
-						mx_addNode.Visibility = System.Windows.Visibility.Visible;
 						if (m_xe.Name == "BoloUI")
 						{
 							mx_delete.IsEnabled = false;
@@ -442,104 +438,102 @@ namespace UIEditor
 		}
 		public void showTmplGroup(string addStr)
 		{
-			CtrlDef_T ctrlDef;
+			MenuItem ctrlMenuItem = new MenuItem();
+			bool isNull = true;
 
-			if (MainWindow.s_pW.m_mapCtrlDef.TryGetValue(addStr, out ctrlDef) && ctrlDef != null)
+			MainWindow.s_pW.m_strDic.getNameAndTip(ctrlMenuItem, StringDic.conf_ctrlTipDic, addStr);
+			if (MainWindow.s_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template") != null &&
+				MainWindow.s_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
 			{
-				MenuItem ctrlMenuItem = new MenuItem();
-				bool isNull = true;
+				isNull = false;
+				XmlElement xeTmpls = (XmlElement)MainWindow.s_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
 
-				MainWindow.s_pW.m_strDic.getNameAndTip(ctrlMenuItem, StringDic.conf_ctrlTipDic, addStr);
-				if (MainWindow.s_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template") != null &&
-					MainWindow.s_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
-				{
-					isNull = false;
-					XmlElement xeTmpls = (XmlElement)MainWindow.s_pW.m_docConf.SelectSingleNode("Config").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
-
-					showTmpl(ctrlMenuItem, xeTmpls, addStr);
-				}
-
-				if (MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template") != null &&
-					MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
-				{
-					if (!isNull)
-					{
-						ctrlMenuItem.Items.Add(new Separator());
-					}
-					isNull = false;
-
-					XmlElement xeTmpls = (XmlElement)MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
-
-					showTmpl(ctrlMenuItem, xeTmpls, addStr);
-				}
-
-				if (isNull)
-				{
-					ctrlMenuItem.Click += insertCtrlItem_Click;
-				}
-				mx_addCtrl.Items.Add(ctrlMenuItem);
+				showTmpl(ctrlMenuItem, xeTmpls, addStr);
 			}
+
+			if (MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template") != null &&
+				MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls") != null)
+			{
+				if (!isNull)
+				{
+					ctrlMenuItem.Items.Add(new Separator());
+				}
+				isNull = false;
+
+				XmlElement xeTmpls = (XmlElement)MainWindow.s_pW.m_docProj.SelectSingleNode("BoloUIProj").SelectSingleNode("template").SelectSingleNode(addStr + "Tmpls");
+
+				showTmpl(ctrlMenuItem, xeTmpls, addStr);
+			}
+
+			if (isNull)
+			{
+				ctrlMenuItem.Click += insertCtrlItem_Click;
+			}
+			mx_addNode.Items.Add(ctrlMenuItem);
 		}
-		private void mx_addCtrl_Loaded(object sender, RoutedEventArgs e)
+		private void mx_addNode_Loaded(object sender, RoutedEventArgs e)
 		{
-			CtrlDef_T panelCtrlDef;
+			if(m_type == "CtrlUI")
+			{
+				CtrlDef_T panelCtrlDef;
 
-			mx_addCtrl.Items.Clear();
-			if (MainWindow.s_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
-			{
-				foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertCtrlDef.ToList())
+				mx_addNode.Items.Clear();
+				if (MainWindow.s_pW.m_mapPanelCtrlDef.TryGetValue(m_xe.Name, out panelCtrlDef))
 				{
-					showTmplGroup(pairCtrlDef.Key);
-				}
-				mx_addCtrl.Items.Add(new Separator());
-				foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertAllCtrlDef.ToList())
-				{
-					showTmplGroup(pairCtrlDef.Key);
-				}
-			}
-			else
-			{
-				if (m_xe.Name == "BoloUI")
-				{
-					//<inc>showTmplGroup(pairCtrlDef.Key);
-					foreach (KeyValuePair<string, CtrlDef_T> pairCtrl in MainWindow.s_pW.m_mapPanelCtrlDef.ToList())
+					foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertCtrlDef.ToList())
 					{
-						MenuItem ctrlItem = new MenuItem();
-						string name = MainWindow.s_pW.m_strDic.getWordByKey(pairCtrl.Key);
-						string tip = MainWindow.s_pW.m_strDic.getWordByKey(pairCtrl.Key, StringDic.conf_ctrlTipDic);
-
-						if (tip != "")
-						{
-							ctrlItem.ToolTip = tip;
-						}
-						else
-						{
-							ctrlItem.ToolTip = pairCtrl.Key;
-						}
-						if (name != "")
-						{
-							ctrlItem.Header = name;
-						}
-						else
-						{
-							ctrlItem.Header = pairCtrl.Key;
-						}
-						ctrlItem.Click += insertCtrlItem_Click;
-						mx_addCtrl.Items.Add(ctrlItem);
+						showTmplGroup(pairCtrlDef.Key);
 					}
-				}
-				else if (m_xe.Name != "event")
-				{
-					showTmplGroup("event");
-					/*
-						正则替换："E:\clientlib\DsBoloUIEditor\src\boloUI\BoloEvent.java" 到 "E:\clienttools\UI编辑器2\conf.xml" -->
-						[\t a-z_=]*("[a-zA-Z]*")[; \t\/\/]*([\/\u4e00-\u9fa5 a-zA-Z（）]*)
-						\t<row name=$1 tip="$2">\r\n\t\t<event type=$1/>\r\n\t</row>
-					*/
+					mx_addNode.Items.Add(new Separator());
+					foreach (KeyValuePair<string, CtrlDef_T> pairCtrlDef in MainWindow.s_pW.m_mapEnInsertAllCtrlDef.ToList())
+					{
+						showTmplGroup(pairCtrlDef.Key);
+					}
 				}
 				else
 				{
-					mx_addCtrl.IsEnabled = false;
+					if (m_xe.Name == "BoloUI")
+					{
+						//<inc>showTmplGroup(pairCtrlDef.Key);
+						foreach (KeyValuePair<string, CtrlDef_T> pairCtrl in MainWindow.s_pW.m_mapPanelCtrlDef.ToList())
+						{
+							MenuItem ctrlItem = new MenuItem();
+							string name = MainWindow.s_pW.m_strDic.getWordByKey(pairCtrl.Key);
+							string tip = MainWindow.s_pW.m_strDic.getWordByKey(pairCtrl.Key, StringDic.conf_ctrlTipDic);
+
+							if (tip != "")
+							{
+								ctrlItem.ToolTip = tip;
+							}
+							else
+							{
+								ctrlItem.ToolTip = pairCtrl.Key;
+							}
+							if (name != "")
+							{
+								ctrlItem.Header = name;
+							}
+							else
+							{
+								ctrlItem.Header = pairCtrl.Key;
+							}
+							ctrlItem.Click += insertCtrlItem_Click;
+							mx_addNode.Items.Add(ctrlItem);
+						}
+					}
+					else if (m_xe.Name != "event")
+					{
+						showTmplGroup("event");
+						/*
+							正则替换："E:\clientlib\DsBoloUIEditor\src\boloUI\BoloEvent.java" 到 "E:\clienttools\UI编辑器2\conf.xml" -->
+							[\t a-z_=]*("[a-zA-Z]*")[; \t\/\/]*([\/\u4e00-\u9fa5 a-zA-Z（）]*)
+							\t<row name=$1 tip="$2">\r\n\t\t<event type=$1/>\r\n\t</row>
+						*/
+					}
+					else
+					{
+						mx_addNode.IsEnabled = false;
+					}
 				}
 			}
 		}

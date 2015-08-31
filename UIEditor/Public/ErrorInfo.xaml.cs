@@ -13,9 +13,6 @@ using System.Windows.Shapes;
 
 namespace UIEditor.Public
 {
-	/// <summary>
-	/// ErrorInfo.xaml 的交互逻辑
-	/// </summary>
 	public partial class ErrorInfo : Window
 	{
 		public ErrorInfo(string errorInfo)

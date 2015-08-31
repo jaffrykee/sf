@@ -300,7 +300,16 @@ namespace UIEditor
 				{
 					case "skin":
 						{
-							m_parent.m_xmlCtrl.findSkinAndSelect(mx_value.Text, (BoloUI.Basic)m_parent.m_basic);
+							if(m_value != "")
+							{
+								m_parent.m_xmlCtrl.findSkinAndSelect(mx_value.Text, (BoloUI.Basic)m_parent.m_basic);
+							}
+							else
+							{
+								newSkin winNewSkin = new newSkin(this);
+
+								winNewSkin.ShowDialog();
+							}
 						}
 						break;
 					case "ImageName":

@@ -59,11 +59,7 @@ namespace UIEditor.BoloUI
 			{
 				foreach (KeyValuePair<string, SkinDef_T> pairSkinDef in mapSkinDef.ToList())
 				{
-					MenuItem skinMenuItem = new MenuItem();
-
-					MainWindow.s_pW.m_strDic.getNameAndTip(skinMenuItem, StringDic.conf_ctrlTipDic, pairSkinDef.Key);
-					skinMenuItem.Click += insertSkinItem_Click;
-					mx_addNode.Items.Add(skinMenuItem);
+					showTmplGroup(pairSkinDef.Key);
 				}
 				mx_addNode.IsEnabled = true;
 			}
