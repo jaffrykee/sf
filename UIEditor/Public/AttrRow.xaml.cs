@@ -26,6 +26,8 @@ namespace UIEditor
 		public AttrList m_parent;
 		public bool m_isCommon;
 		public string m_subType;
+		public Dictionary<string, ComboBoxItem> m_mapCbiApprPre;
+		public Dictionary<string, ComboBoxItem> m_mapCbiApprSuf;
 
 		private bool m_eventLock;
 
@@ -34,6 +36,10 @@ namespace UIEditor
 			get { return mt_name; }
 			set
 			{
+				if (m_subType == "Apperance")
+				{
+
+				}
 				mt_name = value;
 
 				string outStr = MainWindow.s_pW.m_strDic.getWordByKey(value);
@@ -56,6 +62,44 @@ namespace UIEditor
 					mx_name.Content = value;
 					mx_root.ToolTip = value;
 				}
+				if (m_subType != "" && m_subType != null)
+				{
+					switch(m_subType)
+					{
+						case "Apperance":
+							{
+								MainWindow pW = MainWindow.s_pW;
+								Dictionary<string, Dictionary<string, string>> preDic, sufDic;
+
+								if (pW.m_strDic.m_mapStrDic.TryGetValue("SkinApprPre", out preDic) &&
+									pW.m_strDic.m_mapStrDic.TryGetValue("SkinApprSuf", out sufDic))
+								{
+									foreach (KeyValuePair<string, Dictionary<string, string>> pairPreRow in preDic)
+									{
+										ComboBoxItem cbiPre = new ComboBoxItem();
+
+										cbiPre.Content = pW.m_strDic.getWordByKey(pairPreRow.Key, "SkinApprPre");
+										cbiPre.ToolTip = pairPreRow.Key;
+										mx_valueApprPre.Items.Add(cbiPre);
+										m_mapCbiApprPre.Add(pairPreRow.Key, cbiPre);
+									}
+									foreach (KeyValuePair<string, Dictionary<string, string>> pairSufRow in sufDic)
+									{
+										ComboBoxItem cbiSuf = new ComboBoxItem();
+
+										cbiSuf.Content = pW.m_strDic.getWordByKey(pairSufRow.Key, "SkinApprSuf");
+										cbiSuf.ToolTip = pairSufRow.Key;
+										mx_valueApprSuf.Items.Add(cbiSuf);
+										m_mapCbiApprSuf.Add(pairSufRow.Key, cbiSuf);
+									}
+								}
+								mx_apprFrame.Visibility = Visibility.Visible;
+							}
+							break;
+						default:
+							break;
+					}
+				}
 				switch(m_name)
 				{
 					case "skin":
@@ -67,7 +111,7 @@ namespace UIEditor
 						mx_link.Visibility = System.Windows.Visibility.Collapsed;
 						break;
 					default:
-						mx_skinFrame.Visibility = System.Windows.Visibility.Collapsed;
+						mx_skinFrame.Visibility = Visibility.Collapsed;
 						break;
 				}
 			}
@@ -87,35 +131,77 @@ namespace UIEditor
 				m_eventLock = true;
 				if (!m_isEnum)
 				{
-					switch (m_type)
+					if (m_subType != null && m_subType != "")
 					{
-						case "bool":
-							{
-								if (value == "")
+						switch(m_subType)
+						{
+							case "Apperance":
 								{
-									mx_defaultBool.IsChecked = true;
-								}
-								else
-								{
-									mx_defaultBool.IsChecked = false;
-									switch (value)
+									m_parent.m_basic.initHeader();
+									if (m_parent.m_basic.m_apprPre != null && m_parent.m_basic.m_apprPre != "")
 									{
-										case "true":
-											mx_valueBool.IsChecked = true;
-											break;
-										case "false":
-											mx_valueBool.IsChecked = false;
-											break;
-										default:
-											//todo 这里是非法值的处理，还没有想好机制
-											mx_defaultBool.IsChecked = true;
-											break;
+										ComboBoxItem cbiPre;
+
+										if(m_mapCbiApprPre.TryGetValue(m_parent.m_basic.m_apprPre, out cbiPre))
+										{
+											mx_valueApprPre.SelectedItem = cbiPre;
+										}
+									}
+									if (m_parent.m_basic.m_apprTagStr != null && m_parent.m_basic.m_apprTagStr != "")
+									{
+										mx_valueApprTag.Text = m_parent.m_basic.m_apprTagStr;
+									}
+									else
+									{
+										mx_valueApprTag.Text = "";
+									}
+									if (m_parent.m_basic.m_apprSuf != null && m_parent.m_basic.m_apprSuf != "")
+									{
+										ComboBoxItem cbiSuf;
+
+										if(m_mapCbiApprSuf.TryGetValue(m_parent.m_basic.m_apprSuf, out cbiSuf))
+										{
+											mx_valueApprSuf.SelectedItem = cbiSuf;
+										}
 									}
 								}
-							}
-							break;
-						default:
-							break;
+								break;
+							default:
+								break;
+						}
+					}
+					else
+					{
+						switch (m_type)
+						{
+							case "bool":
+								{
+									if (value == "")
+									{
+										mx_defaultBool.IsChecked = true;
+									}
+									else
+									{
+										mx_defaultBool.IsChecked = false;
+										switch (value)
+										{
+											case "true":
+												mx_valueBool.IsChecked = true;
+												break;
+											case "false":
+												mx_valueBool.IsChecked = false;
+												break;
+											default:
+												//todo 这里是非法值的处理，还没有想好机制
+												mx_defaultBool.IsChecked = true;
+												break;
+										}
+									}
+								}
+								break;
+							default:
+								break;
+						}
 					}
 				}
 				else
@@ -158,28 +244,42 @@ namespace UIEditor
 				mt_type = value;
 				if(!m_isEnum)
 				{
-					switch (value)
+					if (m_subType != null && m_subType != "")
 					{
-						case "bool":
-							{
-								mx_boolFrame.Visibility = Visibility.Visible;
-								mx_normalFrame.Visibility = Visibility.Collapsed;
-								mx_enumFrame.Visibility = Visibility.Collapsed;
-							}
-							break;
-						default:
-							{
-								mx_boolFrame.Visibility = Visibility.Collapsed;
-								mx_normalFrame.Visibility = Visibility.Visible;
-								mx_enumFrame.Visibility = Visibility.Collapsed;
-							}
-							break;
+						switch(m_subType)
+						{
+							case "Apperance":
+								{
+									//m_name.set
+									//mx_apprFrame.Visibility = Visibility.Visible;
+								}
+								break;
+							default:
+								{
+									mx_normalFrame.Visibility = Visibility.Visible;
+								}
+								break;
+						}
+					}
+					else
+					{
+						switch (value)
+						{
+							case "bool":
+								{
+									mx_boolFrame.Visibility = Visibility.Visible;
+								}
+								break;
+							default:
+								{
+									mx_normalFrame.Visibility = Visibility.Visible;
+								}
+								break;
+						}
 					}
 				}
 				else
 				{
-					mx_boolFrame.Visibility = Visibility.Collapsed;
-					mx_normalFrame.Visibility = Visibility.Collapsed;
 					mx_enumFrame.Visibility = Visibility.Visible;
 
 					if(m_mapEnum != null && m_mapEnum.Count() > 0)
@@ -228,6 +328,8 @@ namespace UIEditor
 		}
 		public AttrRow(AttrDef_T attrDef, string name = "", string value = "", AttrList parent = null)
 		{
+			m_mapCbiApprPre = new Dictionary<string, ComboBoxItem>();
+			m_mapCbiApprSuf = new Dictionary<string, ComboBoxItem>();
 			InitializeComponent();
 			m_parent = parent;
 			m_isEnum = attrDef.m_isEnum;
@@ -359,6 +461,77 @@ namespace UIEditor
 						break;
 				}
 			}
+		}
+
+		private void mx_frame_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (e.NewValue.GetType().ToString() == "System.Windows.Visibility")
+			{
+				Visibility newValue = (Visibility)e.NewValue;
+
+				if(newValue == System.Windows.Visibility.Visible)
+				{
+					if (sender.GetType().ToString() == "System.Windows.Controls.Grid")
+					{
+						Grid frame = (Grid)sender;
+
+						if (frame != mx_normalFrame)
+						{
+							mx_normalFrame.Visibility = System.Windows.Visibility.Collapsed;
+						}
+						if (frame != mx_boolFrame)
+						{
+							mx_boolFrame.Visibility = System.Windows.Visibility.Collapsed;
+						}
+						if (frame != mx_enumFrame)
+						{
+							mx_enumFrame.Visibility = System.Windows.Visibility.Collapsed;
+						}
+						if (frame != mx_apprFrame)
+						{
+							mx_apprFrame.Visibility = System.Windows.Visibility.Collapsed;
+						}
+					}
+				}
+			}
+		}
+		private void getNewApprValue()
+		{
+			string newValue = "";
+
+			if (mx_valueApprPre.SelectedItem != null && mx_valueApprPre.SelectedItem.GetType().ToString() == "System.Windows.Controls.ComboBoxItem")
+			{
+				ComboBoxItem cbiPre = (ComboBoxItem)mx_valueApprPre.SelectedItem;
+
+				if (cbiPre.ToolTip.ToString() != "_def")
+				{
+					newValue += cbiPre.ToolTip.ToString();
+				}
+			}
+			else
+			{
+				newValue += "";
+			}
+			newValue += mx_valueApprTag.Text;
+			if (mx_valueApprSuf.SelectedItem != null && mx_valueApprSuf.SelectedItem.GetType().ToString() == "System.Windows.Controls.ComboBoxItem")
+			{
+				ComboBoxItem cbiSuf = (ComboBoxItem)mx_valueApprSuf.SelectedItem;
+
+				newValue += cbiSuf.ToolTip.ToString();
+			}
+			else
+			{
+				newValue += "0";
+			}
+			m_value = newValue;
+		}
+		private void mx_valueAppr_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			getNewApprValue();
+		}
+		private void mx_valueApprTag_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			getNewApprValue();
 		}
 	}
 }

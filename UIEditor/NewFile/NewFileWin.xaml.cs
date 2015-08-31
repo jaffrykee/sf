@@ -24,12 +24,15 @@ namespace UIEditor.NewFile
 		public string m_tmplPath;
 		public FileTypeRadio m_curFileType;
 		public bool m_isProj;
+		static public NewFileWin m_pW;
 
 		public NewFileWin(string path, bool isProj = false)
 		{
+			m_pW = this;
 			m_curFileType = null;
 			m_isProj = isProj;
 			InitializeComponent();
+			this.Owner = MainWindow.s_pW;
 			if (isProj)
 			{
 				mx_projFrame.Visibility = System.Windows.Visibility.Visible;
@@ -49,6 +52,10 @@ namespace UIEditor.NewFile
 			{
 				MessageBox.Show("模板目录（" + path + "）不存在，UI编辑器可能已经损坏。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
+		}
+		private void mx_root_Unloaded(object sender, RoutedEventArgs e)
+		{
+			m_pW = null;
 		}
 
 		static public void refreshFolder(

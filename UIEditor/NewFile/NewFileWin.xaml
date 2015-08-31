@@ -1,9 +1,12 @@
 ﻿<Window x:Class="UIEditor.NewFile.NewFileWin"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Name="mx_root"
         Title="新建文件"
+		ShowInTaskbar="False"
 		Width="600"
-		Height="500">
+		Height="500"
+		Unloaded="mx_root_Unloaded">
 	<Grid Background="#ffeeeeee">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>

@@ -40,47 +40,48 @@ namespace UIEditor.BoloUI
 			}
 		}
 
-		private static void addFileToSkinIndex(FileInfo fi)
-		{
-			if (fi.Extension == ".xml")
-			{
-				XmlDocument skinDoc = new XmlDocument();
-
-				try
-				{
-					skinDoc.Load(fi.FullName);
-					if (skinDoc.DocumentElement.Name == "BoloUI")
-					{
-						MainWindow.s_pW.m_mapSkinIndex.Add(fi.FullName, new SkinIndex(skinDoc));
-					}
-				}
-				catch
-				{
-
-				}
-			}
-		}
-		public static void refreshSkinIndex()
-		{
-			string proPath = MainWindow.s_pW.m_projPath;
-			string skinPath = MainWindow.s_pW.m_skinPath;
-
-			if(proPath != null && skinPath != null && proPath != "" && skinPath != "" &&
-				Directory.Exists(proPath) && Directory.Exists(skinPath))
-			{
-				DirectoryInfo diMain = new DirectoryInfo(proPath);
-				DirectoryInfo diSkin = new DirectoryInfo(skinPath);
-
-				MainWindow.s_pW.m_mapSkinIndex = new Dictionary<string, SkinIndex>();
-				foreach (FileInfo fi in diMain.GetFiles())
-				{
-					addFileToSkinIndex(fi);
-				}
-				foreach (FileInfo fi in diSkin.GetFiles())
-				{
-					addFileToSkinIndex(fi);
-				}
-			}
-		}
+		//<SkinIndex>太影响加载速度，放弃。
+// 		private static void addFileToSkinIndex(FileInfo fi)
+// 		{
+// 			if (fi.Extension == ".xml")
+// 			{
+// 				XmlDocument skinDoc = new XmlDocument();
+// 
+// 				try
+// 				{
+// 					skinDoc.Load(fi.FullName);
+// 					if (skinDoc.DocumentElement.Name == "BoloUI")
+// 					{
+// 						MainWindow.s_pW.m_mapSkinIndex.Add(fi.FullName, new SkinIndex(skinDoc));
+// 					}
+// 				}
+// 				catch
+// 				{
+// 
+// 				}
+// 			}
+// 		}
+// 		public static void refreshSkinIndex()
+// 		{
+// 			string proPath = MainWindow.s_pW.m_projPath;
+// 			string skinPath = MainWindow.s_pW.m_skinPath;
+// 
+// 			if(proPath != null && skinPath != null && proPath != "" && skinPath != "" &&
+// 				Directory.Exists(proPath) && Directory.Exists(skinPath))
+// 			{
+// 				DirectoryInfo diMain = new DirectoryInfo(proPath);
+// 				DirectoryInfo diSkin = new DirectoryInfo(skinPath);
+// 
+// 				MainWindow.s_pW.m_mapSkinIndex = new Dictionary<string, SkinIndex>();
+// 				foreach (FileInfo fi in diMain.GetFiles())
+// 				{
+// 					addFileToSkinIndex(fi);
+// 				}
+// 				foreach (FileInfo fi in diSkin.GetFiles())
+// 				{
+// 					addFileToSkinIndex(fi);
+// 				}
+// 			}
+// 		}
 	}
 }

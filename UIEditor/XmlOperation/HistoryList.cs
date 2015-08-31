@@ -232,10 +232,12 @@ namespace UIEditor.XmlOperation
 						case "CtrlUI":
 							((BoloUI.Basic)dstItem).changeSelectItem();
 							m_pW.refreshAllCtrlUIHeader();
+							dstItem.initHeader();
 							break;
 						case "Skin":
 							((BoloUI.ResBasic)dstItem).changeSelectItem();
 							m_pW.refreshAllSkinHeader();
+							dstItem.initHeader();
 							break;
 						default:
 							break;

@@ -25,9 +25,12 @@ namespace UIEditor.BoloUI
 		public ResBasic(XmlElement xe, XmlControl rootControl, SkinDef_T deepDef) : base(xe, rootControl)
 		{
 			m_type = "Skin";
+			m_curDeepDef = deepDef;
+			m_apprPre = "";
+			m_apprTagStr = "";
+			m_apprSuf = "";
 			InitializeComponent();
 			m_isCtrl = false;
-			m_curDeepDef = deepDef;
 
 			if (m_curDeepDef != null)
 			{
@@ -156,6 +159,9 @@ namespace UIEditor.BoloUI
 
 									if (isHave == false)
 									{
+										m_apprPre = pairPreRow.Key;
+										m_apprTagStr = tagStr;
+										m_apprSuf = pairSufRow.Key;
 										isHave = true;
 										retId = newRet;
 									}

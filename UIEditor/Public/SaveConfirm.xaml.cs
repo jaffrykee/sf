@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace UIEditor.Public
 {
-	/// <summary>
-	/// SaveConfirm.xaml 的交互逻辑
-	/// </summary>
 	public partial class SaveConfirm : Window
 	{
 		public SaveConfirm()

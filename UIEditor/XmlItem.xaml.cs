@@ -25,6 +25,10 @@ namespace UIEditor
 		public bool m_isCtrl;
 		public string m_type;
 
+		public string m_apprPre;
+		public string m_apprTagStr;
+		public string m_apprSuf;
+
 		public XmlItem()
 		{
 

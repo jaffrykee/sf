@@ -58,7 +58,7 @@ namespace UIEditor
 		public string m_projName;
 		public XmlDocument m_docProj;
 		public Dictionary<string, OpenedFile> m_mapOpenedFiles;
-		public Dictionary<string, SkinIndex> m_mapSkinIndex;
+		//public Dictionary<string, SkinIndex> m_mapSkinIndex;
 		public Dictionary<string, ImageIndex> m_mapImageIndex;
 
 		public Dictionary<string, CtrlDef_T> m_mapCtrlDef;
@@ -379,7 +379,8 @@ namespace UIEditor
 				rootItem.IsExpanded = true;
 				rootItem.Header = "UI工程目录(" + i + "个目录和" + j + "个项目)";
 
-				SkinIndex.refreshSkinIndex();
+				//<SkinIndex>
+				//SkinIndex.refreshSkinIndex();
 			}
 		}
 
