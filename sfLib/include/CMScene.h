@@ -63,6 +63,8 @@ public:
 	UINT m_maxY;
 	//可通行率
 	FLOAT m_perEn;
+	//不可通行是否要连续
+	bool m_isAdjoin;
 	//崎岖度
 	FLOAT m_rugged;
 	//崎岖阀值（正负1之间）
