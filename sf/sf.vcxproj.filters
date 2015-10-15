@@ -21,7 +21,7 @@
     <Image Include="img\blue.png">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="img\death.png">
+    <Image Include="img\swd.png">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

@@ -177,16 +177,21 @@ UINT CMScene::initSingleCell(
 		gPath[3] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
 		gPath[4] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
 		gPath[5] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
+		//Cell的轮廓
 		initData.m_pScene->initSingleArea(
 			gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath),
 			i, j,
 			&initData.m_pScene->m_pPathG, pBrush,
 			initData.m_pScene->m_enBorder);
-		initData.m_pScene->initSingleArea(
-			gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath),
-			i, j,
-			&initData.m_pScene->m_pPathG, g_pConf->m_mapD2DBmpBrush["death"],
-			initData.m_pScene->m_enBorder);
+		if ((FLOAT)rand() < (FLOAT)RAND_MAX * 0.01)
+		{
+			//Cell上的位图等
+			initData.m_pScene->initSingleArea(
+				gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath),
+				i, j,
+				&initData.m_pScene->m_pPathG, g_pConf->m_mapD2DBmpBrush["swd"],
+				false);
+		}
 		#pragma endregion
 #pragma endregion
 	}
@@ -225,7 +230,7 @@ Scene()
 	m_viewScaleY = 1;
 	m_viewWheelScale = 0;
 	m_viewLen = 7;
-	m_viewMar = 0;
+	m_viewMar = 1;
 	m_lenCellX = m_viewLen * 3 + sqrt(3) / 2 * m_viewMar;
 	m_lenCellY = m_viewLen * 2 * sqrt(3) + m_viewMar;
 
@@ -235,11 +240,11 @@ Scene()
 
 	m_maxX = 1000;
 	m_maxY = 1000;
-	m_enBorder = false;
+	m_enBorder = true;
 	m_perEn = 1;
 	m_isAdjoin = false;
 	m_rugged = m_viewLen;
-	m_perRug = 1;
+	m_perRug = 0.5;
 	m_maxH = 1;
 	m_minH = 1;
 	m_unitH = 3;
