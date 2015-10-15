@@ -176,7 +176,16 @@ UINT CMScene::initSingleCell(
 		gPath[3] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
 		gPath[4] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
 		gPath[5] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
-		initData.m_pScene->initSingleArea(gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath), i, j, &initData.m_pScene->m_pPathG, pBrush, initData.m_pScene->m_enBorder);
+		initData.m_pScene->initSingleArea(
+			gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath),
+			i, j,
+			&initData.m_pScene->m_pPathG, pBrush,
+			initData.m_pScene->m_enBorder);
+		initData.m_pScene->initSingleArea(
+			gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath),
+			i, j,
+			&initData.m_pScene->m_pPathG, g_pConf->m_mapD2DBmpBrush["death"],
+			initData.m_pScene->m_enBorder);
 		#pragma endregion
 #pragma endregion
 	}
@@ -455,9 +464,9 @@ void CMScene::drawSingleCell(UINT i, UINT j)
 			s_initData = { this };
 			initSingleCell(&s_initData, i, j);
 		}
-		for (
-			list<CMSDArea_T>::iterator itListArea = m_arrArrMap[i][j].m_pListArea->begin();
-			itListArea != m_arrArrMap[i][j].m_pListArea->end(); itListArea++)
+		for (list<CMSDArea_T>::iterator itListArea = m_arrArrMap[i][j].m_pListArea->begin();
+			itListArea != m_arrArrMap[i][j].m_pListArea->end();
+			itListArea++)
 		{
 			g_pConf->m_pWin->m_pRenderTarget->FillGeometry(itListArea->m_geo, itListArea->m_brush);
 			if (m_border != 0 && itListArea->m_enBorder)
