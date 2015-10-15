@@ -51,6 +51,7 @@ UINT CMScene::initSingleArea(
 		}
 		m_arrArrMap[i][j].m_pListArea->insert(m_arrArrMap[i][j].m_pListArea->end(), {});
 		CHECK_WIN_KILLED;
+
 		hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
 			*ppPathD,
 			D2D1::Matrix3x2F::Translation(
@@ -468,6 +469,13 @@ void CMScene::drawSingleCell(UINT i, UINT j)
 			itListArea != m_arrArrMap[i][j].m_pListArea->end();
 			itListArea++)
 		{
+			const D2D1::Matrix3x2F mtxTranslation(
+				D2D1::Matrix3x2F::Translation(
+					m_lenCellX * i,
+					m_lenCellY * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
+				));
+
+			itListArea->m_brush->SetTransform(&mtxTranslation);
 			g_pConf->m_pWin->m_pRenderTarget->FillGeometry(itListArea->m_geo, itListArea->m_brush);
 			if (m_border != 0 && itListArea->m_enBorder)
 			{
@@ -502,11 +510,12 @@ void CMScene::drawWorld()
 	UINT i01 = (iMin % 2 == 1) ? iMin : iMin + 1;
 	UINT i02 = (iMin % 2 == 0) ? iMin : iMin + 1;
 
-	g_pConf->m_pWin->m_pRenderTarget->SetTransform(
+	const D2D1::Matrix3x2F mtxSrc(
 		D2D1::Matrix3x2F::Translation(-m_cX, -m_cY) *
 		D2D1::Matrix3x2F::Scale(m_viewScaleX, m_viewScaleY) *
 		D2D1::Matrix3x2F::Translation(sW / 2, sH / 2)
 		);
+	g_pConf->m_pWin->m_pRenderTarget->SetTransform(mtxSrc);
 	for (UINT j = jMin; j < jMax; j++)
 	{
 		//todo变成线程处理，超过16列的用8线程
