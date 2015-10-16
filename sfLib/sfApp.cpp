@@ -274,7 +274,7 @@ HRESULT SFApp::CreateDeviceResources()
 		//通过文件创建位图
 		hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\img\\blue.png", 100, 0, &m_pBitmap);
 		hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\img\\black.png", 100, 0, &m_pAnotherBitmap);
-		hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\img\\swd.png", 30, 30, &g_pConf->m_mapD2DBmp["swd"]);
+		hr = LoadBitmapFromFile(m_pRenderTarget, m_pWICFactory, L".\\img\\swd.png", 0, 0, &g_pConf->m_mapD2DBmp["swd"]);
 		hr = m_pRenderTarget->CreateBitmapBrush(g_pConf->m_mapD2DBmp["swd"], &g_pConf->m_mapD2DBmpBrush["swd"]);
 		
 #if 0

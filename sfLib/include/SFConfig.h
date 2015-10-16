@@ -387,10 +387,14 @@ public:
 	DWORD m_numCore;
 	//单色画刷集合
 	map<string, ID2D1SolidColorBrush*> m_mapStrpSCBrush;
+	//图形集合
+	map<string, ID2D1Geometry*> m_mapPtrGeo;
 	//位图集合
 	map<string, ID2D1Bitmap*> m_mapD2DBmp;
 	//位图笔刷集合
 	map<string, ID2D1BitmapBrush*> m_mapD2DBmpBrush;
+	//转换集合
+	map<string, D2D1::Matrix3x2F*> m_mapPtrTranslationMtx;
 
 
 private:

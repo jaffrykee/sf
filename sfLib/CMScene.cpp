@@ -5,6 +5,38 @@
 CMDInit_T CMScene::s_initData;
 
 #pragma region 初始化相关与通用
+UINT CMScene::getNewAreaPath(
+	D2D1_POINT_2F start,
+	D2D1_POINT_2F path[],
+	UINT pointsCount,
+	__out ID2D1PathGeometry** ppPathD)
+{
+	HRESULT hr;
+	ID2D1GeometrySink *pSink = NULL;
+
+	CHECK_WIN_KILLED;
+	hr = g_pConf->m_pWin->m_pD2DFactory->CreatePathGeometry(ppPathD);
+	if (SUCCEEDED(hr))
+	{
+		hr = (*ppPathD)->Open(&pSink);
+		if (SUCCEEDED(hr))
+		{
+			pSink->SetFillMode(D2D1_FILL_MODE_WINDING);
+
+			pSink->BeginFigure(
+				start,
+				D2D1_FIGURE_BEGIN_FILLED
+				);
+
+			pSink->AddLines(path, pointsCount);
+			pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
+		}
+		pSink->Close();
+	}
+
+	return 0;
+}
+
 UINT CMScene::initSingleArea(
 	D2D1_POINT_2F start,
 	D2D1_POINT_2F path[],
@@ -13,6 +45,7 @@ UINT CMScene::initSingleArea(
 	UINT j,
 	__inout ID2D1PathGeometry** ppPathD,
 	ID2D1Brush* pBrush,
+	D2D1::Matrix3x2F* pBrushMtx,
 	bool enBorder
 	)
 {
@@ -52,15 +85,29 @@ UINT CMScene::initSingleArea(
 		m_arrArrMap[i][j].m_pListArea->insert(m_arrArrMap[i][j].m_pListArea->end(), {});
 		CHECK_WIN_KILLED;
 
-		hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
-			*ppPathD,
-			D2D1::Matrix3x2F::Translation(
-				m_lenCellX * i,
-				m_lenCellY * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
-			),
-			&m_arrArrMap[i][j].m_pListArea->rbegin()->m_geo
-		);
-		m_arrArrMap[i][j].m_pListArea->rbegin()->m_brush = pBrush;
+		ID2D1TransformedGeometry** ppNewTransGeo = NULL;
+
+		if (*ppPathD != (ID2D1PathGeometry*)g_pConf->m_mapPtrGeo["cellAreaCenter"])
+		{
+			hr = g_pConf->m_pWin->m_pD2DFactory->CreateTransformedGeometry(
+				*ppPathD,
+				D2D1::Matrix3x2F::Translation(
+					m_lenCellX * i,
+					m_lenCellY * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height),
+					(ID2D1TransformedGeometry**)(&m_arrArrMap[i][j].m_pListArea->rbegin()->m_pGeo));
+			m_arrArrMap[i][j].m_pListArea->rbegin()->m_pGeoMtx = NULL;
+		}
+		else
+		{
+			m_arrArrMap[i][j].m_pListArea->rbegin()->m_pGeoMtx = new D2D1::Matrix3x2F(
+				D2D1::Matrix3x2F::Translation(
+					m_lenCellX * i,
+					m_lenCellY * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height));
+			m_arrArrMap[i][j].m_pListArea->rbegin()->m_pGeo = g_pConf->m_mapPtrGeo["cellAreaCenter"];
+		}
+
+		m_arrArrMap[i][j].m_pListArea->rbegin()->m_pBrush = pBrush;
+		m_arrArrMap[i][j].m_pListArea->rbegin()->m_pBrushMtx = pBrushMtx;
 		m_arrArrMap[i][j].m_pListArea->rbegin()->m_enBorder = enBorder;
 	}
 }
@@ -82,9 +129,9 @@ UINT CMScene::initSingleCell(
 		FLOAT lenY = initData.m_pScene->m_viewLen;
 		FLOAT dH = initData.m_pScene->m_arrArrMap[i][j].m_height - initData.m_pScene->m_minH;
 
-#pragma region 菱形
 		if (initData.m_pScene->m_arrArrMap[i][j].m_height != 0)
 		{
+			#pragma region 菱形
 			D2D1_POINT_2F dPath[4] = {};
 
 			if (initData.m_pScene->m_perRug < 0)
@@ -133,7 +180,8 @@ UINT CMScene::initSingleCell(
 				gPath[3] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
 				gPath[4] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
 				gPath[5] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
-				initData.m_pScene->initSingleArea(gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath), i, j, &initData.m_pScene->m_pPathG, pBrush, initData.m_pScene->m_enBorder);
+				initData.m_pScene->initSingleArea(gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath), i, j,
+					(ID2D1PathGeometry**)&g_pConf->m_mapPtrGeo["cellAreaCenter"], pBrush, NULL, initData.m_pScene->m_enBorder);
 				#pragma endregion
 
 				//4
@@ -165,6 +213,7 @@ UINT CMScene::initSingleCell(
 
 				return 0;
 			}
+			#pragma endregion
 		}
 
 		#pragma region 六边形
@@ -177,25 +226,36 @@ UINT CMScene::initSingleCell(
 		gPath[3] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
 		gPath[4] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
 		gPath[5] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
+
+		//Cell的底色
+		initData.m_pScene->initSingleArea(
+			gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath),
+			i, j,
+			(ID2D1PathGeometry**)(&(g_pConf->m_mapPtrGeo["cellAreaCenter"])), pBrush);
+
+		if ((FLOAT)rand() < (FLOAT)RAND_MAX * 0.01)
+		{
+			//Cell上的位图等
+			D2D1_SIZE_F szSwd = g_pConf->m_mapD2DBmp["swd"]->GetSize();
+
+			initData.m_pScene->initSingleArea(
+				gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath),
+				i, j,
+				(ID2D1PathGeometry**)(&(g_pConf->m_mapPtrGeo["cellAreaCenter"])),
+				g_pConf->m_mapD2DBmpBrush["swd"],
+				g_pConf->m_mapPtrTranslationMtx["swd"],
+				false
+			);
+		}
+
 		//Cell的轮廓
 		initData.m_pScene->initSingleArea(
 			gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath),
 			i, j,
-			&initData.m_pScene->m_pPathG, pBrush,
+			(ID2D1PathGeometry**)(&(g_pConf->m_mapPtrGeo["cellAreaCenter"])), NULL, NULL,
 			initData.m_pScene->m_enBorder);
-		if ((FLOAT)rand() < (FLOAT)RAND_MAX * 0.01)
-		{
-			//Cell上的位图等
-			initData.m_pScene->initSingleArea(
-				gPath[ARRAYSIZE(gPath) - 1], gPath, ARRAYSIZE(gPath),
-				i, j,
-				&initData.m_pScene->m_pPathG, g_pConf->m_mapD2DBmpBrush["swd"],
-				false);
-		}
 		#pragma endregion
-#pragma endregion
 	}
-
 
 	return 0;
 }
@@ -205,6 +265,7 @@ DWORD WINAPI CMScene::threadInitDraw(LPVOID lpParam)
 {
 	CMDInit_T initData = *(CMDInit_T*)lpParam;
 
+	srand((unsigned)time(NULL));
 	#pragma region 图形相关
 	for (UINT i = 0; i < initData.m_pScene->m_arrArrMap.size(); i++)
 	{
@@ -228,9 +289,20 @@ Scene()
 	m_pMapEvent = &g_pConf->m_mapCmEvent;
 	m_viewScaleX = 1.6;
 	m_viewScaleY = 1;
+	g_pConf->m_mapPtrTranslationMtx["CMScaleInverse"] = new D2D1::Matrix3x2F(D2D1::Matrix3x2F::Scale(m_viewScaleX, m_viewScaleY));
+	if (g_pConf->m_mapPtrTranslationMtx["CMScaleInverse"]->IsInvertible())
+	{
+		D2D1_SIZE_F szSwd = g_pConf->m_mapD2DBmp["swd"]->GetSize();
+
+		g_pConf->m_mapPtrTranslationMtx["CMScaleInverse"]->Invert();
+		g_pConf->m_mapPtrTranslationMtx["swd"] = new D2D1::Matrix3x2F(
+			*g_pConf->m_mapPtrTranslationMtx["CMScaleInverse"] *
+			D2D1::Matrix3x2F::Translation(szSwd.width / 2, szSwd.height / 2));
+	}
+
 	m_viewWheelScale = 0;
-	m_viewLen = 7;
-	m_viewMar = 1;
+	m_viewLen = 20;
+	m_viewMar = 2;
 	m_lenCellX = m_viewLen * 3 + sqrt(3) / 2 * m_viewMar;
 	m_lenCellY = m_viewLen * 2 * sqrt(3) + m_viewMar;
 
@@ -244,7 +316,7 @@ Scene()
 	m_perEn = 1;
 	m_isAdjoin = false;
 	m_rugged = m_viewLen;
-	m_perRug = 0.5;
+	m_perRug = 1;
 	m_maxH = 1;
 	m_minH = 1;
 	m_unitH = 3;
@@ -262,6 +334,24 @@ Scene()
 	m_initWheelCount = 0x1ff;
 	m_dWheelCount = 0x1ff;
 	m_maxWheelCount = 0x355;
+
+
+	HRESULT hr;
+	ID2D1GeometrySink *pSink = NULL;
+	ID2D1PathGeometry** ppPathD;
+	D2D1_POINT_2F geoPath[6] = {};
+	FLOAT lenX = m_viewLen;
+	FLOAT lenY = m_viewLen;
+
+	geoPath[0] = D2D1::Point2F(1 * lenX, 0 * lenY);
+	geoPath[1] = D2D1::Point2F(3 * lenX, 0 * lenY);
+	geoPath[2] = D2D1::Point2F(4 * lenX, sqrt(3) * lenY);
+	geoPath[3] = D2D1::Point2F(3 * lenX, 2 * sqrt(3) * lenY);
+	geoPath[4] = D2D1::Point2F(1 * lenX, 2 * sqrt(3) * lenY);
+	geoPath[5] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
+
+	getNewAreaPath(geoPath[ARRAYSIZE(geoPath) - 1], geoPath, ARRAYSIZE(geoPath),
+		(ID2D1PathGeometry**)(&g_pConf->m_mapPtrGeo["cellAreaCenter"]));
 	#pragma endregion
 
 	#pragma region 生成随机地图
@@ -474,17 +564,25 @@ void CMScene::drawSingleCell(UINT i, UINT j)
 			itListArea != m_arrArrMap[i][j].m_pListArea->end();
 			itListArea++)
 		{
-			const D2D1::Matrix3x2F mtxTranslation(
-				D2D1::Matrix3x2F::Translation(
+			if (itListArea->m_pGeo != NULL && itListArea->m_pBrush != NULL)
+			{
+				D2D1::Matrix3x2F mtxTranslation(
+					D2D1::Matrix3x2F::Translation(
 					m_lenCellX * i,
 					m_lenCellY * (j - 0.5 * (i % 2 ? 1 : 0)) - m_arrArrMap[i][j].m_height
-				));
+					));
 
-			itListArea->m_brush->SetTransform(&mtxTranslation);
-			g_pConf->m_pWin->m_pRenderTarget->FillGeometry(itListArea->m_geo, itListArea->m_brush);
+				if (itListArea->m_pBrushMtx != NULL)
+				{
+					mtxTranslation = *(itListArea->m_pBrushMtx) * mtxTranslation;
+				}
+
+				itListArea->m_pBrush->SetTransform(&mtxTranslation);
+				g_pConf->m_pWin->m_pRenderTarget->FillGeometry(itListArea->m_pGeo, itListArea->m_pBrush);
+			}
 			if (m_border != 0 && itListArea->m_enBorder)
 			{
-				g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(itListArea->m_geo, g_pConf->m_mapStrpSCBrush["White"], m_border);
+				g_pConf->m_pWin->m_pRenderTarget->DrawGeometry(itListArea->m_pGeo, g_pConf->m_mapStrpSCBrush["White"], m_border);
 			}
 		}
 	}

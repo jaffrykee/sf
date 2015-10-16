@@ -3,8 +3,10 @@
 
 typedef struct CMSceneDrawArea_S
 {
-	ID2D1TransformedGeometry* m_geo;
-	ID2D1Brush* m_brush;
+	ID2D1Geometry* m_pGeo;
+	D2D1::Matrix3x2F* m_pGeoMtx;
+	ID2D1Brush* m_pBrush;
+	D2D1::Matrix3x2F* m_pBrushMtx;
 	bool m_enBorder;
 }CMSDArea_T;
 
@@ -95,6 +97,11 @@ public:
 	void moveToPosByMiniMap(INT xPos, INT yPos);
 	void moveToPosByMiniMap(POINT pos);
 
+	UINT getNewAreaPath(
+		D2D1_POINT_2F start,
+		D2D1_POINT_2F path[],
+		UINT pointsCount,
+		__out ID2D1PathGeometry** ppPathD);
 	UINT initSingleArea(
 		D2D1_POINT_2F start,
 		D2D1_POINT_2F path[],
@@ -103,8 +110,8 @@ public:
 		UINT j,
 		__inout ID2D1PathGeometry** ppPathD,
 		ID2D1Brush* pBrush,
-		bool enBorder = false
-		);
+		D2D1::Matrix3x2F* pBrushMtx = NULL,
+		bool enBorder = false);
 
 public:
 	static CMDInit_T s_initData;
