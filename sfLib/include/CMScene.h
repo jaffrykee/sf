@@ -98,7 +98,7 @@ public:
 	void moveToPosByMiniMap(INT xPos, INT yPos);
 	void moveToPosByMiniMap(POINT pos);
 
-	UINT getNewAreaPath(
+	UINT createNewAreaPath(
 		D2D1_POINT_2F start,
 		D2D1_POINT_2F path[],
 		UINT pointsCount,
@@ -109,20 +109,13 @@ public:
 		UINT layer,
 		ID2D1Geometry* pGeo,
 		ID2D1Brush* pBrush,
+		D2D1::Matrix3x2F* pGeoMtx = NULL,
 		D2D1::Matrix3x2F* pBrushMtx = NULL,
 		bool enBorder = false
 		);
-	UINT initSingleArea(
-		D2D1_POINT_2F start,
-		D2D1_POINT_2F path[],
-		UINT pointsCount,
-		UINT i,
-		UINT j,
-		UINT layer,
-		__inout ID2D1PathGeometry** ppPathD,
-		ID2D1Brush* pBrush,
-		D2D1::Matrix3x2F* pBrushMtx = NULL,
-		bool enBorder = false);
+	UINT initSingleCellCenterItems(UINT i, UINT j);
+	void initCenterBmpRes(UINT i, UINT j, string resName);
+	UINT createCenterMtx(D2D1_SIZE_F& szSwd, __inout D2D1::Matrix3x2F** ppGeoMtx);
 
 public:
 	static CMDInit_T s_initData;
@@ -131,4 +124,5 @@ public:
 	static DWORD WINAPI threadInitDraw(LPVOID lpParam);
 	//初始化单个元素
 	static UINT initSingleCell(LPVOID lpParam, UINT i, UINT j);
+	static void initCMBmpRes(PCWSTR path, string name);
 };

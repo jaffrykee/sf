@@ -48,6 +48,8 @@ private:
 		LPARAM lParam
 		);
 
+public:
+
 	HRESULT LoadResourceBitmap(
 		ID2D1RenderTarget *pRenderTarget,
 		IWICImagingFactory *pIWICFactory,

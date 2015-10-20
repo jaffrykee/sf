@@ -1,0 +1,1388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
+<player_info xmlns="http://tkmgame.com/shark/playerFrame.xsd">
+	<skin_table>
+		<skin name="默认"/>
+		<skin name="附属"/>
+	</skin_table>
+	<skill_table>
+		<skill eka="DEF" as="def" ssse="basic" savable="false">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="0" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="66" as="def" ssse="basic" savable="true">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="12" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="44" as="def" ssse="basic" savable="false">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="-5" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="1">
+							<point x="-10" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="1">
+							<point x="-15" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="1">
+							<point x="-20" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="1">
+							<point x="-15" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="1">
+							<point x="-10" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="1">
+							<point x="-5" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="6" as="def" ssse="basic" savable="true">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="4" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="4" as="def" ssse="basic" savable="true">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="-2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="8" as="def" ssse="basic" savable="false">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="0" y="-2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="2">
+							<point x="0" y="-4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="3">
+							<point x="0" y="-6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="4">
+							<point x="0" y="-8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="5">
+							<point x="0" y="-10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="6">
+							<point x="0" y="-12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="0" y="-14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="8">
+							<point x="0" y="-16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="9">
+							<point x="0" y="-18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="0" y="-20"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="2">
+							<point x="0" y="-18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="3">
+							<point x="0" y="-16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="4">
+							<point x="0" y="-14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="5">
+							<point x="0" y="-12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="6">
+							<point x="0" y="-10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="0" y="-8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="0" y="-6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="8">
+							<point x="0" y="-4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="9">
+							<point x="0" y="-2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="0" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="0" y="2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="0" y="4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="12">
+							<point x="0" y="6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="13">
+							<point x="0" y="8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="14">
+							<point x="0" y="10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="15">
+							<point x="0" y="12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="16">
+							<point x="0" y="14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="17">
+							<point x="0" y="16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="18">
+							<point x="0" y="18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="19">
+							<point x="0" y="20"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="0" y="22"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="0" y="24"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="0" y="26"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="0" y="18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="68" as="def" ssse="basic" savable="false">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="4" y="-2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="2">
+							<point x="4" y="-4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="3">
+							<point x="4" y="-6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="4">
+							<point x="4" y="-8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="5">
+							<point x="4" y="-10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="6">
+							<point x="4" y="-12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="4" y="-14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="8">
+							<point x="4" y="-16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="9">
+							<point x="4" y="-18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="4" y="-20"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="2">
+							<point x="4" y="-18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="3">
+							<point x="4" y="-16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="4">
+							<point x="4" y="-14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="5">
+							<point x="4" y="-12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="6">
+							<point x="4" y="-10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="4" y="-8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="4" y="-6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="8">
+							<point x="4" y="-4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="9">
+							<point x="4" y="-2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="4" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="4" y="2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="4" y="4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="12">
+							<point x="4" y="6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="13">
+							<point x="4" y="8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="14">
+							<point x="4" y="10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="15">
+							<point x="4" y="12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="16">
+							<point x="4" y="14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="17">
+							<point x="4" y="16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="18">
+							<point x="4" y="18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="19">
+							<point x="4" y="20"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="4" y="22"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="4" y="24"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="4" y="26"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="4" y="18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="668" as="def" ssse="basic" savable="false">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="12" y="-2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="2">
+							<point x="12" y="-4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="3">
+							<point x="12" y="-6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="4">
+							<point x="12" y="-8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="5">
+							<point x="12" y="-10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="6">
+							<point x="12" y="-12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="12" y="-14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="8">
+							<point x="12" y="-16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="9">
+							<point x="12" y="-18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="12" y="-20"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="2">
+							<point x="12" y="-18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="3">
+							<point x="12" y="-16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="4">
+							<point x="12" y="-14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="5">
+							<point x="12" y="-12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="6">
+							<point x="12" y="-10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="12" y="-8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="12" y="-6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="8">
+							<point x="12" y="-4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="9">
+							<point x="12" y="-2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="12" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="12" y="2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="12" y="4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="12">
+							<point x="12" y="6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="13">
+							<point x="12" y="8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="14">
+							<point x="12" y="10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="15">
+							<point x="12" y="12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="16">
+							<point x="12" y="14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="17">
+							<point x="12" y="16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="18">
+							<point x="12" y="18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="19">
+							<point x="12" y="20"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="12" y="22"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="12" y="24"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="12" y="26"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="12" y="18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="48" as="def" ssse="basic" savable="false">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="-2" y="-2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="2">
+							<point x="-2" y="-4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="3">
+							<point x="-2" y="-6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="4">
+							<point x="-2" y="-8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="5">
+							<point x="-2" y="-10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="6">
+							<point x="-2" y="-12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="-2" y="-14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="8">
+							<point x="-2" y="-16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="9">
+							<point x="-2" y="-18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="-2" y="-20"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="2">
+							<point x="-2" y="-18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="3">
+							<point x="-2" y="-16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="4">
+							<point x="-2" y="-14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="5">
+							<point x="-2" y="-12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="6">
+							<point x="-2" y="-10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="-2" y="-8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="-2" y="-6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="8">
+							<point x="-2" y="-4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="9">
+							<point x="-2" y="-2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="-2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="-2" y="2"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="-2" y="4"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="12">
+							<point x="-2" y="6"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="13">
+							<point x="-2" y="8"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="14">
+							<point x="-2" y="10"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="15">
+							<point x="-2" y="12"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="16">
+							<point x="-2" y="14"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="17">
+							<point x="-2" y="16"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="18">
+							<point x="-2" y="18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="19">
+							<point x="-2" y="20"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="-2" y="22"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="-2" y="24"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="-2" y="26"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="-2" y="18"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="2" as="def" ssse="basic" savable="true">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="0" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-50" l="-50" b="50" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+		<skill eka="26A" as="def" ssse="basic" savable="false">
+			<object_table>
+				<object id="1">
+					<frame_table>
+						<frame id="1">
+							<point x="0" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="2">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-51" b="75" r="51"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="3">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-52" b="75" r="52"/>
+								</box>
+								<box type="2">
+									<rect t="-25" l="50" b="25" r="100"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="4">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-53" b="75" r="53"/>
+								</box>
+								<box type="2">
+									<rect t="-25" l="52" b="25" r="102"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="5">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-54" b="75" r="54"/>
+								</box>
+								<box type="2">
+									<rect t="-25" l="55" b="25" r="105"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="6">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-55" b="75" r="55"/>
+								</box>
+								<box type="2">
+									<rect t="-25" l="60" b="25" r="110"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="7">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-54" b="75" r="54"/>
+								</box>
+								<box type="2">
+									<rect t="-25" l="60" b="25" r="110"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="8">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-53" b="75" r="53"/>
+								</box>
+								<box type="2">
+									<rect t="-25" l="60" b="25" r="110"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="9">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-52" b="75" r="52"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="10">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-51" b="75" r="51"/>
+								</box>
+							</box_table>
+						</frame>
+						<frame id="11">
+							<point x="2" y="0"/>
+							<box_table>
+								<box type="1">
+									<rect t="-75" l="-50" b="75" r="50"/>
+								</box>
+							</box_table>
+						</frame>
+					</frame_table>
+				</object>
+			</object_table>
+		</skill>
+	</skill_table>
+</player_info>
