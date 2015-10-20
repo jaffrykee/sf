@@ -3,11 +3,12 @@
 
 typedef struct CMSceneDrawArea_S
 {
-	ID2D1Geometry* m_pGeo;
-	D2D1::Matrix3x2F* m_pGeoMtx;
-	ID2D1Brush* m_pBrush;
-	D2D1::Matrix3x2F* m_pBrushMtx;
-	bool m_enBorder;
+	ID2D1Geometry* m_pGeo = NULL;
+	D2D1::Matrix3x2F* m_pGeoMtx = NULL;
+	ID2D1Brush* m_pBrush = NULL;
+	D2D1::Matrix3x2F* m_pBrushMtx = NULL;
+	bool m_enBorder = false;
+	UINT m_layer = 0;
 }CMSDArea_T;
 
 typedef struct CMSceneCell_S
@@ -87,7 +88,7 @@ public:
 	~CMScene();
 	void loadDataFromXml(string path);
 	void onDrawByCell(UINT x = 0, UINT y = 0);
-	void drawSingleCell(UINT i, UINT j);
+	bool drawSingleCell(UINT i, UINT j, UINT layer = 0);
 	void onDraw();
 	void drawWorld();
 	void drawMiniMap();
@@ -103,11 +104,21 @@ public:
 		UINT pointsCount,
 		__out ID2D1PathGeometry** ppPathD);
 	UINT initSingleArea(
+		UINT i,
+		UINT j,
+		UINT layer,
+		ID2D1Geometry* pGeo,
+		ID2D1Brush* pBrush,
+		D2D1::Matrix3x2F* pBrushMtx = NULL,
+		bool enBorder = false
+		);
+	UINT initSingleArea(
 		D2D1_POINT_2F start,
 		D2D1_POINT_2F path[],
 		UINT pointsCount,
 		UINT i,
 		UINT j,
+		UINT layer,
 		__inout ID2D1PathGeometry** ppPathD,
 		ID2D1Brush* pBrush,
 		D2D1::Matrix3x2F* pBrushMtx = NULL,
