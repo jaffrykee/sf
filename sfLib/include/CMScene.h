@@ -23,6 +23,13 @@ typedef struct CMDrawInit_S
 	CMScene* m_pScene;
 }CMDInit_T;
 
+typedef enum CM_BmpDrawType
+{
+	BDT_GROUND,
+	BDT_CENTER,
+	BDT_MAX
+};
+
 class __declspec(dllexport) CMScene : public Scene
 {
 public:
@@ -114,8 +121,9 @@ public:
 		bool enBorder = false
 		);
 	UINT initSingleCellCenterItems(UINT i, UINT j);
-	void initCenterBmpRes(UINT i, UINT j, string resName);
-	UINT createCenterMtx(D2D1_SIZE_F& szSwd, __inout D2D1::Matrix3x2F** ppGeoMtx);
+	void initCenterBmpRes(UINT i, UINT j, string resName, CM_BmpDrawType drawType = BDT_GROUND);
+	UINT createCenterMtx(D2D1_SIZE_F& szSwd, __inout D2D1::Matrix3x2F** ppGeoMtx, CM_BmpDrawType drawType = BDT_GROUND);
+	void initCMBmpRes(PCWSTR path, string name);
 
 public:
 	static CMDInit_T s_initData;
@@ -124,5 +132,4 @@ public:
 	static DWORD WINAPI threadInitDraw(LPVOID lpParam);
 	//初始化单个元素
 	static UINT initSingleCell(LPVOID lpParam, UINT i, UINT j);
-	static void initCMBmpRes(PCWSTR path, string name);
 };

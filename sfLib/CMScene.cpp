@@ -14,7 +14,7 @@ void CMScene::initCMBmpRes(PCWSTR path, string name)
 
 	D2D1_SIZE_F szSwd = g_pConf->m_mapD2DBmp[name]->GetSize();
 	hr = g_pConf->m_pWin->m_pD2DFactory->CreateRectangleGeometry(
-		D2D1::RectF(0.f, 0, szSwd.width, szSwd.height),
+		D2D1::RectF(0.f, 0, szSwd.width / m_viewScaleX, szSwd.height / m_viewScaleY),
 		(ID2D1RectangleGeometry**)(&g_pConf->m_mapPtrGeo[name]));
 }
 
@@ -95,24 +95,36 @@ UINT CMScene::initSingleArea(
 	}
 }
 
-UINT CMScene::createCenterMtx(D2D1_SIZE_F& szSwd, __inout D2D1::Matrix3x2F** ppGeoMtx)
+UINT CMScene::createCenterMtx(D2D1_SIZE_F& szSwd, __inout D2D1::Matrix3x2F** ppGeoMtx, CM_BmpDrawType drawType)
 {
 	if (ppGeoMtx != NULL)
 	{
-		*ppGeoMtx = new D2D1::Matrix3x2F(
-			D2D1::Matrix3x2F::Translation(2 * m_viewLen - szSwd.width / 2 / m_viewScaleX, sqrt(3) * m_viewLen - szSwd.height / 2 / m_viewScaleY));
+		switch (drawType)
+		{
+		case BDT_GROUND:
+			*ppGeoMtx = new D2D1::Matrix3x2F(
+				D2D1::Matrix3x2F::Translation(2 * m_viewLen - szSwd.width / 2 / m_viewScaleX, sqrt(3) * m_viewLen - szSwd.height / 2 / m_viewScaleY));
+			break;
+		case BDT_CENTER:
+			*ppGeoMtx = new D2D1::Matrix3x2F(
+				D2D1::Matrix3x2F::Translation(2 * m_viewLen - szSwd.width / 2 / m_viewScaleX, sqrt(3) * m_viewLen - szSwd.height / m_viewScaleY));
+			break;
+		case BDT_MAX:
+		default:
+			break;
+		}
 	}
 
 	return 0;
 }
 
-void CMScene::initCenterBmpRes(UINT i, UINT j, string resName)
+void CMScene::initCenterBmpRes(UINT i, UINT j, string resName, CM_BmpDrawType drawType)
 {
 	//Cell上的位图等
 	D2D1_SIZE_F szSwd = g_pConf->m_mapD2DBmp[resName]->GetSize();
 	D2D1::Matrix3x2F* pGeoMtx = NULL;
 
-	createCenterMtx(szSwd, &pGeoMtx);
+	createCenterMtx(szSwd, &pGeoMtx, drawType);
 	initSingleArea(i, j, 1,
 		g_pConf->m_mapPtrGeo[resName], g_pConf->m_mapD2DBmpBrush[resName],
 		pGeoMtx, g_pConf->m_mapPtrTranslationMtx["CMScaleInverse"]);
@@ -127,13 +139,9 @@ UINT CMScene::initSingleCellCenterItems(UINT i, UINT j)
 	initSingleArea(i, j, 0, g_pConf->m_mapPtrGeo["cellAreaCenter"], pBrush);
 
 	//Cell上的位图等
-	if ((FLOAT)rand() < (FLOAT)RAND_MAX * 0.1)
+	if ((FLOAT)rand() < (FLOAT)RAND_MAX * 1)
 	{
-		initCenterBmpRes(i, j, "swd");
-	}
-	if ((FLOAT)rand() < (FLOAT)RAND_MAX * 0.1)
-	{
-		initCenterBmpRes(i, j, "heart");
+		initCenterBmpRes(i, j, "heart", BDT_CENTER);
 	}
 
 	if (m_enBorder)
@@ -258,7 +266,6 @@ DWORD WINAPI CMScene::threadInitDraw(LPVOID lpParam)
 {
 	CMDInit_T initData = *(CMDInit_T*)lpParam;
 
-	srand((unsigned)time(NULL));
 	#pragma region 图形相关
 	for (UINT i = 0; i < initData.m_pScene->m_arrArrMap.size(); i++)
 	{
@@ -286,7 +293,7 @@ Scene()
 	g_pConf->m_mapPtrTranslationMtx["CMScaleInverse"]->Invert();
 
 	m_viewWheelScale = 0;
-	m_viewLen = 20;
+	m_viewLen = 5;
 	m_viewMar = 2;
 	m_lenCellX = m_viewLen * 3 + sqrt(3) / 2 * m_viewMar;
 	m_lenCellY = m_viewLen * 2 * sqrt(3) + m_viewMar;
@@ -295,8 +302,8 @@ Scene()
 	m_my0 = -1;
 	m_border = 1.0f;
 
-	m_maxX = 100;
-	m_maxY = 100;
+	m_maxX = 10;
+	m_maxY = 10;
 	m_enBorder = false;
 	m_perEn = 1;
 	m_isAdjoin = false;
@@ -337,6 +344,9 @@ Scene()
 	geoPath[5] = D2D1::Point2F(0 * lenX, sqrt(3) * lenY);
 	createNewAreaPath(geoPath[ARRAYSIZE(geoPath) - 1], geoPath, ARRAYSIZE(geoPath),
 		(ID2D1PathGeometry**)(&g_pConf->m_mapPtrGeo["cellAreaCenter"]));
+
+	initCMBmpRes(L".\\img\\swd.png", "swd");
+	initCMBmpRes(L".\\img\\heart.png", "heart");
 	#pragma endregion
 
 	#pragma region 生成随机地图
@@ -348,6 +358,7 @@ Scene()
 		vector<CMSCell_T>(m_maxY, { NULL, 0, true })
 		);
 	srand((unsigned)time(NULL));
+	sf_cout(DEBUG_COM, endl << (FLOAT)rand());
 
 	for (UINT i = 0; i < m_maxX; i++)
 	{

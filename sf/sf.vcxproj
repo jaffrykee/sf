@@ -139,6 +139,7 @@
   <ItemGroup>
     <Image Include="img\black.png" />
     <Image Include="img\blue.png" />
+    <Image Include="img\heart.png" />
     <Image Include="img\swd.png" />
   </ItemGroup>
   <ItemGroup>
